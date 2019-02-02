@@ -13,70 +13,76 @@ class NotificationState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Text(
-            'Thông báo!',
-            style: TextStyle(
-              color: colorText,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        brightness: Brightness.light,
+        title: Text(
+          'Thông báo',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
-          transform: Matrix4.translationValues(0.0, 15.0, 0.0),
         ),
-        Expanded(
-          child: itemCount == 0
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      decoration: const BoxDecoration(
-                        image:  DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage("assets/images/icon_notification.png"),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: itemCount == 0
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage(
+                                "assets/images/icon_notification.png"),
+                          ),
+                        ),
+                        height: 200,
+                        width: 200,
+                      ),
+                      Text('Nothing to show!'),
+                    ],
+                  )
+                : ListView(
+                    children: <Widget>[
+                      Container(
+                        color: colorContainer,
+                        height: 40,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'MỚI',
+                            style: TextStyle(
+                                color: colorText, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                      height: 200,
-                      width: 200,
-                    ),
-                    Text('Nothing to show!'),
-                  ],
-                )
-              : ListView(
-                  children: <Widget>[
-                    Container(
-                      color: colorContainer,
-                      height: 40,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          'MỚI',
-                          style: TextStyle(
-                              color: colorText, fontWeight: FontWeight.bold),
+                      ListNoti(),
+                      Container(
+                        color: colorContainer,
+                        height: 40,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'GẦN ĐÂY',
+                            style: TextStyle(
+                                color: colorText, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
-                    ),
-                    ListNoti(),
-                    Container(
-                      color: colorContainer,
-                      height: 40,
-                      width: double.infinity,
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          'GẦN ĐÂY',
-                          style: TextStyle(
-                              color: colorText, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-                    ListNoti(),
-                  ],
-                ),
-        ),
-      ],
+                      ListNoti(),
+                    ],
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }

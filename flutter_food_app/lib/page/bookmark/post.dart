@@ -11,7 +11,7 @@ class ListBookMark extends StatefulWidget {
 }
 
 class _ListBookMarkState extends State<ListBookMark> {
-  int itemCount = 5;
+  int itemCount = 10;
 
   void load() {
     if(this.mounted) {
@@ -32,164 +32,150 @@ class _ListBookMarkState extends State<ListBookMark> {
     // TODO: implement build
     return new Container(
       child: RefreshIndicator(
-        child: LoadMore(
-          isFinish: itemCount >= 20,
-          onLoadMore: _loadMore,
-          child: ListView.builder(
-            physics: ScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: itemCount,
-            itemBuilder: (BuildContext context, int index) => new Container(
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  border: new Border.all(color: colorInactive),
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  boxShadow: <BoxShadow>[
-                    new BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 10.0,
-                      offset: new Offset(0.0, 10.0),
+        child: ListView.builder(
+          physics: ScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: itemCount,
+          itemBuilder: (BuildContext context, int index) => new Container(
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                border: new Border.all(color: colorInactive),
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              margin: new EdgeInsets.all(5.0),
+              child: new Slidable(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Container(
+                        child: ClipRRect(
+                          child: Image.asset(
+                            index % 2 == 0
+                                ? 'assets/images/carrot.jpg'
+                                : 'assets/images/tomato.jpg',
+                            fit: BoxFit.fill,
+                          ),
+                          borderRadius: new BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              bottomLeft: Radius.circular(5.0)),
+                        ),
+                        width: 130,
+                        height: 100,
+                      ),
+                      onTap: () {},
+                    ),
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding:
+                            EdgeInsets.only(right: 10.0, top: 10.0, left: 10.0),
+                            child: Text(
+                              index % 2 == 0
+                                  ? 'Cà rốt tươi ngon đây! Mại zô!'
+                                  : 'Vua Cà Chua mang đên những quả cà chua tuyệt vời!',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                right: 10.0, bottom: 5.0, left: 10.0, top: 5.0),
+                            child: Text(
+                              index % 2 == 0
+                                  ? '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM'
+                                  : '12/2 Con Đường Tơ Lụa, F15, Q.TB, TP.HCM',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(color: colorText),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 10.0,
+                              left: 10.0,
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                ClipOval(
+                                  child: Image.asset(
+                                    index % 2 == 0
+                                        ? 'assets/images/cat.jpg'
+                                        : 'assets/images/dog.jpg',
+                                    fit: BoxFit.cover,
+                                    width: 40.0,
+                                    height: 40.0,
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 5.0),
+                                      child: Text(
+                                        index % 2 == 0
+                                            ? 'Trần Văn Mèo'
+                                            : 'Lò Thị Chó',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: colorActive,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 5.0),
+                                      child: SmoothStarRating(
+                                        starCount: 5,
+                                        size: 15.0,
+                                        rating: index % 2 == 0 ? 5 : 3,
+                                        color: Colors.yellow,
+                                        borderColor: Colors.yellow,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-                margin: new EdgeInsets.all(5.0),
-                child: new Slidable(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: Container(
-                          child: ClipRRect(
-                            child: Image.asset(
-                              index % 2 == 0
-                                  ? 'assets/images/carrot.jpg'
-                                  : 'assets/images/tomato.jpg',
-                              fit: BoxFit.cover,
-                            ),
-                            borderRadius: new BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                bottomLeft: Radius.circular(10.0)),
-                          ),
-                          width: 130,
-                          height: 100,
-                        ),
-                        onTap: () {},
-                      ),
-                      Flexible(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding:
-                              EdgeInsets.only(right: 10.0, top: 10.0, left: 10.0),
-                              child: Text(
-                                index % 2 == 0
-                                    ? 'Cà rốt tươi ngon đây! Mại zô!'
-                                    : 'Vua Cà Chua mang đên những quả cà chua tuyệt vời!',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: 10.0, bottom: 5.0, left: 10.0, top: 5.0),
-                              child: Text(
-                                index % 2 == 0
-                                    ? '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM'
-                                    : '12/2 Con Đường Tơ Lụa, F15, Q.TB, TP.HCM',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: colorText),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: 10.0,
-                                left: 10.0,
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  ClipOval(
-                                    child: Image.asset(
-                                      index % 2 == 0
-                                          ? 'assets/images/cat.jpg'
-                                          : 'assets/images/dog.jpg',
-                                      fit: BoxFit.cover,
-                                      width: 40.0,
-                                      height: 40.0,
-                                    ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5.0),
-                                        child: Text(
-                                          index % 2 == 0
-                                              ? 'Trần Văn Mèo'
-                                              : 'Lò Thị Chó',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: colorActive,
-                                            fontSize: 13,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5.0),
-                                        child: SmoothStarRating(
-                                          starCount: 5,
-                                          size: 15.0,
-                                          rating: index % 2 == 0 ? 5 : 3,
-                                          color: Colors.yellow,
-                                          borderColor: Colors.yellow,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                delegate: new SlidableDrawerDelegate(),
+                actionExtentRatio: 0.25,
+                secondaryActions: <Widget>[
+                  new IconSlideAction(
+                    caption: 'Share',
+                    color: Colors.blue,
+                    icon: Icons.more_horiz,
+                    onTap: () => Toast.show('Share', context),
                   ),
-                  delegate: new SlidableDrawerDelegate(),
-                  actionExtentRatio: 0.25,
-                  secondaryActions: <Widget>[
-                    new IconSlideAction(
-                      caption: 'Share',
-                      color: Colors.blue,
-                      icon: Icons.more_horiz,
-                      onTap: () => Toast.show('Share', context),
+                  ClipRRect(
+                    child: new IconSlideAction(
+                        caption: 'Delete',
+                        color: Colors.red,
+                        icon: Icons.delete,
+                        onTap: () {
+                          setState(() {
+                            Toast.show('Delete', context);
+                            itemCount--;
+                          });
+                        }
                     ),
-                    ClipRRect(
-                      child: new IconSlideAction(
-                          caption: 'Delete',
-                          color: Colors.red,
-                          icon: Icons.delete,
-                          onTap: () {
-                            setState(() {
-                              Toast.show('Delete', context);
-                              itemCount--;
-                            });
-                          }
-                      ),
-                      borderRadius: new BorderRadius.only(
-                          topRight: Radius.circular(10.0),
-                          bottomRight: Radius.circular(10.0)),
-                    ),
-                  ],
-                )),
-          ),
-          whenEmptyLoad: false,
-          delegate: DefaultLoadMoreDelegate(),
-          textBuilder: DefaultLoadMoreTextBuilder.english
+                    borderRadius: new BorderRadius.only(
+                        topRight: Radius.circular(5.0),
+                        bottomRight: Radius.circular(5.0)),
+                  ),
+                ],
+              )),
         ),
         onRefresh: _refresh,
       ),

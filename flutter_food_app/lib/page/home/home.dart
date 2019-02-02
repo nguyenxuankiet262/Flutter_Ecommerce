@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
 import 'slider.dart';
-import 'post.dart';
+import 'category.dart';
 import 'header.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -12,32 +12,52 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: MediaQuery.removePadding(
-            context: context,
-            removeTop: true,
-            child: ListView(
-              children: <Widget>[
-                HeaderHome(),
-                Padding(
-                  child: Text(
-                    'Anzi mang đến những thức phẩm tốt nhất!',
-                    style: TextStyle(
-                      color: colorText,
-                    ),
-                    textAlign: TextAlign.center,
+    return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(128.0), // here the desired height
+          child: Column(
+            children: <Widget>[
+              AppBar(
+                brightness: Brightness.light,
+                leading: Image.asset('assets/images/logo.png'),
+                title: new Text(
+                  'Anzi',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  textAlign: TextAlign.justify,
                 ),
-                CarouselWithIndicator(),
-                ListPost(),
-              ],
-            ),
+                centerTitle: true,
+                backgroundColor: Colors.white,
+                actions: [
+                  GestureDetector(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10.0),
+                      child: GestureDetector(
+                        child: Padding(
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                          padding: EdgeInsets.only(right: 10.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              HeaderHome(),
+              new Container(
+                height: 1 ,
+                color: Colors.black12,
+              ),
+            ],
           ),
-        ),
-      ],
+      ),
+      body: ListCategory(),
     );
   }
 }

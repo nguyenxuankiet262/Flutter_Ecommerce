@@ -23,13 +23,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -62,13 +55,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -101,13 +87,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -140,13 +119,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -179,13 +151,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -218,13 +183,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -257,13 +215,6 @@ class HeaderHomeState extends State<HeaderHome>{
               border: new Border.all(color: colorInactive),
               borderRadius:
               BorderRadius.all(Radius.circular(5.0)),
-              boxShadow: <BoxShadow>[
-                new BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10.0,
-                  offset: new Offset(0.0, 10.0),
-                ),
-              ],
             ),
             child: Stack(
               children: <Widget>[
@@ -291,7 +242,7 @@ class HeaderHomeState extends State<HeaderHome>{
         ],
       ),
       height: 70,
+      color: Colors.white,
     );
   }
-
 }

@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:flutter_food_app/const/color_const.dart';
 import 'post.dart';
 import 'package:toast/toast.dart';
 
@@ -44,70 +43,54 @@ class _MyBookMarkState extends State<MyBookMark> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: <Widget>[
-        Container(
-          child: Text(
-            'Nơi chứa những giấc mơ!',
+    return Scaffold(
+      appBar: AppBar(
+        brightness: Brightness.light,
+        title: Text(
+            'Yêu thích',
             style: TextStyle(
-              color: colorText,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
-          ),
-          transform: Matrix4.translationValues(0.0, 15.0, 0.0),
         ),
-        Expanded(
-          child: itemCount != 0
-              ? ListBookMark()
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Image.asset('assets/images/icon_heartbreak.png'),
-                    Text('Nothing to show!'),
-                  ],
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        actions: <Widget>[
+          GestureDetector(
+            child: Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: GestureDetector(
+                child: Padding(
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.grey,
+                  ),
+                  padding: EdgeInsets.only(right: 10.0),
                 ),
-        ),
-        RotationTransition(
-          turns: new AlwaysStoppedAnimation(180 / 360),
-          child: GestureDetector(
-            child: BottomAppBar(
-              color: colorActive,
-              shape: CircularNotchedRectangle(),
-              notchMargin: 10.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20.0),
-                    child: RotationTransition(
-                      turns: new AlwaysStoppedAnimation(180 / 360),
-                      child: Text(
-                        'ALL',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20.0),
-                    child: RotationTransition(
-                      turns: new AlwaysStoppedAnimation(180 / 360),
-                      child: Text(
-                        'CLEAR',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+                onTap: (){
+                  _showDialog();
+                },
               ),
             ),
-            onTap: () {
-              _showDialog();
-            },
           ),
-        ),
-      ],
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: itemCount != 0
+                ? ListBookMark()
+                : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image.asset('assets/images/icon_heartbreak.png'),
+                Text('Nothing to show!'),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
