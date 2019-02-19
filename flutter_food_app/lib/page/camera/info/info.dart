@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter/services.dart';
 import 'header.dart';
-import 'package:flutter_food_app/main.dart';
+import 'package:flutter_food_app/app.dart';
 import 'package:camera/camera.dart';
 import 'body.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';

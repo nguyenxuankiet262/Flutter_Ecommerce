@@ -8,7 +8,7 @@ class ListNoti extends StatefulWidget {
 }
 
 class _ListNotiState extends State<ListNoti> {
-  int itemCount = 5;
+  int itemCount = 6;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class _ListNotiState extends State<ListNoti> {
       context: context,
       removeTop: true,
       child: ListView.builder(
-        physics: ScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) => new Container(

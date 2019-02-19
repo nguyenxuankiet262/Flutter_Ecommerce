@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'main.dart';
+import 'app.dart';
 import 'package:flutter/services.dart';
 
 class StartPage extends StatefulWidget {

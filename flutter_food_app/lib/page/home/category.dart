@@ -9,8 +9,6 @@ class ListCategory extends StatefulWidget {
 }
 
 class _ListCategoryState extends State<ListCategory> {
-  int itemCount = 10;
-
   List<Widget> _buildSlivers(BuildContext context) {
     List<Widget> slivers = new List<Widget>();
     int i = 0;

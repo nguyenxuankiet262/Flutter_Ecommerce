@@ -7,3 +7,4 @@ const colorText = const Color(0xffa3a1a1);
 const colorBookmark = const Color(0xffF7A000);
 const colorContainer = const Color(0xfff5f6f7);
 const colorTransparent = const Color(0xffe3efe3);
+const colorBox = const Color(0xff2F333F);
