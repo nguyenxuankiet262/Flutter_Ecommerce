@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_food_app/page/camera/camera.dart';
+import 'package:camera/camera.dart';
 
 class HeaderInfo extends StatefulWidget {
+  List<CameraDescription> cameras;
+
+  HeaderInfo(this.cameras);
+
   @override
   State<StatefulWidget> createState() => HeaderInfoState();
 }
@@ -48,9 +54,47 @@ class HeaderInfoState extends State<HeaderInfo> {
               ],
             ),
           ),
+          onTap: () {
+            Future.delayed(new Duration(seconds: 1), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CameraPage(widget.cameras)),
+              );
+            });
+          },
         ),
         GestureDetector(
-          child:  Container(
+            child: Container(
+              width: _widthImage,
+              height: _widthImage,
+              decoration: new BoxDecoration(
+                color: Colors.white,
+                border: new Border.all(color: colorInactive),
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: Icon(
+                      Icons.add,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () {
+              Future.delayed(new Duration(seconds: 1), () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CameraPage(widget.cameras)),
+                );
+              });
+            }),
+        GestureDetector(
+          child: Container(
             width: _widthImage,
             height: _widthImage,
             decoration: new BoxDecoration(
@@ -69,9 +113,18 @@ class HeaderInfoState extends State<HeaderInfo> {
               ],
             ),
           ),
+          onTap: () {
+            Future.delayed(new Duration(seconds: 1), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CameraPage(widget.cameras)),
+              );
+            });
+          },
         ),
         GestureDetector(
-          child:  Container(
+          child: Container(
             width: _widthImage,
             height: _widthImage,
             decoration: new BoxDecoration(
@@ -90,27 +143,15 @@ class HeaderInfoState extends State<HeaderInfo> {
               ],
             ),
           ),
-        ),
-        GestureDetector(
-          child:  Container(
-            width: _widthImage,
-            height: _widthImage,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Center(
-                  child: Icon(
-                    Icons.add,
-                    size: 30,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          onTap: () {
+            Future.delayed(new Duration(seconds: 1), () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CameraPage(widget.cameras)),
+              );
+            });
+          },
         ),
       ],
     );

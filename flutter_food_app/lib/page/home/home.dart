@@ -1,61 +1,85 @@
 import "package:flutter/material.dart";
 import 'category.dart';
 import 'header.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:flutter_food_app/page/detail/detail.dart';
 
 class MyHomePage extends StatefulWidget {
+  Function callback;
+  MyHomePage(this.callback);
   @override
   State<StatefulWidget> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with AutomaticKeepAliveClientMixin {
+  SearchBar searchBar;
+
+  void navigateToListPost() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ListAllPost(this.navigateToPost)),
+    );
+  }
+
+  void navigateToPost(){
+    this.widget.callback();
+  }
+
+  _MyHomePageState() {
+    searchBar = new SearchBar(
+        inBar: false,
+        setState: setState,
+        onSubmitted: print,
+        buildDefaultAppBar: buildAppBar);
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return new AppBar(
+        brightness: Brightness.light,
+        leading: GestureDetector(
+          child: Image.asset('assets/images/logo.png'),
+          onTap: (){
+
+          },
+        ),
+        title: new Text(
+          'Anzi',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          textAlign: TextAlign.justify,
+        ),
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        actions: [searchBar.getSearchAction(context)]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(128.0), // here the desired height
-          child: Column(
-            children: <Widget>[
-              AppBar(
-                brightness: Brightness.light,
-                leading: Image.asset('assets/images/logo.png'),
-                title: new Text(
-                  'Anzi',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  textAlign: TextAlign.justify,
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.white,
-                actions: [
-                  GestureDetector(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 10.0),
-                      child: GestureDetector(
-                        child: Padding(
-                          child: Icon(
-                            Icons.search,
-                            color: Colors.grey,
-                          ),
-                          padding: EdgeInsets.only(right: 10.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              HeaderHome(),
-              new Container(
-                height: 1 ,
-                color: Colors.black12,
-              ),
-            ],
-          ),
+        preferredSize: Size.fromHeight(128.0), // here the desired height
+        child: Column(
+          children: <Widget>[
+            searchBar.build(context),
+            HeaderHome(this.navigateToListPost),
+            new Container(
+              height: 1,
+              color: Colors.black12,
+            ),
+          ],
+        ),
       ),
-      body: ListCategory(),
+      body: ListCategory(this.navigateToListPost, this.navigateToPost),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
+List<String> image = [
+  'assets/images/salad.jpg',
+  'assets/images/fruit.jpg',
+  'assets/images/meat.jpg',
+  'assets/images/fish.jpg',
+  'assets/images/hamburger.jpg',
+  'assets/images/cake.jpg',
+  'assets/images/other.jpg',
+];
+
+List<String> name = [
+  'Rau củ',
+  'Trái cây',
+  'Thịt',
+  'Cá',
+  'Đồ ăn',
+  'Bánh ngọt',
+  'Khác',
+];
+
 class HeaderHome extends StatefulWidget{
+  Function callback;
+  HeaderHome(this.callback);
   @override
   State<StatefulWidget> createState() => HeaderHomeState();
-
 }
 
 class HeaderHomeState extends State<HeaderHome>{
+  void _gotoDetailScreen(){
+    this.widget.callback();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: <Widget>[
-          Container(
+        itemCount: image.length,
+        itemBuilder: (BuildContext context, int index) => GestureDetector(
+          onTap: (){
+            _gotoDetailScreen();
+          },
+          child: Container(
             margin: EdgeInsets.all(5.0),
             width: 90.0,
             decoration: new BoxDecoration(
@@ -29,7 +57,7 @@ class HeaderHomeState extends State<HeaderHome>{
                 Container(
                   child: ClipRRect(
                       child: Image.asset(
-                        'assets/images/salad.jpg',
+                        image[index],
                         fit: BoxFit.cover,
                       ),
                       borderRadius: new BorderRadius.all(
@@ -39,7 +67,7 @@ class HeaderHomeState extends State<HeaderHome>{
                 ),
                 Center(
                     child: Text(
-                      'Rau củ',
+                      name[index],
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold),
@@ -47,199 +75,7 @@ class HeaderHomeState extends State<HeaderHome>{
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.all(5.0),
-            width: 90.0,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/fruit.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
-                  height: 100,
-                ),
-                Center(
-                    child: Text(
-                      'Trái cây',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(5.0),
-            width: 90.0,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/meat.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
-                  height: 100,
-                ),
-                Center(
-                    child: Text(
-                      'Thịt',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(5.0),
-            width: 90.0,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/fish.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
-                  height: 100,
-                ),
-                Center(
-                    child: Text(
-                      'Cá',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(5.0),
-            width: 90.0,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/hamburger.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
-                  height: 100,
-                ),
-                Center(
-                    child: Text(
-                      'Đồ ăn',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(5.0),
-            width: 90.0,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/cake.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
-                  height: 100,
-                ),
-                Center(
-                    child: Text(
-                      'Bánh ngọt',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.all(5.0),
-            width: 90.0,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              border: new Border.all(color: colorInactive),
-              borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
-            ),
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/other.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
-                  height: 100,
-                ),
-                Center(
-                    child: Text(
-                      'Khác',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
       height: 70,
       color: Colors.white,

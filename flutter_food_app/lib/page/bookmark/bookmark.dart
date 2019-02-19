@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import 'post.dart';
+import 'list_post.dart';
 import 'package:toast/toast.dart';
 
 class MyBookMark extends StatefulWidget {
@@ -7,7 +7,7 @@ class MyBookMark extends StatefulWidget {
   State<StatefulWidget> createState() => _MyBookMarkState();
 }
 
-class _MyBookMarkState extends State<MyBookMark> {
+class _MyBookMarkState extends State<MyBookMark> with AutomaticKeepAliveClientMixin {
   int itemCount = 1;
 
   void _showDialog() {
@@ -63,7 +63,7 @@ class _MyBookMarkState extends State<MyBookMark> {
                 child: Padding(
                   child: Icon(
                     Icons.delete,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                   padding: EdgeInsets.only(right: 10.0),
                 ),
@@ -93,4 +93,8 @@ class _MyBookMarkState extends State<MyBookMark> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

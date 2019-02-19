@@ -31,7 +31,10 @@ dependencies:
   splashscreen: ^1.2.0
   camera: ^0.3.0
   giffy_dialog: ^1.2.0
+  flutter_masked_text: ^0.7.0
+  community_material_icon: ^2.8.94
   badges: ^0.0.6
+
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +73,11 @@ flutter:
 
     - assets/images/cat.jpg
     - assets/images/dog.jpg
+
+    - assets/images/flan.jpg
+    - assets/images/tiramisu.jpg
+    - assets/images/cheese.jpg
+    - assets/images/cherry.jpg
 
     - assets/images/gifs/relax.gif
   #Data

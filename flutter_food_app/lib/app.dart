@@ -4,12 +4,15 @@ import 'package:flutter_food_app/page/home/home.dart';
 import 'package:flutter_food_app/page/bookmark/bookmark.dart';
 import 'package:flutter_food_app/page/notification/notification.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
-import 'package:flutter_food_app/page/info_user/info.dart';
-
+import 'package:community_material_icon/community_material_icon.dart';
+import 'package:flutter_food_app/page/post/post.dart';
+import 'package:flutter_food_app/page/user/info.dart';
 
 class MyMainPage extends StatefulWidget {
   var cameras;
+
   MyMainPage(this.cameras);
+
   @override
   _MyMainPageState createState() => _MyMainPageState();
 }
@@ -17,18 +20,52 @@ class MyMainPage extends StatefulWidget {
 class _MyMainPageState extends State<MyMainPage>
     with SingleTickerProviderStateMixin {
   int _index = 0;
-  final _widgetOptions = [
-    MyHomePage(),
-    MyBookMark(),
-    NotificationPage(),
-    InfoPage(),
-  ];
+  PageController _pageController;
 
+  @override
+  void initState() {
+    super.initState();
+    _pageController = new PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      this._index = page;
+    });
+  }
+
+  void navigationTapped(int page) {
+    _pageController.jumpToPage(page);
+  }
+
+  void navigateToPost(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions.elementAt(_index),
+      body: new PageView(
+        physics: NeverScrollableScrollPhysics(),
+        children: <Widget>[
+          MaterialApp(
+            home: MyHomePage(this.navigateToPost),
+            theme: ThemeData(fontFamily: 'Montserrat'),
+            debugShowCheckedModeBanner: false,
+          ),
+          MyBookMark(),
+          NotificationPage(),
+          InfoPage(),
+        ],
+        onPageChanged: onPageChanged,
+        controller: _pageController,
+      ),
       resizeToAvoidBottomPadding: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -38,7 +75,8 @@ class _MyMainPageState extends State<MyMainPage>
           setState(() {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => CameraPage(widget.cameras)),
+              MaterialPageRoute(
+                  builder: (context) => CameraPage(widget.cameras)),
             );
           });
         },
@@ -50,17 +88,13 @@ class _MyMainPageState extends State<MyMainPage>
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            GestureDetector(
-              child: _index == 0
-                  ? Icon(
-                      Icons.home,
-                      color: colorActive,
-                    )
-                  : Image.asset('assets/images/icon_home.png'),
-              onTap: () {
-                setState(() {
-                  _index = 0;
-                });
+            IconButton(
+              icon: Icon(
+                _index == 0 ? Icons.home : CommunityMaterialIcons.home_outline,
+                color: colorActive,
+              ),
+              onPressed: () {
+                navigationTapped(0);
               },
             ),
             Padding(
@@ -68,36 +102,31 @@ class _MyMainPageState extends State<MyMainPage>
               child: IconButton(
                 icon: Icon(
                   _index == 1 ? Icons.star : Icons.star_border,
-                  color: _index == 1 ? colorActive : colorInactive,
+                  color: colorActive,
                 ),
                 onPressed: () {
-                  setState(() {
-                    _index = 1;
-                  });
+                  navigationTapped(1);
                 },
               ),
             ),
             IconButton(
               icon: Icon(
                 _index == 2 ? Icons.notifications : Icons.notifications_none,
-                color: _index == 2 ? colorActive : colorInactive,
+                color: colorActive,
               ),
               onPressed: () {
-                setState(() {
-                  _index = 2;
-                });
+                navigationTapped(2);
               },
             ),
             new Stack(children: <Widget>[
               IconButton(
                 icon: Icon(
                   _index == 3 ? Icons.person : Icons.person_outline,
-                  color: _index == 3 ? colorActive : colorInactive,
+                  color: colorActive,
                 ),
                 onPressed: () {
-                  setState(() {
-                    _index = 3;
-                  });
+                  ;
+                  navigationTapped(3);
                 },
               ),
               new Positioned(

@@ -185,7 +185,7 @@ class InfoPostState extends State<InfoPost> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 15.0),
-                  child: HeaderInfo(),
+                  child: HeaderInfo(widget.cameras),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10.0),

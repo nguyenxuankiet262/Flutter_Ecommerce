@@ -1,14 +1,18 @@
 import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
-import 'post.dart';
+import 'list_post.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class ListCategory extends StatefulWidget {
+  Function callback1, callback2;
+  ListCategory(this.callback1,this.callback2);
   @override
   State<StatefulWidget> createState() => _ListCategoryState();
 }
 
 class _ListCategoryState extends State<ListCategory> {
+  int itemCount = 10;
+
   List<Widget> _buildSlivers(BuildContext context) {
     List<Widget> slivers = new List<Widget>();
     int i = 0;
@@ -26,13 +30,21 @@ class _ListCategoryState extends State<ListCategory> {
     'Khác'
   ];
 
+  void _gotoDetailScreen(){
+    this.widget.callback1();
+  }
+
+  void _gotoPostScreen(){
+    this.widget.callback2();
+  }
+
   List<Widget> _buildLists(BuildContext context, int firstIndex, int count) {
     return List.generate(count, (sliverIndex) {
       sliverIndex += firstIndex;
       return new SliverStickyHeader(
         header: _buildHeader(sliverIndex),
         sliver: new SliverToBoxAdapter(
-          child: ListPost(),
+          child: ListPost(this._gotoPostScreen),
         ),
       );
     });
@@ -62,7 +74,9 @@ class _ListCategoryState extends State<ListCategory> {
                   decoration: TextDecoration.underline,
                   fontSize: 20.0),
             ),
-            onTap: () {},
+            onTap: () {
+              _gotoDetailScreen();
+            },
           ),
         ],
       ),

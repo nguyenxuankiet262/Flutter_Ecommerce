@@ -7,7 +7,7 @@ class NotificationPage extends StatefulWidget {
   State<StatefulWidget> createState() => NotificationState();
 }
 
-class NotificationState extends State<NotificationPage> {
+class NotificationState extends State<NotificationPage> with AutomaticKeepAliveClientMixin {
   int itemCount = 1;
 
   @override
@@ -85,4 +85,8 @@ class NotificationState extends State<NotificationPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
