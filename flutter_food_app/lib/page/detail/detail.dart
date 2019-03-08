@@ -6,8 +6,8 @@ import 'package:flutter_food_app/page/detail/list_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 class ListAllPost extends StatefulWidget {
-  Function callback;
-  ListAllPost(this.callback);
+  Function callback1, callback2;
+  ListAllPost(this.callback1, this.callback2);
   @override
   State<StatefulWidget> createState() => _ListAllPostState();
 }
@@ -311,7 +311,7 @@ class _ListAllPostState extends State<ListAllPost>
               controller: _scrollController,
               children: <Widget>[
                 CarouselWithIndicator(),
-                ListPost(this.widget.callback),
+                ListPost(this.widget.callback1, this.widget.callback2),
               ],
             ),
           );

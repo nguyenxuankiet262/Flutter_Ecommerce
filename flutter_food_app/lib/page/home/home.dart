@@ -5,8 +5,8 @@ import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter_food_app/page/detail/detail.dart';
 
 class MyHomePage extends StatefulWidget {
-  Function callback;
-  MyHomePage(this.callback);
+  Function callback1, callback2;
+  MyHomePage(this.callback1, this.callback2);
   @override
   State<StatefulWidget> createState() => _MyHomePageState();
 }
@@ -19,12 +19,16 @@ class _MyHomePageState extends State<MyHomePage>
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListAllPost(this.navigateToPost)),
+          builder: (context) => ListAllPost(this.navigateToPost, this.navigateToUserPage)),
     );
   }
 
   void navigateToPost(){
-    this.widget.callback();
+    this.widget.callback1();
+  }
+
+  void navigateToUserPage(){
+    this.widget.callback2();
   }
 
   _MyHomePageState() {
@@ -75,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage>
           ],
         ),
       ),
-      body: ListCategory(this.navigateToListPost, this.navigateToPost),
+      body: ListCategory(this.navigateToListPost, this.navigateToPost, this.navigateToUserPage),
     );
   }
 

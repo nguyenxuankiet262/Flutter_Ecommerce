@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'header.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'body.dart';
-import 'package:badges/badges.dart';
-import 'package:flutter_food_app/page/user/settings.dart';
+import 'package:flutter_food_app/page/user/another_user/body.dart';
+import 'settings.dart';
 
-class InfoPage extends StatefulWidget {
+class InfoUserPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => InfoPageState();
+  State<StatefulWidget> createState() => InfoUserPageState();
 }
 
-class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
-  void _showBottomSheet(context){
+class InfoUserPageState extends State<InfoUserPage>
+    with AutomaticKeepAliveClientMixin {
+  void _showBottomSheet(context) {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext bc){
+        builder: (BuildContext bc) {
           return Settings();
-        }
-    );
+        });
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -26,28 +26,33 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
       appBar: AppBar(
         brightness: Brightness.light,
         title: Text(
-          'meow_meow',
+          'kiki123',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
         centerTitle: true,
         actions: <Widget>[
           GestureDetector(
-            onTap: (){
-              _showBottomSheet(context);
-            },
-            child: BadgeIconButton(
-              itemCount: 2,
-              // required
-              icon: Icon(Icons.menu, color: Colors.black,),
-              // required
-              // default: Colors.red
-              badgeTextColor: Colors.white,
-              // default: Colors.white
-              hideZeroCount: true, // default: true
+            child: Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: GestureDetector(
+                child: Padding(
+                  child: Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ),
+                  padding: EdgeInsets.only(right: 10.0),
+                ),
+                onTap: () {
+                  _showBottomSheet(context);
+                },
+              ),
             ),
           ),
         ],
@@ -60,7 +65,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
             decoration: const BoxDecoration(
               image: const DecorationImage(
                 fit: BoxFit.cover,
-                image: const AssetImage('assets/images/cat.jpg'),
+                image: const AssetImage('assets/images/dog.jpg'),
               ),
             ),
           ),

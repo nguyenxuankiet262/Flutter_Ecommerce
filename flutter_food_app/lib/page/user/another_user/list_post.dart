@@ -5,16 +5,18 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'package:flutter_food_app/page/post/post.dart';
+import 'info.dart';
 
 class ListPost extends StatefulWidget {
-  Function callback1, callback2;
-  ListPost(this.callback1, this.callback2);
   @override
   State<StatefulWidget> createState() => _ListPostState();
 }
 
 class _ListPostState extends State<ListPost> {
   int itemCount = 13;
+  void navigateToUserPage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUserPage()));
+  }
   Widget build(BuildContext context) {
     // TODO: implement build
     return new StaggeredGridView.countBuilder(
@@ -47,7 +49,7 @@ class _ListPostState extends State<ListPost> {
                               topLeft: Radius.circular(5.0))),
                     ),
                     onTap: () {
-                      this.widget.callback1();
+
                     },
                   ),
                   Padding(
@@ -176,7 +178,7 @@ class _ListPostState extends State<ListPost> {
               ),
             ],
           ),
-        )
+        ),
       ),
       staggeredTileBuilder: (int index) => new StaggeredTile.fit(1),
     );

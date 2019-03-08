@@ -3,6 +3,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'list_rating.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter_food_app/page/user/another_user/info.dart';
 
 class CommentPost extends StatefulWidget {
   @override
@@ -141,6 +142,10 @@ class CommentPostState extends State<CommentPost> {
         });
   }
 
+  void navigateToUserPage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUserPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery
@@ -198,7 +203,9 @@ class CommentPostState extends State<CommentPost> {
                               height: 40.0,
                             ),
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            navigateToUserPage();
+                          },
                         ),
                         Container(
                           width: widthRating,
@@ -209,13 +216,18 @@ class CommentPostState extends State<CommentPost> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
-                                    index % 2 == 0
-                                        ? 'Trần Văn Mèo'
-                                        : 'Nguyễn Thị Cún',
-                                    style: TextStyle(
-                                        color: colorActive,
-                                        fontWeight: FontWeight.bold),
+                                  GestureDetector(
+                                    onTap: (){
+                                      navigateToUserPage();
+                                    },
+                                    child: Text(
+                                      index % 2 == 0
+                                          ? 'Trần Văn Mèo'
+                                          : 'Nguyễn Thị Cún',
+                                      style: TextStyle(
+                                          color: colorActive,
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
                                   Text(
                                     '22:22 PM - 22/2/2022',
@@ -259,7 +271,7 @@ class CommentPostState extends State<CommentPost> {
             child: Container(
               margin: EdgeInsets.only(left: 50, bottom: 10.0, top: 5.0),
               child: Text(
-                'Xem thêm đánh giá',
+                'Xem tất cả',
                 style: TextStyle(
                     color: Colors.blue,
                     fontSize: 16.0,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:flutter_food_app/page/user/another_user/info.dart';
 
 class PostBody extends StatefulWidget {
   @override
@@ -76,37 +77,59 @@ class PostBodyState extends State<PostBody> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          '60.000 VNĐ',
-                          style: TextStyle(
-                            color: colorActive,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                              color: colorComment,
-                              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              border: Border.all(color: colorComment)
-                          ),
-                          child: Center(
-                            child: Text(
-                              '20 giờ',
-                              style: TextStyle(
+                    child: Text(
+                      '60.000 VNĐ',
+                      style: TextStyle(
+                        color: colorActive,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            '120.000 VNĐ',
+                            style: TextStyle(
                                 color: colorInactive,
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.lineThrough),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 5.0),
+                            child: Text(
+                              '-50%',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: 100,
+                        decoration: BoxDecoration(
+                            color: colorComment,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            border: Border.all(color: colorComment)),
+                        child: Center(
+                          child: Text(
+                            '20 giờ',
+                            style: TextStyle(
+                              color: colorInactive,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -143,130 +166,82 @@ class PostBodyState extends State<PostBody> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'ĐỊA CHỈ',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5.0),
                 child: Text(
-                  '123 Đường lên đỉnh Olympia F.15 Q.1 TP.Hồ Chí Minh.',
-                  style: TextStyle(fontSize: 16),
+                  'THÔNG TIN NGƯỜI ĐĂNG',
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                 ),
               ),
-              Container(
-                width: double.infinity,
-                child: GestureDetector(
-                  child: Text(
-                    'Xem trên bản đồ',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.end,
-                  ),
-                  onTap: () {
-                    print('Tap');
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(15.0),
-          margin: EdgeInsets.all(5.0),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: colorInactive,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                'ĐIỆN THOẠI',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5.0),
-                child: Text(
-                  '+84 123 456 789',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(15.0),
-          margin: EdgeInsets.all(5.0),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: colorInactive,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'THỜI GIAN',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    margin: EdgeInsets.only(right: 5.0),
+                    child: GestureDetector(
+                      child: Text(
+                        'xuankiet262',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: colorActive
+                        ),
+                      ),
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUserPage()));
+                      },
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(left: 10.0),
-                    padding: EdgeInsets.all(3.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: colorActive,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        color: colorActive),
-                    child: Text(
-                      'Đang mở cửa',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                  SmoothStarRating(
+                    starCount: 5,
+                    size: 22.0,
+                    rating: 5,
+                    color: Colors.yellow,
+                    borderColor: Colors.yellow,
                   ),
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(top: 5.0),
-                child: Text(
-                  '6:00 AM - 10:00 PM',
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
+                margin: EdgeInsets.symmetric(vertical: 5.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 5.0),
+                      child: Icon(
+                        Icons.home,
+                        size: 20,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '123 Đường lên đỉnh Olympia F.15 Q.1 TP.Hồ Chí Minh.',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 5.0),
+                      child: Icon(
+                        Icons.phone,
+                        size: 20,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '+84 123 456 789',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

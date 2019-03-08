@@ -4,15 +4,15 @@ import 'list_post.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 class ListCategory extends StatefulWidget {
-  Function callback1, callback2;
-  ListCategory(this.callback1,this.callback2);
+  Function callback1, callback2, callback3;
+
+  ListCategory(this.callback1, this.callback2, this.callback3);
+
   @override
   State<StatefulWidget> createState() => _ListCategoryState();
 }
 
 class _ListCategoryState extends State<ListCategory> {
-  int itemCount = 10;
-
   List<Widget> _buildSlivers(BuildContext context) {
     List<Widget> slivers = new List<Widget>();
     int i = 0;
@@ -21,6 +21,8 @@ class _ListCategoryState extends State<ListCategory> {
   }
 
   List<String> nameCategory = [
+    'Ưu đãi',
+    'Nổi bật',
     'Rau củ',
     'Trái cây',
     'Thịt',
@@ -30,12 +32,16 @@ class _ListCategoryState extends State<ListCategory> {
     'Khác'
   ];
 
-  void _gotoDetailScreen(){
+  void _gotoDetailScreen() {
     this.widget.callback1();
   }
 
-  void _gotoPostScreen(){
+  void _gotoPostScreen() {
     this.widget.callback2();
+  }
+
+  void _gotoUserScreen() {
+    this.widget.callback3();
   }
 
   List<Widget> _buildLists(BuildContext context, int firstIndex, int count) {
@@ -44,7 +50,7 @@ class _ListCategoryState extends State<ListCategory> {
       return new SliverStickyHeader(
         header: _buildHeader(sliverIndex),
         sliver: new SliverToBoxAdapter(
-          child: ListPost(this._gotoPostScreen),
+          child: ListPost(this._gotoPostScreen, this._gotoUserScreen),
         ),
       );
     });
@@ -59,13 +65,34 @@ class _ListCategoryState extends State<ListCategory> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Text(
-            text ?? nameCategory[index].toUpperCase(),
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.0),
-          ),
+          index != 0 && index != 1
+              ? new Text(
+                  text ?? nameCategory[index].toUpperCase(),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0),
+                )
+              : Row(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 5.0),
+                      child: index == 0
+                          ? Image.asset('assets/images/discount_icon.png')
+                          : new Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
+                    ),
+                    Text(
+                      text ?? nameCategory[index].toUpperCase(),
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0),
+                    )
+                  ],
+                ),
           GestureDetector(
             child: new Text(
               'Tất cả',

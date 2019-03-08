@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 List<String> image = [
+  'assets/images/discount.jpg',
+  'assets/images/favorite.png',
   'assets/images/salad.jpg',
   'assets/images/fruit.jpg',
   'assets/images/meat.jpg',
@@ -12,6 +14,8 @@ List<String> image = [
 ];
 
 List<String> name = [
+  'Ưu đãi',
+  'Nổi bật',
   'Rau củ',
   'Trái cây',
   'Thịt',
@@ -58,7 +62,7 @@ class HeaderHomeState extends State<HeaderHome>{
                   child: ClipRRect(
                       child: Image.asset(
                         image[index],
-                        fit: BoxFit.cover,
+                        fit: BoxFit.fill,
                       ),
                       borderRadius: new BorderRadius.all(
                           Radius.circular(5.0))),

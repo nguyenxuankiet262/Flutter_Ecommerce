@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'list_post.dart';
 import 'list_rating.dart';
-import 'package:community_material_icon/community_material_icon.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -12,7 +11,7 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
   TabController _tabController;
   int index = 0;
   int lengthComment = 5;
-  int lengthPost = 13;
+  int lengthPost = 10;
 
   @override
   void initState() {
@@ -47,7 +46,6 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
               : 60 + ((lengthPost / 2).round() * 297.0))
           : (lengthComment == 0 ? heightEmpty : 60 + lengthComment * 83.0),
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
