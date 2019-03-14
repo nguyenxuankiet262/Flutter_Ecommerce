@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:flutter_food_app/page/user/another_user/info.dart';
 
 class ListRating extends StatefulWidget {
   @override
@@ -42,7 +43,12 @@ class ListRatingState extends State<ListRating> {
                           height: 40.0,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => InfoUserPage()),
+                        );
+                      },
                     ),
                     Container(
                       width: widthRating,

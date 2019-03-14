@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'const/color_const.dart';
 import 'package:flutter_food_app/page/home/home.dart';
-import 'package:flutter_food_app/page/bookmark/bookmark.dart';
+import 'package:flutter_food_app/page/cart/cart.dart';
 import 'package:flutter_food_app/page/notification/notification.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
 import 'package:flutter_food_app/page/post/post.dart';
@@ -66,9 +66,9 @@ class _MyMainPageState extends State<MyMainPage>
             theme: ThemeData(fontFamily: 'Montserrat'),
             debugShowCheckedModeBanner: false,
           ),
-          MyBookMark(),
+          Cart(),
           NotificationPage(),
-          InfoPage(),
+          InfoPage(false),
         ],
         onPageChanged: onPageChanged,
         controller: _pageController,
@@ -110,11 +110,14 @@ class _MyMainPageState extends State<MyMainPage>
                       color: _index == 0 ? colorActive : Colors.grey,
                       size: 20,
                     ),
-                    Text(
-                      'Trang chủ',
-                      style: TextStyle(
-                          fontFamily: 'Raleway',
-                          color: _index == 0 ? colorActive : Colors.grey),
+                    Container(
+                      margin: EdgeInsets.only(top: 2.0),
+                      child: Text(
+                        'Trang chủ',
+                        style: TextStyle(
+                            fontFamily: 'Raleway',
+                            color: _index == 0 ? colorActive : Colors.grey),
+                      ),
                     ),
                   ],
                 ),
@@ -137,18 +140,21 @@ class _MyMainPageState extends State<MyMainPage>
                           color: _index == 1 ? colorActive : Colors.grey,
                           size: 20,
                         ),
-                        Text(
-                          'Giỏ hàng',
-                          style: TextStyle(
-                              fontFamily: 'Raleway',
-                              color: _index == 1 ? colorActive : Colors.grey),
+                        Container(
+                          margin: EdgeInsets.only(top: 2.0),
+                          child: Text(
+                            'Giỏ hàng',
+                            style: TextStyle(
+                                fontFamily: 'Raleway',
+                                color: _index == 1 ? colorActive : Colors.grey),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   new Positioned(
                     // draw a red marble
-                    top: 5.0,
+                    top: 4.0,
                     right: 10.0,
                     child: new Icon(Icons.brightness_1,
                         size: 11.0, color: Colors.red),
@@ -171,18 +177,21 @@ class _MyMainPageState extends State<MyMainPage>
                           color: _index == 2 ? colorActive : Colors.grey,
                           size: 20,
                         ),
-                        Text(
-                          'Thông báo',
-                          style: TextStyle(
-                              fontFamily: 'Raleway',
-                              color: _index == 2 ? colorActive : Colors.grey),
+                        Container(
+                          margin: EdgeInsets.only(top: 2.0),
+                          child: Text(
+                            'Thông báo',
+                            style: TextStyle(
+                                fontFamily: 'Raleway',
+                                color: _index == 2 ? colorActive : Colors.grey),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   new Positioned(
                     // draw a red marble
-                    top: 5.0,
+                    top: 4.0,
                     right: 20.0,
                     child: new Icon(Icons.brightness_1,
                         size: 11.0, color: Colors.red),
@@ -204,18 +213,21 @@ class _MyMainPageState extends State<MyMainPage>
                         color: _index == 3 ? colorActive : Colors.grey,
                         size: 20,
                       ),
-                      Text(
-                        'Cá nhân',
-                        style: TextStyle(
-                            fontFamily: 'Raleway',
-                            color: _index == 3   ? colorActive : Colors.grey),
+                      Container(
+                        margin: EdgeInsets.only(top: 2.0),
+                        child: Text(
+                          'Cá nhân',
+                          style: TextStyle(
+                              fontFamily: 'Raleway',
+                              color: _index == 3   ? colorActive : Colors.grey),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 new Positioned(
                   // draw a red marble
-                  top: 5.0,
+                  top: 4.0,
                   right: 13.0,
                   child: new Icon(Icons.brightness_1,
                       size: 11.0, color: Colors.red),

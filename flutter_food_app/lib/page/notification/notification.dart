@@ -1,86 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_food_app/const/color_const.dart';
-import 'noti.dart';
+import 'noti_user.dart';
+import 'noti_admin.dart';
 
 class NotificationPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => NotificationState();
 }
 
-class NotificationState extends State<NotificationPage> with AutomaticKeepAliveClientMixin {
-  int itemCount = 1;
+class NotificationState extends State<NotificationPage> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  int index = 0;
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = new TabController(vsync: this, length: 2);
+    _tabController.addListener(() {
+      if (_tabController.index == 0) {
+        setState(() {
+          index = 0;
+        });
+      } else {
+        setState(() {
+          index = 1;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         brightness: Brightness.light,
-        title: Text(
-          'Thông báo',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         backgroundColor: Colors.white,
-        centerTitle: true,
+        title: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.black,
+          unselectedLabelColor: Colors.grey,
+          labelColor: Colors.black,
+          tabs: [
+            Tab(
+              child: Text(
+                "Đang theo dõi",
+                style: TextStyle(
+                  fontSize: 16.0
+                ),
+              ),
+            ),
+            Tab(
+              child: Text(
+                "Hệ thống",
+                style: TextStyle(
+                    fontSize: 16.0
+                ),
+              ),
+            )
+          ],
+        ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: itemCount == 0
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage(
-                                "assets/images/icon_notification.png"),
-                          ),
-                        ),
-                        height: 200,
-                        width: 200,
-                      ),
-                      Text('Nothing to show!'),
-                    ],
-                  )
-                : ListView(
-                    children: <Widget>[
-                      Container(
-                        color: colorContainer,
-                        height: 40,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'MỚI',
-                            style: TextStyle(
-                                color: colorText, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      ListNoti(),
-                      Container(
-                        color: colorContainer,
-                        height: 40,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'GẦN ĐÂY',
-                            style: TextStyle(
-                                color: colorText, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      ListNoti(),
-                    ],
-                  ),
-          ),
+      body: TabBarView(
+        physics: NeverScrollableScrollPhysics(),
+        controller: _tabController,
+        children: [
+          NotiUser(),
+          NotiAdmin(),
         ],
       ),
     );

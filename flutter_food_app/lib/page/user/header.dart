@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'follow/follow.dart';
 
 class Header extends StatefulWidget {
+  final bool isAnother;
+  Header(this.isAnother);
   @override
   State<StatefulWidget> createState() => HeaderState();
 }
@@ -20,7 +23,6 @@ class HeaderState extends State<Header> {
             Container(
               child: Stack(
                 children: <Widget>[
-
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 400,
@@ -44,7 +46,7 @@ class HeaderState extends State<Header> {
                             ),
                             child: ClipOval(
                               child: Image.asset(
-                                'assets/images/cat.jpg',
+                                widget.isAnother ? 'assets/images/dog.jpg' : 'assets/images/cat.jpg',
                                 fit: BoxFit.cover,
                                 width: 100.0,
                                 height: 100.0,
@@ -58,25 +60,19 @@ class HeaderState extends State<Header> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                'Trần Văn Mèo',
+                                widget.isAnother ? 'Lò Thị Chó' : 'Trần Văn Mèo',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20.0,
+                                  fontWeight: FontWeight.w600
                                 ),
                               ),
                               SmoothStarRating(
                                 starCount: 5,
-                                size: 15.0,
-                                rating: 5,
+                                size: 24.0,
+                                rating: 4,
                                 color: Colors.yellow,
                                 borderColor: Colors.yellow,
-                              ),
-                              Text(
-                                '5.0',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24.0,
-                                ),
                               ),
                             ],
                           ),
@@ -84,107 +80,109 @@ class HeaderState extends State<Header> {
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: colorInactive.withOpacity(0.5)),
-                color: Colors.white,
-              ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 0.0),
-                          width: widthColumn,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                '15',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'bài viết',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: colorText,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          width: widthColumn,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                '15',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'người theo dõi',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: colorText),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          width: widthColumn,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                '15',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Text(
-                                'đang theo dõi',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: colorText),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Container(
-                    margin: EdgeInsets.only(top: 10.0),
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: colorInactive),
-                        borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                    child: Center(
-                      child: Text(
-                        'Chỉnh sửa trang cá nhân',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                    height: 400,
+                    width: MediaQuery.of(context).size.width,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        height: 70,
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          color: Colors.transparent,
+                          child: Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  GestureDetector(
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 0.0),
+                                      width: widthColumn,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text(
+                                            '11',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            'bài viết',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: colorText,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => FollowPage(value: 1)),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: widthColumn,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text(
+                                            '15',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            'người theo dõi',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(color: colorText),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => FollowPage(value: 2)),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: widthColumn,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Text(
+                                            '15M',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            'đang theo dõi',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(color: colorText),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -195,14 +193,8 @@ class HeaderState extends State<Header> {
             Container(
               color: Colors.white,
               width: double.infinity,
-              padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
-              child: Text(
-                "Meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-              ),
+              padding: EdgeInsets.only(left: 15.0, right: 15.0),
+              child:  null,
             ),
           ],
         ));

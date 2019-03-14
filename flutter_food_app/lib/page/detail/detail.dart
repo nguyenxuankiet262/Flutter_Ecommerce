@@ -1,39 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:flutter_food_app/model/province.dart';
-import 'package:flutter_food_app/page/detail/slider.dart';
+import 'filter_mode.dart';
 import 'package:flutter_food_app/page/detail/list_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'view_mode.dart';
 
 class ListAllPost extends StatefulWidget {
   Function callback1, callback2;
+
   ListAllPost(this.callback1, this.callback2);
+
   @override
   State<StatefulWidget> createState() => _ListAllPostState();
 }
 
 class _ListAllPostState extends State<ListAllPost>
     with AutomaticKeepAliveClientMixin {
+  int indexCity = 5;
+  int indexProvince = 0;
+  bool _showBar = true;
+  double _posY = 0.0;
+  SearchBar searchBar;
+  ScrollController _scrollController;
+
   List<String> nameCities = [
     'Tất cả',
   ];
   List<List<String>> nameProvinces = [
     ['Tất cả']
   ];
-  List<String> options = [
-    'Tất cả',
-    'Gần đây nhất',
-    'Giá tăng dần',
-    'Giá giảm dần',
-  ];
-  int indexCity = 5;
-  int indexProvince = 0;
-  int indexOption = 0;
-  bool _showBar = true;
-  double _posY = 0.0;
-  SearchBar searchBar;
-
-  ScrollController _scrollController;
 
   load() async {
     String data = await DefaultAssetBundle.of(context)
@@ -65,8 +61,8 @@ class _ListAllPostState extends State<ListAllPost>
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                    )),
+              Radius.circular(10.0),
+            )),
             contentPadding: EdgeInsets.only(top: 10.0),
             content: Container(
               width: widthDialog,
@@ -77,7 +73,7 @@ class _ListAllPostState extends State<ListAllPost>
                 children: <Widget>[
                   Container(
                     child: Text(
-                      "Chọn thành phố",
+                      isCity ? "Chọn thành phố" : "Chọn quận/huyện",
                       style: TextStyle(fontSize: 24.0),
                       textAlign: TextAlign.center,
                     ),
@@ -97,7 +93,8 @@ class _ListAllPostState extends State<ListAllPost>
                           : nameProvinces[indexCity].length,
                       itemBuilder: (context, index) {
                         return Container(
-                          padding: EdgeInsets.only(top: 10.0, right: 20.0, left: 20.0, bottom: 10.0),
+                          padding: EdgeInsets.only(
+                              top: 10.0, right: 20.0, left: 20.0, bottom: 10.0),
                           child: GestureDetector(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,6 +127,94 @@ class _ListAllPostState extends State<ListAllPost>
                         );
                       },
                     ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  _showFilter() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          final size = MediaQuery.of(context).size;
+          final widthDialog = size.width;
+          final heightList = (size.height / 5) * 3 - 10.0;
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            )),
+            contentPadding: EdgeInsets.only(top: 10.0),
+            content: Container(
+              width: widthDialog,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                      child: Stack(
+                    children: <Widget>[
+                      Center(
+                        child: Text(
+                          "Lọc",
+                          style: TextStyle(fontSize: 24.0),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            margin: EdgeInsets.only(right: 20.0, top: 5.0),
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.close,
+                                color: colorInactive,
+                                size: 20,
+                              ),
+                            )
+                          ))
+                    ],
+                  )),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Container(
+                      height: heightList,
+                      child: ListView(
+                        children: <Widget>[
+                          FilterMode(),
+                          ViewMode(),
+                        ],
+                      )),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      width: widthDialog,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
+                        color: colorActive,
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Áp dụng",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ),
+                    )
                   ),
                 ],
               ),
@@ -278,7 +363,7 @@ class _ListAllPostState extends State<ListAllPost>
                             new Flexible(
                               child: new Container(
                                 child: new Text(
-                                  options[indexOption],
+                                  'Lọc',
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       color: Colors.black, fontSize: 16.0),
@@ -289,7 +374,7 @@ class _ListAllPostState extends State<ListAllPost>
                           ],
                         ),
                         onTap: () {
-                          print('Tap 2');
+                          _showFilter();
                         },
                       ),
                     ),
@@ -310,8 +395,10 @@ class _ListAllPostState extends State<ListAllPost>
             body: ListView(
               controller: _scrollController,
               children: <Widget>[
-                CarouselWithIndicator(),
-                ListPost(this.widget.callback1, this.widget.callback2),
+                Container(
+                  margin: EdgeInsets.only(top: 5.0),
+                  child: ListPost(this.widget.callback1, this.widget.callback2),
+                ),
               ],
             ),
           );

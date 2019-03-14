@@ -5,32 +5,12 @@ import 'rating.dart';
 import 'relative_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:toast/toast.dart';
-import 'package:rounded_modal/rounded_modal.dart';
-
-List<Icon> iconList = [
-  Icon(
-    Icons.share,
-    color: Colors.blue,
-  ),
-  Icon(
-    Icons.star,
-    color: Colors.yellow,
-  ),
-  Icon(
-    Icons.block,
-    color: Colors.red,
-  ),
-  Icon(
-    Icons.favorite,
-    color: Colors.pink,
-  ),
-];
+import 'add_to_cart.dart';
 
 List<String> nameList = [
   'Chia sẻ',
-  'Lưu vào bookmark',
-  'Báo cáo vi phạm',
   'Yêu thích',
+  'Báo cáo vi phạm',
 ];
 
 class Post extends StatefulWidget {
@@ -142,7 +122,8 @@ class PostState extends State<Post> {
         builder: (builder) {
           return new Container(
             height: 220.0,
-            color: Colors.white, //could change this to Color(0xFF737373),
+            margin: EdgeInsets.all(15.0),
+            color: Colors.transparent, //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
             child: Column(
               children: <Widget>[
@@ -151,37 +132,36 @@ class PostState extends State<Post> {
                     child: Center(
                       child: Container(
                         width: 50,
-                        height: 2,
-                        color: colorInactive,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(15.0))
+                        ),
                       ),
-                    )),
+                    )
+                ),
                 ListView.builder(
-                  itemCount: iconList.length,
+                  itemCount: nameList.length,
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                         child: Container(
                           height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 15.0),
+                          margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
                           decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                                      color: colorInactive, width: 0.2))),
-                          width: double.infinity,
-                          child: Row(
-                            children: <Widget>[
-                              iconList[index],
-                              Padding(
-                                padding: EdgeInsets.only(left: 15.0),
-                                child: Text(
-                                  nameList[index],
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                  ),
-                                ),
+                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Text(
+                              nameList[index],
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: index != 2 ? Colors.blue : Colors.red,
+                                fontWeight: FontWeight.w500
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         onTap: () {
@@ -195,20 +175,14 @@ class PostState extends State<Post> {
                               break;
                             case 1:
                               {
-                                Toast.show('Đã lưu vào bookmark', context,
-                                    gravity: Toast.CENTER);
-                                Navigator.pop(context);
+                                _showDialog();
                               }
                               break;
                             case 2:
                               {
-                                _showDialog();
-                              }
-                              break;
-                            case 3:
-                              {
                                 Navigator.pop(context);
                               }
+                              break;
                           }
                         },
                       ),
@@ -224,7 +198,7 @@ class PostState extends State<Post> {
       context: context, // Also default
       builder: (context) => Container(
         color: Colors.transparent,
-        height: 500,
+        height: 350,
         child: Column(
           children: <Widget>[
             Container(
@@ -232,64 +206,22 @@ class PostState extends State<Post> {
                 child: Center(
                   child: Container(
                     width: 50,
-                    height: 2,
-                    color: Colors.white,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(15.0))
+                    ),
                   ),
                 )
             ),
             Container(
-              margin: EdgeInsets.all(15.0),
+              margin: EdgeInsets.symmetric(vertical: 15.0),
               padding: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(15.0)),
               ),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        height: 100,
-                        width: 150,
-                        margin: EdgeInsets.only(right: 10.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: AssetImage('assets/images/flan.jpg'),
-                            )
-                        ),
-                      ),
-                      Container(
-                          height: 100,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width - 220,
-                                child: Text(
-                                  'Bánh tiramisu thơm ngon đây cả nhà ơi',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                ),
-                              ),
-
-                              Text(
-                                  '500.000 VNĐ'
-                              )
-                            ],
-                          )
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              child: AddToCart(),
             ),
           ],
         ),

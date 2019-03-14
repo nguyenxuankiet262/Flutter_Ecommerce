@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'header.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/user/another_user/body.dart';
-import 'settings.dart';
+import 'package:flutter_food_app/page/user/settings_another_user.dart';
 
 class InfoUserPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class InfoUserPageState extends State<InfoUserPage>
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return Settings();
+          return SettingsAnother();
         });
   }
 

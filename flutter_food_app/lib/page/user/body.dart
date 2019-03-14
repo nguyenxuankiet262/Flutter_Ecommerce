@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'list_post.dart';
 import 'list_rating.dart';
-import 'package:community_material_icon/community_material_icon.dart';
+import 'info_item.dart';
 
 class Body extends StatefulWidget {
   @override
@@ -17,15 +17,19 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: 2);
+    _tabController = new TabController(vsync: this, length: 3);
     _tabController.addListener(() {
       if (_tabController.index == 0) {
         setState(() {
           index = 0;
         });
-      } else {
+      } else if (_tabController.index == 1) {
         setState(() {
           index = 1;
+        });
+      } else {
+        setState(() {
+          index = 2;
         });
       }
     });
@@ -39,13 +43,13 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final double heightEmpty = MediaQuery.of(context).size.height - 300;
+    final double height = 400.0;
     return Container(
       height: index == 0
-          ? (lengthPost == 0
-              ? heightEmpty
-              : 60 + ((lengthPost / 2).round() * 297.0))
-          : (lengthComment == 0 ? heightEmpty : 60 + lengthComment * 83.0),
+          ? (lengthPost == 0 ? height : 60 + ((lengthPost / 2).round() * 297.0))
+          : index == 1
+              ? (lengthComment == 0 ? height : 60 + lengthComment * 83.0)
+              : height,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -58,13 +62,21 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
             labelColor: Colors.black,
             tabs: [
               Tab(
-                  icon: Icon(
-                Icons.collections,
-              )),
+                  child: Text(
+                    "Bài viết",
+                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                  ),),
               Tab(
-                  icon: Icon(
-                Icons.star,
-              )),
+                  child: Text(
+                    "Đánh giá",
+                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                  ),),
+              Tab(
+                child: Text(
+                  "Thông tin",
+                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                ),
+              ),
             ],
           ),
         ),
@@ -104,6 +116,7 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
                     ],
                   )
                 : ListRating(),
+            InfoItem(),
           ],
         ),
       ),

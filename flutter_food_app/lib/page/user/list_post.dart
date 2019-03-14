@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'package:flutter_food_app/page/post/post.dart';
 

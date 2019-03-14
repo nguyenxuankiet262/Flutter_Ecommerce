@@ -59,22 +59,16 @@ class HeaderState extends State<Header> {
                             'Lò Thị Chó',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20.0,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600
                             ),
                           ),
                           SmoothStarRating(
                             starCount: 5,
-                            size: 15.0,
-                            rating: 5,
+                            size: 24.0,
+                            rating: 4,
                             color: Colors.yellow,
                             borderColor: Colors.yellow,
-                          ),
-                          Text(
-                            '5.0',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24.0,
-                            ),
                           ),
                         ],
                       ),
@@ -82,167 +76,102 @@ class HeaderState extends State<Header> {
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: colorInactive.withOpacity(0.5)),
-            color: Colors.white,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  GestureDetector(
+              Container(
+                height: 400,
+                width: MediaQuery.of(context).size.width,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 70,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 0.0),
-                      width: widthColumn,
+                      padding: EdgeInsets.all(10.0),
+                      color: Colors.transparent,
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            '0',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'bài viết',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: colorText,
-                              fontSize: 16,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              GestureDetector(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 0.0),
+                                  width: widthColumn,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        '11',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'bài viết',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: colorText,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                child: Container(
+                                  width: widthColumn,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        '15',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'người theo dõi',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(color: colorText),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                child: Container(
+                                  width: widthColumn,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        '15M',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'đang theo dõi',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(color: colorText),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    child: Container(
-                      width: widthColumn,
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            '123,321',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'người theo dõi',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: colorText),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      width: widthColumn,
-                      child: Column(
-                        children: <Widget>[
-                          Text(
-                            '1',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'đang theo dõi',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: colorText),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      child: Container(
-                        height: 50,
-                        margin: EdgeInsets.only(top: 10.0),
-                        padding: EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                            color: followed == false ? colorActive : Colors.red,
-                            border: Border.all(
-                                color: followed == false
-                                    ? colorInactive
-                                    : Colors.red),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(5.0))),
-                        child: Center(
-                          child: Text(
-                            followed == false ? 'Theo dõi' : 'Bỏ theo dõi',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: (){
-                        setState(() {
-                          followed = !followed;
-                        });
-                      },
-                    ),
-                    flex: 5,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: 50,
-                      margin: EdgeInsets.only(top: 10.0, left: 2.0),
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(
-                          color: followed == false ? colorActive : Colors.red,
-                          border: Border.all(
-                              color: followed == false
-                                  ? colorInactive
-                                  : Colors.red),
-                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                      child: Center(
-                          child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      )),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
-          ),
-        ),
-        Container(
-          color: Colors.white,
-          width: double.infinity,
-          padding:
-              EdgeInsets.only(left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
-          child: Text(
-            "Gâu gâu!",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-            ),
           ),
         ),
       ],
