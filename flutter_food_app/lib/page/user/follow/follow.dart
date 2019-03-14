@@ -63,7 +63,7 @@ class FollowPageState extends State<FollowPage> {
                 height: 45,
                 margin: EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     color: colorInactive.withOpacity(0.2)),
                 child: isSearch
                     ? Container(

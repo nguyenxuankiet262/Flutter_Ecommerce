@@ -3,7 +3,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'list_rating.dart';
 import 'package:toast/toast.dart';
-import 'package:flutter_food_app/page/user/another_user/info.dart';
+import 'package:flutter_food_app/page/user/info.dart';
 
 class CommentPost extends StatefulWidget {
   @override
@@ -143,7 +143,7 @@ class CommentPostState extends State<CommentPost> {
   }
 
   void navigateToUserPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUserPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPage(true)));
   }
 
   @override

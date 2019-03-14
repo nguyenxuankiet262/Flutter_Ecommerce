@@ -8,7 +8,7 @@ class NotiUser extends StatefulWidget {
 }
 
 class NotiUserState extends State<NotiUser> with AutomaticKeepAliveClientMixin {
-  int _count = 1;
+  int _count = 0;
 
   @override
   Widget build(BuildContext context) {

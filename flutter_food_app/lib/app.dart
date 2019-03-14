@@ -6,7 +6,6 @@ import 'package:flutter_food_app/page/notification/notification.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
 import 'package:flutter_food_app/page/post/post.dart';
 import 'package:flutter_food_app/page/user/info.dart';
-import 'package:flutter_food_app/page/user/another_user/info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyMainPage extends StatefulWidget {
@@ -51,7 +50,7 @@ class _MyMainPageState extends State<MyMainPage>
 
   void navigateToUserPage() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => InfoUserPage()));
+        context, MaterialPageRoute(builder: (context) => InfoPage(true)));
   }
 
   @override

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/post/post.dart';
-import 'package:flutter_food_app/page/user/another_user/info.dart';
+import 'package:flutter_food_app/page/user/info.dart';
 
 
 class ListNotiUser extends StatefulWidget {
@@ -38,7 +38,7 @@ class _ListNotiUserState extends State<ListNotiUser> {
                           onTap: (){
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => InfoUserPage()),
+                              MaterialPageRoute(builder: (context) => InfoPage(true)),
                             );
                           },
                           child: ClipOval(

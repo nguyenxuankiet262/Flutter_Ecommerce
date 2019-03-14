@@ -64,6 +64,8 @@ flutter:
     - assets/images/carrot.jpg
     - assets/images/tomato.jpg
 
+    - assets/images/background.jpg
+
     - assets/images/cake.jpg
     - assets/images/fish.jpg
     - assets/images/other.jpg

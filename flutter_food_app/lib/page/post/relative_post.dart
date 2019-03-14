@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_food_app/page/user/another_user/info.dart';
+import 'package:flutter_food_app/page/user/info.dart';
 
 class RelativePost extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class RelativePostState extends State<RelativePost> {
   int itemCount = 10;
 
   void navigateToUserPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoUserPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPage(true)));
   }
 
   @override

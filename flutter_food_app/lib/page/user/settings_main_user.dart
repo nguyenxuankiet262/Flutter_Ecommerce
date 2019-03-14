@@ -11,6 +11,8 @@ List<String> settingPrivacy = [
 List<String> settingSupport = ["Quản lí phản hồi"];
 
 class SettingsMain extends StatelessWidget {
+  Function sign_out;
+  SettingsMain(this.sign_out);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -213,14 +215,20 @@ class SettingsMain extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.all(15.0),
-              child: Text(
-                'ĐĂNG XUẤT',
-                style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600),
+            GestureDetector(
+              onTap: (){
+                Navigator.pop(context);
+                sign_out();
+              },
+              child: Container(
+                padding: EdgeInsets.all(15.0),
+                child: Text(
+                  'ĐĂNG XUẤT',
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600),
+                ),
               ),
             ),
           ],
