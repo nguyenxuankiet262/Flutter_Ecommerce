@@ -33,7 +33,7 @@ class SettingsMain extends StatelessWidget {
                   Text(
                     'BÀI VIẾT',
                     style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 17.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -53,7 +53,7 @@ class SettingsMain extends StatelessWidget {
                                   Text(
                                     settingPost[index],
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                     ),
                                   ),
                                   Icon(
@@ -91,7 +91,7 @@ class SettingsMain extends StatelessWidget {
                   Text(
                     'RIÊNG TƯ',
                     style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 17.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -111,7 +111,7 @@ class SettingsMain extends StatelessWidget {
                                   Text(
                                     settingPrivacy[index],
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                     ),
                                   ),
                                   Row(
@@ -172,7 +172,7 @@ class SettingsMain extends StatelessWidget {
                   Text(
                     'HỖ TRỢ',
                     style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 17.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -192,7 +192,7 @@ class SettingsMain extends StatelessWidget {
                                   Text(
                                     settingSupport[index],
                                     style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 16,
                                     ),
                                   ),
                                   Icon(
@@ -225,7 +225,7 @@ class SettingsMain extends StatelessWidget {
                 child: Text(
                   'ĐĂNG XUẤT',
                   style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 17.0,
                       color: Colors.black,
                       fontWeight: FontWeight.w600),
                 ),

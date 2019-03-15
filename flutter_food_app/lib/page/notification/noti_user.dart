@@ -40,40 +40,6 @@ class NotiUserState extends State<NotiUser> with AutomaticKeepAliveClientMixin {
           )
         : ListView(
             children: <Widget>[
-              Container(
-                color: colorContainer,
-                height: 40,
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                    onTap: (){
-                      setState(() {
-                        _count = 0;
-                      });
-                    },
-                    child: Text(
-                      'MỚI',
-                      style: TextStyle(
-                          color: colorText, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-              ListNotiUser(),
-              Container(
-                color: colorContainer,
-                height: 40,
-                width: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    'GẦN ĐÂY',
-                    style: TextStyle(
-                        color: colorText, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
               ListNotiUser(),
             ],
           );

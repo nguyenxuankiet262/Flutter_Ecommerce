@@ -20,17 +20,18 @@ class InfoPage extends StatefulWidget {
 class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
   bool isLogin = false;
 
-  void Logining(){
+  void Logining() {
     setState(() {
       isLogin = true;
     });
   }
 
-  void Signouting(){
+  void Signouting() {
     setState(() {
       isLogin = false;
     });
   }
+
   void _showBottomSheetMainUser(context) {
     showModalBottomSheet(
         context: context,
@@ -83,7 +84,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     width: 200,
-                    height: 50,
+                    height: 40,
                     child: RaisedButton(
                       onPressed: () {
                         Logining();
@@ -91,14 +92,14 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                       child: Text(
                         "ĐĂNG NHẬP",
                         style: TextStyle(
-                          fontFamily: "Ralway",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600
-                        ),
+                            fontFamily: "Ralway",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
                       ),
                       color: colorActive,
                       textColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(6.0))),
                     ),
                   ),
                 ],

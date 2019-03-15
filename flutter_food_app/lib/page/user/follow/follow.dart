@@ -60,7 +60,7 @@ class FollowPageState extends State<FollowPage> {
         child: ListView(
           children: <Widget>[
             Container(
-                height: 45,
+                height: 40,
                 margin: EdgeInsets.all(15.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -72,17 +72,18 @@ class FollowPageState extends State<FollowPage> {
                           autofocus: true,
                           focusNode: _focus,
                           controller: myController,
-                          style: TextStyle(fontFamily: "Ralway", fontSize: 17, color: Colors.black),
+                          style: TextStyle(fontFamily: "Ralway", fontSize: 14, color: Colors.black),
                           decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Tìm kiếm người theo dõi',
                               hintStyle: TextStyle(
                                   color: colorInactive,
                                   fontFamily: "Ralway",
-                                  fontSize: 17),
+                                  fontSize: 14),
                               icon: Icon(
                                 Icons.search,
                                 color: colorInactive,
+                                size: 20,
                               )),
                         ))
                     : GestureDetector(
@@ -97,6 +98,7 @@ class FollowPageState extends State<FollowPage> {
                             Icon(
                               Icons.search,
                               color: colorInactive,
+                              size: 20,
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 5.0),
@@ -105,7 +107,7 @@ class FollowPageState extends State<FollowPage> {
                                 style: TextStyle(
                                     fontFamily: "Raleway",
                                     color: colorInactive,
-                                    fontSize: 17),
+                                    fontSize: 14),
                               ),
                             ),
                           ],

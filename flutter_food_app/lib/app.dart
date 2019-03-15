@@ -7,6 +7,7 @@ import 'package:flutter_food_app/page/camera/camera.dart';
 import 'package:flutter_food_app/page/post/post.dart';
 import 'package:flutter_food_app/page/user/info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'page/authentication/authentication.dart';
 
 class MyMainPage extends StatefulWidget {
   var cameras;
@@ -82,7 +83,7 @@ class _MyMainPageState extends State<MyMainPage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CameraPage(widget.cameras)),
+                  builder: (context) => AuthenticationPage(),),
             );
           });
         },

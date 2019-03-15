@@ -47,7 +47,8 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
               child: Text(
                 "Đang theo dõi",
                 style: TextStyle(
-                  fontSize: 16.0
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),
@@ -55,7 +56,8 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
               child: Text(
                 "Hệ thống",
                 style: TextStyle(
-                    fontSize: 16.0
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             )

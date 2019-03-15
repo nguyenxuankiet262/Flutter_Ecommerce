@@ -54,9 +54,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
         title: Text(
           'Giỏ hàng',
           style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+              color: Colors.black, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.white,
         centerTitle: true,
@@ -71,7 +69,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                   style: TextStyle(
                       color: itemCount > 0 ? colorActive : Colors.grey,
                       fontWeight: FontWeight.bold,
-                      fontSize: 12),
+                      fontSize: 10),
                 ),
                 onTap: () {},
               ),
@@ -82,6 +80,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
           child: Icon(
             FontAwesomeIcons.solidTrashAlt,
             color: Colors.grey,
+            size: 18,
           ),
           onTap: () {
             if (itemCount > 0) {
@@ -94,20 +93,9 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
         children: <Widget>[
           Expanded(
             child: itemCount != 0
-                ? ListView(
-                    children: <Widget>[
-                      ListCart(),
-                      GestureDetector(
-                        onTap: (){
-                          setState(() {
-                            itemCount = 0;
-                          });
-                        },
-                        child: Text(
-                          "Chuyển sang empty"
-                        ),
-                      ),
-                    ],
+                ? Container(
+                    color: colorBackground,
+                    child: ListCart(),
                   )
                 : Center(
                     child: Column(

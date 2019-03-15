@@ -63,13 +63,13 @@ class HeaderState extends State<Header> {
                                 widget.isAnother ? 'Lò Thị Chó' : 'Trần Văn Mèo',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.w600
                                 ),
                               ),
                               SmoothStarRating(
                                 starCount: 5,
-                                size: 24.0,
+                                size: 20.0,
                                 rating: 4,
                                 color: Colors.yellow,
                                 borderColor: Colors.yellow,
@@ -86,7 +86,7 @@ class HeaderState extends State<Header> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: 70,
+                        height: 60,
                         child: Container(
                           padding: EdgeInsets.all(10.0),
                           color: Colors.transparent,
@@ -105,7 +105,7 @@ class HeaderState extends State<Header> {
                                             '11',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 20,
+                                              fontSize: 17,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -115,6 +115,7 @@ class HeaderState extends State<Header> {
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               color: colorText,
+                                              fontSize: 12
                                             ),
                                           ),
                                         ],
@@ -136,7 +137,7 @@ class HeaderState extends State<Header> {
                                             '15',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 20,
+                                              fontSize: 17,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -144,7 +145,7 @@ class HeaderState extends State<Header> {
                                             'người theo dõi',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(color: colorText),
+                                            style: TextStyle(color: colorText, fontSize: 12),
                                           ),
                                         ],
                                       ),
@@ -165,7 +166,7 @@ class HeaderState extends State<Header> {
                                             '15M',
                                             style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 20,
+                                              fontSize: 17,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -173,7 +174,7 @@ class HeaderState extends State<Header> {
                                             'đang theo dõi',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(color: colorText),
+                                            style: TextStyle(color: colorText, fontSize: 12),
                                           ),
                                         ],
                                       ),

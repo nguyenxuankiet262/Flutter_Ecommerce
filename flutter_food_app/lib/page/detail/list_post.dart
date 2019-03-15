@@ -24,7 +24,7 @@ class _ListPostState extends State<ListPost> {
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) => new Card(
         child: new Container(
-          height: 290,
+          height: 280,
           width: 200,
           child: Stack(
             children: <Widget>[
@@ -71,7 +71,7 @@ class _ListPostState extends State<ListPost> {
                           : '12/2 Con Đường Tơ Lụa, F15, Q.TB, TP.HCM',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: colorText),
+                      style: TextStyle(color: colorText, fontSize: 12),
                     ),
                   ),
                   Padding(
@@ -83,7 +83,7 @@ class _ListPostState extends State<ListPost> {
                         Text(
                           index % 2 == 0 ? '40.000 VNĐ' : '150.000 VNĐ',
                           style: TextStyle(
-                              fontSize: 20.0,
+                              fontSize: 17.0,
                               color: colorActive,
                               fontWeight: FontWeight.w600),
                         ),
@@ -98,7 +98,7 @@ class _ListPostState extends State<ListPost> {
                                     ? '50.000 VNĐ'
                                     : '300.000 VNĐ',
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 15,
                                   color: colorInactive,
                                   fontWeight: FontWeight.w600,
                                   decoration: TextDecoration.lineThrough,
@@ -109,7 +109,7 @@ class _ListPostState extends State<ListPost> {
                                   Icon(
                                     Icons.favorite,
                                     color: colorInactive,
-                                    size: 20,
+                                    size: 15,
                                   ),
                                   Container(
                                     margin: EdgeInsets.only(left: 2.0),

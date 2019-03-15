@@ -23,13 +23,6 @@ class _ListCategoryState extends State<ListCategory> {
   List<String> nameCategory = [
     'Ưu đãi',
     'Nổi bật',
-    'Rau củ',
-    'Trái cây',
-    'Thịt',
-    'Cá',
-    'Đồ ăn',
-    'Bánh ngọt',
-    'Khác'
   ];
 
   void _gotoDetailScreen() {
@@ -65,41 +58,33 @@ class _ListCategoryState extends State<ListCategory> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          index != 0 && index != 1
-              ? new Text(
-                  text ?? nameCategory[index].toUpperCase(),
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0),
-                )
-              : Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 5.0),
-                      child: index == 0
-                          ? Image.asset('assets/images/discount_icon.png')
-                          : new Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
-                    ),
-                    Text(
-                      text ?? nameCategory[index].toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0),
-                    )
-                  ],
+          Row(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 5.0),
+                child: index == 0
+                    ? Image.asset('assets/images/discount_icon.png')
+                    : new Icon(
+                  Icons.favorite,
+                  color: Colors.red,
                 ),
+              ),
+              Text(
+                text ?? nameCategory[index].toUpperCase(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.0),
+              )
+            ],
+          ),
           GestureDetector(
             child: new Text(
               'Tất cả',
               style: TextStyle(
                   color: colorActive,
                   decoration: TextDecoration.underline,
-                  fontSize: 20.0),
+                  fontSize: 17.0),
             ),
             onTap: () {
               _gotoDetailScreen();

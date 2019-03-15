@@ -74,7 +74,9 @@ class HeaderHomeState extends State<HeaderHome>{
                       name[index],
                       style: TextStyle(
                           color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                        fontSize: 12
+                      ),
                     )),
               ],
             ),

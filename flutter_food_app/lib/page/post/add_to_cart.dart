@@ -15,10 +15,11 @@ class AddToCartState extends State<AddToCart>{
     return Column(
       children: <Widget>[
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              height: 100,
-              width: 150,
+              height: 85,
+              width: 130,
               margin: EdgeInsets.only(right: 10.0),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -35,7 +36,7 @@ class AddToCartState extends State<AddToCart>{
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width - 190,
+                      width: MediaQuery.of(context).size.width - 170,
                       child: Text(
                         'Bánh tiramisu thơm ngon đây cả nhà ơi',
                         style: TextStyle(
@@ -53,7 +54,7 @@ class AddToCartState extends State<AddToCart>{
                         '60.000 VNĐ',
                         style: TextStyle(
                           color: colorActive,
-                          fontSize: 20,
+                          fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -64,7 +65,7 @@ class AddToCartState extends State<AddToCart>{
                           '120.000 VNĐ',
                           style: TextStyle(
                               color: colorInactive,
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.w600,
                               decoration: TextDecoration.lineThrough),
                         ),
@@ -74,7 +75,7 @@ class AddToCartState extends State<AddToCart>{
                             '-50%',
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -86,7 +87,7 @@ class AddToCartState extends State<AddToCart>{
           ],
         ),
         Container(
-            margin: EdgeInsets.only(top: 10.0, bottom: 20.0),
+            margin: EdgeInsets.only( bottom: 20.0),
             child: Center(
               child: Container(
                 height: 2,
@@ -116,7 +117,7 @@ class AddToCartState extends State<AddToCart>{
                       _count.toString(),
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16
+                          fontSize: 14
                       ),
                     ),
                   ),
@@ -189,7 +190,7 @@ class AddToCartState extends State<AddToCart>{
           },
           child: Container(
             width: 220,
-            height: 50,
+            height: 40,
             margin: EdgeInsets.only(top: 10.0),
             decoration: BoxDecoration(
                 color: colorActive,
@@ -200,7 +201,7 @@ class AddToCartState extends State<AddToCart>{
                 "THÊM VÀO GIỎ HÀNG",
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600
                 ),
               ),

@@ -7,7 +7,7 @@ class ListNotiAdmin extends StatefulWidget {
 }
 
 class _ListNotiAdminState extends State<ListNotiAdmin> {
-  int itemCount = 5;
+  int itemCount = 10;
 
   @override
   Widget build(BuildContext context) {

@@ -29,14 +29,14 @@ class InfoItemState extends State<InfoItem> {
                       children: <Widget>[
                         Icon(
                           FontAwesomeIcons.userTie,
-                          size: 19,
+                          size: 14,
                         ),
                         Container(
                           margin: EdgeInsets.only(left: 10.0),
                           child: Text(
                             "Thông tin",
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                             ),
                           ),
                         ),
@@ -50,7 +50,7 @@ class InfoItemState extends State<InfoItem> {
                     "Mình bắt chước loài mèo kêu nha\nKêu cùng anh méo meo meo meo\nEm chỉ muốn ôm anh nhõng nhẽo\nAizo meo meo meo meo mèo",
                     style: TextStyle(
                       fontFamily: 'Raleway',
-                      fontSize: 18,
+                      fontSize: 12,
                     ),
                   ),
                 )
@@ -69,14 +69,14 @@ class InfoItemState extends State<InfoItem> {
                   children: <Widget>[
                     Icon(
                       FontAwesomeIcons.home,
-                      size: 19,
+                      size: 14,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "Địa chỉ",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -85,7 +85,7 @@ class InfoItemState extends State<InfoItem> {
                 Text(
                   "TP. Hồ Chí Minh",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 12,
                   ),
                 )
               ],
@@ -103,14 +103,14 @@ class InfoItemState extends State<InfoItem> {
                   children: <Widget>[
                     Icon(
                       FontAwesomeIcons.mobileAlt,
-                      size: 19,
+                      size: 14,
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "Điện thoại",
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -119,7 +119,7 @@ class InfoItemState extends State<InfoItem> {
                 Text(
                   "+ 84 123 456 789",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 12,
                   ),
                 )
               ],

@@ -36,7 +36,6 @@ dependencies:
   badges: ^0.0.6
   font_awesome_flutter: ^8.4.0
   rounded_modal: ^1.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

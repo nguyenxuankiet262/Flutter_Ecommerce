@@ -121,7 +121,7 @@ class PostState extends State<Post> {
         context: context,
         builder: (builder) {
           return new Container(
-            height: 220.0,
+            height: 180.0,
             margin: EdgeInsets.all(15.0),
             color: Colors.transparent, //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
@@ -147,8 +147,8 @@ class PostState extends State<Post> {
                   itemBuilder: (BuildContext context, int index) =>
                       GestureDetector(
                         child: Container(
-                          height: 50,
-                          margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
+                          height: 40,
+                          margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 15.0),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
                             color: Colors.white,
@@ -157,7 +157,7 @@ class PostState extends State<Post> {
                             child: Text(
                               nameList[index],
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   color: index != 2 ? Colors.blue : Colors.red,
                                 fontWeight: FontWeight.w500
                               ),
@@ -239,6 +239,7 @@ class PostState extends State<Post> {
             'Bánh tiramisu thơm ngon đây cả nhà ơi',
             style: TextStyle(
               color: Colors.black,
+              fontSize: 17.0
             ),
           ),
           backgroundColor: Colors.white,

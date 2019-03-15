@@ -14,15 +14,18 @@ class FollowItemState extends State<FollowItem>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      height: 70,
+      height: 50,
+      margin: EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
               onTap: (){
               },
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ClipOval(
                     child: Image.asset(
@@ -30,12 +33,12 @@ class FollowItemState extends State<FollowItem>{
                           ? 'assets/images/cat.jpg'
                           : 'assets/images/dog.jpg',
                       fit: BoxFit.cover,
-                      width: 50.0,
-                      height: 50.0,
+                      width: 40.0,
+                      height: 40.0,
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 15.0, top: 10.0),
+                    margin: EdgeInsets.only(left: 10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -44,7 +47,7 @@ class FollowItemState extends State<FollowItem>{
                               ? "meow_meow"
                               : "lu_lu",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                               fontFamily: "Ralway"
                           ),
@@ -54,7 +57,7 @@ class FollowItemState extends State<FollowItem>{
                               ? "Trần Văn Mèo"
                               : "Lọ Thị Chó",
                           style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 14,
                               color: colorText
                           ),
                         ),

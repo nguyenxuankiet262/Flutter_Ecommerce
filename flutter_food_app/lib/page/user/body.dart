@@ -12,7 +12,7 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
   TabController _tabController;
   int index = 0;
   int lengthComment = 5;
-  int lengthPost = 13;
+  int lengthPost = 100;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
     final double height = 400.0;
     return Container(
       height: index == 0
-          ? (lengthPost == 0 ? height : 60 + ((lengthPost / 2).round() * 297.0))
+          ? (lengthPost == 0 ? height : 60 + ((lengthPost / 2).round() * 238.0))
           : index == 1
               ? (lengthComment == 0 ? height : 60 + lengthComment * 83.0)
               : height,
@@ -64,17 +64,17 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
               Tab(
                   child: Text(
                     "Bài viết",
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
                   ),),
               Tab(
                   child: Text(
                     "Đánh giá",
-                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                    style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
                   ),),
               Tab(
                 child: Text(
                   "Thông tin",
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
                 ),
               ),
             ],

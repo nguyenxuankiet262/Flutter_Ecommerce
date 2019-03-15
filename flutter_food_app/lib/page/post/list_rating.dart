@@ -41,7 +41,7 @@ class ListRatingState extends State<ListRating> {
             margin: EdgeInsets.symmetric(vertical: 10.0),
             child: Text(
               'ĐÁNH GIÁ',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -97,7 +97,9 @@ class ListRatingState extends State<ListRating> {
                                               : 'Nguyễn Thị Cún',
                                           style: TextStyle(
                                               color: colorActive,
-                                              fontWeight: FontWeight.bold),
+                                              fontWeight: FontWeight.bold,
+                                            fontSize: 12
+                                          ),
                                         ),
                                         onTap: (){
                                           navigateToUserPage();
@@ -108,6 +110,7 @@ class ListRatingState extends State<ListRating> {
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontStyle: FontStyle.italic,
+                                          fontSize: 12
                                         ),
                                         textAlign: TextAlign.center,
                                       ),

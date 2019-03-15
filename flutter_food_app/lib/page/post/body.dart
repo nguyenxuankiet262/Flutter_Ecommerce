@@ -39,18 +39,18 @@ class PostBodyState extends State<PostBody> {
                       children: <Widget>[
                         Text(
                           'Overall Rating',
-                          style: TextStyle(fontSize: 25, color: colorInactive),
+                          style: TextStyle(fontSize: 22, color: colorInactive),
                         ),
                         Text(
                           '4.5',
                           style: TextStyle(
-                              fontSize: 30,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: colorActive),
                         ),
                         SmoothStarRating(
                           starCount: 5,
-                          size: 30.0,
+                          size: 24.0,
                           rating: 5,
                           color: Colors.yellow,
                           borderColor: Colors.yellow,
@@ -72,7 +72,7 @@ class PostBodyState extends State<PostBody> {
                     margin: EdgeInsets.symmetric(vertical: 5.0),
                     child: Text(
                       'Còn gì tuyệt vời hơn khi kết hợp thưởng thức đồ uống của bạn cùng với những chiếc bánh ngọt ngon tinh tế được làm thủ công ngay tại bếp bánh của Highlands Coffee. Những chiếc bánh của chúng tôi mang hương vị đặc trưng của ẩm thực Việt và còn là sự Tận Tâm, gửi gắm mà chúng tôi dành cho Quý khách hàng.',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 14),
                     ),
                   ),
                   Container(
@@ -81,7 +81,7 @@ class PostBodyState extends State<PostBody> {
                       '60.000 VNĐ',
                       style: TextStyle(
                         color: colorActive,
-                        fontSize: 20,
+                        fontSize: 17,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -95,7 +95,7 @@ class PostBodyState extends State<PostBody> {
                             '120.000 VNĐ',
                             style: TextStyle(
                                 color: colorInactive,
-                                fontSize: 18,
+                                fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 decoration: TextDecoration.lineThrough),
                           ),
@@ -105,7 +105,7 @@ class PostBodyState extends State<PostBody> {
                               '-50%',
                               style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 18,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
@@ -169,7 +169,7 @@ class PostBodyState extends State<PostBody> {
               Container(
                 child: Text(
                   'THÔNG TIN NGƯỜI ĐĂNG',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
                 ),
               ),
               Row(
@@ -215,7 +215,7 @@ class PostBodyState extends State<PostBody> {
                       child: Text(
                         '123 Đường lên đỉnh Olympia F.15 Q.1 TP.Hồ Chí Minh.',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ),
@@ -237,7 +237,7 @@ class PostBodyState extends State<PostBody> {
                       child: Text(
                         '+84 123 456 789',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                     ),

@@ -72,10 +72,6 @@ class _MyHomePageState extends State<MyHomePage>
           children: <Widget>[
             searchBar.build(context),
             HeaderHome(this.navigateToListPost),
-            new Container(
-              height: 1,
-              color: Colors.black12,
-            ),
           ],
         ),
       ),

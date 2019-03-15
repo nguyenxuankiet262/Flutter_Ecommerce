@@ -19,17 +19,10 @@ class RelativePostState extends State<RelativePost> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-        padding: EdgeInsets.all(10.0),
-        margin: EdgeInsets.all(5.0),
         width: double.infinity,
+        margin: EdgeInsets.only(top: 10.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(
-            color: colorInactive,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
         ),
         child: Column(
           children: <Widget>[
@@ -51,7 +44,7 @@ class RelativePostState extends State<RelativePost> {
               itemCount: itemCount,
               itemBuilder: (BuildContext context, int index) => new Card(
                 child: new Container(
-                  height: 290,
+                  height: 230,
                   width: 200,
                   child: Stack(
                     children: <Widget>[
@@ -61,7 +54,7 @@ class RelativePostState extends State<RelativePost> {
                         children: <Widget>[
                           GestureDetector(
                             child: Container(
-                              height: 170,
+                              height: 130,
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
@@ -97,7 +90,7 @@ class RelativePostState extends State<RelativePost> {
                                   : '12/2 Con Đường Tơ Lụa, F15, Q.TB, TP.HCM',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: colorText),
+                              style: TextStyle(color: colorText, fontSize: 12),
                             ),
                           ),
                           Padding(
@@ -109,7 +102,7 @@ class RelativePostState extends State<RelativePost> {
                                 Text(
                                   index % 2 == 0 ? '40.000 VNĐ' : '150.000 VNĐ',
                                   style: TextStyle(
-                                      fontSize: 20.0,
+                                      fontSize: 14.0,
                                       color: colorActive,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -121,10 +114,10 @@ class RelativePostState extends State<RelativePost> {
                                     children: <Widget>[
                                       Text(
                                         index % 2 == 0
-                                            ? '50.000 VNĐ'
+                                            ? '50.000.000 VNĐ'
                                             : '300.000 VNĐ',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 12,
                                           color: colorInactive,
                                           fontWeight: FontWeight.w600,
                                           decoration: TextDecoration.lineThrough,
@@ -135,7 +128,7 @@ class RelativePostState extends State<RelativePost> {
                                           Icon(
                                             Icons.favorite,
                                             color: colorInactive,
-                                            size: 20,
+                                            size: 15,
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(left: 2.0),
@@ -143,7 +136,7 @@ class RelativePostState extends State<RelativePost> {
                                               '100',
                                               style: TextStyle(
                                                   color: colorInactive,
-                                                  fontSize: 16),
+                                                  fontSize: 12),
                                             ),
                                           ),
                                         ],
@@ -182,14 +175,15 @@ class RelativePostState extends State<RelativePost> {
                                           style: TextStyle(
                                               color: Colors.yellow,
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 16.0
+                                              fontSize: 14.0
                                           ),
                                         ),
                                         Text(
                                           'GIẢM',
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontWeight: FontWeight.w800
+                                              fontWeight: FontWeight.w800,
+                                            fontSize: 12
                                           ),
                                         ),
                                       ],
