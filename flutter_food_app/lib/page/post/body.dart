@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_food_app/page/user/info.dart';
+import 'package:toast/toast.dart';
 
 class PostBody extends StatefulWidget {
   @override
@@ -9,6 +10,8 @@ class PostBody extends StatefulWidget {
 }
 
 class PostBodyState extends State<PostBody> {
+  bool _isFav = true;
+  int count = 102;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -17,13 +20,113 @@ class PostBodyState extends State<PostBody> {
       children: <Widget>[
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(15.0),
-          margin: EdgeInsets.all(5.0),
+          padding: EdgeInsets.only(bottom: 12.0, left: 15.0, right: 15.0, top: 15.0),
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(
-              color: colorInactive,
-            ),
+            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.0), bottomRight: Radius.circular(10.0))
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Bánh tiramisu thơm ngon đây cả nhà ơi.',
+                style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                    fontFamily: "Ralway",
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 10.0,),
+                          child: Text(
+                            '60.000 VNĐ',
+                            style: TextStyle(
+                              color: colorActive,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '120.000 VNĐ',
+                          style: TextStyle(
+                              color: colorInactive,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.lineThrough),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 15.0),
+                          child: GestureDetector(
+                            onTap: (){
+
+                            },
+                            child: Icon(
+                              Icons.share,
+                              color: Colors.blue,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              _isFav = !_isFav;
+                              if(_isFav){
+                                Toast.show("Đã lưu vào mục yêu thích", context);
+                                count ++;
+                              }
+                              else{
+                                Toast.show("Đã xóa khỏi mục yêu thích", context);
+                                count --;
+                              }
+                            });
+                          },
+                          child: Icon(
+                            Icons.favorite,
+                            color: _isFav ? Colors.red : colorInactive,
+                            size: 20,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 2.0, bottom: 1.0),
+                          child: Text(
+                            "(" + count.toString() + ")",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: "Ralway"
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                )
+              ),
+
+            ],
+          )
+        ),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(15.0),
+          margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.all(
               Radius.circular(10.0),
             ),
@@ -39,18 +142,18 @@ class PostBodyState extends State<PostBody> {
                       children: <Widget>[
                         Text(
                           'Overall Rating',
-                          style: TextStyle(fontSize: 22, color: colorInactive),
+                          style: TextStyle(fontSize: 17, color: colorInactive),
                         ),
                         Text(
                           '4.5',
                           style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                               color: colorActive),
                         ),
                         SmoothStarRating(
                           starCount: 5,
-                          size: 24.0,
+                          size: 22.0,
                           rating: 5,
                           color: Colors.yellow,
                           borderColor: Colors.yellow,
@@ -59,13 +162,36 @@ class PostBodyState extends State<PostBody> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      'GIỚI THIỆU',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    padding: EdgeInsets.only(top: 5.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          'GIỚI THIỆU',
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          margin: EdgeInsets.only(left: 10.0),
+                          decoration: BoxDecoration(
+                              color: colorComment,
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(10.0)),
+                              border: Border.all(color: colorComment)),
+                          child: Center(
+                              child: Text(
+                                '20 giờ',
+                                style: TextStyle(
+                                  color: colorInactive,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(
@@ -75,89 +201,17 @@ class PostBodyState extends State<PostBody> {
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 5.0),
-                    child: Text(
-                      '60.000 VNĐ',
-                      style: TextStyle(
-                        color: colorActive,
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            '120.000 VNĐ',
-                            style: TextStyle(
-                                color: colorInactive,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                decoration: TextDecoration.lineThrough),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 5.0),
-                            child: Text(
-                              '-50%',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        width: 100,
-                        decoration: BoxDecoration(
-                            color: colorComment,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            border: Border.all(color: colorComment)),
-                        child: Center(
-                          child: Text(
-                            '20 giờ',
-                            style: TextStyle(
-                              color: colorInactive,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
-              ),
-              Icon(
-                Icons.bookmark,
-                size: 50.0,
-                color: colorBookmark,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, right: 12.0, left: 12.0),
-                child: Icon(
-                  Icons.star,
-                  size: 25.0,
-                  color: Colors.yellow,
-                ),
               ),
             ],
           ),
         ),
         Container(
           padding: EdgeInsets.all(15.0),
-          margin: EdgeInsets.all(5.0),
+          margin: EdgeInsets.only(bottom: 5.0),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(
-              color: colorInactive,
-            ),
             borderRadius: BorderRadius.all(
               Radius.circular(10.0),
             ),
@@ -169,7 +223,7 @@ class PostBodyState extends State<PostBody> {
               Container(
                 child: Text(
                   'THÔNG TIN NGƯỜI ĐĂNG',
-                  style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                 ),
               ),
               Row(
@@ -180,7 +234,7 @@ class PostBodyState extends State<PostBody> {
                       child: Text(
                         'xuankiet262',
                         style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: colorActive
                         ),
@@ -192,7 +246,7 @@ class PostBodyState extends State<PostBody> {
                   ),
                   SmoothStarRating(
                     starCount: 5,
-                    size: 22.0,
+                    size: 18.0,
                     rating: 5,
                     color: Colors.yellow,
                     borderColor: Colors.yellow,

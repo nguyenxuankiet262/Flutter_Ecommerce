@@ -8,7 +8,7 @@ class NotiAdmin extends StatefulWidget {
 }
 
 class NotiAdminState extends State<NotiAdmin> with AutomaticKeepAliveClientMixin {
-  int _count = 0;
+  int _count = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,6 @@ class NotiAdminState extends State<NotiAdmin> with AutomaticKeepAliveClientMixin
         GestureDetector(
           onTap: (){
             setState(() {
-              _count = 1;
             });
           },
           child: Text('Nothing to show!'),

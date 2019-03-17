@@ -6,33 +6,58 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 var controller = new MaskedTextController(mask: '000.000.000');
 
+List<String> nameMenu = [
+  "Lựa chọn danh mục",
+  "Thêm giá trước khi giảm",
+  "Thêm giá sau khi giảm",
+  "Địa chỉ",
+  "Số điện thoại"
+];
+
+List<String> nameOption = [
+  "Rau củ",
+  "100.000.000 VNĐ",
+  "50.000 VNĐ",
+  "123 Đường lên đỉnh Olympia F.15 Q.TB, TP.HCM",
+  '+84 123 456 789'
+];
+
 class BodyInfo extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => BodyInfoState();
 }
 
 class BodyInfoState extends State<BodyInfo> {
-  String textInput = "";
-  final myController = new TextEditingController();
+  String titleInput = "";
+  String contentInput = "";
+  final myControllerTitle = new TextEditingController();
+  final myControllerContent = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
 
-    myController.addListener(_changeTextInput);
+    myControllerTitle.addListener(_changeTitleInput);
+    myControllerContent.addListener(_changeContentInput);
   }
 
   @override
   void dispose() {
     // Clean up the controller when the Widget is removed from the Widget tree
-    myController.dispose();
+    myControllerTitle.dispose();
+    myControllerContent.dispose();
     super.dispose();
   }
 
-  _changeTextInput() {
+  _changeTitleInput() {
     setState(() {
-      textInput = myController.text;
-      print(textInput);
+      titleInput = myControllerTitle.text;
+    });
+  }
+
+  _changeContentInput() {
+    setState(() {
+      contentInput = myControllerContent.text;
     });
   }
 
@@ -116,211 +141,160 @@ class BodyInfoState extends State<BodyInfo> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final widthAddress = size.width - 200;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        new Theme(
-          data: new ThemeData(
-            primaryColor: textInput.isEmpty ? Colors.redAccent : colorActive,
-            primaryColorDark: textInput.isEmpty ? Colors.red : Colors.green,
-          ),
-          child: new Container(
-            decoration: BoxDecoration(color: Colors.white),
-            child: new TextField(
-              cursorColor: colorActive,
-              controller: myController,
-              keyboardType: TextInputType.multiline,
-              maxLines: 5,
-              decoration: new InputDecoration(
-                border: new OutlineInputBorder(
-                    borderSide: new BorderSide(color: colorInactive)),
-                hintText: 'Nhập nội dung bài viết',
-              ),
-              autofocus: false,
+    final widthAddress = 150.0;
+    return GestureDetector(
+      onTap: () {
+
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Theme(
+            data: new ThemeData(
+              primaryColor: titleInput.isEmpty ? Colors.redAccent : colorActive,
+              primaryColorDark: titleInput.isEmpty ? Colors.red : Colors.green,
             ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-          child: Text(
-            'Nội dung càng rõ ràng, càng nhiều người quan tâm!',
-            style: TextStyle(fontSize: 13),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(bottom: BorderSide(color: colorInactive))),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Lựa chọn danh mục',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
+            child: new Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: new TextField(
+                cursorColor: colorActive,
+                controller: myControllerTitle,
+                decoration: new InputDecoration(
+                  border: new OutlineInputBorder(
+                      borderSide: new BorderSide(color: colorInactive)),
+                  hintText: 'Nhập tiêu đề bài viết',
+                  hintStyle: TextStyle(
+                    fontFamily: "Ralway",
+                    fontSize: 14,
                   ),
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.0),
-                        child: Text(
-                          'Rau củ',
-                          style: TextStyle(color: colorInactive, fontSize: 17),
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 24,
-                        color: Colors.black,
-                      )
-                    ],
+                  labelText: "Tiêu đề bài viết",
+                  labelStyle: TextStyle(
+                      fontFamily: "Ralway",
+                      fontSize: 14,
+                      color: Colors.blue
                   ),
-                ],
-              ),
-            ),
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CategoryRadio()),
-            );
-          },
-        ),
-        GestureDetector(
-            child: Container(
-              height: 60,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(bottom: BorderSide(color: colorInactive))),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      'Thêm giá',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 17,
-                      ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 10.0),
-                          child: Text(
-                            '100.000 VNĐ',
-                            style:
-                                TextStyle(color: colorInactive, fontSize: 17),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 24,
-                          color: Colors.black,
-                        )
-                      ],
-                    ),
-                  ],
                 ),
+                autofocus: false,
               ),
             ),
-            onTap: () {
-              _showDialog();
-            }),
-        GestureDetector(
-          child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(bottom: BorderSide(color: colorInactive))),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Thêm địa điểm',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
+          ),
+          new Theme(
+            data: new ThemeData(
+              primaryColor: contentInput.isEmpty ? Colors.redAccent : colorActive,
+              primaryColorDark: contentInput.isEmpty ? Colors.red : Colors.green,
+            ),
+            child: new Container(
+              margin: EdgeInsets.only(top: 10.0),
+              decoration: BoxDecoration(color: Colors.white),
+              child: new TextField(
+                cursorColor: colorActive,
+                controller: myControllerContent,
+                textAlign: TextAlign.start,
+                maxLines: 5,
+                decoration: new InputDecoration(
+                  border: new OutlineInputBorder(
+                      borderSide: new BorderSide(color: colorInactive)),
+                  hintText: 'Nhập nội dung bài viết',
+                  hintStyle: TextStyle(
+                    fontFamily: "Ralway",
+                    fontSize: 14,
                   ),
-                  Row(
+                  labelText: "Nội dung bài viết",
+                  labelStyle: TextStyle(
+                    fontFamily: "Ralway",
+                    fontSize: 14,
+                    color: Colors.blue,
+                  ),
+                ),
+                autofocus: false,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+            child: Text(
+              'Nội dung càng rõ ràng, càng nhiều người quan tâm!',
+              style: TextStyle(fontSize: 12),
+            ),
+          ),
+
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: 5,
+            itemBuilder: (BuildContext context, int index) =>  GestureDetector(
+              child: Container(
+                height: 60,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(bottom: BorderSide(color: colorInactive))),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
+                      Text(
+                        nameMenu[index],
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                        ),
+                      ),
                       Container(
                         width: widthAddress,
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 10.0),
-                          child: Text(
-                            '123 Đường lên đỉnh Olympia F.15 Q.TB, TP.HCM',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style:
-                                TextStyle(color: colorInactive, fontSize: 17),
-                            textAlign: TextAlign.end,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Container(
+                              width: widthAddress - 18,
+                              padding: EdgeInsets.only(right: 10.0),
+                              child: Text(
+                                nameOption[index],
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style:
+                                TextStyle(color: colorInactive, fontSize: 12),
+                                textAlign: TextAlign.end,
+                              ),
+                            ),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              size: 16,
+                              color: Colors.black,
+                            )
+                          ],
                         ),
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 24,
-                        color: Colors.black,
-                      )
                     ],
                   ),
-                ],
+                ),
               ),
+              onTap: () {
+                switch (index) {
+                  case 0: {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CategoryRadio()),
+                    );
+                  }
+                  break;
+
+                  case 1: {
+                    _showDialog();
+                  }
+                  break;
+
+                  case 2: {
+                    _showDialog();
+                  }
+                  break;
+                }
+              },
             ),
-          ),
-        ),
-        GestureDetector(
-          child: Container(
-            height: 60,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(bottom: BorderSide(color: colorInactive))),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Số điện thoại',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 10.0),
-                        child: Text(
-                          '+84 123 456 789',
-                          style: TextStyle(color: colorInactive, fontSize: 17),
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 24,
-                        color: Colors.black,
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+          )
+        ],
+      ),
     );
   }
 }

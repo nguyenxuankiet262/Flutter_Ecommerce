@@ -25,8 +25,7 @@ class CameraPage extends StatefulWidget {
 
 class CameraPageState extends State<CameraPage> {
   CameraController controller;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  Color colorNext = Colors.black38;
+  Color colorNext = Colors.white30;
 
   @override
   void initState() {
@@ -56,11 +55,8 @@ class CameraPageState extends State<CameraPage> {
     final deviceRatio = size.width / size.height;
     return Stack(
       children: <Widget>[
-        Transform.scale(
-          scale: controller.value.aspectRatio / deviceRatio,
-          child: Center(
-            child: _cameraPreviewWidget(),
-          ),
+        Center(
+          child: _cameraPreviewWidget(),
         ),
         Padding(
           padding: EdgeInsets.only(bottom: 20.0),
@@ -76,7 +72,7 @@ class CameraPageState extends State<CameraPage> {
                 child: _captureControlRowTopWidget(),
             ),
           ),
-          padding: EdgeInsets.only(top: 30, left: 30, right: 30),
+          padding: EdgeInsets.only(top: 20, left: 15, right: 30),
         ),
       ],
     );
@@ -109,7 +105,7 @@ class CameraPageState extends State<CameraPage> {
           child: Icon(
             Icons.arrow_back_ios,
             color: Colors.white,
-            size: 30,
+            size: 24,
           ),
           onTap: (){
             Navigator.pop(context);
@@ -120,7 +116,7 @@ class CameraPageState extends State<CameraPage> {
             'Tiếp tục',
             style: TextStyle(
               color: colorNext,
-              fontSize: 20,
+              fontSize: 17,
               decoration: TextDecoration.none,
             ),
           ),
@@ -135,21 +131,21 @@ class CameraPageState extends State<CameraPage> {
 
   Widget _captureControlRowBottomWidget() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         GestureDetector(
           child: Icon(
             Icons.image,
             color: Colors.white,
-            size: 30,
+            size: 24,
           ),
         ),
         GestureDetector(
           child: Icon(
             Icons.camera,
             color: Colors.white,
-            size: 60,
+            size: 36,
           ),
           onTap: (){
             setState(() {
@@ -161,7 +157,7 @@ class CameraPageState extends State<CameraPage> {
           child: Icon(
             Icons.cached,
             color: Colors.white,
-            size: 30,
+            size: 24,
           ),
         )
       ],

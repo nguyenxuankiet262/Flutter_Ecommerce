@@ -179,22 +179,25 @@ class InfoPostState extends State<InfoPost> {
             ),
           ),
         ),
-        body: ListView(
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15.0),
-                  child: HeaderInfo(widget.cameras),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: BodyInfo(),
-                ),
-              ],
-            ),
-          ],
-        ),
+        body: Container(
+          color: colorBackground,
+          child: ListView(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.0),
+                    child: HeaderInfo(widget.cameras),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 10.0),
+                    child: BodyInfo(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
       ),
       onWillPop: _showDialog,
     );

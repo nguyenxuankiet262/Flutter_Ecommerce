@@ -50,7 +50,7 @@ class InfoItemState extends State<InfoItem> {
                     "Mình bắt chước loài mèo kêu nha\nKêu cùng anh méo meo meo meo\nEm chỉ muốn ôm anh nhõng nhẽo\nAizo meo meo meo meo mèo",
                     style: TextStyle(
                       fontFamily: 'Raleway',
-                      fontSize: 12,
+                      fontSize: 14,
                     ),
                   ),
                 )
@@ -85,7 +85,7 @@ class InfoItemState extends State<InfoItem> {
                 Text(
                   "TP. Hồ Chí Minh",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 )
               ],
@@ -119,7 +119,7 @@ class InfoItemState extends State<InfoItem> {
                 Text(
                   "+ 84 123 456 789",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                   ),
                 )
               ],

@@ -11,17 +11,13 @@ class StartPage extends StatefulWidget {
 }
 
 class StartPageState extends State<StartPage> {
-  void _changeStatusColor(Color color) async {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: color,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-  }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _changeStatusColor(Colors.white);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+      statusBarColor: Colors.white, //or set color with: Color(0xFF0000FF)
+    ));
   }
   @override
   Widget build(BuildContext context) {

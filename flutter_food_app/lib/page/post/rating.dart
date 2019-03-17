@@ -157,12 +157,9 @@ class CommentPostState extends State<CommentPost> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(15.0),
-      margin: EdgeInsets.all(5.0),
+      margin: EdgeInsets.only(bottom: 5.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-          color: colorInactive,
-        ),
         borderRadius: BorderRadius.all(
           Radius.circular(10.0),
         ),
@@ -174,7 +171,7 @@ class CommentPostState extends State<CommentPost> {
           Text(
             'ĐÁNH GIÁ',
             style: TextStyle(
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -226,7 +223,9 @@ class CommentPostState extends State<CommentPost> {
                                           : 'Nguyễn Thị Cún',
                                       style: TextStyle(
                                           color: colorActive,
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                        fontSize: 12
+                                      ),
                                     ),
                                   ),
                                   Text(
@@ -234,6 +233,7 @@ class CommentPostState extends State<CommentPost> {
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontStyle: FontStyle.italic,
+                                      fontSize: 12
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
@@ -241,14 +241,14 @@ class CommentPostState extends State<CommentPost> {
                               ),
                               SmoothStarRating(
                                 starCount: index % 2 == 0 ? 5 : 4,
-                                size: 18.0,
+                                size: 16.0,
                                 rating: 5,
                                 color: Colors.yellow,
                                 borderColor: Colors.yellow,
                               ),
                               Text(
                                 'Ngon bổ rẻ',
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(color: Colors.black, fontSize: 12),
                               ),
                             ],
                           ),
@@ -274,7 +274,7 @@ class CommentPostState extends State<CommentPost> {
                 'Xem tất cả',
                 style: TextStyle(
                     color: Colors.blue,
-                    fontSize: 16.0,
+                    fontSize: 14.0,
                     fontWeight: FontWeight.w500
                 ),
               ),
@@ -303,7 +303,8 @@ class CommentPostState extends State<CommentPost> {
                     'Đánh giá',
                     style: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w600
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14
                     ),
                   ),
                 ),

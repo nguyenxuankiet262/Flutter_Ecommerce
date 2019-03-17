@@ -83,7 +83,7 @@ class _MyMainPageState extends State<MyMainPage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AuthenticationPage(),),
+                  builder: (context) => CameraPage(this.widget.cameras),),
             );
           });
         },

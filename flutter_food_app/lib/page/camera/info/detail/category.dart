@@ -42,27 +42,30 @@ class CategoryRadioState extends State<CategoryRadio> {
           color: Colors.black, //change your color here
         ),
       ),
-      body: new ListView.builder(
-        itemCount: categories.length,
-        itemBuilder: (BuildContext context, int index) {
-          return new InkWell(
-            //highlightColor: Colors.red,
-            splashColor: colorActive,
-            onTap: () {
-              setState(() {
-                categories.forEach((element) => element.isSelected = false);
-                categories[index].isSelected = true;
-                Future.delayed(new Duration(milliseconds: 400), () {
-                  Navigator.pop(context);
+      body: Container(
+        color: colorBackground,
+        child: new ListView.builder(
+          itemCount: categories.length,
+          itemBuilder: (BuildContext context, int index) {
+            return new InkWell(
+              //highlightColor: Colors.red,
+              splashColor: colorActive,
+              onTap: () {
+                setState(() {
+                  categories.forEach((element) => element.isSelected = false);
+                  categories[index].isSelected = true;
+                  Future.delayed(new Duration(milliseconds: 400), () {
+                    Navigator.pop(context);
+                  });
+
                 });
+              },
 
-              });
-            },
-
-            child: new RadioItem(categories[index]),
-          );
-        },
-      ),
+              child: new RadioItem(categories[index]),
+            );
+          },
+        ),
+      )
     );
   }
 }
@@ -81,7 +84,7 @@ class RadioItem extends StatelessWidget {
           border: Border(
               bottom: BorderSide(
             color: colorInactive,
-            width: 1.0,
+            width: 0.5,
           ))),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,7 +113,7 @@ class RadioItem extends StatelessWidget {
                       _item.text,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 18
+                      fontSize: 17
                     ),
                   ),
                 )

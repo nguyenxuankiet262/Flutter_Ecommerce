@@ -20,14 +20,16 @@ class RelativePostState extends State<RelativePost> {
     // TODO: implement build
     return Container(
         width: double.infinity,
-        margin: EdgeInsets.only(top: 10.0),
         decoration: BoxDecoration(
           color: Colors.white,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10.0),
+          ),
         ),
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(bottom: 7.0),
+              padding: EdgeInsets.only(bottom: 7.0,top: 15.0),
               child: Text(
                 'BÀI VIẾT TƯƠNG TỰ',
                 style: TextStyle(

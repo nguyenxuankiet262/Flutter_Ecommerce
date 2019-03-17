@@ -10,7 +10,7 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
-  int itemCount = 0;
+  int itemCount = 1;
 
   void _showDialog() {
     // flutter defined function

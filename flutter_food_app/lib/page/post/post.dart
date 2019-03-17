@@ -195,7 +195,7 @@ class PostState extends State<Post> {
 
   _showCart(){
     showModalBottomSheet(
-      context: context, // Also default
+      context: context, // Also d// efault
       builder: (context) => Container(
         color: Colors.transparent,
         height: 350,
@@ -256,7 +256,7 @@ class PostState extends State<Post> {
           ],
         ),
         body: Container(
-          color: Colors.white,
+          color: colorBackground,
           child: ListView(
             children: <Widget>[
               CarouselWithIndicator(),

@@ -12,7 +12,7 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
   TabController _tabController;
   int index = 0;
   int lengthComment = 5;
-  int lengthPost = 100;
+  int lengthPost = 10;
 
   @override
   void initState() {

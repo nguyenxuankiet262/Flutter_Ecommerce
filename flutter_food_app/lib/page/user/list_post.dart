@@ -11,7 +11,7 @@ class ListPost extends StatefulWidget {
 }
 
 class _ListPostState extends State<ListPost> {
-  int itemCount = 100;
+  int itemCount = 10;
   Widget build(BuildContext context) {
     // TODO: implement build
     return new StaggeredGridView.countBuilder(
