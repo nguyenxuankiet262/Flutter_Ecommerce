@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_food_app/page/user/info.dart';
+import 'post.dart';
 
 class RelativePost extends StatefulWidget {
   @override
@@ -15,6 +16,9 @@ class RelativePostState extends State<RelativePost> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPage(true)));
   }
 
+  void navigateToPost() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -69,6 +73,7 @@ class RelativePostState extends State<RelativePost> {
                                       topLeft: Radius.circular(5.0))),
                             ),
                             onTap: () {
+                              navigateToPost();
                             },
                           ),
                           Padding(

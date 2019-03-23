@@ -80,13 +80,8 @@ class CameraPageState extends State<CameraPage> {
 
   Widget _cameraPreviewWidget() {
     if (controller == null || !controller.value.isInitialized) {
-      return const Text(
-        'Tap a camera',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24.0,
-          fontWeight: FontWeight.w900,
-        ),
+      return Container(
+        color: Colors.black,
       );
     } else {
       return AspectRatio(
@@ -121,8 +116,8 @@ class CameraPageState extends State<CameraPage> {
             ),
           ),
           onTap: (){
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) => InfoPost(widget.cameras)), (Route<dynamic> route) => false);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => InfoPost(widget.cameras)));
           },
         ),
       ],

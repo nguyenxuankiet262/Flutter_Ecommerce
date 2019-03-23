@@ -1,60 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_search_bar/flutter_search_bar.dart';
-import 'package:flutter_food_app/model/province.dart';
-import 'filter_mode.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/location_bloc.dart';
+import 'package:flutter_food_app/common/bloc/location_option_bloc.dart';
+import 'package:flutter_food_app/common/state/location_option_state.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'mode/filter_mode.dart';
 import 'package:flutter_food_app/page/detail/list_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'view_mode.dart';
+import 'package:flutter_food_app/page/detail/mode/view_mode.dart';
+import 'package:flutter_food_app/model/menu.dart';
+import 'package:flutter_food_app/page/detail/menu.dart';
+
 
 class ListAllPost extends StatefulWidget {
-  Function callback1, callback2;
+  Function callback1;
+  Menu menu;
 
-  ListAllPost(this.callback1, this.callback2);
+  ListAllPost(this.callback1, this.menu);
 
   @override
   State<StatefulWidget> createState() => _ListAllPostState();
 }
 
-class _ListAllPostState extends State<ListAllPost>
-    with AutomaticKeepAliveClientMixin {
-  int indexCity = 5;
-  int indexProvince = 0;
-  bool _showBar = true;
-  double _posY = 0.0;
-  SearchBar searchBar;
-  ScrollController _scrollController;
+class _ListAllPostState extends State<ListAllPost> {
+  int indexCity ;
+  int indexProvince;
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
-  List<String> nameCities = [
-    'Tất cả',
-  ];
-  List<List<String>> nameProvinces = [
-    ['Tất cả']
-  ];
+  List<String> nameCities;
+  List<List<String>> nameProvinces;
 
-  load() async {
-    String data = await DefaultAssetBundle.of(context)
-        .loadString("assets/datas/vn_province.json");
-    final city = cityFromJson(data);
-    final cities = city.values.toList();
-    setState(() {
-      for (var i = 0; i < cities.length; i++) {
-        if (cities[i].name.contains("Thành phố ")) {
-          nameCities.add(cities[i].name.split("Thành phố ").elementAt(1));
-        }
-        if (cities[i].name.contains("Tỉnh ")) {
-          nameCities.add(cities[i].name.split("Tỉnh ").elementAt(1));
-        }
-        List<String> temp = cities[i].districts.values.toList();
-        temp.insert(0, 'Tất cả');
-        nameProvinces.add(temp);
-      }
-    });
-  }
 
   _showDialogNameCity(bool isCity) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          indexCity = BlocProvider.of<LocationOptionBloc>(context).currentState.indexCity;
+          indexProvince = BlocProvider.of<LocationOptionBloc>(context).currentState.indexProvince;
           final size = MediaQuery.of(context).size;
           final widthDialog = size.width;
           final heightList = size.height - 200;
@@ -113,12 +95,12 @@ class _ListAllPostState extends State<ListAllPost>
                             onTap: () {
                               setState(() {
                                 if (isCity) {
-                                  indexCity = index;
+                                  BlocProvider.of<LocationOptionBloc>(context).changeLocation(index, BlocProvider.of<LocationOptionBloc>(context).currentState.indexProvince);
                                   if (index == 0) {
-                                    indexProvince = 0;
+                                    BlocProvider.of<LocationOptionBloc>(context).changeLocation(BlocProvider.of<LocationOptionBloc>(context).currentState.indexCity, 0);
                                   }
                                 } else {
-                                  indexProvince = index;
+                                  BlocProvider.of<LocationOptionBloc>(context).changeLocation(BlocProvider.of<LocationOptionBloc>(context).currentState.indexCity, index);
                                 }
                                 Navigator.pop(context);
                               });
@@ -168,18 +150,17 @@ class _ListAllPostState extends State<ListAllPost>
                       Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                            margin: EdgeInsets.only(right: 20.0, top: 5.0),
-                            child: GestureDetector(
-                              onTap: (){
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.close,
-                                color: colorInactive,
-                                size: 20,
-                              ),
-                            )
-                          ))
+                              margin: EdgeInsets.only(right: 20.0, top: 5.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.close,
+                                  color: colorInactive,
+                                  size: 20,
+                                ),
+                              )))
                     ],
                   )),
                   SizedBox(
@@ -194,28 +175,28 @@ class _ListAllPostState extends State<ListAllPost>
                         ],
                       )),
                   GestureDetector(
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: widthDialog,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
-                        color: colorActive,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Áp dụng",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: widthDialog,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(10.0),
+                              bottomLeft: Radius.circular(10.0)),
+                          color: colorActive,
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Áp dụng",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
-                      ),
-                    )
-                  ),
+                      )),
                 ],
               ),
             ),
@@ -226,37 +207,8 @@ class _ListAllPostState extends State<ListAllPost>
   @override
   void initState() {
     super.initState();
-    load();
-    _scrollController = ScrollController()
-      ..addListener(() {
-        if (mounted) {
-          double x = _scrollController.offset;
-          setState(() {
-            if (_posY < x - 15) {
-              _showBar = false;
-            }
-            if (_posY > x + 15) {
-              _showBar = true;
-            }
-            _posY = _scrollController.offset;
-          });
-        }
-      });
-  }
-
-  @override
-  void dispose() {
-    _scrollController
-        .dispose(); // it is a good practice to dispose the controller
-    super.dispose();
-  }
-
-  _ListAllPostState() {
-    searchBar = new SearchBar(
-        inBar: false,
-        setState: setState,
-        onSubmitted: print,
-        buildDefaultAppBar: buildAppBar);
+    nameCities = BlocProvider.of<LocationBloc>(context).currentState.nameCities;
+    nameProvinces = BlocProvider.of<LocationBloc>(context).currentState.nameProvinces;
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -265,7 +217,7 @@ class _ListAllPostState extends State<ListAllPost>
     return new AppBar(
       brightness: Brightness.light,
       title: new Text(
-        'Rau củ',
+        widget.menu.name,
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
       ),
       centerTitle: true,
@@ -279,132 +231,166 @@ class _ListAllPostState extends State<ListAllPost>
           Navigator.pop(context);
         },
       ),
-      actions: [searchBar.getSearchAction(context)],
-      bottom: !_showBar
-          ? null
-          : PreferredSize(
-              preferredSize: Size.fromHeight(40),
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 13, right: 5.0, left: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: widthTab,
-                      child: GestureDetector(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Image.asset('assets/images/icon_city.png'),
-                            new Flexible(
-                              child: new Container(
-                                child: new Text(
-                                  nameCities[indexCity],
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16.0),
-                                ),
+      actions: <Widget>[
+        GestureDetector(
+          onTap: (){
+
+          },
+          child: Container(
+              margin: EdgeInsets.only(right: 10.0),
+              child: Icon(
+                Icons.search,
+                color: Colors.black,
+              )
+          ),
+        )
+      ],
+      bottom: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 13, right: 5.0, left: 5.0),
+          child: BlocBuilder(
+            bloc: BlocProvider.of<LocationOptionBloc>(context),
+            builder: (context, LocationOptionState state){
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 5.0),
+                    width: widthTab,
+                    child: GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.city,
+                            size: 14,
+                            color: Colors.blue,
+                          ),
+                          new Flexible(
+                            child: new Container(
+                              margin: EdgeInsets.only(left: 5.0),
+                              child: new Text(
+                                nameCities[state.indexCity],
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12.0),
                               ),
                             ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                        onTap: () {
-                          _showDialogNameCity(true);
-                        },
+                          ),
+                          Icon(Icons.arrow_drop_down),
+                        ],
                       ),
+                      onTap: () {
+                        //_showDialogNameCity(true);
+                        BlocProvider.of<LocationOptionBloc>(context).changeLocation(1, 5);
+                      },
                     ),
-                    Container(
-                      height: 20.0,
-                      width: 1.0,
-                      color: Colors.grey,
-                    ),
-                    Container(
-                      width: widthTab,
-                      child: GestureDetector(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(
-                              Icons.location_on,
-                              color: Colors.red,
-                            ),
-                            new Flexible(
-                              child: new Container(
-                                child: new Text(
-                                  nameProvinces[indexCity][indexProvince],
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16.0),
-                                ),
+                  ),
+                  Container(
+                    height: 20.0,
+                    width: 1.0,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    width: widthTab,
+                    child: GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.streetView,
+                            color: Colors.red,
+                            size: 14,
+                          ),
+                          new Flexible(
+                            child: new Container(
+                              margin: EdgeInsets.only(left: 5.0),
+                              child: new Text(
+                                nameProvinces[state.indexCity][state.indexProvince],
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12.0),
                               ),
                             ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                        onTap: () {
-                          _showDialogNameCity(false);
-                        },
+                          ),
+                          Icon(Icons.arrow_drop_down),
+                        ],
                       ),
+                      onTap: () {
+                        _showDialogNameCity(false);
+                      },
                     ),
-                    Container(
-                      height: 20.0,
-                      width: 1.0,
-                      color: Colors.grey,
-                    ),
-                    Container(
-                      width: widthTab,
-                      child: GestureDetector(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Icon(Icons.format_indent_decrease,
-                                color: Colors.green),
-                            new Flexible(
-                              child: new Container(
-                                child: new Text(
-                                  'Lọc',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16.0),
-                                ),
+                  ),
+                  Container(
+                    height: 20.0,
+                    width: 1.0,
+                    color: Colors.grey,
+                  ),
+                  Container(
+                    width: widthTab,
+                    child: GestureDetector(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Icon(
+                              FontAwesomeIcons.sortAlphaDown,
+                              size: 14,
+                              color: Colors.green),
+                          new Flexible(
+                            child: new Container(
+                              child: new Text(
+                                'Lọc/Sắp xếp',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12.0),
                               ),
                             ),
-                            Icon(Icons.arrow_drop_down),
-                          ],
-                        ),
-                        onTap: () {
-                          _showFilter();
-                        },
+                          ),
+                          Icon(Icons.arrow_drop_down),
+                        ],
                       ),
+                      onTap: () {
+                        //_showFilter();
+                        _scaffoldKey.currentState.openEndDrawer();
+                      },
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final widthDialog = size.width;
     // TODO: implement build
-    return (nameCities.length < 2 && nameProvinces.length < 2)
-        ? Center(child: CircularProgressIndicator(backgroundColor: colorActive))
-        : Scaffold(
-            appBar: searchBar.build(context),
-            body: ListView(
-              controller: _scrollController,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 5.0),
-                  child: ListPost(this.widget.callback1, this.widget.callback2),
-                ),
-              ],
-            ),
-          );
+    return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              FilterMode(),
+              ViewMode(),
+            ],
+          )),
+      appBar: buildAppBar(context),
+      body: ListView(
+        children: <Widget>[
+          widget.menu.childMenu.length == 0
+              ? Container()
+              : HeaderDetail(widget.menu.childMenu),
+          Container(
+            color: colorBackground,
+            child: ListPost(this.widget.callback1),
+          ),
+        ],
+      ),
+    );
   }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }

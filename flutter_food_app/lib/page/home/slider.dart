@@ -1,54 +1,23 @@
 import "package:flutter/material.dart";
 import 'package:carousel_slider/carousel_slider.dart';
-// Casrousl Slider
+
 final List<String> imgList = [
   'assets/images/banner_1.jpg',
   'assets/images/banner_2.jpg',
-  'assets/images/banner_3.jpg'
+  'assets/images/banner_3.jpg',
 ];
-final List<String> nameList = ['Fresh', 'Clean', 'Cheap'];
+
 final List child = map<Widget>(imgList, (index, i) {
-  return Container(
-      margin: EdgeInsets.all(5.0),
-      child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Stack(
-            children: <Widget>[
-              Image.asset(
-                i,
-                fit: BoxFit.cover,
-                width: 1000.0,
-              ),
-              Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.green,
-                            Colors.white
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                        )),
-                    padding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                  )),
-              Center(
-                child: Text(
-                  nameList[index],
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 50.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat'
-                  ),
-                ),
-              ),
-            ],
-          )));
+  return Stack(
+    children: <Widget>[
+      Image.asset(
+        i,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      ),
+    ],
+  );
 }).toList();
 
 List<T> map<T>(List list, Function handler) {
@@ -70,34 +39,41 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      CarouselSlider(
-        items: child,
-        autoPlay: true,
-        aspectRatio: 2.0,
-        updateCallback: (index) {
-          setState(() {
-            _current = index;
-          });
-        },
-      ),
-      Positioned(
-          bottom: 0.0,
-          left: 0.0,
-          right: 0.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: map<Widget>(imgList, (index, url) {
-              return Container(
-                width: 8.0,
-                height: 8.0,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _current == index ? Colors.green : Colors.white),
-              );
-            }),
-          ))
-    ]);
+    final basicSlider = Container(
+      margin: EdgeInsets.only(right: 5.0, left: 5.0, bottom: 5.0),
+        child: CarouselSlider(
+      items: child,
+      autoPlay: false,
+      height: 200,
+      viewportFraction: 1.0,
+      updateCallback: (index) {
+        setState(() {
+          _current = index;
+        });
+      },
+    ));
+    return Container(
+      margin: EdgeInsets.only(top: 5.0),
+      child: Stack(children: [
+        basicSlider,
+        Positioned(
+            bottom: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: map<Widget>(imgList, (index, url) {
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index ? Colors.green : Colors.white),
+                );
+              }),
+            )),
+      ]),
+    );
   }
 }

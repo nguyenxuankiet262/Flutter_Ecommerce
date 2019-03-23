@@ -239,7 +239,7 @@ class PostState extends State<Post> {
             'Bánh tiramisu thơm ngon đây cả nhà ơi',
             style: TextStyle(
               color: Colors.black,
-              fontSize: 17.0
+              fontSize: 17.0,
             ),
           ),
           backgroundColor: Colors.white,

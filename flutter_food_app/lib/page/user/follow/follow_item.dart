@@ -67,17 +67,20 @@ class FollowItemState extends State<FollowItem>{
                 ],
               )
           ),
-          RaisedButton(
-            onPressed: (){
-              setState(() {
-                isFollow = !isFollow;
-              });
-            },
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
-            color: isFollow ? Colors.white : colorActive,
-            textColor: isFollow ? Colors.black : Colors.white,
-            child: Text(
-                isFollow ? "Đang theo dõi" : "Theo dõi"
+          Container(
+            margin: EdgeInsets.only(bottom: 15.0),
+            child: RaisedButton(
+              onPressed: (){
+                setState(() {
+                  isFollow = !isFollow;
+                });
+              },
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+              color: isFollow ? Colors.white : colorActive,
+              textColor: isFollow ? Colors.black : Colors.white,
+              child: Text(
+                  isFollow ? "Đang theo dõi" : "Theo dõi"
+              ),
             ),
           ),
         ],

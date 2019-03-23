@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toast/toast.dart';
 
 class ListImage extends StatefulWidget{
   List<CameraDescription> cameras;
@@ -69,6 +71,29 @@ class ListImageState extends State<ListImage>{
                     ),
                   ),
                 ) : Container(),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  height: 25,
+                  width: 25,
+                  child: GestureDetector(
+                    onTap: (){
+                      Toast.show("Đã xóa", context);
+                    },
+                    child: Container(
+                      height: 10,
+                      width: double.infinity,
+                      color: Colors.black.withOpacity(0.5),
+                      child: Center(
+                          child: Icon(
+                            FontAwesomeIcons.times,
+                            size: 12,
+                            color: Colors.white,
+                          )
+                      ),
+                    ),
+                  )
+                )
               ],
             ),
           ),

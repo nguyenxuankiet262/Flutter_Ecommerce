@@ -11,7 +11,7 @@ class PostBody extends StatefulWidget {
 
 class PostBodyState extends State<PostBody> {
   bool _isFav = true;
-  int count = 102;
+  int count = 1;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

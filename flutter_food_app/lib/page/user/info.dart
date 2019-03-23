@@ -18,7 +18,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
-  bool isLogin = false;
+  bool isLogin = true;
 
   void Logining() {
     setState(() {

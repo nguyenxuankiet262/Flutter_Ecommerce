@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 List<String> nameList = [
-  'Đánh giá',
+  'Xem đánh giá',
+  'Xem bài viết',
   'Theo dõi',
   'Gọi điện'
 ];
@@ -11,7 +12,7 @@ class SettingsAnother extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      height: 180.0,
+      height: 240.0,
       margin: EdgeInsets.all(15.0),
       color: Colors.transparent, //could change this to Color(0xFF737373),
       //so you don't have to change MaterialApp canvasColor
@@ -48,7 +49,7 @@ class SettingsAnother extends StatelessWidget {
                         nameList[index],
                         style: TextStyle(
                             fontSize: 14,
-                            color: index != 2 ? Colors.blue : Colors.red,
+                            color: index < 2 ? Colors.blue : Colors.red,
                             fontWeight: FontWeight.w500
                         ),
                       ),
@@ -67,6 +68,11 @@ class SettingsAnother extends StatelessWidget {
                         }
                         break;
                       case 2:
+                      {
+                        Navigator.pop(context);
+                      }
+                      break;
+                      case 3:
                         {
                           Navigator.pop(context);
                         }

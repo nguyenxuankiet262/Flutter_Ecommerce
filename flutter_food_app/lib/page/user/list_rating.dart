@@ -65,13 +65,16 @@ class ListRatingState extends State<ListRating> {
                                     : 'Nguyễn Thị Cún',
                                 style: TextStyle(
                                     color: colorActive,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
                               Text(
                                 '22:22 PM - 22/2/2022',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontStyle: FontStyle.italic,
+                                  fontSize: 12
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -86,7 +89,7 @@ class ListRatingState extends State<ListRating> {
                           ),
                           Text(
                             'Ngon bổ rẻ',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(color: Colors.black, fontSize: 12),
                           ),
                         ],
                       ),

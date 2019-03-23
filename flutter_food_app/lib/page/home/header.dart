@@ -1,40 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-
-List<String> image = [
-  'assets/images/discount.jpg',
-  'assets/images/favorite.png',
-  'assets/images/salad.jpg',
-  'assets/images/fruit.jpg',
-  'assets/images/meat.jpg',
-  'assets/images/fish.jpg',
-  'assets/images/hamburger.jpg',
-  'assets/images/cake.jpg',
-  'assets/images/other.jpg',
-];
-
-List<String> name = [
-  'Ưu đãi',
-  'Nổi bật',
-  'Rau củ',
-  'Trái cây',
-  'Thịt',
-  'Cá',
-  'Đồ ăn',
-  'Bánh ngọt',
-  'Khác',
-];
+import 'package:flutter_food_app/const/value_const.dart';
+import 'package:flutter_food_app/page/detail/detail.dart';
 
 class HeaderHome extends StatefulWidget{
-  Function callback;
-  HeaderHome(this.callback);
+  Function navigateToPost;
+  HeaderHome(this.navigateToPost);
   @override
   State<StatefulWidget> createState() => HeaderHomeState();
 }
 
 class HeaderHomeState extends State<HeaderHome>{
-  void _gotoDetailScreen(){
-    this.widget.callback();
+  void _gotoDetailScreen(int index){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => ListAllPost(widget.navigateToPost, listMenu[index])),
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -42,48 +24,49 @@ class HeaderHomeState extends State<HeaderHome>{
     return Container(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: image.length,
+        itemCount: listMenu.length,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
           onTap: (){
-            _gotoDetailScreen();
+            _gotoDetailScreen(index);
           },
           child: Container(
             margin: EdgeInsets.all(5.0),
-            width: 90.0,
+            width: 80.0,
             decoration: new BoxDecoration(
               color: Colors.white,
               border: new Border.all(color: colorInactive),
               borderRadius:
-              BorderRadius.all(Radius.circular(5.0)),
+              BorderRadius.all(Radius.circular(10.0)),
             ),
             child: Stack(
               children: <Widget>[
                 Container(
                   child: ClipRRect(
                       child: Image.asset(
-                        image[index],
+                        listMenu[index].image,
                         fit: BoxFit.fill,
                       ),
                       borderRadius: new BorderRadius.all(
-                          Radius.circular(5.0))),
-                  width: 130,
+                          Radius.circular(10.0))),
+                  width: 80,
                   height: 100,
                 ),
                 Center(
                     child: Text(
-                      name[index],
+                      listMenu[index].name,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                        fontSize: 12
+                        fontSize: 12,
                       ),
+                      textAlign: TextAlign.center,
                     )),
               ],
             ),
           ),
         ),
       ),
-      height: 70,
+      height: 80,
       color: Colors.white,
     );
   }

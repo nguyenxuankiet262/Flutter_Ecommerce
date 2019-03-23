@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
-import 'app.dart';
 import 'package:flutter/services.dart';
+import 'app.dart';
 
 class StartPage extends StatefulWidget {
   var cameras;
@@ -24,7 +24,7 @@ class StartPageState extends State<StartPage> {
     // TODO: implement build
     return new SplashScreen(
         seconds: 3,
-        navigateAfterSeconds: new MyMainPage(widget.cameras),
+        navigateAfterSeconds: new MainApp(widget.cameras),
         image: new Image.asset('assets/images/logo.png'),
         backgroundColor: Colors.white,
         photoSize: 300.0,
