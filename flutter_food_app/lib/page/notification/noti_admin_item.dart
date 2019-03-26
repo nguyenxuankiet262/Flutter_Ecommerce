@@ -21,7 +21,7 @@ class _ListNotiAdminState extends State<ListNotiAdmin> {
         itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) => new Container(
           decoration: new BoxDecoration(
-              color: index % 2 == 0 ? Colors.white : colorTransparent,
+              color: Colors.white,
               border:
               Border(bottom: BorderSide(color: colorInactive))),
           child: GestureDetector(

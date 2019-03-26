@@ -31,6 +31,7 @@ dependencies:
   badges: ^0.0.6
   font_awesome_flutter: ^8.4.0
   flutter_bloc: ^0.8.0
+  avatar_glow: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

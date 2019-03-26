@@ -53,6 +53,7 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          titleSpacing: 0.0,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           title: TabBar(

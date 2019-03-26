@@ -5,18 +5,17 @@ import 'package:flutter_food_app/common/bloc/location_option_bloc.dart';
 import 'package:flutter_food_app/common/state/location_option_state.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'mode/filter_mode.dart';
-import 'package:flutter_food_app/page/detail/list_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/detail/mode/view_mode.dart';
-import 'package:flutter_food_app/model/menu.dart';
+import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
 
 
 class ListAllPost extends StatefulWidget {
   Function callback1;
-  Menu menu;
+  int index;
 
-  ListAllPost(this.callback1, this.menu);
+  ListAllPost(this.callback1, this.index);
 
   @override
   State<StatefulWidget> createState() => _ListAllPostState();
@@ -43,8 +42,8 @@ class _ListAllPostState extends State<ListAllPost> {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            )),
+                  Radius.circular(10.0),
+                )),
             contentPadding: EdgeInsets.only(top: 10.0),
             content: Container(
               width: widthDialog,
@@ -85,11 +84,11 @@ class _ListAllPostState extends State<ListAllPost> {
                                     '${isCity ? nameCities[index] : nameProvinces[indexCity][index]}'),
                                 isCity
                                     ? (index == indexCity)
-                                        ? Icon(Icons.radio_button_checked)
-                                        : Icon(Icons.radio_button_unchecked)
+                                    ? Icon(Icons.radio_button_checked)
+                                    : Icon(Icons.radio_button_unchecked)
                                     : index == indexProvince
-                                        ? Icon(Icons.radio_button_checked)
-                                        : Icon(Icons.radio_button_unchecked),
+                                    ? Icon(Icons.radio_button_checked)
+                                    : Icon(Icons.radio_button_unchecked),
                               ],
                             ),
                             onTap: () {
@@ -127,8 +126,8 @@ class _ListAllPostState extends State<ListAllPost> {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            )),
+                  Radius.circular(10.0),
+                )),
             contentPadding: EdgeInsets.only(top: 10.0),
             content: Container(
               width: widthDialog,
@@ -139,30 +138,30 @@ class _ListAllPostState extends State<ListAllPost> {
                 children: <Widget>[
                   Container(
                       child: Stack(
-                    children: <Widget>[
-                      Center(
-                        child: Text(
-                          "Lọc",
-                          style: TextStyle(fontSize: 24.0),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Align(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                              margin: EdgeInsets.only(right: 20.0, top: 5.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  color: colorInactive,
-                                  size: 20,
-                                ),
-                              )))
-                    ],
-                  )),
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              "Lọc",
+                              style: TextStyle(fontSize: 24.0),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                  margin: EdgeInsets.only(right: 20.0, top: 5.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(
+                                      Icons.close,
+                                      color: colorInactive,
+                                      size: 20,
+                                    ),
+                                  )))
+                        ],
+                      )),
                   SizedBox(
                     height: 5.0,
                   ),
@@ -217,7 +216,7 @@ class _ListAllPostState extends State<ListAllPost> {
     return new AppBar(
       brightness: Brightness.light,
       title: new Text(
-        widget.menu.name,
+        listMenu[this.widget.index].name,
         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
       ),
       centerTitle: true,
@@ -367,8 +366,6 @@ class _ListAllPostState extends State<ListAllPost> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final widthDialog = size.width;
     // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
@@ -380,17 +377,7 @@ class _ListAllPostState extends State<ListAllPost> {
             ],
           )),
       appBar: buildAppBar(context),
-      body: ListView(
-        children: <Widget>[
-          widget.menu.childMenu.length == 0
-              ? Container()
-              : HeaderDetail(widget.menu.childMenu),
-          Container(
-            color: colorBackground,
-            child: ListPost(this.widget.callback1),
-          ),
-        ],
-      ),
+      body: HeaderDetail(this.widget.callback1, this.widget.index),
     );
   }
 }

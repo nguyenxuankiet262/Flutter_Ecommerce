@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/model/child_menu.dart';
+import 'package:flutter_food_app/const/value_const.dart';
+import 'list_post.dart';
 
 class HeaderDetail extends StatefulWidget {
-  Function navigateToPost, navigateToUserPage;
-  List<ChildMenu> childMenu;
+  int index;
+  Function callback;
 
-  HeaderDetail(this.childMenu);
+  HeaderDetail(this.callback, this.index);
 
   @override
   State<StatefulWidget> createState() => HeaderDetailState();
@@ -14,27 +15,49 @@ class HeaderDetail extends StatefulWidget {
 
 class HeaderDetailState extends State<HeaderDetail> {
   String title = "Tất cả";
+  int _index = 0;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    List<Widget> _fragments = new List.generate(listMenu[widget.index].childMenu.length, (index) {
+      return new ListPost(widget.callback);
+    });
     return Container(
       margin: EdgeInsets.only(top: 5.0),
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
         children: <Widget>[
           Container(
             height: 80,
             child: ListView.builder(
+              shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: widget.childMenu.length + 1,
+              itemCount: listMenu[widget.index].childMenu.length,
               itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        if (index != 0) {
-                          title = widget.childMenu[index - 1].name;
-                        } else {
-                          title = "Tất cả";
-                        }
+                        isLoading = true;
+                        Future.delayed(const Duration(milliseconds: 1000), () {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
+                        _index = index;
+
+                        title = listMenu[widget.index].childMenu[index].name;
                       });
                     },
                     child: Container(
@@ -61,7 +84,9 @@ class HeaderDetailState extends State<HeaderDetail> {
                                 Container(
                                   child: ClipRRect(
                                       child: Image.asset(
-                                        widget.childMenu[index - 1].image,
+                                        listMenu[widget.index]
+                                            .childMenu[index]
+                                            .image,
                                         fit: BoxFit.fill,
                                       ),
                                       borderRadius: new BorderRadius.all(
@@ -71,7 +96,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                                 ),
                                 Center(
                                     child: Text(
-                                  widget.childMenu[index - 1].name,
+                                  listMenu[widget.index].childMenu[index].name,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -100,9 +125,17 @@ class HeaderDetailState extends State<HeaderDetail> {
                       fontWeight: FontWeight.bold),
                 ),
               )),
+          isLoading
+              ? Container(
+              height: MediaQuery.of(context).size.height / 2,
+              color: colorBackground,
+              child: Center(
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(colorActive),
+                  )))
+              : _fragments[_index],
         ],
       ),
-      height: 140,
       color: colorBackground,
     );
   }

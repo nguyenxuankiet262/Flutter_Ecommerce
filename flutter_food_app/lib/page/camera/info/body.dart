@@ -166,7 +166,7 @@ class BodyInfoState extends State<BodyInfo> {
                   hintText: 'Nhập tiêu đề bài viết',
                   hintStyle: TextStyle(
                     fontFamily: "Ralway",
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                   labelText: "Tiêu đề bài viết",
                   labelStyle: TextStyle(
@@ -174,6 +174,10 @@ class BodyInfoState extends State<BodyInfo> {
                       fontSize: 14,
                       color: Colors.blue
                   ),
+                ),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12
                 ),
                 autofocus: false,
               ),
@@ -198,7 +202,7 @@ class BodyInfoState extends State<BodyInfo> {
                   hintText: 'Nhập nội dung bài viết',
                   hintStyle: TextStyle(
                     fontFamily: "Ralway",
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                   labelText: "Nội dung bài viết",
                   labelStyle: TextStyle(
@@ -206,6 +210,10 @@ class BodyInfoState extends State<BodyInfo> {
                     fontSize: 14,
                     color: Colors.blue,
                   ),
+                ),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12
                 ),
                 autofocus: false,
               ),

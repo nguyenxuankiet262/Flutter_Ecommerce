@@ -24,7 +24,7 @@ class _ListNotiUserState extends State<ListNotiUser> {
         itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) => new Container(
             decoration: new BoxDecoration(
-                color: index % 2 == 0 ? Colors.white : colorTransparent,
+                color: Colors.white,
                 border:
                 Border(bottom: BorderSide(color: colorInactive))),
             child: Padding(
@@ -98,7 +98,9 @@ class _ListNotiUserState extends State<ListNotiUser> {
                                 TextSpan(
                                     text: ' đã đăng trong nhóm ',
                                     style: TextStyle(
-                                        color: Colors.black54)),
+                                        color: Colors.black54,
+                                      fontSize: 12.0
+                                    )),
                                 TextSpan(
                                     text: index % 2 == 0
                                         ? 'Rau Củ'

@@ -15,7 +15,7 @@ class HeaderHomeState extends State<HeaderHome>{
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListAllPost(widget.navigateToPost, listMenu[index])),
+          builder: (context) => ListAllPost(widget.navigateToPost, index)),
     );
   }
   @override

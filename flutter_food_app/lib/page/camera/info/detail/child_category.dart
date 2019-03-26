@@ -53,7 +53,8 @@ class ChildCategoryState extends State<ChildCategory> {
                         fontSize: 10),
                   ),
                   onTap: () {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                 ),
               ),

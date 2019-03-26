@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'header.dart';
-import 'settings_another_user.dart';
+import 'settings/settings_another_user.dart';
 import 'body.dart';
 import 'package:badges/badges.dart';
-import 'settings_main_user.dart';
+import 'package:flutter_food_app/page/user/settings/settings_main_user.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
