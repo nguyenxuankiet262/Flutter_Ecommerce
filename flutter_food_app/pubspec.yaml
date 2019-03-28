@@ -31,7 +31,7 @@ dependencies:
   badges: ^0.0.6
   font_awesome_flutter: ^8.4.0
   flutter_bloc: ^0.8.0
-  avatar_glow: ^0.1.0
+  shimmer: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -88,6 +88,13 @@ flutter:
     - assets/images/menu/sausage.jpg
     - assets/images/menu/tea.jpg
     - assets/images/menu/vegetable.jpg
+    - assets/images/menu/meat.png
+    - assets/images/menu/shrimp.jpg
+    - assets/images/menu/drug.jpg
+    - assets/images/menu/can.jpg
+    - assets/images/menu/sandwich.jpg
+    - assets/images/menu/milk.jpg
+    - assets/images/menu/extra.jpg
 
     - assets/images/cat.jpg
     - assets/images/dog.jpg

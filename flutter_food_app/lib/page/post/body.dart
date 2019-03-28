@@ -83,12 +83,12 @@ class PostBodyState extends State<PostBody> {
                     ),
                     Row(
                       children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 10.0),
-                          child: GestureDetector(
-                            onTap: (){
+                        GestureDetector(
+                          onTap: (){
 
-                            },
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 15.0),
                             child: Icon(
                               Icons.share,
                               color: Colors.blue,
@@ -96,6 +96,7 @@ class PostBodyState extends State<PostBody> {
                             ),
                           ),
                         ),
+
                         GestureDetector(
                           onTap: (){
                             setState(() {
@@ -110,22 +111,26 @@ class PostBodyState extends State<PostBody> {
                               }
                             });
                           },
-                          child: Icon(
-                            Icons.favorite,
-                            color: _isFav ? Colors.red : colorInactive,
-                            size: 15,
-                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.favorite,
+                                color: _isFav ? Colors.red : colorInactive,
+                                size: 15,
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 2.0, bottom: 1.0),
+                                child: Text(
+                                  "(" + count.toString() + ")",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: "Ralway"
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 2.0, bottom: 1.0),
-                          child: Text(
-                            "(" + count.toString() + ")",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: "Ralway"
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ],
@@ -137,7 +142,7 @@ class PostBodyState extends State<PostBody> {
         ),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(16.0),
           margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -176,7 +181,7 @@ class PostBodyState extends State<PostBody> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 5.0),
+                    padding: EdgeInsets.only(top: 16.0),
                     child: Row(
                       children: <Widget>[
                         Text(
@@ -188,7 +193,7 @@ class PostBodyState extends State<PostBody> {
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          margin: EdgeInsets.only(left: 10.0),
+                          margin: EdgeInsets.only(left: 8.0),
                           decoration: BoxDecoration(
                               color: colorComment,
                               borderRadius:
@@ -209,7 +214,7 @@ class PostBodyState extends State<PostBody> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                    margin: EdgeInsets.only(top: 8.0),
                     child: Text(
                       'Còn gì tuyệt vời hơn khi kết hợp thưởng thức đồ uống của bạn cùng với những chiếc bánh ngọt ngon tinh tế được làm thủ công ngay tại bếp bánh của Highlands Coffee. Những chiếc bánh của chúng tôi mang hương vị đặc trưng của ẩm thực Việt và còn là sự Tận Tâm, gửi gắm mà chúng tôi dành cho Quý khách hàng.',
                       style: TextStyle(fontSize: 14),
@@ -221,7 +226,7 @@ class PostBodyState extends State<PostBody> {
           ),
         ),
         Container(
-          padding: EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(16.0),
           margin: EdgeInsets.only(bottom: 5.0),
           width: double.infinity,
           decoration: BoxDecoration(
@@ -235,6 +240,7 @@ class PostBodyState extends State<PostBody> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
+                margin: EdgeInsets.only(bottom: 4.0),
                 child: Text(
                   'THÔNG TIN NGƯỜI ĐĂNG',
                   style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
@@ -268,12 +274,12 @@ class PostBodyState extends State<PostBody> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5.0),
+                margin: EdgeInsets.symmetric(vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: 5.0),
+                      margin: EdgeInsets.only(right: 8.0),
                       child: Icon(
                         Icons.home,
                         size: 20,
@@ -295,7 +301,7 @@ class PostBodyState extends State<PostBody> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: 5.0),
+                      margin: EdgeInsets.only(right: 8.0),
                       child: Icon(
                         Icons.phone,
                         size: 20,

@@ -30,7 +30,7 @@ class HeaderHomeState extends State<HeaderHome>{
             _gotoDetailScreen(index);
           },
           child: Container(
-            margin: EdgeInsets.all(5.0),
+            margin: EdgeInsets.only(bottom: 5.0, left: 10.0 , right: index == listMenu.length - 1 ? 10.0 : 0.0),
             width: 80.0,
             decoration: new BoxDecoration(
               color: Colors.white,

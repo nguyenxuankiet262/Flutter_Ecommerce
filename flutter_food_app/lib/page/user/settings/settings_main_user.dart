@@ -4,6 +4,7 @@ import 'main/post_manage/post_manage.dart';
 import 'main/favorite_manage/favorite_manage.dart';
 import 'main/private_manage/private_manage.dart';
 import 'main/rating_manage/rating_manage.dart';
+import 'main/feedback_manage/feedback_manage.dart';
 
 List<String> settingPost = ["Quản lý bài viết", "Bài viết yêu thích"];
 
@@ -51,6 +52,7 @@ class SettingsMain extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) =>
                           GestureDetector(
                             child: Container(
+                              color: Colors.white,
                               margin: EdgeInsets.only(top: 20.0),
                               child: Row(
                                 mainAxisAlignment:
@@ -110,6 +112,7 @@ class SettingsMain extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) =>
                           GestureDetector(
                             child: Container(
+                              color: Colors.white,
                               margin: EdgeInsets.only(top: 20.0),
                               child: Row(
                                 mainAxisAlignment:
@@ -201,6 +204,7 @@ class SettingsMain extends StatelessWidget {
                       itemBuilder: (BuildContext context, int index) =>
                           GestureDetector(
                             child: Container(
+                              color: Colors.white,
                               margin: EdgeInsets.only(top: 20.0),
                               child: Row(
                                 mainAxisAlignment:
@@ -222,6 +226,7 @@ class SettingsMain extends StatelessWidget {
                             onTap: () {
                               switch (index) {
                                 case 0:
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedBackManage()));
                                   break;
                               }
                             },

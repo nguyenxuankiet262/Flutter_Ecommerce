@@ -137,7 +137,7 @@ class ListRatingState extends State<ListRating> {
                                                   child: Icon(
                                                     FontAwesomeIcons
                                                         .solidEyeSlash,
-                                                    size: 15,
+                                                    size: 12,
                                                   ),
                                                 ),
                                               ],
