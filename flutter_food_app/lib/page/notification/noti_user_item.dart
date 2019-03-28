@@ -24,11 +24,11 @@ class _ListNotiUserState extends State<ListNotiUser> {
         itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) => new Container(
             decoration: new BoxDecoration(
-                color: Colors.white,
+                color: index % 2 ==0 ? Colors.white : colorActive.withOpacity(0.1),
                 border:
-                Border(bottom: BorderSide(color: colorInactive))),
+                Border(bottom: BorderSide(color: colorInactive, width: 0.5))),
             child: Padding(
-                padding: EdgeInsets.all(10.0),
+                padding: EdgeInsets.all(16.0),
                 child: Stack(
                   children: <Widget>[
                     Row(

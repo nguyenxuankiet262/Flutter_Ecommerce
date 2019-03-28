@@ -10,6 +10,7 @@ List<String> nameMenu = [
   "Lựa chọn danh mục",
   "Thêm giá trước khi giảm",
   "Thêm giá sau khi giảm",
+  "Thêm đơn vị",
   "Địa chỉ",
   "Số điện thoại"
 ];
@@ -18,8 +19,9 @@ List<String> nameOption = [
   "Rau củ",
   "100.000.000 VNĐ",
   "50.000 VNĐ",
+  "Kg",
   "123 Đường lên đỉnh Olympia F.15 Q.TB, TP.HCM",
-  '+84 123 456 789'
+  '+84 123 456 789',
 ];
 
 class BodyInfo extends StatefulWidget {
@@ -230,7 +232,7 @@ class BodyInfoState extends State<BodyInfo> {
           ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 5,
+            itemCount: nameMenu.length,
             itemBuilder: (BuildContext context, int index) =>  GestureDetector(
               child: Container(
                 height: 60,

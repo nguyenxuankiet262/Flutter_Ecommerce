@@ -14,15 +14,14 @@ class ListRatingState extends State<ListRating> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final widthRating = size.width - 80;
+    final widthRating = size.width - 96;
     return ListView.builder(
       itemCount: itemCount,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) => Card(
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            height: 75,
+            padding: EdgeInsets.all(16.0),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -52,44 +51,64 @@ class ListRatingState extends State<ListRating> {
                     ),
                     Container(
                       width: widthRating,
-                      margin: EdgeInsets.only(left: 10.0),
+                      margin: EdgeInsets.only(left: 16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment:
+                            MainAxisAlignment
+                                .spaceBetween,
                             children: <Widget>[
                               Text(
                                 index % 2 == 0
                                     ? 'Trần Văn Mèo'
                                     : 'Nguyễn Thị Cún',
                                 style: TextStyle(
-                                    color: colorActive,
-                                    fontWeight: FontWeight.bold,
+                                  color: colorActive,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 12,
                                 ),
                               ),
-                              Text(
-                                '22:22 PM - 22/2/2022',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 12
+                              GestureDetector(
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.more_vert,
+                                  color: colorInactive,
+                                  size: 15,
                                 ),
-                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
-                          SmoothStarRating(
-                            starCount: index % 2 == 0 ? 5 : 4,
-                            size: 18.0,
-                            rating: 5,
-                            color: Colors.yellow,
-                            borderColor: Colors.yellow,
+                          Container(
+                            margin: EdgeInsets.only(top: 4.0),
+                            child: SmoothStarRating(
+                              starCount: index % 2 == 0 ? 5 : 4,
+                              size: 16.0,
+                              rating: 5,
+                              color: Colors.yellow,
+                              borderColor: Colors.yellow,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 8.0),
+                            child: Text(
+                              index % 2 == 0
+                                  ? 'Ngon bổ rẻ'
+                                  : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12),
+                            ),
                           ),
                           Text(
-                            'Ngon bổ rẻ',
-                            style: TextStyle(color: Colors.black, fontSize: 12),
+                            '22:22 PM - 22/2/2022',
+                            style: TextStyle(
+                                color: colorInactive,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 10),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),

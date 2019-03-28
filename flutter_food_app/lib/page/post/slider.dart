@@ -45,7 +45,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       autoPlay: false,
       height: 300,
       viewportFraction: 1.0,
-      updateCallback: (index) {
+      onPageChanged: (index) {
         setState(() {
           _current = index;
         });

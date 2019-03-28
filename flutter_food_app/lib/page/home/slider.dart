@@ -43,14 +43,14 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       margin: EdgeInsets.only(right: 5.0, left: 5.0, bottom: 5.0),
         child: CarouselSlider(
       items: child,
-      autoPlay: false,
+      autoPlay: true,
       height: 200,
       viewportFraction: 1.0,
-      updateCallback: (index) {
-        setState(() {
-          _current = index;
-        });
-      },
+          onPageChanged: (index) {
+            setState(() {
+              _current = index;
+            });
+          },
     ));
     return Container(
       margin: EdgeInsets.only(top: 5.0),

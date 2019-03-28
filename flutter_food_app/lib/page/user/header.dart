@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'follow/follow.dart';
-import 'package:avatar_glow/avatar_glow.dart';
 
 class Header extends StatefulWidget {
   final bool isAnother;
@@ -39,28 +38,20 @@ class HeaderState extends State<Header> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
-                      child: AvatarGlow(
-                        glowColor: Colors.white.withOpacity(0.2),
-                        endRadius: 90.0,
-                        duration: Duration(milliseconds: 3000),
-                        repeat: true,
-                        showTwoGlows: true,
-                        repeatPauseDuration: Duration(milliseconds: 1000),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.white, width: 2.0),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100.0))),
-                          child: ClipOval(
-                            child: Image.asset(
-                              widget.isAnother
-                                  ? 'assets/images/dog.jpg'
-                                  : 'assets/images/cat.jpg',
-                              fit: BoxFit.cover,
-                              width: 100.0,
-                              height: 100.0,
-                            ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border:
+                            Border.all(color: Colors.white, width: 2.0),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(100.0))),
+                        child: ClipOval(
+                          child: Image.asset(
+                            widget.isAnother
+                                ? 'assets/images/dog.jpg'
+                                : 'assets/images/cat.jpg',
+                            fit: BoxFit.cover,
+                            width: 100.0,
+                            height: 100.0,
                           ),
                         ),
                       ),

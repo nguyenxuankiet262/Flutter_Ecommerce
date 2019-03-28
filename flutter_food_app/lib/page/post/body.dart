@@ -47,30 +47,44 @@ class PostBodyState extends State<PostBody> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(right: 10.0,),
+                          margin: EdgeInsets.only(right: 2.0,),
                           child: Text(
                             '60.000 VNĐ',
                             style: TextStyle(
                               color: colorActive,
-                              fontSize: 17,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Text(
-                          '120.000 VNĐ',
-                          style: TextStyle(
-                              color: colorInactive,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.lineThrough),
+                        Container(
+                          margin: EdgeInsets.only(right: 4.0, left: 2.0),
+                          child: Text(
+                            '/',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(right: 10.0,),
+                          child: Text(
+                            'cái',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     Row(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(right: 15.0),
+                          margin: EdgeInsets.only(right: 10.0),
                           child: GestureDetector(
                             onTap: (){
 
@@ -78,7 +92,7 @@ class PostBodyState extends State<PostBody> {
                             child: Icon(
                               Icons.share,
                               color: Colors.blue,
-                              size: 20,
+                              size: 15,
                             ),
                           ),
                         ),
@@ -99,7 +113,7 @@ class PostBodyState extends State<PostBody> {
                           child: Icon(
                             Icons.favorite,
                             color: _isFav ? Colors.red : colorInactive,
-                            size: 20,
+                            size: 15,
                           ),
                         ),
                         Container(

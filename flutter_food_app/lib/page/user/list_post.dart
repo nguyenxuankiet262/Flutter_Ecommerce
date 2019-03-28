@@ -21,7 +21,6 @@ class _ListPostState extends State<ListPost> {
       itemCount: itemCount,
       itemBuilder: (BuildContext context, int index) => new Card(
           child: new Container(
-            height: 230,
             width: 200,
             child: Stack(
               children: <Widget>[

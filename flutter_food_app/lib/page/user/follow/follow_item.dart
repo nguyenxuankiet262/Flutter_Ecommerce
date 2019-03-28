@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-
+import 'package:flutter_food_app/page/user/info.dart';
 class FollowItem extends StatefulWidget{
   final int index;
   FollowItem(this.index);
@@ -27,14 +27,22 @@ class FollowItemState extends State<FollowItem>{
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ClipOval(
-                    child: Image.asset(
-                      widget.index % 2 == 0
-                          ? 'assets/images/cat.jpg'
-                          : 'assets/images/dog.jpg',
-                      fit: BoxFit.cover,
-                      width: 40.0,
-                      height: 40.0,
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => InfoPage(true)),
+                      );
+                    },
+                    child: ClipOval(
+                      child: Image.asset(
+                        widget.index % 2 == 0
+                            ? 'assets/images/cat.jpg'
+                            : 'assets/images/dog.jpg',
+                        fit: BoxFit.cover,
+                        width: 40.0,
+                        height: 40.0,
+                      ),
                     ),
                   ),
                   Container(
@@ -42,14 +50,22 @@ class FollowItemState extends State<FollowItem>{
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          widget.index % 2 == 0
-                              ? "meow_meow"
-                              : "lu_lu",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Ralway"
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => InfoPage(true)),
+                            );
+                          },
+                          child: Text(
+                            widget.index % 2 == 0
+                                ? "meow_meow"
+                                : "lu_lu",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Ralway"
+                            ),
                           ),
                         ),
                         Text(

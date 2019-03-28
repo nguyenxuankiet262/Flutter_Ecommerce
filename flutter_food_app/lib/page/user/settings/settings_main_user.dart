@@ -3,16 +3,18 @@ import 'main/order_manage/order_manage.dart';
 import 'main/post_manage/post_manage.dart';
 import 'main/favorite_manage/favorite_manage.dart';
 import 'main/private_manage/private_manage.dart';
+import 'main/rating_manage/rating_manage.dart';
 
 List<String> settingPost = ["Quản lý bài viết", "Bài viết yêu thích"];
 
 List<String> settingPrivacy = [
   "Chỉnh sửa trang cá nhân",
-  "Quản lý đơn hàng",
-  "Quản lý đánh giá"
+  "Đơn hàng mua",
+  "Đơn hàng bán",
+  "Đánh giá"
 ];
 
-List<String> settingSupport = ["Quản lý phản hồi"];
+List<String> settingSupport = ["Phản hồi"];
 
 class SettingsMain extends StatelessWidget {
   Function sign_out;
@@ -22,7 +24,7 @@ class SettingsMain extends StatelessWidget {
     // TODO: implement build
     return Container(
         color: Colors.white,
-        height: 460,
+        height: 500,
         child: ListView(
           children: <Widget>[
             Container(
@@ -159,7 +161,13 @@ class SettingsMain extends StatelessWidget {
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => PrivateManage()));
                                   break;
                                 case 1:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderManage()));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderManage(false)));
+                                  break;
+                                case 2:
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderManage(true)));
+                                  break;
+                                case 3:
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => RatingManage()));
                                   break;
                               }
                             },

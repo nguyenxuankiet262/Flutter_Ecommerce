@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'order_item.dart';
 
 class ListOrder extends StatefulWidget {
   int index;
+  bool isSellOrder;
 
-  ListOrder(this.index);
+  ListOrder(this.index, this.isSellOrder);
 
   @override
   State<StatefulWidget> createState() => ListOrderState();
@@ -71,73 +73,16 @@ class ListOrderState extends State<ListOrder>
                       ),
                     ],
                   )
-                : ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: ScrollPhysics(),
-                    itemCount: itemCount,
+                : StaggeredGridView.countBuilder(
                     padding: EdgeInsets.only(top: 5),
+                    crossAxisCount: 2,
                     shrinkWrap: true,
+                    itemCount: itemCount,
                     itemBuilder: (BuildContext context, int index) =>
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => OrderItem()));
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            child: new Card(
-                                child: Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "#154123123112",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(bottom: 5.0),
-                                    child: Text(
-                                      "8 phút trước",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 12.0),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Text("Tình trạng:"),
-                                      Container(
-                                          padding: EdgeInsets.only(left: 5.0),
-                                          child: Text(
-                                            widget.index == 0
-                                                ? "Mới"
-                                                : widget.index == 1
-                                                    ? "Mới"
-                                                    : widget.index == 2
-                                                        ? "Thành công"
-                                                        : "Hủy",
-                                            style: TextStyle(
-                                                color: widget.index == 0
-                                                    ? colorActive
-                                                    : widget.index == 1
-                                                        ? colorActive
-                                                        : widget.index == 2
-                                                            ? Colors.orange
-                                                            : Colors.red,
-                                                fontWeight: FontWeight.bold),
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )),
-                          ),
-                        ),
-                  ));
+                        OrderItem(widget.index, widget.isSellOrder),
+                    staggeredTileBuilder: (int index) =>
+                        new StaggeredTile.fit(2)),
+          );
   }
 
   @override

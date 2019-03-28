@@ -18,12 +18,12 @@ class ListRatingState extends State<ListRating> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final widthRating = size.width - 100;
+    final widthRating = size.width - 90;
     final height = size.height - 60;
     return Container(
       height: height,
       color: Colors.white,
-      padding: EdgeInsets.only(left: 10.0, right: 10.0),
+      padding: EdgeInsets.only(left: 16.0 ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -41,22 +41,18 @@ class ListRatingState extends State<ListRating> {
             margin: EdgeInsets.symmetric(vertical: 10.0),
             child: Text(
               'ĐÁNH GIÁ',
-              style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
           ),
           Container(
-            color: colorInactive,
-            height: 1,
-          ),
-          Container(
-            height: height - 70,
+            height: height - 60,
             child: Scrollbar(
               child: ListView.builder(
                 itemCount: itemCount,
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) => Container(
-                    margin: EdgeInsets.symmetric(vertical: 5.0),
+                    margin: EdgeInsets.only(bottom: 16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,13 +78,14 @@ class ListRatingState extends State<ListRating> {
                             ),
                             Container(
                               width: widthRating,
-                              margin: EdgeInsets.only(left: 10.0),
+                              margin: EdgeInsets.only(left: 16.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment
+                                        .spaceBetween,
                                     children: <Widget>[
                                       GestureDetector(
                                         child: Text(
@@ -98,34 +95,52 @@ class ListRatingState extends State<ListRating> {
                                           style: TextStyle(
                                               color: colorActive,
                                               fontWeight: FontWeight.bold,
-                                            fontSize: 12
+                                              fontSize: 12
                                           ),
                                         ),
                                         onTap: (){
                                           navigateToUserPage();
                                         },
                                       ),
-                                      Text(
-                                        '22:22 PM - 22/2/2022',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontStyle: FontStyle.italic,
-                                          fontSize: 12
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Icon(
+                                          Icons.more_vert,
+                                          color: colorInactive,
+                                          size: 15,
                                         ),
-                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   ),
-                                  SmoothStarRating(
-                                    starCount: index % 2 == 0 ? 5 : 4,
-                                    size: 18.0,
-                                    rating: 5,
-                                    color: Colors.yellow,
-                                    borderColor: Colors.yellow,
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4.0),
+                                    child: SmoothStarRating(
+                                      starCount: index % 2 == 0 ? 5 : 4,
+                                      size: 16.0,
+                                      rating: 5,
+                                      color: Colors.yellow,
+                                      borderColor: Colors.yellow,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text(
+                                      index % 2 == 0
+                                          ? 'Ngon bổ rẻ'
+                                          : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12),
+                                    ),
                                   ),
                                   Text(
-                                    'Ngon bổ rẻ',
-                                    style: TextStyle(color: Colors.black),
+                                    '22:22 PM - 22/2/2022',
+                                    style: TextStyle(
+                                        color: colorInactive,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 10),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
@@ -134,8 +149,8 @@ class ListRatingState extends State<ListRating> {
                         ),
                         index != itemCount - 1
                             ? Container(
-                                margin: EdgeInsets.symmetric(vertical: 10.0),
-                                height: 1.0,
+                                margin: EdgeInsets.only(top: 16.0, right: 16.0),
+                                height: 0.5,
                                 width: double.infinity,
                                 color: colorInactive,
                               )

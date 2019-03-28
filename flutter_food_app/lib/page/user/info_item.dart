@@ -13,6 +13,7 @@ class InfoItemState extends State<InfoItem> {
     // TODO: implement build
     return ListView(
       physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
       children: <Widget>[
         Container(
             padding: EdgeInsets.all(15.0),

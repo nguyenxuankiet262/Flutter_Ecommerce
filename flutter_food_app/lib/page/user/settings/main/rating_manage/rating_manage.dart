@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'list_order.dart';
+import 'package:flutter_food_app/const/value_const.dart';
+import 'list_rating.dart';
 
-class OrderManage extends StatefulWidget{
-  bool isSellOrder;
-  OrderManage(this.isSellOrder);
+class RatingManage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => OrderManageState();
+  State<StatefulWidget> createState() => RatingManageState();
 }
 
-class OrderManageState extends State<OrderManage> with SingleTickerProviderStateMixin{
+class RatingManageState extends State<RatingManage>
+    with SingleTickerProviderStateMixin {
   TabController _tabController;
   ScrollController _scrollViewController;
 
@@ -19,7 +18,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
     super.initState();
     _scrollViewController = new ScrollController();
     _tabController =
-    new TabController(vsync: this, length: tabsOrder.length + 1);
+    new TabController(vsync: this, length: tabsRating.length + 1);
   }
 
   @override
@@ -33,7 +32,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
   Widget build(BuildContext context) {
     // TODO: implement build
     return new DefaultTabController(
-      length: tabsOrder.length,
+      length: tabsRating.length,
       child: new Scaffold(
         body: new NestedScrollView(
           controller: _scrollViewController,
@@ -42,7 +41,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
               new SliverAppBar(
                 brightness: Brightness.light,
                 title: new Text(
-                  widget.isSellOrder ? 'Đơn hàng bán' : "Đơn hàng mua",
+                  'Đánh giá',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
@@ -73,7 +72,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                               ),
                             ),
                             Text(
-                              "Tìm kiếm đơn hàng",
+                              "Tìm kiếm đánh giá",
                               style: TextStyle(
                                   fontSize: 14,
                                   color: colorInactive,
@@ -91,8 +90,10 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                   indicatorColor: Colors.white,
                   unselectedLabelColor: Colors.grey,
                   labelColor: Colors.black,
-                  tabs: new List.generate(tabsOrder.length, (index) {
-                    return new Tab(text: tabsOrder[index].toUpperCase());
+                  tabs: new List.generate(tabsRating.length, (index) {
+                    return new Tab(
+                      text: tabsRating[index].toUpperCase(),
+                    );
                   }),
                   controller: _tabController,
                 ),
@@ -102,8 +103,8 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
-            children: new List.generate(tabsFavorite.length, (index) {
-              return new ListOrder(index, widget.isSellOrder);
+            children: new List.generate(tabsRating.length, (index) {
+              return ListRating(index);
             }),
           ),
         ),

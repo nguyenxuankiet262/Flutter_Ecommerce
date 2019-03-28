@@ -16,13 +16,12 @@ class CommentPostState extends State<CommentPost> {
   String textInput = "";
   final myController = new TextEditingController();
 
-  void _showRatingList(context){
+  void _showRatingList(context) {
     showModalBottomSheet(
         context: context,
-        builder: (BuildContext bc){
+        builder: (BuildContext bc) {
           return ListRating();
-        }
-    );
+        });
   }
 
   @override
@@ -45,12 +44,12 @@ class CommentPostState extends State<CommentPost> {
     super.dispose();
   }
 
-  void popupRating(){
+  void popupRating() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return StatefulBuilder(
-            builder: (context, setState){
+            builder: (context, setState) {
               return AlertDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(32.0))),
@@ -92,7 +91,6 @@ class CommentPostState extends State<CommentPost> {
                           ),
                         ),
                       ),
-
                       Padding(
                         padding: EdgeInsets.only(left: 30.0, right: 30.0),
                         child: TextField(
@@ -123,11 +121,12 @@ class CommentPostState extends State<CommentPost> {
                           ),
                         ),
                         onTap: () {
-                          if(textInput.isEmpty){
-                            Toast.show('Vui lòng nhập nội dung!', context, duration: 2);
-                          }
-                          else{
-                            Toast.show('Cảm ơn bạn đã đánh giá!', context, duration: 2);
+                          if (textInput.isEmpty) {
+                            Toast.show('Vui lòng nhập nội dung!', context,
+                                duration: 2);
+                          } else {
+                            Toast.show('Cảm ơn bạn đã đánh giá!', context,
+                                duration: 2);
                             myController.clear();
                             Navigator.pop(context);
                           }
@@ -142,21 +141,20 @@ class CommentPostState extends State<CommentPost> {
         });
   }
 
-  void navigateToUserPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => InfoPage(true)));
+  void navigateToUserPage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => InfoPage(true)));
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
-    final widthRating = size.width - 100;
+    final size = MediaQuery.of(context).size;
+    final widthRating = size.width - 90;
     final widthComment = size.width - 100;
     // TODO: implement build
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.only(left: 16.0),
       margin: EdgeInsets.only(bottom: 5.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -168,11 +166,11 @@ class CommentPostState extends State<CommentPost> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'ĐÁNH GIÁ',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10.0),
+            child: Text(
+              'ĐÁNH GIÁ',
+              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
             ),
           ),
           ListView.builder(
@@ -180,7 +178,7 @@ class CommentPostState extends State<CommentPost> {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) => Container(
-                margin: EdgeInsets.symmetric(vertical: 5.0),
+                margin: EdgeInsets.only(bottom: 16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -206,17 +204,16 @@ class CommentPostState extends State<CommentPost> {
                         ),
                         Container(
                           width: widthRating,
-                          margin: EdgeInsets.only(left: 10.0),
+                          margin: EdgeInsets.only(left: 16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                MainAxisAlignment
+                                    .spaceBetween,
                                 children: <Widget>[
                                   GestureDetector(
-                                    onTap: (){
-                                      navigateToUserPage();
-                                    },
                                     child: Text(
                                       index % 2 == 0
                                           ? 'Trần Văn Mèo'
@@ -224,31 +221,52 @@ class CommentPostState extends State<CommentPost> {
                                       style: TextStyle(
                                           color: colorActive,
                                           fontWeight: FontWeight.bold,
-                                        fontSize: 12
+                                          fontSize: 12
                                       ),
                                     ),
+                                    onTap: (){
+                                      navigateToUserPage();
+                                    },
                                   ),
-                                  Text(
-                                    '22:22 PM - 22/2/2022',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontStyle: FontStyle.italic,
-                                      fontSize: 12
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: Icon(
+                                      Icons.more_vert,
+                                      color: colorInactive,
+                                      size: 15,
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
-                              SmoothStarRating(
-                                starCount: index % 2 == 0 ? 5 : 4,
-                                size: 16.0,
-                                rating: 5,
-                                color: Colors.yellow,
-                                borderColor: Colors.yellow,
+                              Container(
+                                margin: EdgeInsets.only(top: 4.0),
+                                child: SmoothStarRating(
+                                  starCount: index % 2 == 0 ? 5 : 4,
+                                  size: 16.0,
+                                  rating: 5,
+                                  color: Colors.yellow,
+                                  borderColor: Colors.yellow,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8.0),
+                                child: Text(
+                                  index % 2 == 0
+                                      ? 'Ngon bổ rẻ'
+                                      : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12),
+                                ),
                               ),
                               Text(
-                                'Ngon bổ rẻ',
-                                style: TextStyle(color: Colors.black, fontSize: 12),
+                                '22:22 PM - 22/2/2022',
+                                style: TextStyle(
+                                    color: colorInactive,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 10),
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
@@ -257,15 +275,14 @@ class CommentPostState extends State<CommentPost> {
                     ),
                     index != itemCount - 1
                         ? Container(
-                            margin: EdgeInsets.symmetric(vertical: 10.0),
-                            height: 1.0,
+                            margin: EdgeInsets.only(top: 16.0, right: 16.0),
+                            height: 0.5,
                             width: double.infinity,
                             color: colorInactive,
                           )
                         : Container(),
                   ],
-                )
-            ),
+                )),
           ),
           GestureDetector(
             child: Container(
@@ -275,16 +292,15 @@ class CommentPostState extends State<CommentPost> {
                 style: TextStyle(
                     color: Colors.blue,
                     fontSize: 14.0,
-                    fontWeight: FontWeight.w500
-                ),
+                    fontWeight: FontWeight.w500),
               ),
             ),
-            onTap: (){
+            onTap: () {
               _showRatingList(context);
             },
           ),
           Container(
-            height: 1,
+            height: 0.5,
             color: colorInactive,
           ),
           GestureDetector(
@@ -296,21 +312,19 @@ class CommentPostState extends State<CommentPost> {
                 decoration: BoxDecoration(
                     color: colorActive,
                     border: Border.all(color: colorComment),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 child: Center(
                   child: Text(
                     'Đánh giá',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14
-                    ),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14),
                   ),
                 ),
               ),
             ),
-            onTap: (){
+            onTap: () {
               popupRating();
             },
           ),

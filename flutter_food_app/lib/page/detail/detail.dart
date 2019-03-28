@@ -317,7 +317,7 @@ class _ListAllPostState extends State<ListAllPost> {
                         ],
                       ),
                       onTap: () {
-                        _showDialogNameCity(false);
+                        //_showDialogNameCity(false);
                       },
                     ),
                   ),

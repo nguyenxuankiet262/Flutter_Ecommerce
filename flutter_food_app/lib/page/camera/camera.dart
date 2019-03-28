@@ -3,18 +3,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'info/info.dart';
 
-IconData getCameraLensIcon(CameraLensDirection direction) {
-  switch (direction) {
-    case CameraLensDirection.back:
-      return Icons.camera_rear;
-    case CameraLensDirection.front:
-      return Icons.camera_front;
-    case CameraLensDirection.external:
-      return Icons.camera;
-  }
-  throw ArgumentError('Unknown lens direction');
-}
-
 class CameraPage extends StatefulWidget {
   List<CameraDescription> cameras;
   CameraPage(this.cameras);
@@ -59,7 +47,7 @@ class CameraPageState extends State<CameraPage> {
           child: _cameraPreviewWidget(),
         ),
         Padding(
-          padding: EdgeInsets.only(bottom: 20.0),
+          padding: EdgeInsets.only(bottom: 5.0),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: _captureControlRowBottomWidget(),

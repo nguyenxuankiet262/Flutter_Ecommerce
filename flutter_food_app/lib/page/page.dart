@@ -95,6 +95,7 @@ class _MyMainPageState extends State<MyMainPage>
                 navigationTapped(0);
               },
               child: Container(
+                color: Colors.white,
                 height: 56,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -125,6 +126,7 @@ class _MyMainPageState extends State<MyMainPage>
                 },
                 child: Stack(children: <Widget>[
                   Container(
+                    color: Colors.white,
                     height: 56,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -162,6 +164,7 @@ class _MyMainPageState extends State<MyMainPage>
                 },
                 child: Stack(children: <Widget>[
                   Container(
+                    color: Colors.white,
                     height: 56,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -198,6 +201,7 @@ class _MyMainPageState extends State<MyMainPage>
               },
               child: Stack(children: <Widget>[
                 Container(
+                  color: Colors.white,
                   height: 56,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
