@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'info/info.dart';
 
 class CameraPage extends StatefulWidget {
-  List<CameraDescription> cameras;
-  CameraPage(this.cameras);
-
   @override
   State<StatefulWidget> createState() => CameraPageState();
 }
@@ -19,7 +18,7 @@ class CameraPageState extends State<CameraPage> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    controller = CameraController(widget.cameras[0], ResolutionPreset.high);
+    controller = CameraController(BlocProvider.of<CameraBloc>(context).currentState.cameras[0], ResolutionPreset.high);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
@@ -37,30 +36,25 @@ class CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
-    final deviceRatio = size.width / size.height;
-    return Stack(
+    return Column(
       children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: _captureControlRowTopWidget(),
+          ),
+        ),
         Center(
           child: _cameraPreviewWidget(),
         ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 5.0),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: _captureControlRowBottomWidget(),
+        Expanded(
+          flex: 1,
+          child: Container(
+              child: Center(
+                child: _captureControlRowBottomWidget(),
+              )
           ),
-        ),
-        Padding(
-          child: GestureDetector(
-            child: Align(
-                alignment: Alignment.topLeft,
-                child: _captureControlRowTopWidget(),
-            ),
-          ),
-          padding: EdgeInsets.only(top: 20, left: 15, right: 30),
         ),
       ],
     );
@@ -105,7 +99,7 @@ class CameraPageState extends State<CameraPage> {
           ),
           onTap: (){
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => InfoPost(widget.cameras)));
+                MaterialPageRoute(builder: (context) => InfoPost()));
           },
         ),
       ],
@@ -128,7 +122,7 @@ class CameraPageState extends State<CameraPage> {
           child: Icon(
             Icons.camera,
             color: Colors.white,
-            size: 36,
+            size: 50,
           ),
           onTap: (){
             setState(() {

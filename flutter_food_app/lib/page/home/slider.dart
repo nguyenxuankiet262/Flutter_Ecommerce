@@ -40,7 +40,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   @override
   Widget build(BuildContext context) {
     final basicSlider = Container(
-      margin: EdgeInsets.only(right: 5.0, left: 5.0, bottom: 5.0),
+      margin: EdgeInsets.only(right: 5.0, left: 5.0),
         child: CarouselSlider(
       items: child,
       autoPlay: true,

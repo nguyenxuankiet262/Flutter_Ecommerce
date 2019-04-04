@@ -40,6 +40,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               new SliverAppBar(
+                elevation: 0.5,
                 brightness: Brightness.light,
                 title: new Text(
                   widget.isSellOrder ? 'Đơn hàng bán' : "Đơn hàng mua",
@@ -102,7 +103,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
           body: TabBarView(
             physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
-            children: new List.generate(tabsFavorite.length, (index) {
+            children: new List.generate(tabsOrder.length, (index) {
               return new ListOrder(index, widget.isSellOrder);
             }),
           ),

@@ -5,10 +5,6 @@ import 'package:camera/camera.dart';
 import 'list_image.dart';
 
 class HeaderInfo extends StatefulWidget {
-  List<CameraDescription> cameras;
-
-  HeaderInfo(this.cameras);
-
   @override
   State<StatefulWidget> createState() => HeaderInfoState();
 }
@@ -49,11 +45,11 @@ class HeaderInfoState extends State<HeaderInfo> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CameraPage(widget.cameras)),
+                        builder: (context) => CameraPage()),
                   );
                 });
               }),
-          ListImage(widget.cameras)
+          ListImage()
         ],
       ),
     );

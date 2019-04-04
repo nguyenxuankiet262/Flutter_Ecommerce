@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'list_feedback.dart';
+import 'feedback/feedback.dart';
 
 class FeedBackManage extends StatefulWidget{
   @override
@@ -37,6 +38,7 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               new SliverAppBar(
+                elevation: 0.5,
                 brightness: Brightness.light,
                 title: new Text(
                   'Phản hồi',
@@ -52,22 +54,15 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
                 floating: true,
                 expandedHeight: 150,
                 actions: <Widget>[
-                  new Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: GestureDetector(
-                        child: Text(
-                          'THÊM',
-                          textScaleFactor: 1.5,
-                          style: TextStyle(
-                              color: colorActive,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10),
-                        ),
-                        onTap: () {},
-                      ),
+                  IconButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => FeedbackPage()));
+                    },
+                    icon: Icon(
+                      Icons.add,
+                      color: colorActive,
                     ),
-                  ),
+                  )
                 ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(

@@ -38,7 +38,9 @@ class _ListCategoryState extends State<ListCategory> {
         children: <Widget>[
           new Container(
             height: 60.0,
-            color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             alignment: Alignment.centerLeft,
             child: Row(

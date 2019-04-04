@@ -11,7 +11,7 @@ class CommentPost extends StatefulWidget {
 }
 
 class CommentPostState extends State<CommentPost> {
-  int itemCount = 5;
+  int itemCount = 3;
   double ratingValue = 5.0;
   String textInput = "";
   final myController = new TextEditingController();
@@ -299,14 +299,10 @@ class CommentPostState extends State<CommentPost> {
               _showRatingList(context);
             },
           ),
-          Container(
-            height: 0.5,
-            color: colorInactive,
-          ),
           GestureDetector(
             child: Center(
               child: Container(
-                margin: EdgeInsets.only(top: 10.0),
+                margin: EdgeInsets.only(top: 10.0, bottom: 16.0),
                 width: widthComment,
                 height: 40,
                 decoration: BoxDecoration(

@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_food_app/page/filter/location.dart';
+import 'package:flutter_food_app/page/filter/price.dart';
+import 'package:flutter_food_app/page/filter/rating.dart';
+import 'package:flutter_food_app/page/filter/sort.dart';
+
+class FilterPage extends StatefulWidget{
+  int _index;
+  FilterPage(this._index);
+  @override
+  State<StatefulWidget> createState() => FilterPageState();
+}
+
+class FilterPageState extends State<FilterPage>{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.5,
+        brightness: Brightness.light,
+        title: new Text(
+          "Lọc",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 20),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
+        actions: <Widget>[
+          new Center(
+            child: Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: GestureDetector(
+                child: Text(
+                  'ĐẶT LẠI',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(
+                      color: colorActive,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10),
+                ),
+                onTap: () {
+                },
+              ),
+            ),
+          ),
+        ],
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Container(
+        color: Colors.white,
+        child: ListView(
+          children: <Widget>[
+            widget._index != 4 ? PriceFilter() : Container(),
+            widget._index != 2 && widget._index != 4 ? LocationFilter() : Container(),
+            Container(
+              padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0, top: widget._index != 4 ? 0.0 : 16.0),
+              child: Text(
+                "ĐÁNH GIÁ",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              height: 30,
+              margin: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
+              child: RatingFilter(),
+            ),
+            widget._index != 4 ? SortContent() : Container(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        height: 50,
+        width: double.infinity,
+        color: colorActive,
+        child: Center(
+          child: Text(
+            'ÁP DỤNG',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 12.0),
+          ),
+        ),
+      ),
+    );
+  }
+}

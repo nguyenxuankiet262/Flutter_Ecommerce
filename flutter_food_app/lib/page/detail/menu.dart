@@ -35,7 +35,6 @@ class HeaderDetailState extends State<HeaderDetail> {
       return new ListPost(widget.callback);
     });
     return Container(
-      margin: EdgeInsets.only(top: 5.0),
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
@@ -83,6 +82,15 @@ class HeaderDetailState extends State<HeaderDetail> {
                                     Radius.circular(10.0))),
                             width: 80,
                             height: 100,
+                          ),
+                          Container(
+                            width: 80,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                              new BorderRadius.all(Radius.circular(10.0)),
+                              color: Colors.black.withOpacity(0.6),
+                            ),
                           ),
                           Center(
                               child: Text(

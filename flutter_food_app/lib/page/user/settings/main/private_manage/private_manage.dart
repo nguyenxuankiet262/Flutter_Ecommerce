@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'info.dart';
 import 'private_info.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PrivateManage extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class PrivateManageState extends State<PrivateManage> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.5,
           brightness: Brightness.light,
           title: new Text(
             'Chỉnh sửa trang cá nhân',
@@ -27,22 +29,15 @@ class PrivateManageState extends State<PrivateManage> {
           centerTitle: true,
           backgroundColor: Colors.white,
           actions: <Widget>[
-            new Center(
-              child: Padding(
-                padding: EdgeInsets.only(right: 10),
-                child: GestureDetector(
-                  child: Text(
-                    'XONG',
-                    textScaleFactor: 1.5,
-                    style: TextStyle(
-                        color: colorActive,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10),
-                  ),
-                  onTap: () {},
-                ),
+            IconButton(
+              onPressed: (){
+
+              },
+              icon: Icon(
+                Icons.done,
+                color: colorActive,
               ),
-            ),
+            )
           ],
         ),
         body: GestureDetector(
@@ -73,55 +68,95 @@ class PrivateManageState extends State<PrivateManage> {
                               height: heightContainer,
                               color: Colors.transparent.withOpacity(0.7),
                             ),
+                            Positioned(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 50,
+                                color: Colors.white,
+                              ),
+                              bottom: 0.0,
+                            ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  height: heightContainer,
+                                  height: heightContainer + 50,
                                   width: MediaQuery.of(context).size.width,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
                                       GestureDetector(
                                         onTap: () {},
                                         child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.white,
+                                                    width: 2.0),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(100.0))),
+                                            child: Container(
+                                              decoration: BoxDecoration(
                                                   color: Colors.white,
-                                                  width: 2.0),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(100.0))),
-                                          child: ClipOval(
-                                            child: Image.asset(
-                                              'assets/images/cat.jpg',
-                                              fit: BoxFit.cover,
-                                              width: 100.0,
-                                              height: 100.0,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 10.0),
-                                        child: GestureDetector(
-                                          onTap: () {},
-                                          child: Text(
-                                            "Thay đổi ảnh đại diện",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14.0,
-                                            ),
-                                          ),
-                                        ),
+                                                  border:
+                                                      Border.all(width: 0.5),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              100.0))),
+                                              child: ClipOval(
+                                                child: Image.asset(
+                                                  'assets/images/cat.jpg',
+                                                  fit: BoxFit.cover,
+                                                  width: 100.0,
+                                                  height: 100.0,
+                                                ),
+                                              ),
+                                            )),
                                       ),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
+                            Positioned(
+                              child: Container(
+                                height: 30,
+                                width: 30,
+                                decoration: BoxDecoration(
+                                    color: colorContainer,
+                                    border: Border.all(
+                                        color: Colors.white, width: 2.0),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(100.0))),
+                                child: Icon(
+                                  FontAwesomeIcons.camera,
+                                  size: 15,
+                                ),
+                              ),
+                              bottom: 0.0,
+                              left: MediaQuery.of(context).size.width / 1.8,
+                            ),
+                            Positioned(
+                              child: Container(
+                                height: 35,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    color: colorContainer,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1.0),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(5.0))),
+                                child: Icon(
+                                  FontAwesomeIcons.camera,
+                                  size: 20,
+                                ),
+                              ),
+                              right: 16.0,
+                              bottom: 66,
+                            )
                           ],
                         ),
                       ),

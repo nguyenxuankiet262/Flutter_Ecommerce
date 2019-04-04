@@ -8,24 +8,12 @@ class NotificationPage extends StatefulWidget {
 }
 
 class NotificationState extends State<NotificationPage> with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  int index = 0;
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, length: 2);
-    _tabController.addListener(() {
-      if (_tabController.index == 0) {
-        setState(() {
-          index = 0;
-        });
-      } else {
-        setState(() {
-          index = 1;
-        });
-      }
-    });
   }
 
   @override
@@ -37,6 +25,7 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
         automaticallyImplyLeading: false,
         brightness: Brightness.light,
         backgroundColor: Colors.white,
+        elevation: 0.5,
         title: TabBar(
           controller: _tabController,
           indicatorColor: Colors.black,

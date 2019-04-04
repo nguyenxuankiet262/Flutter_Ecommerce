@@ -15,6 +15,7 @@ class ChangePasswordState extends State<ChangePassword>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         brightness: Brightness.light,
         title: new Text(
           'Thay đổi mật khẩu',

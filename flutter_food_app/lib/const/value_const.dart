@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_food_app/model/child_menu.dart';
 import 'package:flutter_food_app/model/menu.dart';
 
@@ -45,40 +47,16 @@ List<Menu> listMenu = [
   ]),
 ];
 
-const List<String> tabsPost = const <String>[
-  'Tất cả',
-  'Đặt mua nhiều',
-  'Yêu thích cao',
-  'Yêu thích thấp',
-  '5 sao',
-  '4 sao',
-  '3 sao',
-  '2 sao',
-  '1 sao',
-];
-
-const List<String> tabsFavorite = const <String>[
-  'Tất cả',
-  'Yêu thích cao',
-  'Yêu thích thấp',
-  '5 sao',
-  '4 sao',
-  '3 sao',
-  '2 sao',
-  '1 sao',
-];
 
 const List<String> tabsRating = const <String>[
-  'Tất cả',
-  '5 sao',
-  '4 sao',
-  '3 sao',
-  '2 sao',
-  '1 sao',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
 ];
 
 const List<String> tabsOrder = const <String>[
-  'Tất cả',
   'Đơn hàng mới',
   'Giao dịch thành công',
   'Đơn hàng hủy',
@@ -91,7 +69,60 @@ const List<String> statusOptions = const <String>[
 ];
 
 const List<String> tabsFeedback = const <String>[
-  'Tất cả',
   'Đã trả lời',
   'Chưa trả lời',
+];
+
+const List<String> listSort = const <String> [
+  "Tin mới trước",
+  "Tin cũ trước",
+  "Yêu thích cao trước",
+  "Yêu thích thấp trước",
+  "Giá tăng dần",
+  "Giá giảm dần",
+];
+
+const List<Icon> listIconSort = const <Icon> [
+  Icon(
+    FontAwesomeIcons.clock,
+    size: 15,
+  ),
+  Icon(
+    FontAwesomeIcons.history,
+    size: 15,
+  ),
+  Icon(
+    FontAwesomeIcons.thumbsUp,
+    size: 15,
+  ),
+  Icon(
+    FontAwesomeIcons.thumbsDown,
+    size: 15,
+  ),
+  Icon(
+    FontAwesomeIcons.sortNumericDown,
+    size: 15,
+  ),
+  Icon(
+    FontAwesomeIcons.sortNumericUp,
+    size: 15,
+  ),
+];
+
+const List<String> hotkeys = const <String> [
+  "Chuối",
+  "Bánh mì",
+  "Táo",
+  "Gạo tẻ",
+  "Thịt cừu",
+  "Tôm càng xanh"
+];
+
+const List<String> hotUsers = const <String> [
+  "kiki_123",
+  "meowmeow",
+  "karik232",
+  "erik",
+  "ronaldo_cr7",
+  "messi_10"
 ];

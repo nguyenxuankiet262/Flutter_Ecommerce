@@ -6,9 +6,6 @@ import 'package:flutter_food_app/page/post/post.dart';
 import 'package:toast/toast.dart';
 
 class ListPost extends StatefulWidget {
-  int index;
-
-  ListPost(this.index);
 
   @override
   State<StatefulWidget> createState() => _ListPostState();
@@ -16,7 +13,7 @@ class ListPost extends StatefulWidget {
 
 class _ListPostState extends State<ListPost>
     with AutomaticKeepAliveClientMixin {
-  int itemCount;
+  int itemCount = 10;
   bool isLoading = true;
 
   @override
@@ -28,13 +25,6 @@ class _ListPostState extends State<ListPost>
         isLoading = false;
       });
     });
-    if (widget.index == 0 || widget.index == 2 || widget.index == 3) {
-      itemCount = 10;
-    } else if (widget.index == 1) {
-      itemCount = 2;
-    } else {
-      itemCount = 0;
-    }
   }
 
   @override
@@ -42,7 +32,7 @@ class _ListPostState extends State<ListPost>
     // TODO: implement build
     return isLoading
         ? Container(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height,
             color: colorBackground,
             child: Center(
                 child: CircularProgressIndicator(

@@ -17,105 +17,6 @@ class OrderItem extends StatefulWidget {
 }
 
 class OrderItemState extends State<OrderItem> {
-  int _index = 0;
-
-  _showStatusPicker() {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            content: Container(
-                height: 260,
-                width: 300,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                        height: 30,
-                        margin: EdgeInsets.only(bottom: 10.0),
-                        child: Center(
-                          child: Text(
-                            "Chọn tình trạng",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        )),
-                    Container(
-                      height: 180,
-                      child: CupertinoPicker(
-                        backgroundColor: Colors.white,
-                        looping: true,
-                        itemExtent: 50,
-                        //height of each item
-                        children:
-                            new List.generate(statusOptions.length, (index) {
-                          return new Center(
-                            child: Text(
-                              statusOptions[index],
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12.0),
-                            ),
-                          );
-                        }),
-                        onSelectedItemChanged: (int index) {
-                          setState(() {
-                            _index = index;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(),
-                          Row(
-                            children: <Widget>[
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  "Hủy",
-                                  style: TextStyle(
-                                      color: Colors.red, fontSize: 14),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 20.0),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      print(statusOptions[_index]);
-                                      Toast.show(
-                                          "Đã cập nhật đơn hàng!", context);
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text(
-                                      "Chấp nhận",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 14),
-                                    )),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                )),
-          );
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,82 +24,154 @@ class OrderItemState extends State<OrderItem> {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => OrderDetail(widget.isSellOrder)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => OrderDetail(widget.isSellOrder)));
       },
-      child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
-        child: new Card(
-            child: Container(
-                height: 75,
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      height: 75,
-                      margin: EdgeInsets.all(10.0),
-                      child: Column(
+      child: Card(
+          child: Container(
+              padding: EdgeInsets.all(16.0),
+              color: Colors.white,
+              child: Stack(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             "#154123123112",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Ralway"),
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: 5.0),
-                            child: Text(
-                              "8 phút trước",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12.0),
-                            ),
-                          ),
+                              margin: EdgeInsets.only(top: 5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                      widget.isSellOrder
+                                          ? "Người mua: "
+                                          : "Người bán: ",
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontFamily: "Ralway",
+                                          color: colorInactive,
+                                          fontWeight: FontWeight.w600)),
+                                  Shimmer.fromColors(
+                                      baseColor: Colors.blue,
+                                      highlightColor: Colors.blue,
+                                      child: Text("meowmeow",
+                                          style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontFamily: "Ralway",
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.w600))),
+                                ],
+                              )),
                           Container(
-                            child: Shimmer.fromColors(
-                                baseColor: widget.index == 0
-                                    ? colorActive
-                                    : widget.index == 1
-                                        ? colorActive
-                                        : widget.index == 2
-                                            ? Colors.orange
-                                            : Colors.red,
-                                highlightColor: Colors.yellow,
-                                child: Text(
-                                  widget.index == 0
-                                      ? "Đơn hàng mới"
-                                      : widget.index == 1
-                                          ? "Đơn hàng mới"
-                                          : widget.index == 2
-                                              ? "Đơn hàng thành công"
-                                              : "Đơn hàng bị hủy",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                )),
-                          ),
+                              margin: EdgeInsets.only(top: 5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text("Sản phẩm: ",
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontFamily: "Ralway",
+                                          color: colorInactive,
+                                          fontWeight: FontWeight.w600)),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width - 175,
+                                      child: Text(
+                                        "Cà rốt tươi ngon đây! Mại zô!asdadasd Cà rốt tươ",
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            fontFamily: "Ralway",
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      )),
+                                ],
+                              )),
+                          Container(
+                              margin: EdgeInsets.only(top: 5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text("Số lượng: ",
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontFamily: "Ralway",
+                                          color: colorInactive,
+                                          fontWeight: FontWeight.w600)),
+                                  Text("1",
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontFamily: "Ralway",
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600))
+                                ],
+                              )),
+                          Container(
+                              margin: EdgeInsets.only(top: 5.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Text("Tình trạng: ",
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontFamily: "Ralway",
+                                          color: colorInactive,
+                                          fontWeight: FontWeight.w600)),
+                                  Shimmer.fromColors(
+                                      period: Duration(seconds: 3),
+                                      baseColor: widget.index == 0
+                                          ? colorActive
+                                          : widget.index == 1
+                                              ? Colors.orange
+                                              : Colors.red,
+                                      highlightColor: Colors.yellow,
+                                      child: Text(
+                                        widget.index == 0
+                                            ? "Đơn hàng mới"
+                                            : widget.index == 1
+                                                ? "Đơn hàng thành công"
+                                                : "Đơn hàng bị hủy",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Ralway",
+                                            fontSize: 12.0),
+                                      )),
+                                ],
+                              )),
                         ],
                       ),
-                    ),
-                    !widget.isSellOrder
-                        ? Container()
-                        : Positioned(
-                      right: 0.0,
-                            child: Container(
-                                height: 75,
-                                width: 200,
-                                child: Center(
-                                    child: GestureDetector(
-                                  onTap: () {
-                                    _showStatusPicker();
-                                  },
-                                  child: Text(
-                                    "Cập nhật tình trạng",
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                )))),
-                  ],
-                ))),
-      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "03/04/2019",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "Ralway",
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5.0),
+                            child: Text("11:11 AM",
+                                style: TextStyle(
+                                    fontSize: 12.0,
+                                    fontFamily: "Ralway",
+                                    color: colorInactive,
+                                    fontWeight: FontWeight.w600)),
+                          )
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ))),
     );
   }
 }

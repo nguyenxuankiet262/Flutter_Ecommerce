@@ -1,219 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/location_bloc.dart';
-import 'package:flutter_food_app/common/bloc/location_option_bloc.dart';
-import 'package:flutter_food_app/common/state/location_option_state.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'mode/filter_mode.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/page/detail/mode/view_mode.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
-
+import 'package:flutter_food_app/page/filter/filter.dart';
 
 class ListAllPost extends StatefulWidget {
-  Function callback1;
+  Function navigateToPost, navigateToFilter, navigateToSearch;
   int index;
 
-  ListAllPost(this.callback1, this.index);
+  ListAllPost(this.navigateToPost, this.navigateToFilter, this.navigateToSearch, this.index);
 
   @override
   State<StatefulWidget> createState() => _ListAllPostState();
 }
 
 class _ListAllPostState extends State<ListAllPost> {
-  int indexCity ;
-  int indexProvince;
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-
-  List<String> nameCities;
-  List<List<String>> nameProvinces;
-
-
-  _showDialogNameCity(bool isCity) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          indexCity = BlocProvider.of<LocationOptionBloc>(context).currentState.indexCity;
-          indexProvince = BlocProvider.of<LocationOptionBloc>(context).currentState.indexProvince;
-          final size = MediaQuery.of(context).size;
-          final widthDialog = size.width;
-          final heightList = size.height - 200;
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                )),
-            contentPadding: EdgeInsets.only(top: 10.0),
-            content: Container(
-              width: widthDialog,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      isCity ? "Chọn thành phố" : "Chọn quận/huyện",
-                      style: TextStyle(fontSize: 24.0),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Divider(
-                    color: Colors.grey,
-                    height: 4.0,
-                  ),
-                  Container(
-                    height: heightList,
-                    child: ListView.builder(
-                      itemCount: isCity
-                          ? nameCities.length
-                          : nameProvinces[indexCity].length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.only(
-                              top: 10.0, right: 20.0, left: 20.0, bottom: 10.0),
-                          child: GestureDetector(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                    '${isCity ? nameCities[index] : nameProvinces[indexCity][index]}'),
-                                isCity
-                                    ? (index == indexCity)
-                                    ? Icon(Icons.radio_button_checked)
-                                    : Icon(Icons.radio_button_unchecked)
-                                    : index == indexProvince
-                                    ? Icon(Icons.radio_button_checked)
-                                    : Icon(Icons.radio_button_unchecked),
-                              ],
-                            ),
-                            onTap: () {
-                              setState(() {
-                                if (isCity) {
-                                  BlocProvider.of<LocationOptionBloc>(context).changeLocation(index, BlocProvider.of<LocationOptionBloc>(context).currentState.indexProvince);
-                                  if (index == 0) {
-                                    BlocProvider.of<LocationOptionBloc>(context).changeLocation(BlocProvider.of<LocationOptionBloc>(context).currentState.indexCity, 0);
-                                  }
-                                } else {
-                                  BlocProvider.of<LocationOptionBloc>(context).changeLocation(BlocProvider.of<LocationOptionBloc>(context).currentState.indexCity, index);
-                                }
-                                Navigator.pop(context);
-                              });
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  _showFilter() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          final size = MediaQuery.of(context).size;
-          final widthDialog = size.width;
-          final heightList = (size.height / 5) * 3 - 10.0;
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
-                )),
-            contentPadding: EdgeInsets.only(top: 10.0),
-            content: Container(
-              width: widthDialog,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                      child: Stack(
-                        children: <Widget>[
-                          Center(
-                            child: Text(
-                              "Lọc",
-                              style: TextStyle(fontSize: 24.0),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                  margin: EdgeInsets.only(right: 20.0, top: 5.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Icon(
-                                      Icons.close,
-                                      color: colorInactive,
-                                      size: 20,
-                                    ),
-                                  )))
-                        ],
-                      )),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Container(
-                      height: heightList,
-                      child: ListView(
-                        children: <Widget>[
-                          FilterMode(),
-                          ViewMode(),
-                        ],
-                      )),
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        width: widthDialog,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(10.0),
-                              bottomLeft: Radius.circular(10.0)),
-                          color: colorActive,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Áp dụng",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    nameCities = BlocProvider.of<LocationBloc>(context).currentState.nameCities;
-    nameProvinces = BlocProvider.of<LocationBloc>(context).currentState.nameProvinces;
-  }
-
   AppBar buildAppBar(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final widthTab = size.width / 3 - 10;
     return new AppBar(
+      elevation: 0.0,
       brightness: Brightness.light,
       title: new Text(
         listMenu[this.widget.index].name,
@@ -232,135 +37,42 @@ class _ListAllPostState extends State<ListAllPost> {
       ),
       actions: <Widget>[
         GestureDetector(
-          onTap: (){
-
+          onTap: () {
+            this.widget.navigateToFilter();
           },
-          child: Container(
-              margin: EdgeInsets.only(right: 10.0),
-              child: Icon(
-                Icons.search,
-                color: Colors.black,
-              )
-          ),
-        )
-      ],
-      bottom: PreferredSize(
-        preferredSize: Size.fromHeight(40),
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 13, right: 5.0, left: 5.0),
-          child: BlocBuilder(
-            bloc: BlocProvider.of<LocationOptionBloc>(context),
-            builder: (context, LocationOptionState state){
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 5.0),
-                    width: widthTab,
-                    child: GestureDetector(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.city,
-                            size: 14,
-                            color: Colors.blue,
-                          ),
-                          new Flexible(
-                            child: new Container(
-                              margin: EdgeInsets.only(left: 5.0),
-                              child: new Text(
-                                nameCities[state.indexCity],
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 12.0),
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.arrow_drop_down),
-                        ],
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Container(
+                  padding: EdgeInsets.only(
+                      top: 3.0, bottom: 3.0, right: 10.0, left: 10.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                      border: Border.all(color: colorActive, width: 0.5)),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 5.0),
+                        child: Icon(
+                          FontAwesomeIcons.filter,
+                          color: colorActive,
+                          size: 10,
+                        ),
                       ),
-                      onTap: () {
-                        //_showDialogNameCity(true);
-                        BlocProvider.of<LocationOptionBloc>(context).changeLocation(1, 5);
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 20.0,
-                    width: 1.0,
-                    color: Colors.grey,
-                  ),
-                  Container(
-                    width: widthTab,
-                    child: GestureDetector(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Icon(
-                            FontAwesomeIcons.streetView,
-                            color: Colors.red,
-                            size: 14,
-                          ),
-                          new Flexible(
-                            child: new Container(
-                              margin: EdgeInsets.only(left: 5.0),
-                              child: new Text(
-                                nameProvinces[state.indexCity][state.indexProvince],
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 12.0),
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.arrow_drop_down),
-                        ],
-                      ),
-                      onTap: () {
-                        //_showDialogNameCity(false);
-                      },
-                    ),
-                  ),
-                  Container(
-                    height: 20.0,
-                    width: 1.0,
-                    color: Colors.grey,
-                  ),
-                  Container(
-                    width: widthTab,
-                    child: GestureDetector(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Icon(
-                              FontAwesomeIcons.sortAlphaDown,
-                              size: 14,
-                              color: Colors.green),
-                          new Flexible(
-                            child: new Container(
-                              child: new Text(
-                                'Lọc/Sắp xếp',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 12.0),
-                              ),
-                            ),
-                          ),
-                          Icon(Icons.arrow_drop_down),
-                        ],
-                      ),
-                      onTap: () {
-                        //_showFilter();
-                        _scaffoldKey.currentState.openEndDrawer();
-                      },
-                    ),
-                  ),
-                ],
-              );
-            },
+                      Text(
+                        "Lọc",
+                        style: TextStyle(
+                            color: colorActive,
+                            fontSize: 12,
+                            fontFamily: "Ralway"),
+                      )
+                    ],
+                  )),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -368,16 +80,50 @@ class _ListAllPostState extends State<ListAllPost> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      key: _scaffoldKey,
-      endDrawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              FilterMode(),
-              ViewMode(),
-            ],
-          )),
-      appBar: buildAppBar(context),
-      body: HeaderDetail(this.widget.callback1, this.widget.index),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(111.0), // here the desired height
+        child: Column(
+          children: <Widget>[
+            buildAppBar(context),
+            GestureDetector(
+              onTap: (){
+                this.widget.navigateToSearch();
+              },
+              child: Container(
+                  height: 55.0,
+                  color: Colors.white,
+                  padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 14.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        color: colorInactive.withOpacity(0.2)),
+                    child: Container(
+                        margin: EdgeInsets.only(left: 15.0),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 10.0),
+                              child: Icon(
+                                Icons.search,
+                                color: Colors.grey,
+                                size: 14,
+                              ),
+                            ),
+                            Text(
+                              "Tìm kiếm bài viết, người đăng",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: colorInactive,
+                                  fontFamily: "Ralway"),
+                            )
+                          ],
+                        )),
+                  )),
+            ),
+          ],
+        ),
+      ),
+      body: HeaderDetail(this.widget.navigateToPost, this.widget.index),
     );
   }
 }

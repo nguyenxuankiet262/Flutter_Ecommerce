@@ -52,7 +52,6 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
       },
     );
     return Container(
-      margin: EdgeInsets.only(top: 5.0),
       child: Stack(children: [
         basicSlider,
         Positioned(

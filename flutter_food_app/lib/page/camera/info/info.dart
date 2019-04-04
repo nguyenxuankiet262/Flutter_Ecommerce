@@ -8,10 +8,6 @@ import 'package:toast/toast.dart';
 import 'package:flutter_food_app/app.dart';
 
 class InfoPost extends StatefulWidget {
-  List<CameraDescription> cameras;
-
-  InfoPost(this.cameras);
-
   @override
   State<StatefulWidget> createState() => InfoPostState();
 }
@@ -219,7 +215,7 @@ class InfoPostState extends State<InfoPost> {
             actions: <Widget>[
               new Center(
                 child: Padding(
-                  padding: EdgeInsets.only(right: 10),
+                  padding: EdgeInsets.only(right: 16),
                   child: GestureDetector(
                     child: Text(
                       'ĐĂNG',
@@ -238,7 +234,7 @@ class InfoPostState extends State<InfoPost> {
             ],
             leading: new Center(
               child: Padding(
-                padding: EdgeInsets.only(right: 10),
+                padding: EdgeInsets.only(left: 5),
                 child: GestureDetector(
                   child: Text(
                     'HỦY',
@@ -263,7 +259,7 @@ class InfoPostState extends State<InfoPost> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: HeaderInfo(widget.cameras),
+                      child: HeaderInfo(),
                     ),
                     Padding(
                       padding: EdgeInsets.only(bottom: 10.0),

@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_food_app/page/filter/filter.dart';
 import 'package:flutter_food_app/page/home/home.dart';
 import 'package:flutter_food_app/page/cart/cart.dart';
 import 'package:flutter_food_app/page/notification/notification.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
 import 'package:flutter_food_app/page/post/post.dart';
+import 'package:flutter_food_app/page/search/search.dart';
 import 'package:flutter_food_app/page/user/info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyMainPage extends StatefulWidget {
-  var cameras;
-
-  MyMainPage(this.cameras);
-
   @override
   _MyMainPageState createState() => _MyMainPageState();
 }
 
-class _MyMainPageState extends State<MyMainPage>
-    with SingleTickerProviderStateMixin {
+class _MyMainPageState extends State<MyMainPage> {
   int _index = 0;
   PageController _pageController;
 
@@ -44,20 +41,33 @@ class _MyMainPageState extends State<MyMainPage>
     _pageController.jumpToPage(page);
   }
 
+  void navigateToFilter(){
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterPage(1),),
+    );
+  }
+
   void navigateToPost() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+  }
+
+  void navigateToSearch(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.white,
       body: new PageView(
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           MaterialApp(
-            home: MyHomePage(this.navigateToPost),
-            theme: ThemeData(fontFamily: 'Montserrat'),
+            home: MyHomePage(this.navigateToPost, this.navigateToFilter, this.navigateToSearch),
+            theme: ThemeData(fontFamily: 'Montserrat', pageTransitionsTheme: PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),),
             debugShowCheckedModeBanner: false,
           ),
           Cart(),
@@ -77,7 +87,7 @@ class _MyMainPageState extends State<MyMainPage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CameraPage(this.widget.cameras),),
+                  builder: (context) => CameraPage(),),
             );
           });
         },

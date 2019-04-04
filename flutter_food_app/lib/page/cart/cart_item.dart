@@ -127,13 +127,17 @@ class CartItemState extends State<CartItem> {
                         });
                       },
                       child: Container(
-                        child: Text(
-                          "+",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: colorActive),
-                        ),
+                        width: 30,
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            "+",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: colorActive),
+                          ),
+                        )
                       ),
                     ),
                     Text(
@@ -150,13 +154,17 @@ class CartItemState extends State<CartItem> {
                         });
                       },
                       child: Container(
-                        child: Text(
-                          "-",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: _count == 1 ? colorInactive : colorActive),
-                        ),
+                        width: 30,
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            "-",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: _count == 1 ? colorInactive : colorActive),
+                          ),
+                        )
                       ),
                     ),
                   ],

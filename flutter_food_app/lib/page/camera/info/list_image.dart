@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_food_app/const/color_const.dart';
-import 'package:camera/camera.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
 
 class ListImage extends StatefulWidget{
-  List<CameraDescription> cameras;
-
-  ListImage(this.cameras);
   @override
   State<StatefulWidget> createState() => ListImageState();
 }
@@ -102,7 +97,7 @@ class ListImageState extends State<ListImage>{
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CameraPage(widget.cameras)),
+                    builder: (context) => CameraPage()),
               );
             });
           },

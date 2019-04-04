@@ -234,6 +234,7 @@ class PostState extends State<Post> {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
+          elevation: 0.5,
           brightness: Brightness.light,
           title: Text(
             'Bánh tiramisu thơm ngon đây cả nhà ơi',
@@ -286,7 +287,7 @@ class PostState extends State<Post> {
                     child: Center(
                       child: Text(
                         'THÊM VÀO GIỎ HÀNG',
-                        style: TextStyle(color: colorActive, fontWeight: FontWeight.w600),
+                        style: TextStyle(color: colorActive, fontWeight: FontWeight.w600,fontSize: 12.0),
                       ),
                     ),
                   ),
@@ -300,7 +301,7 @@ class PostState extends State<Post> {
                   child: Center(
                     child: Text(
                       'GỌI ĐIỆN NGƯỜI BÁN',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 12.0),
                     ),
                   ),
                 ),

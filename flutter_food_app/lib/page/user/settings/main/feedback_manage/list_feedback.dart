@@ -26,8 +26,6 @@ class ListFeedbackState extends State<ListFeedback> {
     });
     if (widget.index == 0) {
       itemCount = 10;
-    } else if (widget.index == 1) {
-      itemCount = 5;
     } else {
       itemCount = 5;
     }

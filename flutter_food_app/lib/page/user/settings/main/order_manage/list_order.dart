@@ -27,7 +27,7 @@ class ListOrderState extends State<ListOrder>
         isLoading = false;
       });
     });
-    if (widget.index == 0 || widget.index == 2) {
+      if (widget.index == 0) {
       itemCount = 10;
     } else if (widget.index == 1) {
       itemCount = 2;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/services.dart';
 import 'app.dart';
@@ -15,19 +17,21 @@ class StartPageState extends State<StartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<CameraBloc>(context)
+        .initCamera(widget.cameras);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.white, //or set color with: Color(0xFF0000FF)
     ));
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new SplashScreen(
         seconds: 3,
-        navigateAfterSeconds: new MainApp(widget.cameras),
+        navigateAfterSeconds: new MainApp(),
         image: new Image.asset('assets/images/logo.png'),
         backgroundColor: Colors.white,
-        photoSize: 300.0,
     );
   }
 }

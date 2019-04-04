@@ -23,7 +23,6 @@ class ListRatingState extends State<ListRating> {
     return Container(
       height: height,
       color: Colors.white,
-      padding: EdgeInsets.only(left: 16.0 ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -38,7 +37,7 @@ class ListRatingState extends State<ListRating> {
             )
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0),
+            margin: EdgeInsets.only(top: 10.0, bottom: 16.0, left: 16.0),
             child: Text(
               'ĐÁNH GIÁ',
               style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
@@ -52,7 +51,7 @@ class ListRatingState extends State<ListRating> {
                 physics: ScrollPhysics(),
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) => Container(
-                    margin: EdgeInsets.only(bottom: 16.0),
+                    margin: EdgeInsets.only(bottom: 16.0, left: 16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,

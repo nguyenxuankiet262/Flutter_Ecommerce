@@ -5,9 +5,6 @@ import 'package:flutter_food_app/page/user/info.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ListRating extends StatefulWidget {
-  int index;
-
-  ListRating(this.index);
 
   @override
   State<StatefulWidget> createState() => ListRatingState();
@@ -25,13 +22,6 @@ class ListRatingState extends State<ListRating> {
       });
     });
     super.initState();
-    if (widget.index == 0 || widget.index == 2 || widget.index == 3) {
-      itemCount = 10;
-    } else if (widget.index == 1) {
-      itemCount = 2;
-    } else {
-      itemCount = 0;
-    }
   }
 
   @override
@@ -40,7 +30,7 @@ class ListRatingState extends State<ListRating> {
     final widthRating = size.width - 96;
     return isLoading
         ? Container(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height,
             color: colorBackground,
             child: Center(
                 child: CircularProgressIndicator(
@@ -74,7 +64,6 @@ class ListRatingState extends State<ListRating> {
                   )
                 : ListView.builder(
                     itemCount: itemCount,
-                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     padding: EdgeInsets.only(top: 0),
                     itemBuilder: (BuildContext context, int index) => Card(

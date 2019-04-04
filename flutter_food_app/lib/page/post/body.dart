@@ -52,7 +52,7 @@ class PostBodyState extends State<PostBody> {
                             '60.000 VNĐ',
                             style: TextStyle(
                               color: colorActive,
-                              fontSize: 14,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -63,7 +63,7 @@ class PostBodyState extends State<PostBody> {
                             '/',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 12,
+                              fontSize: 14,
                             ),
                           ),
                         ),
@@ -73,7 +73,7 @@ class PostBodyState extends State<PostBody> {
                             'cái',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 12,
+                              fontSize: 14,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.bold,
                             ),
@@ -92,7 +92,7 @@ class PostBodyState extends State<PostBody> {
                             child: Icon(
                               Icons.share,
                               color: Colors.blue,
-                              size: 15,
+                              size: 20,
                             ),
                           ),
                         ),
@@ -116,7 +116,7 @@ class PostBodyState extends State<PostBody> {
                               Icon(
                                 Icons.favorite,
                                 color: _isFav ? Colors.red : colorInactive,
-                                size: 15,
+                                size: 20,
                               ),
                               Container(
                                 margin: EdgeInsets.only(left: 2.0, bottom: 1.0),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_app/page/authentication/login/signin.dart';
 import 'header.dart';
 import 'settings/settings_another_user.dart';
 import 'body.dart';
@@ -54,6 +55,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
     return !isLogin && !widget.isAnother
         ? Scaffold(
             appBar: AppBar(
+              elevation: 0.0,
               brightness: Brightness.light,
               iconTheme: IconThemeData(
                 color: Colors.black, //change your color here
@@ -68,46 +70,11 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
               backgroundColor: Colors.white,
               centerTitle: true,
             ),
-            body: Container(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 30.0),
-                    child: Icon(
-                      FontAwesomeIcons.userLock,
-                      size: 150,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 15.0),
-                    width: 200,
-                    height: 40,
-                    child: RaisedButton(
-                      onPressed: () {
-                        Logining();
-                      },
-                      child: Text(
-                        "ĐĂNG NHẬP",
-                        style: TextStyle(
-                            fontFamily: "Ralway",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      color: colorActive,
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(6.0))),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            body: SigninContent(),
           )
         : Scaffold(
             appBar: AppBar(
+              elevation: 0.5,
               brightness: Brightness.light,
               iconTheme: IconThemeData(
                 color: Colors.black, //change your color here

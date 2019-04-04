@@ -33,10 +33,10 @@ class FeedBackItemState extends State<FeedbackItem> {
                 maxLines: 1,
               )),
           Shimmer.fromColors(
-              baseColor: widget.index == 2 ? Colors.black : colorActive,
-              highlightColor: widget.index != 2 ? Colors.yellow : colorInactive,
+              baseColor: widget.index == 1 ? Colors.black : colorActive,
+              highlightColor: widget.index != 1 ? Colors.yellow : colorInactive,
               child: Text(
-                widget.index != 2 ? 'Đã trả lời' : "Chưa trả lời",
+                widget.index != 1 ? 'Đã trả lời' : "Chưa trả lời",
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               )),
         ],

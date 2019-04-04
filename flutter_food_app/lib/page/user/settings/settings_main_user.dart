@@ -25,11 +25,11 @@ class SettingsMain extends StatelessWidget {
     // TODO: implement build
     return Container(
         color: Colors.white,
-        height: 500,
+        height: 520,
         child: ListView(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.all(16.0),
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -40,7 +40,7 @@ class SettingsMain extends StatelessWidget {
                   Text(
                     'BÀI VIẾT',
                     style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 16.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -61,7 +61,7 @@ class SettingsMain extends StatelessWidget {
                                   Text(
                                     settingPost[index],
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 14,
                                     ),
                                   ),
                                   Icon(
@@ -89,7 +89,7 @@ class SettingsMain extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.all(16.0),
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -100,7 +100,7 @@ class SettingsMain extends StatelessWidget {
                   Text(
                     'RIÊNG TƯ',
                     style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 16.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -121,7 +121,7 @@ class SettingsMain extends StatelessWidget {
                                   Text(
                                     settingPrivacy[index],
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 14,
                                     ),
                                   ),
                                   Row(
@@ -181,7 +181,7 @@ class SettingsMain extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(15.0),
+              padding: EdgeInsets.all(16.0),
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -192,7 +192,7 @@ class SettingsMain extends StatelessWidget {
                   Text(
                     'HỖ TRỢ',
                     style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 16.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600),
                   ),
@@ -213,7 +213,7 @@ class SettingsMain extends StatelessWidget {
                                   Text(
                                     settingSupport[index],
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 14,
                                     ),
                                   ),
                                   Icon(
@@ -224,6 +224,7 @@ class SettingsMain extends StatelessWidget {
                               ),
                             ),
                             onTap: () {
+                              Navigator.pop(context);
                               switch (index) {
                                 case 0:
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => FeedBackManage()));
@@ -242,16 +243,17 @@ class SettingsMain extends StatelessWidget {
                 sign_out();
               },
               child: Container(
-                padding: EdgeInsets.all(15.0),
+                padding: EdgeInsets.all(16.0),
                 child: Text(
                   'ĐĂNG XUẤT',
                   style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 16.0,
                       color: Colors.black,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ),
+
           ],
         ));
   }
