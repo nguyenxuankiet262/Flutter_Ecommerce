@@ -63,7 +63,7 @@ class HeaderHomeState extends State<HeaderHome> {
                       decoration: BoxDecoration(
                         borderRadius:
                             new BorderRadius.all(Radius.circular(10.0)),
-                        color: Colors.black.withOpacity(0.6),
+                        color: Colors.black.withOpacity(0.3),
                       ),
                     ),
                     Center(

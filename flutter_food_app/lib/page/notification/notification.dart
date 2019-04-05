@@ -54,7 +54,6 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
         ),
       ),
       body: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
         controller: _tabController,
         children: [
           NotiUser(),

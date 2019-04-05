@@ -240,6 +240,7 @@ class PostState extends State<Post> {
             'Bánh tiramisu thơm ngon đây cả nhà ơi',
             style: TextStyle(
               color: Colors.black,
+              fontWeight: FontWeight.w600,
               fontSize: 17.0,
             ),
           ),

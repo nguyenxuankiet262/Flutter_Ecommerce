@@ -89,7 +89,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                             decoration: BoxDecoration(
                               borderRadius:
                               new BorderRadius.all(Radius.circular(10.0)),
-                              color: Colors.black.withOpacity(0.6),
+                              color: Colors.black.withOpacity(0.3),
                             ),
                           ),
                           Center(
@@ -120,7 +120,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                   style: TextStyle(
                       fontSize: 17,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.w600),
                 ),
               )),
           isLoading
