@@ -45,11 +45,12 @@ class _MyMainPageState extends State<MyMainPage> {
     _pageController.jumpToPage(page);
   }
 
-  void navigateToFilter(){
+  void navigateToFilter() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FilterPage(1),),
+        builder: (context) => FilterPage(1),
+      ),
     );
   }
 
@@ -57,23 +58,31 @@ class _MyMainPageState extends State<MyMainPage> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
   }
 
-  void navigateToSearch(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage()));
+  void navigateToSearch() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SearchPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
       bloc: BlocProvider.of<SearchBloc>(context),
-      builder: (context, SearchState state){
+      builder: (context, SearchState state) {
         return Scaffold(
-            backgroundColor: Colors.white,
+            extendBody: true,
+            backgroundColor: colorBackground,
             body: new PageView(
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
                 MaterialApp(
-                  home: MyHomePage(this.navigateToPost, this.navigateToFilter, this.navigateToSearch),
-                  theme: ThemeData(fontFamily: 'Montserrat', pageTransitionsTheme: PageTransitionsTheme(builders: {TargetPlatform.android: CupertinoPageTransitionsBuilder(),}),),
+                  home: MyHomePage(this.navigateToPost, this.navigateToFilter,
+                      this.navigateToSearch),
+                  theme: ThemeData(
+                    fontFamily: 'Montserrat',
+                    pageTransitionsTheme: PageTransitionsTheme(builders: {
+                      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+                    }),
+                  ),
                   debugShowCheckedModeBanner: false,
                 ),
                 Cart(),
@@ -84,18 +93,20 @@ class _MyMainPageState extends State<MyMainPage> {
               controller: _pageController,
             ),
             resizeToAvoidBottomPadding: false,
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             floatingActionButton: Visibility(
               visible: !state.isSearch,
               child: FloatingActionButton(
-                backgroundColor: colorActive,
-                child: const Icon(FontAwesomeIcons.cameraRetro),
+                backgroundColor: Colors.white,
+                child: const Icon(FontAwesomeIcons.cameraRetro, color: colorActive,),
                 onPressed: () {
                   setState(() {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => CameraPage(),),
+                        builder: (context) => CameraPage(),
+                      ),
                     );
                   });
                 },
@@ -105,7 +116,7 @@ class _MyMainPageState extends State<MyMainPage> {
               visible: !state.isSearch,
               child: BottomAppBar(
                 shape: CircularNotchedRectangle(),
-                notchMargin: 10.0,
+                notchMargin: 8.0,
                 child: new Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -132,7 +143,9 @@ class _MyMainPageState extends State<MyMainPage> {
                                 'Trang chủ',
                                 style: TextStyle(
                                     fontFamily: 'Raleway',
-                                    color: _index == 0 ? colorActive : Colors.grey),
+                                    color: _index == 0
+                                        ? colorActive
+                                        : Colors.grey),
                               ),
                             ),
                           ],
@@ -154,7 +167,8 @@ class _MyMainPageState extends State<MyMainPage> {
                               children: <Widget>[
                                 Icon(
                                   FontAwesomeIcons.shoppingCart,
-                                  color: _index == 1 ? colorActive : Colors.grey,
+                                  color:
+                                      _index == 1 ? colorActive : Colors.grey,
                                   size: 20,
                                 ),
                                 Container(
@@ -163,7 +177,9 @@ class _MyMainPageState extends State<MyMainPage> {
                                     'Giỏ hàng',
                                     style: TextStyle(
                                         fontFamily: 'Raleway',
-                                        color: _index == 1 ? colorActive : Colors.grey),
+                                        color: _index == 1
+                                            ? colorActive
+                                            : Colors.grey),
                                   ),
                                 ),
                               ],
@@ -201,7 +217,9 @@ class _MyMainPageState extends State<MyMainPage> {
                                   'Thông báo',
                                   style: TextStyle(
                                       fontFamily: 'Raleway',
-                                      color: _index == 2 ? colorActive : Colors.grey),
+                                      color: _index == 2
+                                          ? colorActive
+                                          : Colors.grey),
                                 ),
                               ),
                             ],
@@ -227,21 +245,43 @@ class _MyMainPageState extends State<MyMainPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(
-                                FontAwesomeIcons.userAlt,
-                                color: _index == 3 ? colorActive : Colors.grey,
-                                size: 20,
-                              ),
                               Container(
-                                margin: EdgeInsets.only(top: 2.0),
-                                child: Text(
-                                  'Cá nhân',
-                                  style: TextStyle(
-                                      fontFamily: 'Raleway',
-                                      color: _index == 3   ? colorActive : Colors.grey),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: _index == 3
+                                            ? colorActive
+                                            : colorInactive,
+                                        width: _index == 3 ? 2.0 : 2.0),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(100.0))),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/images/cat.jpg',
+                                    fit: BoxFit.cover,
+                                    width: 21.0,
+                                    height: 21.0,
+                                  ),
                                 ),
                               ),
+                              Container(
+                                height: 20,
+                                color: Colors.white,
+                                child: Text(
+                                  "Cá nhân",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              )
                             ],
+                          ),
+                        ),
+                        Positioned(
+                          right: 3.0,
+                          bottom: 9.3,
+                          child: Text(
+                            'Cá nhân',
+                            style: TextStyle(
+                                fontFamily: 'Raleway',
+                                color: _index == 3 ? colorActive : Colors.grey),
                           ),
                         ),
                         new Positioned(
@@ -256,8 +296,7 @@ class _MyMainPageState extends State<MyMainPage> {
                   ],
                 ),
               ),
-            )
-        );
+            ));
       },
     );
   }

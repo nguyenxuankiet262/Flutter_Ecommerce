@@ -36,7 +36,11 @@ class CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return (controller == null || !controller.value.isInitialized)
+    ? Container(
+      color: Colors.black,
+    )
+    : Column(
       children: <Widget>[
         Expanded(
           flex: 1,
@@ -46,7 +50,10 @@ class CameraPageState extends State<CameraPage> {
           ),
         ),
         Center(
-          child: _cameraPreviewWidget(),
+          child: AspectRatio(
+            aspectRatio: controller.value.aspectRatio,
+            child: CameraPreview(controller),
+          ),
         ),
         Expanded(
           flex: 1,
