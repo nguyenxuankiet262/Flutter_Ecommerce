@@ -111,7 +111,6 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
             ];
           },
           body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: new List.generate(tabsFeedback.length, (index) {
               return ListFeedback(index);

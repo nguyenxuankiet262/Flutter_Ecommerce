@@ -11,7 +11,7 @@ class ListFeedback extends StatefulWidget {
   State<StatefulWidget> createState() => ListFeedbackState();
 }
 
-class ListFeedbackState extends State<ListFeedback> {
+class ListFeedbackState extends State<ListFeedback> with AutomaticKeepAliveClientMixin{
   int itemCount;
   bool isLoading = true;
 
@@ -79,4 +79,8 @@ class ListFeedbackState extends State<ListFeedback> {
             )
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

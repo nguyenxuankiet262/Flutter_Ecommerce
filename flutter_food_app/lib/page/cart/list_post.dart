@@ -27,6 +27,7 @@ class _ListCartState extends State<ListCart> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Container(
+      padding: EdgeInsets.only(bottom: 16.0),
       child: RefreshIndicator(
         child: ListView.builder(
           physics: ScrollPhysics(),

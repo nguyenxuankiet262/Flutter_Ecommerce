@@ -91,17 +91,17 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
               Tab(
                 child: Text(
                   "Bài viết",
-                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),),
               Tab(
                 child: Text(
                   "Đánh giá",
-                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),),
               Tab(
                 child: Text(
                   "Thông tin",
-                  style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),
               ),
             ],

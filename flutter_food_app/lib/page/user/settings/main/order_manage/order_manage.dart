@@ -101,7 +101,6 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
             ];
           },
           body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: new List.generate(tabsOrder.length, (index) {
               return new ListOrder(index, widget.isSellOrder);

@@ -40,6 +40,7 @@ class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientM
                   this.navigateToFilter, this.navigateToSearch),
             )),
         Container(
+          padding: EdgeInsets.only(bottom: 54),
           child: ListCategory(this.navigateToPost),
         ),
       ],
