@@ -15,11 +15,8 @@ class InfoItemState extends State<InfoItem> {
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       children: <Widget>[
-        Container(
+        Padding(
             padding: EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: colorInactive, width: 0.5)),
-            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -38,6 +35,7 @@ class InfoItemState extends State<InfoItem> {
                             "Thông tin",
                             style: TextStyle(
                               fontSize: 14,
+                              fontFamily: 'Raleway',
                             ),
                           ),
                         ),
@@ -46,7 +44,7 @@ class InfoItemState extends State<InfoItem> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 10.0),
+                  margin: EdgeInsets.only(top: 16.0),
                   child: Text(
                     "Mình bắt chước loài mèo kêu nha\nKêu cùng anh méo meo meo meo\nEm chỉ muốn ôm anh nhõng nhẽo\nAizo meo meo meo meo mèo",
                     style: TextStyle(
@@ -54,77 +52,41 @@ class InfoItemState extends State<InfoItem> {
                       fontSize: 14,
                     ),
                   ),
-                )
-              ],
-            )),
-        Container(
-            height: 50,
-            padding: EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: colorInactive, width: 0.5)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.home,
-                      size: 14,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        "Địa chỉ",
-                        style: TextStyle(
-                          fontSize: 14,
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        FontAwesomeIcons.home,
+                        size: 14,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "Địa chỉ",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Raleway',
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Text(
                   "TP. Hồ Chí Minh",
                   style: TextStyle(
                     fontSize: 14,
+                    fontFamily: 'Raleway',
                   ),
+                ),
+                Container(
+                  height: 200,
+                  color: Colors.white,
                 )
               ],
             )),
-        Container(
-            height: 50,
-            padding: EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: colorInactive, width: 0.5)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      FontAwesomeIcons.mobileAlt,
-                      size: 14,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        "Điện thoại",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  "+ 84 123 456 789",
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                )
-              ],
-            ))
       ],
     );
   }

@@ -7,6 +7,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     dispatch(AddLocation(nameCities, nameProvinces));
   }
 
+  void changeLocation(int indexCity, int indexProvince){
+    dispatch(ChangeLocation(indexCity, indexProvince));
+  }
+
   @override
   // TODO: implement initialState
   LocationState get initialState => LocationState.initial();
@@ -19,6 +23,16 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       yield LocationState(
         nameCities: event.nameCities,
         nameProvinces: event.nameProvinces,
+        indexCity: 5,
+        indexProvince: 0
+      );
+    }
+    if (event is ChangeLocation){
+      yield LocationState(
+        nameCities: currentState.nameCities,
+        nameProvinces: currentState.nameProvinces,
+        indexCity: event.indexCity,
+        indexProvince: event.indeProvince
       );
     }
   }

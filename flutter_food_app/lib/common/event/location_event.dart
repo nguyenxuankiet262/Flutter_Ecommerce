@@ -5,3 +5,9 @@ class AddLocation extends LocationEvent{
   final List<List<String>> nameProvinces;
   AddLocation(this.nameCities, this.nameProvinces);
 }
+
+class ChangeLocation extends LocationEvent{
+  final int indexCity;
+  final int indeProvince;
+  ChangeLocation(this.indexCity, this.indeProvince);
+}

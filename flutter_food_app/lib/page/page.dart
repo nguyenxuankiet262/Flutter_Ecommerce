@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/grid_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/state/search_state.dart';
+import 'package:flutter_food_app/const/animation_const.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/filter/filter.dart';
 import 'package:flutter_food_app/page/home/home.dart';
 import 'package:flutter_food_app/page/cart/cart.dart';
+import 'package:flutter_food_app/page/location/location.dart';
 import 'package:flutter_food_app/page/notification/notification.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
 import 'package:flutter_food_app/page/post/post.dart';
@@ -54,13 +56,17 @@ class _MyMainPageState extends State<MyMainPage> {
     );
   }
 
-  void navigateToPost() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+  void navigateToLocation() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationPage(),
+      ),
+    );
   }
 
-  void navigateToSearch() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SearchPage()));
+  void navigateToPost() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
   }
 
   @override
@@ -75,13 +81,9 @@ class _MyMainPageState extends State<MyMainPage> {
               physics: NeverScrollableScrollPhysics(),
               children: <Widget>[
                 MaterialApp(
-                  home: MyHomePage(this.navigateToPost, this.navigateToFilter,
-                      this.navigateToSearch),
+                  home: MyHomePage(this.navigateToPost, this.navigateToFilter, this.navigateToLocation),
                   theme: ThemeData(
                     fontFamily: 'Montserrat',
-                    pageTransitionsTheme: PageTransitionsTheme(builders: {
-                      TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-                    }),
                   ),
                   debugShowCheckedModeBanner: false,
                 ),

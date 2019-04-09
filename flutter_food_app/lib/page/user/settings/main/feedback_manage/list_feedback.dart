@@ -73,7 +73,7 @@ class ListFeedbackState extends State<ListFeedback> with AutomaticKeepAliveClien
                     shrinkWrap: true,
                     itemCount: itemCount,
                     itemBuilder: (BuildContext context, int index) => Container(
-                      margin: EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0, bottom: index == itemCount - 1 ? 10.0 : 0.0),
+                      margin: EdgeInsets.only(top: index == 0 ? 10 : 5.0, bottom: index == itemCount - 1 ? 5.0 : 0.0),
                       child: FeedbackItem(widget.index),
                     )
             )

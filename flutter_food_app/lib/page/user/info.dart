@@ -55,7 +55,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
     return !isLogin && !widget.isAnother
         ? Scaffold(
             appBar: AppBar(
-              elevation: 0.0,
+              elevation: 0.5,
               brightness: Brightness.light,
               iconTheme: IconThemeData(
                 color: Colors.black, //change your color here

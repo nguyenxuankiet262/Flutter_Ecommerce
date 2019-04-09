@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter/services.dart';
 import 'header.dart';
-import 'package:camera/camera.dart';
 import 'body.dart';
 import 'package:toast/toast.dart';
-import 'package:flutter_food_app/app.dart';
 
 class InfoPost extends StatefulWidget {
   @override
@@ -199,6 +197,7 @@ class InfoPostState extends State<InfoPost> {
     return WillPopScope(
       child: Scaffold(
           appBar: AppBar(
+            elevation: 0.5,
             iconTheme: IconThemeData(
               color: Colors.black, //change your color here
             ),

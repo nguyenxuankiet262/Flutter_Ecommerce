@@ -65,15 +65,13 @@ class BodyInfoState extends State<BodyInfo> {
 
   void _showDialog() {
     showDialog(
-        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            contentPadding: EdgeInsets.only(top: 10.0),
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            contentPadding: EdgeInsets.only(top: 16.0),
             content: Container(
-              width: 300.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,18 +83,18 @@ class BodyInfoState extends State<BodyInfo> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 5.0,
+                    height: 16.0,
                   ),
                   Divider(
                     color: Colors.grey,
-                    height: 4.0,
+                    height: 0.5,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                    padding: EdgeInsets.only(top: 10.0, right: 16.0),
                     child: TextField(
                       controller: controller,
                       maxLength: 11,
-                      maxLengthEnforced: true,
+                      textDirection: TextDirection.rtl,
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: false),
                       decoration: InputDecoration(
@@ -105,10 +103,10 @@ class BodyInfoState extends State<BodyInfo> {
                         suffixText: 'VNĐ',
                         suffixStyle: TextStyle(color: Colors.black),
                         border: InputBorder.none,
-                        icon: Icon(
-                          Icons.attach_money,
-                          color: colorInactive,
-                        ),
+                        prefix: Container(
+                          width: 16,
+                          height: 16,
+                        )
                       ),
                       cursorColor: colorActive,
                       maxLines: 1,
@@ -116,12 +114,10 @@ class BodyInfoState extends State<BodyInfo> {
                   ),
                   InkWell(
                     child: Container(
-                      padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                      padding: EdgeInsets.symmetric(vertical: 20),
                       decoration: BoxDecoration(
                         color: Colors.green,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(32.0),
-                            bottomRight: Radius.circular(32.0)),
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(8.0), bottomLeft: Radius.circular(8.0))
                       ),
                       child: Text(
                         "ĐỒNG Ý",
@@ -142,7 +138,6 @@ class BodyInfoState extends State<BodyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final widthAddress = 150.0;
     return GestureDetector(
       onTap: () {
@@ -191,13 +186,13 @@ class BodyInfoState extends State<BodyInfo> {
               primaryColorDark: contentInput.isEmpty ? Colors.red : Colors.green,
             ),
             child: new Container(
-              margin: EdgeInsets.only(top: 10.0),
+              margin: EdgeInsets.only(top: 16.0),
               decoration: BoxDecoration(color: Colors.white),
               child: new TextField(
                 cursorColor: colorActive,
                 controller: myControllerContent,
                 textAlign: TextAlign.start,
-                maxLines: 5,
+                maxLines: 10,
                 decoration: new InputDecoration(
                   border: new OutlineInputBorder(
                       borderSide: new BorderSide(color: colorInactive)),
@@ -222,7 +217,7 @@ class BodyInfoState extends State<BodyInfo> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
             child: Text(
               'Nội dung càng rõ ràng, càng nhiều người quan tâm!',
               style: TextStyle(fontSize: 12),
@@ -252,12 +247,11 @@ class BodyInfoState extends State<BodyInfo> {
                         ),
                       ),
                       Container(
-                        width: widthAddress,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             Container(
-                              width: widthAddress - 18,
+                              width: index != 4 ? widthAddress - 18 : MediaQuery.of(context).size.width - 150,
                               padding: EdgeInsets.only(right: 10.0),
                               child: Text(
                                 nameOption[index],

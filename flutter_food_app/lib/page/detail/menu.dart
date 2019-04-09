@@ -32,7 +32,10 @@ class HeaderDetailState extends State<HeaderDetail> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _fragments = new List.generate(listMenu[widget.index].childMenu.length, (index) {
-      return new ListPost(widget.callback);
+      return new Container(
+        padding: EdgeInsets.all(2.0),
+        child: ListPost(widget.callback)
+      );
     });
     return Container(
       child: ListView(

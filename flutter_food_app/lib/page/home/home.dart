@@ -2,8 +2,8 @@ import "package:flutter/material.dart";
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
+import 'package:flutter_food_app/common/state/location_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/model/province.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'body.dart';
 import 'package:flutter_food_app/page/search/search.dart';
@@ -26,44 +26,13 @@ class _MyHomePageState extends State<MyHomePage>
   final myController = TextEditingController();
 
   @override
-  void initState() {
-    load();
-  }
-
-  @override
   void dispose() {
     // Clean up the controller when the Widget is disposed
     myController.dispose();
     super.dispose();
   }
 
-  load() async {
-    List<String> nameCities = [
-      'Tất cả',
-    ];
-    List<List<String>> nameProvinces = [
-      ['Tất cả']
-    ];
 
-    String data = await DefaultAssetBundle.of(context)
-        .loadString("assets/datas/vn_province.json");
-    final city = cityFromJson(data);
-    final cities = city.values.toList();
-    for (var i = 0; i < cities.length; i++) {
-      if (cities[i].name.contains("Thành phố ")) {
-        nameCities.add(cities[i].name.split("Thành phố ").elementAt(1));
-      }
-      if (cities[i].name.contains("Tỉnh ")) {
-        nameCities.add(cities[i].name.split("Tỉnh ").elementAt(1));
-      }
-      List<String> temp = cities[i].districts.values.toList();
-      temp.insert(0, 'Tất cả');
-      nameProvinces.add(temp);
-    }
-
-    BlocProvider.of<LocationBloc>(context)
-        .addLocation(nameCities, nameProvinces);
-  }
 
   void navigateToPost() {
     this.widget.navigateToPost();
@@ -123,56 +92,77 @@ class _MyHomePageState extends State<MyHomePage>
                 ),
                 backgroundColor: Colors.white,
                 actions: <Widget>[
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 16),
+                  GestureDetector(
+                      onTap: () {
+                        navigateToSearch();
+                      },
                       child: Container(
-                          padding: EdgeInsets.only(
-                              top: 3.0, bottom: 3.0, right: 10.0, left: 10.0),
-                          height: 31,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100.0)),
-                              border:
-                                  Border.all(color: colorActive, width: 0.5)),
-                          child: Row(
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(right: 5.0),
-                                child: Icon(
-                                  Icons.location_on,
-                                  color: colorActive,
-                                  size: 15,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Chọn khu vực",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 10,
-                                        fontFamily: "Ralway"),
-                                  ),
-                                  Container(
-                                      width: 70,
-                                      child: Text(
-                                        "Quận Tân Bình",
-                                        style: TextStyle(
-                                            color: colorActive,
-                                            fontSize: 10,
-                                            fontFamily: "Ralway"),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                      )),
-                                ],
-                              ),
-                            ],
-                          )),
-                    ),
-                  ),
+                        color: Colors.white,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 3.0,
+                                    bottom: 3.0,
+                                    right: 10.0,
+                                    left: 10.0),
+                                height: 31,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(100.0)),
+                                    border: Border.all(
+                                        color: colorActive, width: 0.5)),
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(right: 5.0),
+                                      child: Icon(
+                                        Icons.location_on,
+                                        color: colorActive,
+                                        size: 15,
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          "Chọn khu vực",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                              fontFamily: "Ralway"),
+                                        ),
+                                        BlocBuilder(
+                                            bloc: BlocProvider.of<LocationBloc>(
+                                                context),
+                                            builder:
+                                                (context, LocationState state) {
+                                              return Container(
+                                                  width: 70,
+                                                  child: Text(
+                                                    state.indexProvince == 0
+                                                    ? state.nameCities[state.indexCity]
+                                                    : state.nameProvinces[state.indexCity][state.indexProvince],
+                                                    style: TextStyle(
+                                                        color: colorActive,
+                                                        fontSize: 10,
+                                                        fontFamily: "Ralway"),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                  ));
+                                            }),
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ),
+                      ))
                 ],
               ),
               isSearch
@@ -315,8 +305,7 @@ class _MyHomePageState extends State<MyHomePage>
         backgroundColor: colorBackground,
         body: isSearch
             ? SearchPage()
-            : BodyContent(this.navigateToPost, this.navigateToFilter,
-                this.navigateToSearch),
+            : BodyContent(this.navigateToPost, this.navigateToFilter),
       ),
       onWillPop: () {
         if (isSearch) {

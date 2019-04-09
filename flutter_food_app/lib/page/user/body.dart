@@ -68,7 +68,10 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     List<Widget> _fragments = [
-      ListPost(),
+      Container(
+        padding: EdgeInsets.all(2.0),
+        child: ListPost(),
+      ),
       ListRating(),
       InfoItem(),
     ];

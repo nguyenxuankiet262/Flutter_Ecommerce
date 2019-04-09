@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_app/const/animation_const.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/detail.dart';
 
 class HeaderHome extends StatefulWidget {
-  Function navigateToPost, navigateToFilter, navigateToSearch;
+  Function navigateToPost, navigateToFilter;
 
-  HeaderHome(this.navigateToPost, this.navigateToFilter, this.navigateToSearch);
+  HeaderHome(this.navigateToPost, this.navigateToFilter);
 
   @override
   State<StatefulWidget> createState() => HeaderHomeState();
@@ -17,7 +18,7 @@ class HeaderHomeState extends State<HeaderHome> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListAllPost(widget.navigateToPost, widget.navigateToFilter, widget.navigateToSearch, index)),
+          builder: (context) => ListAllPost(widget.navigateToPost, widget.navigateToFilter, index)),
     );
   }
 

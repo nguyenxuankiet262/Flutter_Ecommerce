@@ -47,12 +47,10 @@ class CategoryRadioState extends State<CategoryRadio> {
               //highlightColor: Colors.red,
               splashColor: colorActive,
               onTap: () {
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChildCategory(listMenu[index].name, index)),
-                  );
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChildCategory(listMenu[index].name, index)),
+                );
               },
 
               child: new CategeoryItem(categories[index]),

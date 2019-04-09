@@ -8,10 +8,10 @@ import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
 
 class ListAllPost extends StatefulWidget {
-  Function navigateToPost, navigateToFilter, navigateToSearch;
+  Function navigateToPost, navigateToFilter;
   int index;
 
-  ListAllPost(this.navigateToPost, this.navigateToFilter, this.navigateToSearch,
+  ListAllPost(this.navigateToPost, this.navigateToFilter,
       this.index);
 
   @override
@@ -70,37 +70,40 @@ class _ListAllPostState extends State<ListAllPost> {
           onTap: () {
             this.widget.navigateToFilter();
           },
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: Container(
-                  padding: EdgeInsets.only(
-                      top: 3.0, bottom: 3.0, right: 10.0, left: 10.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(100.0)),
-                      border: Border.all(color: colorActive, width: 0.5)),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(right: 5.0),
-                        child: Icon(
-                          FontAwesomeIcons.filter,
-                          color: colorActive,
-                          size: 10,
-                        ),
-                      ),
-                      Text(
-                        "Lọc",
-                        style: TextStyle(
+          child: Container(
+            color: Colors.white,
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: Container(
+                    padding: EdgeInsets.only(
+                        top: 3.0, bottom: 3.0, right: 10.0, left: 10.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                        border: Border.all(color: colorActive, width: 0.5)),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 5.0),
+                          child: Icon(
+                            FontAwesomeIcons.filter,
                             color: colorActive,
-                            fontSize: 12,
-                            fontFamily: "Ralway"),
-                      )
-                    ],
-                  )),
+                            size: 10,
+                          ),
+                        ),
+                        Text(
+                          "Lọc",
+                          style: TextStyle(
+                              color: colorActive,
+                              fontSize: 12,
+                              fontFamily: "Ralway"),
+                        )
+                      ],
+                    )),
+              ),
             ),
-          ),
+          )
         ),
       ],
     );
