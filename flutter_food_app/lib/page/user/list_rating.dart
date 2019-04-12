@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:flutter_food_app/page/user/info.dart';
+import 'package:toast/toast.dart';
 
 class ListRating extends StatefulWidget {
   @override
@@ -10,6 +14,40 @@ class ListRating extends StatefulWidget {
 
 class ListRatingState extends State<ListRating> {
   int itemCount = 10;
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Cảnh Báo!"),
+          content: new Text("Bạn có chắc muốn ẩn đánh giá này không?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Không"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(
+                "Có",
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Toast.show('Đã xóa', context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,10 +81,7 @@ class ListRatingState extends State<ListRating> {
                         ),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => InfoPage(true)),
-                        );
+                        BlocProvider.of<FunctionBloc>(context).currentState.navigateToUser();
                       },
                     ),
                     Container(
@@ -71,12 +106,19 @@ class ListRatingState extends State<ListRating> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {},
-                                child: Icon(
-                                  Icons.more_vert,
-                                  color: colorInactive,
-                                  size: 15,
-                                ),
+                                onTap: () {
+                                  _showDialog();
+                                },
+                                child: Container(
+                                  width: 50,
+                                  color: Colors.white,
+                                  child: Icon(
+                                    FontAwesomeIcons
+                                        .solidEyeSlash,
+                                    size: 12,
+                                    color: colorInactive,
+                                  ),
+                                )
                               ),
                             ],
                           ),

@@ -52,6 +52,7 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
                 backgroundColor: Colors.white,
                 pinned: true,
                 floating: true,
+                snap: true,
                 expandedHeight: 150,
                 actions: <Widget>[
                   IconButton(
@@ -60,7 +61,7 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
                     },
                     icon: Icon(
                       Icons.add,
-                      color: colorActive,
+                      color: Colors.black,
                     ),
                   )
                 ],
@@ -95,9 +96,8 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
                     ),
                   ),
                 ),
-                forceElevated: innerBoxIsScrolled,
                 bottom: new TabBar(
-                  indicatorColor: Colors.white,
+                  indicatorColor: Colors.black,
                   unselectedLabelColor: Colors.grey,
                   labelColor: Colors.black,
                   tabs: new List.generate(tabsFeedback.length, (index) {

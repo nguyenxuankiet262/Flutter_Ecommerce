@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_food_app/page/post/post.dart';
@@ -6,6 +8,8 @@ import 'favorite_item.dart';
 import 'package:toast/toast.dart';
 
 class CartItem extends StatefulWidget {
+  int _index;
+  CartItem(this._index);
   @override
   State<StatefulWidget> createState() => CartItemState();
 }
@@ -21,7 +25,7 @@ class CartItemState extends State<CartItem> {
           borderRadius: BorderRadius.circular(10.0),
         ),
         margin:
-            EdgeInsets.only(top: 16.0, bottom: 4.0, right: 16.0, left: 16.0),
+            EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget._index == 5 ? 16.0 : 0.0),
         child: Column(children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,10 +39,7 @@ class CartItemState extends State<CartItem> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Post()),
-                        );
+                        BlocProvider.of<FunctionBloc>(context).currentState.navigateToPost();
                       },
                       child: Container(
                         child: ClipRRect(

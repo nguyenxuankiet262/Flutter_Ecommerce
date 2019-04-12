@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
 
-class ListSearchPost extends StatefulWidget {
+class ListSearchUser extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ListSearchPostState();
+  State<StatefulWidget> createState() => _ListSearchUserState();
 }
 
-class _ListSearchPostState extends State<ListSearchPost>
+class _ListSearchUserState extends State<ListSearchUser>
     with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
 
@@ -32,43 +32,42 @@ class _ListSearchPostState extends State<ListSearchPost>
             )))
         : ListView.builder(
             physics: NeverScrollableScrollPhysics(),
-            itemCount: 10,
+            itemCount: 20,
             shrinkWrap: true,
             itemBuilder: (BuildContext context, int index) => Container(
+                color: Colors.white,
                 child: Column(children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: index == 9 ? 16.0 : 0.0),
+                        margin: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: index == 19 ? 16.0 : 0.0),
                         width: MediaQuery.of(context).size.width - 64,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {},
-                              child: Container(
-                                child: ClipRRect(
-                                  child: Image.asset(
-                                    'assets/images/carrot.jpg',
-                                    fit: BoxFit.fill,
-                                  ),
-                                  borderRadius: new BorderRadius.all(
-                                      Radius.circular(5.0)),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  index % 2 == 0
+                                      ? 'assets/images/cat.jpg'
+                                      : 'assets/images/dog.jpg',
+                                  fit: BoxFit.cover,
+                                  width: 50.0,
+                                  height: 50.0,
                                 ),
-                                width: 105,
-                                height: 90,
                               ),
                             ),
-                            Flexible(
+                            Container(
+                              height: 50,
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
-                                    height: 65,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -79,7 +78,7 @@ class _ListSearchPostState extends State<ListSearchPost>
                                           padding: EdgeInsets.only(
                                               right: 10.0, left: 15.0),
                                           child: Text(
-                                            'Cà rốt tươi ngon đây! Mại zô!',
+                                            'meowmeow',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -93,7 +92,7 @@ class _ListSearchPostState extends State<ListSearchPost>
                                               left: 15.0,
                                               top: 5.0),
                                           child: Text(
-                                            '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM',
+                                            'Trần Văn Mèo',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -101,20 +100,6 @@ class _ListSearchPostState extends State<ListSearchPost>
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 4.0,
-                                      right: 10.0,
-                                      left: 15.0,
-                                    ),
-                                    child: Text(
-                                      "100.000 VNĐ",
-                                      style: TextStyle(
-                                          color: colorActive,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17.0),
                                     ),
                                   ),
                                 ],

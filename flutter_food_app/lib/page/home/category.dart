@@ -70,7 +70,6 @@ class _ListCategoryState extends State<ListCategory> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(4.0),
             child: ListPost(this._gotoPostScreen),
           ),
         ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
+import 'package:flutter_food_app/common/state/text_search_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'product/product.dart';
 import 'user/user.dart';
-import 'product/search_product.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -14,7 +16,6 @@ class SearchPageState extends State<SearchPage>
   int _index = 1;
   String searchInput = "";
   TabController _tabController;
-  FocusNode _focus = new FocusNode();
 
   @override
   void initState() {
@@ -36,14 +37,9 @@ class SearchPageState extends State<SearchPage>
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        brightness: Brightness.light,
+        resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.white,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        title: TabBar(
+        appBar: TabBar(
           controller: _tabController,
           indicatorColor: colorActive,
           unselectedLabelColor: Colors.grey,
@@ -70,18 +66,16 @@ class SearchPageState extends State<SearchPage>
             )
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _index == 1 && searchInput.isNotEmpty
-              ? SearchProduct()
-              : ProductContent(),
-          _index == 2 && searchInput.isNotEmpty && !_focus.hasFocus
-              ? SearchProduct()
-              : UserContent(),
-        ],
-      ),
-    );
+        body: BlocBuilder(
+            bloc: BlocProvider.of<SearchInputBloc>(context),
+            builder: (context, TextSearchState state) {
+              return TabBarView(
+                controller: _tabController,
+                children: [
+                  ProductContent(),
+                  UserContent(),
+                ],
+              );
+            }));
   }
 }

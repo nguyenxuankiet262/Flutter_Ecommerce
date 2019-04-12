@@ -135,11 +135,10 @@ class PostState extends State<Post> {
                         height: 5,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15.0))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
                       ),
-                    )
-                ),
+                    )),
                 ListView.builder(
                   itemCount: nameList.length,
                   shrinkWrap: true,
@@ -148,9 +147,11 @@ class PostState extends State<Post> {
                       GestureDetector(
                         child: Container(
                           height: 40,
-                          margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 15.0),
+                          margin: EdgeInsets.only(
+                              left: 50.0, right: 50.0, top: 15.0),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
                             color: Colors.white,
                           ),
                           child: Center(
@@ -159,8 +160,7 @@ class PostState extends State<Post> {
                               style: TextStyle(
                                   fontSize: 14,
                                   color: index != 2 ? Colors.blue : Colors.red,
-                                fontWeight: FontWeight.w500
-                              ),
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
@@ -193,39 +193,38 @@ class PostState extends State<Post> {
         });
   }
 
-  _showCart(){
+  _showCart() {
     showModalBottomSheet(
       context: context, // Also d// efault
       builder: (context) => Container(
-        color: Colors.transparent,
-        height: 350,
-        child: Column(
-          children: <Widget>[
-            Container(
-                margin: EdgeInsets.only(top: 10.0),
-                child: Center(
-                  child: Container(
-                    width: 50,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(15.0))
-                    ),
+            color: Colors.transparent,
+            height: 350,
+            child: Column(
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(top: 10.0),
+                    child: Center(
+                      child: Container(
+                        width: 50,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0))),
+                      ),
+                    )),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 15.0),
+                  padding: EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
-                )
+                  child: AddToCart(),
+                ),
+              ],
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 15.0),
-              padding: EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-              ),
-              child: AddToCart(),
-            ),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
@@ -233,85 +232,89 @@ class PostState extends State<Post> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0.5,
-          brightness: Brightness.light,
-          title: Text(
-            'Bánh tiramisu thơm ngon đây cả nhà ơi',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 17.0,
-            ),
+      appBar: AppBar(
+        elevation: 0.5,
+        brightness: Brightness.light,
+        title: Text(
+          'Bánh tiramisu thơm ngon đây cả nhà ơi',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+            fontSize: 17.0,
           ),
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              tooltip: 'Tùy chỉnh',
-              onPressed: () {
-                _showSettingSheet();
-              },
-            ),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            tooltip: 'Tùy chỉnh',
+            onPressed: () {
+              _showSettingSheet();
+            },
+          ),
+        ],
+      ),
+      body: Container(
+        color: colorBackground,
+        child: ListView(
+          children: <Widget>[
+            CarouselWithIndicator(),
+            PostBody(),
+            CommentPost(),
+            RelativePost(),
           ],
         ),
-        body: Container(
-          color: colorBackground,
-          child: ListView(
-            children: <Widget>[
-              CarouselWithIndicator(),
-              PostBody(),
-              CommentPost(),
-              RelativePost(),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Container(
-          height: 50,
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
+      ),
+      bottomNavigationBar: Container(
+        height: 50,
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  _showCart();
+                },
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: colorActive, width: 1.5)
-                  ),
-                  child: GestureDetector(
-                    onTap: (){
-                      _showCart();
-                    },
-                    child: Center(
-                      child: Text(
-                        'THÊM VÀO GIỎ HÀNG',
-                        style: TextStyle(color: colorActive, fontWeight: FontWeight.w600,fontSize: 12.0),
-                      ),
-                    ),
-                  ),
-                ),
-                flex: 1,
-              ),
-              Expanded(
-                child: Container(
-                  height: 50,
-                  color: colorActive,
+                      border: Border.all(color: colorActive, width: 1.5)),
                   child: Center(
                     child: Text(
-                      'GỌI ĐIỆN NGƯỜI BÁN',
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 12.0),
+                      'THÊM VÀO GIỎ HÀNG',
+                      style: TextStyle(
+                          color: colorActive,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12.0),
                     ),
                   ),
                 ),
-                flex: 1,
               ),
-
-            ],
-          ),
+              flex: 1,
+            ),
+            Expanded(
+              child: Container(
+                height: 50,
+                color: colorActive,
+                child: Center(
+                  child: Text(
+                    'GỌI ĐIỆN NGƯỜI BÁN',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12.0),
+                  ),
+                ),
+              ),
+              flex: 1,
+            ),
+          ],
         ),
+      ),
     );
   }
 }

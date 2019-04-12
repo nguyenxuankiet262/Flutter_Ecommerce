@@ -1,4 +1,7 @@
 import "package:flutter/material.dart";
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'cart_item.dart';
 
 class ListCart extends StatefulWidget {
@@ -8,6 +11,7 @@ class ListCart extends StatefulWidget {
 
 class _ListCartState extends State<ListCart> {
   int itemCount = 6;
+  ScrollController _hideButtonController;
 
   void load() {
     if(this.mounted) {
@@ -18,25 +22,39 @@ class _ListCartState extends State<ListCart> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(false);
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(true);
+      }
+    });
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _hideButtonController.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return new Container(
-      padding: EdgeInsets.only(bottom: 16.0),
-      child: RefreshIndicator(
-        child: ListView.builder(
-          physics: ScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: itemCount,
-          itemBuilder: (BuildContext context, int index) => CartItem()
-        ),
-        onRefresh: _refresh,
-      ),
+    return new ListView.builder(
+        controller: _hideButtonController,
+        itemCount: itemCount,
+        itemBuilder: (BuildContext context, int index) => CartItem(index)
     );
   }
 

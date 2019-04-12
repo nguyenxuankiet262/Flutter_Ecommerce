@@ -28,18 +28,16 @@ class NotiUserState extends State<NotiUser> with AutomaticKeepAliveClientMixin {
                 width: 200,
               ),
               GestureDetector(
-                onTap: (){
-                  setState(() {
-                  });
+                onTap: () {
+                  setState(() {});
                 },
                 child: Text('Nothing to show!'),
               ),
             ],
           )
-        : ListView(
-            children: <Widget>[
-              ListNotiUser(),
-            ],
+        : Container(
+            child: ListNotiUser(),
+            color: Colors.white,
           );
   }
 

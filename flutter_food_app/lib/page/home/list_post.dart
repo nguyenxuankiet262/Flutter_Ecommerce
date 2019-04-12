@@ -17,13 +17,14 @@ class _ListPostState extends State<ListPost> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      height: 235,
+      height: 260,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: itemCount,
         shrinkWrap: true,
         physics: ScrollPhysics(),
         itemBuilder: (BuildContext context, int index) => new Card(
+          margin: EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0, right: index == itemCount - 1 ? 8 : 0),
               child: new Container(
                 height: 170,
                 width: 200,

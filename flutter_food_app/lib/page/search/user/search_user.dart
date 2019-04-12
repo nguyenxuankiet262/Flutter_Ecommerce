@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'list_search_post.dart';
+import 'list_search_user.dart';
 
-class SearchProduct extends StatefulWidget{
+class SearchUser extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => SearchProductState();
+  State<StatefulWidget> createState() => SearchUserState();
 }
 
-class SearchProductState extends State<SearchProduct>{
+class SearchUserState extends State<SearchUser>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -20,14 +20,14 @@ class SearchProductState extends State<SearchProduct>{
               padding:
               EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
               child: Text(
-                "Tìm thấy 10 kết quả",
+                "Tìm thấy 20 kết quả",
                 style: TextStyle(
                   color: colorInactive,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            ListSearchPost(),
+            ListSearchUser(),
           ],
         ));
   }

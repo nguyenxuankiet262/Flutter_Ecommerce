@@ -27,26 +27,30 @@ class ListCityState extends State<ListCity>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return BlocBuilder(
-      bloc: BlocProvider.of<LocationBloc>(context),
-      builder: (context, LocationState state){
-        return ListView.builder(
-          itemCount: state.nameCities.length,
-          itemBuilder: (BuildContext context, int index){
-            return new InkWell(
-              //highlightColor: Colors.red,
-              splashColor: colorActive,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ListProvince(index))
+    return Scaffold(
+      primary: false,
+      appBar: PreferredSize(child: Container(), preferredSize: Size(0.0,0.0)),
+      body: BlocBuilder(
+          bloc: BlocProvider.of<LocationBloc>(context),
+          builder: (context, LocationState state){
+            return ListView.builder(
+              itemCount: state.nameCities.length,
+              itemBuilder: (BuildContext context, int index){
+                return new InkWell(
+                  //highlightColor: Colors.red,
+                  splashColor: colorActive,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ListProvince(index))
+                    );
+                  },
+                  child: new CityItem(state.nameCities[index]),
                 );
               },
-              child: new CityItem(state.nameCities[index]),
             );
-          },
-        );
-      }
+          }
+      )
     );
   }
 }
@@ -76,7 +80,7 @@ class CityItem extends StatelessWidget {
               _text,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 14
+                  fontSize: 14,
               ),
             ),
           ),

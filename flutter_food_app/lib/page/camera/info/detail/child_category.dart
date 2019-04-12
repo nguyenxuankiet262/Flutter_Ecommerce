@@ -20,8 +20,8 @@ class ChildCategoryState extends State<ChildCategory> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    for(int i = 0; i < listMenu[widget.index].childMenu.length; i++){
-      categories.add(new RadioModel(i == 0 ? true : false, listMenu[widget.index].childMenu[i].image, listMenu[widget.index].childMenu[i].name));
+    for(int i = 1; i < listMenu[widget.index].childMenu.length; i++){
+      categories.add(new RadioModel(i == 1 ? true : false, listMenu[widget.index].childMenu[i].image, listMenu[widget.index].childMenu[i].name));
     }
   }
 
@@ -42,7 +42,7 @@ class ChildCategoryState extends State<ChildCategory> {
           actions: <Widget>[
             new Center(
               child: Padding(
-                padding: EdgeInsets.only(right: 10),
+                padding: EdgeInsets.only(right: 16),
                 child: GestureDetector(
                   child: Text(
                     'ÁP DỤNG',

@@ -21,37 +21,37 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        title: TabBar(
-          controller: _tabController,
-          indicatorColor: Colors.black,
-          unselectedLabelColor: Colors.grey,
-          labelColor: Colors.black,
-          tabs: [
-            Tab(
-              child: Text(
-                "Đang theo dõi",
-                style: TextStyle(
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.bold
+      appBar: PreferredSize(
+        child: Container(
+          child: TabBar(
+            controller: _tabController,
+            indicatorColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.black,
+            tabs: [
+              Tab(
+                child: Text(
+                  "Đang theo dõi",
+                  style: TextStyle(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold
+                  ),
                 ),
               ),
-            ),
-            Tab(
-              child: Text(
-                "Hệ thống",
-                style: TextStyle(
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold
+              Tab(
+                child: Text(
+                  "Hệ thống",
+                  style: TextStyle(
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
+          margin: const EdgeInsets.only(top: 30.0),
         ),
+        preferredSize: Size.fromHeight(54),
       ),
       body: TabBarView(
         controller: _tabController,

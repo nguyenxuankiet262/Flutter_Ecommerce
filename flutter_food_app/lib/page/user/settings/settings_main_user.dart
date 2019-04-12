@@ -18,18 +18,15 @@ List<String> settingPrivacy = [
 List<String> settingSupport = ["Phản hồi"];
 
 class SettingsMain extends StatelessWidget {
-  Function sign_out;
-  SettingsMain(this.sign_out);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
         color: Colors.white,
-        height: 520,
         child: ListView(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 24, top: 16),
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -37,12 +34,26 @@ class SettingsMain extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'BÀI VIẾT',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.edit,
+                          size: 20,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 3.0),
+                        child: Text(
+                          'BÀI VIẾT',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
                   ),
                   Container(
                     child: ListView.builder(
@@ -53,20 +64,14 @@ class SettingsMain extends StatelessWidget {
                           GestureDetector(
                             child: Container(
                               color: Colors.white,
-                              margin: EdgeInsets.only(top: 20.0),
+                              margin: EdgeInsets.only(top: index == 0 ? 16 : 24.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
                                     settingPost[index],
                                     style: TextStyle(
                                       fontSize: 14,
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_right,
-                                    color: Colors.grey,
                                   ),
                                 ],
                               ),
@@ -75,10 +80,17 @@ class SettingsMain extends StatelessWidget {
                               Navigator.pop(context);
                               switch (index) {
                                 case 0:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PostManage()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PostManage()));
                                   break;
                                 case 1:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => FavoriteManage()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              FavoriteManage()));
                                   break;
                               }
                             },
@@ -89,7 +101,7 @@ class SettingsMain extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 24, top: 24),
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -97,12 +109,26 @@ class SettingsMain extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'RIÊNG TƯ',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.person,
+                          size: 20,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 3.0),
+                        child: Text(
+                          'RIÊNG TƯ',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
                   ),
                   Container(
                     child: ListView.builder(
@@ -113,7 +139,7 @@ class SettingsMain extends StatelessWidget {
                           GestureDetector(
                             child: Container(
                               color: Colors.white,
-                              margin: EdgeInsets.only(top: 20.0),
+                              margin: EdgeInsets.only(top: index == 0 ? 16 : 24.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -126,7 +152,7 @@ class SettingsMain extends StatelessWidget {
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      index == 1
+                                      index == 1 || index == 2
                                           ? Container(
                                               padding: EdgeInsets.all(1),
                                               decoration: new BoxDecoration(
@@ -139,7 +165,7 @@ class SettingsMain extends StatelessWidget {
                                                 minHeight: 18,
                                               ),
                                               child: new Text(
-                                                '2',
+                                                index == 1 ? '2' : '10',
                                                 style: new TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 12,
@@ -148,10 +174,6 @@ class SettingsMain extends StatelessWidget {
                                               ),
                                             )
                                           : Container(),
-                                      Icon(
-                                        Icons.keyboard_arrow_right,
-                                        color: Colors.grey,
-                                      ),
                                     ],
                                   ),
                                 ],
@@ -161,16 +183,32 @@ class SettingsMain extends StatelessWidget {
                               Navigator.pop(context);
                               switch (index) {
                                 case 0:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => PrivateManage()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PrivateManage()));
                                   break;
                                 case 1:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderManage(false)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              OrderManage(false)));
                                   break;
                                 case 2:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => OrderManage(true)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              OrderManage(true)));
                                   break;
                                 case 3:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => RatingManage()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RatingManage()));
                                   break;
                               }
                             },
@@ -181,7 +219,7 @@ class SettingsMain extends StatelessWidget {
               ),
             ),
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 24, top: 24),
               width: double.infinity,
               decoration: BoxDecoration(
                   border: Border(
@@ -189,12 +227,26 @@ class SettingsMain extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    'HỖ TRỢ',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.help,
+                          size: 20,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 3.0),
+                        child: Text(
+                          'HỖ TRỢ',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
                   ),
                   Container(
                     child: ListView.builder(
@@ -205,7 +257,7 @@ class SettingsMain extends StatelessWidget {
                           GestureDetector(
                             child: Container(
                               color: Colors.white,
-                              margin: EdgeInsets.only(top: 20.0),
+                              margin: EdgeInsets.only(top: 16.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -216,10 +268,6 @@ class SettingsMain extends StatelessWidget {
                                       fontSize: 14,
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.keyboard_arrow_right,
-                                    color: Colors.grey,
-                                  ),
                                 ],
                               ),
                             ),
@@ -227,7 +275,11 @@ class SettingsMain extends StatelessWidget {
                               Navigator.pop(context);
                               switch (index) {
                                 case 0:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => FeedBackManage()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              FeedBackManage()));
                                   break;
                               }
                             },
@@ -238,22 +290,33 @@ class SettingsMain extends StatelessWidget {
               ),
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
-                sign_out();
               },
               child: Container(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'ĐĂNG XUẤT',
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
+                  padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 24, top: 24),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 8.0),
+                        child: Icon(
+                          Icons.power_settings_new,
+                          size: 20,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 3.0),
+                        child: Text(
+                          'ĐĂNG XUẤT',
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  )),
             ),
-
           ],
         ));
   }

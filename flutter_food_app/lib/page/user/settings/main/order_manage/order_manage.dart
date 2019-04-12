@@ -54,6 +54,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                 backgroundColor: Colors.white,
                 pinned: true,
                 floating: true,
+                snap: true,
                 expandedHeight: 150,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(

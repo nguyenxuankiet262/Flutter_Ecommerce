@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'list_post.dart';
@@ -17,6 +20,7 @@ class HeaderDetailState extends State<HeaderDetail> {
   String title = "Tất cả";
   int _index = 0;
   bool isLoading = true;
+  ScrollController _hideButtonController;
 
   @override
   void initState() {
@@ -27,6 +31,26 @@ class HeaderDetailState extends State<HeaderDetail> {
         isLoading = false;
       });
     });
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(false);
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _hideButtonController.dispose();
   }
 
   @override
@@ -39,7 +63,7 @@ class HeaderDetailState extends State<HeaderDetail> {
     });
     return Container(
       child: ListView(
-        shrinkWrap: true,
+        controller: _hideButtonController,
         children: <Widget>[
           Container(
             height: 100,
@@ -112,7 +136,7 @@ class HeaderDetailState extends State<HeaderDetail> {
             ),
           ),
           Container(
-              height: 60,
+              height: 54,
               width: double.infinity,
               decoration: BoxDecoration(
                   color: Colors.white,

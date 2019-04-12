@@ -37,10 +37,9 @@ class NotiAdminState extends State<NotiAdmin> with AutomaticKeepAliveClientMixin
         ),
       ],
     )
-        : ListView(
-      children: <Widget>[
-        ListNotiAdmin(),
-      ],
+        : Container(
+      color: Colors.white,
+      child: ListNotiAdmin(),
     );
   }
 

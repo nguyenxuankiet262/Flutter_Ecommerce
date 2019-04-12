@@ -231,33 +231,27 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
           },
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: itemCount != 0
-                ? Container(
-                    color: colorBackground,
-                    child: ListCart(),
-                  )
-                : Center(
-                    child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset('assets/images/icon_heartbreak.png'),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            itemCount = 1;
-                          });
-                        },
-                        child: Text('Nothing to show!'),
-                      ),
-                    ],
-                  )),
-          ),
-        ],
-      ),
+      body: itemCount != 0
+          ? Container(
+        color: colorBackground,
+        child: ListCart(),
+      )
+          : Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset('assets/images/icon_heartbreak.png'),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    itemCount = 1;
+                  });
+                },
+                child: Text('Nothing to show!'),
+              ),
+            ],
+          )),
     );
   }
 

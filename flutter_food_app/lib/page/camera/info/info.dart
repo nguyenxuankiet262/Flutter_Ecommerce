@@ -233,7 +233,7 @@ class InfoPostState extends State<InfoPost> {
             ],
             leading: new Center(
               child: Padding(
-                padding: EdgeInsets.only(left: 5),
+                padding: EdgeInsets.only(left: 16),
                 child: GestureDetector(
                   child: Text(
                     'HỦY',

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'slider.dart';
 import 'category.dart';
 import 'header.dart';
@@ -11,6 +14,34 @@ class BodyContent extends StatefulWidget{
 }
 
 class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientMixin{
+  ScrollController _hideButtonController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(false);
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _hideButtonController.dispose();
+  }
+
   void navigateToPost() {
     this.widget.navigateToPost();
   }
@@ -27,6 +58,7 @@ class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientM
   Widget build(BuildContext context) {
     // TODO: implement build
     return ListView(
+      controller: _hideButtonController,
       children: <Widget>[
         CarouselWithIndicator(),
         Container(
@@ -36,7 +68,6 @@ class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientM
                   this.navigateToFilter),
             )),
         Container(
-          padding: EdgeInsets.only(bottom: 54),
           child: ListCategory(this.navigateToPost),
         ),
       ],

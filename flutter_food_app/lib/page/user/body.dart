@@ -11,48 +11,24 @@ class Body extends StatefulWidget {
 
 class BodyState extends State<Body> with SingleTickerProviderStateMixin {
   int index = 0;
-  bool isLoading = true;
   TabController _tabController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
     _tabController = new TabController(vsync: this, length: 3);
     _tabController.addListener(() {
       if (_tabController.index == 0) {
         setState(() {
-          isLoading = true;
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            setState(() {
-              isLoading = false;
-            });
-          });
           index = 0;
         });
       } else if (_tabController.index == 1) {
         setState(() {
-          isLoading = true;
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            setState(() {
-              isLoading = false;
-            });
-          });
           index = 1;
         });
       } else {
         setState(() {
-          isLoading = true;
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            setState(() {
-              isLoading = false;
-            });
-          });
           index = 2;
         });
       }
@@ -80,14 +56,14 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
       shrinkWrap: true,
       children: <Widget>[
         Container(
-          height: 40,
+          height: 54,
           decoration: BoxDecoration(
             color: Colors.white,
             border: Border(bottom: BorderSide(color: colorInactive,width: 0.5)),
           ),
           child: TabBar(
             controller: _tabController,
-            indicatorColor: Colors.white,
+            indicatorColor: Colors.black,
             unselectedLabelColor: Colors.grey,
             labelColor: Colors.black,
             tabs: [
@@ -110,18 +86,10 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-        isLoading
-            ? Container(
-                height: MediaQuery.of(context).size.height / 2,
-                color: colorBackground,
-                child: Center(
-                    child: CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(colorActive),
-                )))
-            : Container(
-                color: index == 2 ? Colors.white : colorBackground,
-                child: _fragments[index],
-              ),
+        Container(
+          color: index == 2 ? Colors.white : colorBackground,
+          child: _fragments[index],
+        ),
       ],
     );
   }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/page/authentication/login/signin.dart';
 import 'header.dart';
 import 'settings/settings_another_user.dart';
@@ -10,7 +14,6 @@ import 'package:flutter_food_app/const/color_const.dart';
 
 class InfoPage extends StatefulWidget {
   bool isAnother;
-  Function navigateToPost, navigateToUser;
 
   InfoPage(this.isAnother);
 
@@ -20,6 +23,8 @@ class InfoPage extends StatefulWidget {
 
 class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
   bool isLogin = true;
+  bool isFollow = false;
+  ScrollController _hideButtonController;
 
   void Logining() {
     setState(() {
@@ -37,7 +42,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return SettingsMain(this.Signouting);
+          return SettingsMain();
         });
   }
 
@@ -47,6 +52,32 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
         builder: (BuildContext bc) {
           return SettingsAnother();
         });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(false);
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _hideButtonController.dispose();
   }
 
   @override
@@ -92,7 +123,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                   ? <Widget>[
                       GestureDetector(
                         onTap: () {
-                          _showBottomSheetMainUser(context);
+                          BlocProvider.of<FunctionBloc>(context).currentState.openDrawer();
                         },
                         child: BadgeIconButton(
                           itemCount: 2,
@@ -149,6 +180,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                         ),
                 ),
                 ListView(
+                  controller: !widget.isAnother ? _hideButtonController : null,
                   children: <Widget>[
                     Header(widget.isAnother),
                     Body(),
@@ -156,7 +188,59 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                 ),
               ],
             ),
-          );
+            bottomNavigationBar: widget.isAnother
+                ? Container(
+                    height: 50,
+                    width: double.infinity,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isFollow = !isFollow;
+                              });
+                            },
+                            child: Container(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: colorActive, width: 1.5)),
+                              child: Center(
+                                child: Text(
+                                  isFollow ? 'BỎ THEO DÕI' : 'THEO DÕI',
+                                  style: TextStyle(
+                                      color: colorActive,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            color: colorActive,
+                            child: Center(
+                              child: Text(
+                                'GỌI ĐIỆN NGƯỜI BÁN',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12.0),
+                              ),
+                            ),
+                          ),
+                          flex: 1,
+                        ),
+                      ],
+                    ),
+                  )
+                : null);
   }
 
   @override

@@ -1,4 +1,8 @@
 import "package:flutter/material.dart";
+import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/post/post.dart';
 import 'package:flutter_food_app/page/user/info.dart';
@@ -11,6 +15,33 @@ class ListNotiUser extends StatefulWidget {
 
 class _ListNotiUserState extends State<ListNotiUser> {
   int itemCount = 10;
+  ScrollController _hideButtonController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(false);
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        BlocProvider.of<BottomBarBloc>(context)
+            .changeVisible(true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _hideButtonController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +50,7 @@ class _ListNotiUserState extends State<ListNotiUser> {
       context: context,
       removeTop: true,
       child: ListView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
+        controller: _hideButtonController,
         itemCount: itemCount,
         itemBuilder: (BuildContext context, int index) => new Container(
             decoration: new BoxDecoration(
@@ -36,10 +66,7 @@ class _ListNotiUserState extends State<ListNotiUser> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => InfoPage(true)),
-                            );
+                            BlocProvider.of<FunctionBloc>(context).currentState.navigateToUser();
                           },
                           child: ClipOval(
                             child: Image.asset(
@@ -54,10 +81,7 @@ class _ListNotiUserState extends State<ListNotiUser> {
                         ),
                         GestureDetector(
                           onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Post()),
-                            );
+                            BlocProvider.of<FunctionBloc>(context).currentState.navigateToPost();
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 5.0),
