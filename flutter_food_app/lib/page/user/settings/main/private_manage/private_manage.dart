@@ -10,7 +10,7 @@ class PrivateManage extends StatefulWidget {
 }
 
 class PrivateManageState extends State<PrivateManage> {
-  double heightContainer = 200;
+  double heightContainer = 400;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class PrivateManageState extends State<PrivateManage> {
                             Positioned(
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: 50,
+                                height: 60,
                                 color: Colors.white,
                               ),
                               bottom: 0.0,
@@ -81,7 +81,7 @@ class PrivateManageState extends State<PrivateManage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  height: heightContainer + 50,
+                                  height: heightContainer + 60,
                                   width: MediaQuery.of(context).size.width,
                                   child: Column(
                                     crossAxisAlignment:
@@ -110,8 +110,8 @@ class PrivateManageState extends State<PrivateManage> {
                                                 child: Image.asset(
                                                   'assets/images/cat.jpg',
                                                   fit: BoxFit.cover,
-                                                  width: 100.0,
-                                                  height: 100.0,
+                                                  width: 150.0,
+                                                  height: 150.0,
                                                 ),
                                               ),
                                             )),
@@ -123,8 +123,8 @@ class PrivateManageState extends State<PrivateManage> {
                             ),
                             Positioned(
                               child: Container(
-                                height: 30,
-                                width: 30,
+                                height: 40,
+                                width: 40,
                                 decoration: BoxDecoration(
                                     color: colorContainer,
                                     border: Border.all(
@@ -133,11 +133,11 @@ class PrivateManageState extends State<PrivateManage> {
                                     BorderRadius.all(Radius.circular(100.0))),
                                 child: Icon(
                                   FontAwesomeIcons.camera,
-                                  size: 15,
+                                  size: 17,
                                 ),
                               ),
-                              bottom: 0.0,
-                              left: MediaQuery.of(context).size.width / 1.8,
+                              bottom: 2.0,
+                              left: MediaQuery.of(context).size.width / 1.7,
                             ),
                             Positioned(
                               child: Container(

@@ -13,24 +13,12 @@ class SearchPage extends StatefulWidget {
 
 class SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
-  int _index = 1;
   String searchInput = "";
   TabController _tabController;
 
   @override
   void initState() {
     _tabController = new TabController(vsync: this, length: 2);
-    _tabController.addListener(() {
-      if (_tabController.index == 0) {
-        setState(() {
-          _index = 1;
-        });
-      } else {
-        setState(() {
-          _index = 2;
-        });
-      }
-    });
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/address_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/category.dart';
@@ -13,11 +15,25 @@ class CategoryRadio extends StatefulWidget {
 
 class CategoryRadioState extends State<CategoryRadio> {
   List<CategoryModel> categories = new List<CategoryModel>();
+  bool isCategory = true;
+  int _index = 0;
+
+  Future<bool> _backpress() async {
+    //print("BACK_C");
+    BlocProvider.of<AddressBloc>(context).changeText("");
+    BlocProvider.of<AddressBloc>(context).changeIndex(0);
+    setState(() {
+      isCategory = true;
+    });
+
+    return Future.value(false);
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AddressBloc>(context).backpressChild(_backpress);
     for (int i = 0; i < listMenu.length; i++) {
       categories.add(new CategoryModel(listMenu[i].image, listMenu[i].name));
     }
@@ -29,28 +45,36 @@ class CategoryRadioState extends State<CategoryRadio> {
         primary: false,
         appBar:
             PreferredSize(child: Container(), preferredSize: Size(0.0, 0.0)),
-        body: Container(
-          color: colorBackground,
-          child: new ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (BuildContext context, int index) {
-              return new InkWell(
-                //highlightColor: Colors.red,
-                splashColor: colorActive,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ChildCategory(listMenu[index].name, index)),
-                  );
-                },
+        body: Stack(children: <Widget>[
+          Container(
+            color: Colors.transparent,
+            child: new ListView.builder(
+              itemCount: categories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return new InkWell(
+                  //highlightColor: Colors.red,
+                  splashColor: colorActive,
+                  onTap: () {
+                    BlocProvider.of<AddressBloc>(context)
+                        .changeText("/" + listMenu[index].name);
+                    setState(() {
+                      _index = index;
+                      isCategory = false;
+                    });
+                  },
 
-                child: new CategeoryItem(categories[index]),
-              );
-            },
+                  child: new CategeoryItem(categories[index]),
+                );
+              },
+            ),
           ),
-        ));
+          Visibility(
+            maintainState: false,
+            visible: isCategory ? false : true,
+            child: ChildCategory(_index),
+          )
+        ])
+    );
   }
 }
 
@@ -67,8 +91,7 @@ class CategeoryItem extends StatelessWidget {
           color: Colors.white,
           border: Border(
               bottom: BorderSide(
-                  color: colorInactive.withOpacity(0.2), width: 0.5
-          ))),
+                  color: colorInactive.withOpacity(0.2), width: 0.5))),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -76,8 +99,8 @@ class CategeoryItem extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 new Container(
-                  height: 80.0,
-                  width: 80.0,
+                  height: 50.0,
+                  width: 50.0,
                   child: ClipRRect(
                       child: Image.asset(
                         _item.image,
@@ -91,24 +114,29 @@ class CategeoryItem extends StatelessWidget {
                   ),
                 ),
                 new Container(
-                  margin: new EdgeInsets.only(left: 10.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      new Text(
-                        _item.text,
-                        style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w600),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 8.0),
-                        child: new Text(
-                          '10 bài viết',
-                          style: TextStyle(color: colorInactive, fontSize: 14, fontWeight: FontWeight.w600),
+                    margin: new EdgeInsets.only(left: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Text(
+                          _item.text,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
-                      )
-                    ],
-                  )
-                )
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                          child: new Text(
+                            '10 bài viết',
+                            style: TextStyle(
+                                color: colorInactive,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        )
+                      ],
+                    ))
               ],
             ),
           ),

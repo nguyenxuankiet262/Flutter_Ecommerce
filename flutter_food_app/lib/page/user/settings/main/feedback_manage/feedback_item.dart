@@ -41,13 +41,18 @@ class FeedBackItemState extends State<FeedbackItem> {
                   flex: 4,
                 ),
                 Expanded(
-                  child: Shimmer.fromColors(
-                      baseColor: widget.index == 1 ? Colors.black : colorActive,
-                      highlightColor: widget.index != 1 ? Colors.yellow : colorInactive,
-                      child: Text(
-                        widget.index != 1 ? 'Đã trả lời' : "Chưa trả lời",
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                      )),
+                  child: Container(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Shimmer.fromColors(
+                          baseColor: widget.index == 1 ? Colors.black : colorActive,
+                          highlightColor: widget.index != 1 ? Colors.yellow : colorInactive,
+                          child: Text(
+                            widget.index != 1 ? 'Đã trả lời' : "Chưa trả lời",
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          )),
+                    )
+                  ),
                   flex: 1,
                 ),
               ],

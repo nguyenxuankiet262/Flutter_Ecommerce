@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_app/common/bloc/address_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
@@ -31,6 +32,7 @@ class MyAppState extends State<MyApp> {
   final searchInputBloc = SearchInputBloc();
   final bottomBarBloc = BottomBarBloc();
   final functionBloc = FunctionBloc();
+  final addressBloc = AddressBloc();
   // This widget is the root of your application.
 
   @override
@@ -44,6 +46,7 @@ class MyAppState extends State<MyApp> {
     searchInputBloc.dispose();
     bottomBarBloc.dispose();
     functionBloc.dispose();
+    addressBloc.dispose();
   }
 
   @override
@@ -56,7 +59,8 @@ class MyAppState extends State<MyApp> {
         BlocProvider<SearchBloc>(bloc: searchBloc),
         BlocProvider<SearchInputBloc>(bloc: searchInputBloc,),
         BlocProvider<BottomBarBloc>(bloc: bottomBarBloc,),
-        BlocProvider<FunctionBloc>(bloc: functionBloc,)
+        BlocProvider<FunctionBloc>(bloc: functionBloc,),
+        BlocProvider<AddressBloc>(bloc: addressBloc,)
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

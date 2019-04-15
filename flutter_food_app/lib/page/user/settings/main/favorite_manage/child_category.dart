@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/address_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/child_category.dart';
 import 'detail_category.dart';
 
 class ChildCategory extends StatefulWidget {
-  String title;
   int index;
 
-  ChildCategory(this.title, this.index);
+  ChildCategory(this.index);
 
   @override
   createState() {
@@ -18,11 +19,27 @@ class ChildCategory extends StatefulWidget {
 
 class ChildCategoryState extends State<ChildCategory> {
   List<RadioModel> categories = new List<RadioModel>();
+  bool isChild = true;
+  int _index = 0;
+
+  Future<bool> _backpress() async {
+    //print("BACK_D");
+    List<String> temp =
+    BlocProvider.of<AddressBloc>(context).currentState.address.split("/");
+    BlocProvider.of<AddressBloc>(context).changeText("/" + temp[1]);
+    BlocProvider.of<AddressBloc>(context).changeIndex(1);
+    setState(() {
+      isChild = true;
+    });
+    return Future.value(false);
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AddressBloc>(context).changeIndex(1);
+    BlocProvider.of<AddressBloc>(context).backpressDetail(_backpress);
     for (int i = 1; i < listMenu[widget.index].childMenu.length; i++) {
       categories.add(new RadioModel(
           i == 1 ? true : false,
@@ -34,66 +51,10 @@ class ChildCategoryState extends State<ChildCategory> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(111.0), // here the desired height
-          child: Column(
-            children: <Widget>[
-              AppBar(
-                brightness: Brightness.light,
-                title: new Text(
-                  widget.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.white,
-                iconTheme: IconThemeData(
-                  color: Colors.black, //change your color here
-                ),
-                leading: GestureDetector(
-                  child: Icon(Icons.arrow_back),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              Container(
-                  height: 55.0,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(bottom: BorderSide(color: colorInactive.withOpacity(0.2), width: 0.5))
-                  ),
-                  padding:
-                  EdgeInsets.only(right: 16.0, left: 16.0, bottom: 14.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                        color: colorInactive.withOpacity(0.2)),
-                    child: Container(
-                        margin: EdgeInsets.only(left: 15.0),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(right: 10.0),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                                size: 14,
-                              ),
-                            ),
-                            Text(
-                              "Tìm kiếm bài viết",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: colorInactive,
-                                  fontFamily: "Ralway"),
-                            )
-                          ],
-                        )),
-                  )),
-            ],
-          ),
-        ),
-        body: Container(
+      primary: false,
+      appBar: PreferredSize(child: Container(), preferredSize: Size(0.0, 0.0)),
+      body: Stack(children: <Widget>[
+        Container(
           color: colorBackground,
           child: new ListView.builder(
             itemCount: categories.length,
@@ -102,19 +63,30 @@ class ChildCategoryState extends State<ChildCategory> {
                 //highlightColor: Colors.red,
                 splashColor: colorActive,
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            DetailCategory(categories[index].text, index)),
-                  );
+                  BlocProvider.of<AddressBloc>(context).changeText(
+                      BlocProvider.of<AddressBloc>(context)
+                          .currentState
+                          .address +
+                          "/" +
+                          categories[index].text);
+                  setState(() {
+                    _index = index;
+                    isChild = false;
+                  });
                 },
 
                 child: new RadioItem(categories[index], index),
               );
             },
           ),
-        ));
+        ),
+        Visibility(
+          maintainState: false,
+          visible: isChild ? false : true,
+          child: DetailCategory(_index),
+        )
+      ]),
+    );
   }
 }
 
@@ -132,8 +104,7 @@ class RadioItem extends StatelessWidget {
           color: Colors.white,
           border: Border(
               bottom: BorderSide(
-                  color: colorInactive.withOpacity(0.2), width: 0.5
-          ))),
+                  color: colorInactive.withOpacity(0.2), width: 0.5))),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -141,8 +112,8 @@ class RadioItem extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 new Container(
-                  height: 80.0,
-                  width: 80.0,
+                  height: 50.0,
+                  width: 50.0,
                   child: ClipRRect(
                       child: Image.asset(
                         _item.image,
@@ -162,18 +133,23 @@ class RadioItem extends StatelessWidget {
                       children: <Widget>[
                         new Text(
                           _item.text,
-                          style: TextStyle(color: Colors.black, fontSize: 17, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                           child: new Text(
                             '10 bài viết',
-                            style: TextStyle(color: colorInactive, fontSize: 14, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                color: colorInactive,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600),
                           ),
                         )
                       ],
-                    )
-                )
+                    ))
               ],
             ),
           ),

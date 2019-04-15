@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -65,7 +67,7 @@ class _ListPostState extends State<ListPost>
                     ],
                   )
                 : StaggeredGridView.countBuilder(
-                    padding: EdgeInsets.only(top: 0),
+                    padding: EdgeInsets.all(2),
                     crossAxisCount: 2,
                     physics: ScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -94,7 +96,7 @@ class _ListPostState extends State<ListPost>
                                               topLeft: Radius.circular(5.0))),
                                     ),
                                     onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+                                      BlocProvider.of<FunctionBloc>(context).currentState.navigateToPost();
                                     },
                                   ),
                                   Padding(
