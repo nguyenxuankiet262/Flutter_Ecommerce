@@ -27,7 +27,7 @@ class UserContentState extends State<UserContent> with AutomaticKeepAliveClientM
                 children: <Widget>[
                   Container(
                     padding:
-                    EdgeInsets.only(left: 16.0, top: 10.0, right: 16.0),
+                    EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
                     child: Text(
                       "TỪ KHÓA HOT",
                       style: TextStyle(

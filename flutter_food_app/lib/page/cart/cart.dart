@@ -153,7 +153,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
         });
   }
 
-  Future _onSuccess() {
+  _onSuccess() {
     Navigator.pop(context);
     showDialog(
       context: context,

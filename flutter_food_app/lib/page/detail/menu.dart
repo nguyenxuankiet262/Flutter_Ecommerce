@@ -7,8 +7,8 @@ import 'package:flutter_food_app/const/value_const.dart';
 import 'list_post.dart';
 
 class HeaderDetail extends StatefulWidget {
-  int index;
-  Function callback;
+  final int index;
+  final Function callback;
 
   HeaderDetail(this.callback, this.index);
 

@@ -3,7 +3,7 @@ import 'list_post.dart';
 import 'package:flutter_food_app/model/menu.dart';
 
 class ListCategory extends StatefulWidget {
-  Function navigateToPost;
+  final Function navigateToPost;
 
   ListCategory(this.navigateToPost);
 

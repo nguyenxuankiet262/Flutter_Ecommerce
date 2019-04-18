@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/child_category.dart';
 
 class ChildCategory extends StatefulWidget {
-  String title;
-  int index;
+  final String title;
+  final int index;
   ChildCategory(this.title, this.index);
   @override
-  createState() {
-    return new ChildCategoryState();
-  }
+  createState() => ChildCategoryState();
 }
 
 class ChildCategoryState extends State<ChildCategory> {
   List<RadioModel> categories = new List<RadioModel>();
-
+  DetailCameraBloc blocProvider;
+  int _index = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    blocProvider = BlocProvider.of<DetailCameraBloc>(context);
     for(int i = 1; i < listMenu[widget.index].childMenu.length; i++){
       categories.add(new RadioModel(i == 1 ? true : false, listMenu[widget.index].childMenu[i].image, listMenu[widget.index].childMenu[i].name));
     }
@@ -53,6 +55,7 @@ class ChildCategoryState extends State<ChildCategory> {
                         fontSize: 10),
                   ),
                   onTap: () {
+                    blocProvider.changeIndexCategory(widget.index, _index + 1);
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },
@@ -73,6 +76,7 @@ class ChildCategoryState extends State<ChildCategory> {
                   setState(() {
                     categories.forEach((element) => element.isSelected = false);
                     categories[index].isSelected = true;
+                    _index = index;
                   });
                 },
 

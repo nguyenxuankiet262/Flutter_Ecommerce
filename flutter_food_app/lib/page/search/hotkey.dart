@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 class HotkeyContent extends StatefulWidget{
-  int index;
+  final int index;
   HotkeyContent(this.index);
   @override
   State<StatefulWidget> createState() => HotkeyContentState();

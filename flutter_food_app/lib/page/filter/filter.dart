@@ -6,7 +6,7 @@ import 'package:flutter_food_app/page/filter/rating.dart';
 import 'package:flutter_food_app/page/filter/sort.dart';
 
 class FilterPage extends StatefulWidget{
-  int _index;
+  final int _index;
   FilterPage(this._index);
   @override
   State<StatefulWidget> createState() => FilterPageState();

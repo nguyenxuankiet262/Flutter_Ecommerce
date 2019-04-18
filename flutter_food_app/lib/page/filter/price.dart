@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class PriceFilter extends StatefulWidget {
   @override
@@ -80,14 +79,14 @@ class PriceFilterState extends State<PriceFilter> {
                     });
                   },
                   handler: FlutterSliderHandler(
-                    icon: Icon(
+                    child: Icon(
                       Icons.attach_money,
                       color: colorActive,
                       size: 20,
                     ),
                   ),
                   rightHandler: FlutterSliderHandler(
-                    icon: Icon(
+                    child: Icon(
                       Icons.attach_money,
                       color: colorActive,
                       size: 20,
@@ -97,7 +96,7 @@ class PriceFilterState extends State<PriceFilter> {
                       duration: Duration(milliseconds: 500), scale: 1.5),
                   trackBar: FlutterSliderTrackBar(
                     activeTrackBarColor: colorActive,
-                    leftInactiveTrackBarColor: colorInactive,
+                    inactiveDisabledTrackBarColor: colorInactive,
                   ),
                 ))
           ],

@@ -18,6 +18,8 @@ class FollowPageState extends State<FollowPage> {
 
   @override
   void initState() {
+    // TODO: implement initState
+    super.initState();
     _focus = new FocusNode();
     _focus.addListener(() {
       if (!_focus.hasFocus && myController.text.isEmpty) {

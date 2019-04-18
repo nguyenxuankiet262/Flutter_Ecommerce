@@ -4,8 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'order_item.dart';
 
 class ListOrder extends StatefulWidget {
-  int index;
-  bool isSellOrder;
+  final int index;
+  final bool isSellOrder;
 
   ListOrder(this.index, this.isSellOrder);
 

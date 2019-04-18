@@ -7,7 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ListPost extends StatefulWidget {
-  Function callback;
+  final Function callback;
 
   ListPost(this.callback);
 

@@ -57,17 +57,5 @@ class _ListCartState extends State<ListCart> {
         itemBuilder: (BuildContext context, int index) => CartItem(index)
     );
   }
-
-  Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 1000));
-    load();
-    return true;
-  }
-
-  Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 0, milliseconds: 1000));
-    setState(() {
-      itemCount = 5;
-    });
-  }
+  
 }

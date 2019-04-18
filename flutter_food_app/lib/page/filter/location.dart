@@ -78,14 +78,14 @@ class LocationFilterState extends State<LocationFilter> {
                     });
                   },
                   handler: FlutterSliderHandler(
-                    icon: Icon(
+                    child: Icon(
                       Icons.location_on,
                       color: colorActive,
                       size: 20,
                     ),
                   ),
                   rightHandler: FlutterSliderHandler(
-                    icon: Icon(
+                    child: Icon(
                       Icons.location_on,
                       color: colorActive,
                       size: 20,
@@ -95,7 +95,7 @@ class LocationFilterState extends State<LocationFilter> {
                       duration: Duration(milliseconds: 500), scale: 1.5),
                   trackBar: FlutterSliderTrackBar(
                     activeTrackBarColor: colorActive,
-                    leftInactiveTrackBarColor: colorInactive,
+                    inactiveTrackBarColor: colorInactive,
                   ),
                 ))
           ],

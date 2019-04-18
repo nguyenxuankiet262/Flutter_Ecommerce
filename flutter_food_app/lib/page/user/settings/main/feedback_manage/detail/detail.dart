@@ -3,7 +3,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'image.dart';
 
 class DetailFeedback extends StatelessWidget {
-  int _index;
+  final int _index;
 
   DetailFeedback(this._index);
 

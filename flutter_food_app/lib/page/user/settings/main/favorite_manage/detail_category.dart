@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/address_bloc.dart';
-import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/page/filter/filter.dart';
-import 'package:toast/toast.dart';
 import 'list_post.dart';
 
 class DetailCategory extends StatefulWidget{
-  int index;
+  final int index;
 
   DetailCategory(this.index);
 

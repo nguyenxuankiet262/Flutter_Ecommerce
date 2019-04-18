@@ -7,7 +7,7 @@ import 'info_user.dart';
 import 'info_order.dart';
 
 class OrderDetail extends StatefulWidget{
-  bool isSellOrder;
+  final bool isSellOrder;
   OrderDetail(this.isSellOrder);
   @override
   State<StatefulWidget> createState() => OrderDetailState();

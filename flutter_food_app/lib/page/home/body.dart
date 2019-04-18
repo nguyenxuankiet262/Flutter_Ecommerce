@@ -7,7 +7,7 @@ import 'category.dart';
 import 'header.dart';
 
 class BodyContent extends StatefulWidget{
-  Function navigateToPost, navigateToFilter;
+  final Function navigateToPost, navigateToFilter;
   BodyContent(this.navigateToPost, this.navigateToFilter);
   @override
   State<StatefulWidget> createState() => BodyContentState();

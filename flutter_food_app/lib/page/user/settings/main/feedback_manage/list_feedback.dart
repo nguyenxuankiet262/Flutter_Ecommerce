@@ -3,7 +3,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'feedback_item.dart';
 
 class ListFeedback extends StatefulWidget {
-  int index;
+  final int index;
 
   ListFeedback(this.index);
 

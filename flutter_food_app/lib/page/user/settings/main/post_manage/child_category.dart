@@ -7,7 +7,7 @@ import 'package:flutter_food_app/model/child_category.dart';
 import 'detail_category.dart';
 
 class ChildCategory extends StatefulWidget {
-  int index;
+  final int index;
 
   ChildCategory(this.index);
 
@@ -92,7 +92,7 @@ class ChildCategoryState extends State<ChildCategory> {
 
 class RadioItem extends StatelessWidget {
   final RadioModel _item;
-  int index;
+  final int index;
 
   RadioItem(this._item, this.index);
 

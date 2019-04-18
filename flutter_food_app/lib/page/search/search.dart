@@ -18,6 +18,8 @@ class SearchPageState extends State<SearchPage>
 
   @override
   void initState() {
+    // TODO: implement initState
+    super.initState();
     _tabController = new TabController(vsync: this, length: 2);
   }
 

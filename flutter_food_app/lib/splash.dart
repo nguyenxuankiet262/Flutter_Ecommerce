@@ -8,7 +8,7 @@ import 'package:splashscreen/splashscreen.dart';
 import 'package:flutter/services.dart';
 
 class StartPage extends StatefulWidget {
-  var cameras;
+  final cameras;
   StartPage(this.cameras);
   @override
   State<StatefulWidget> createState() => StartPageState();

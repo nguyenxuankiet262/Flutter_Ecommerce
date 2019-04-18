@@ -3,7 +3,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/user/info.dart';
 
 class UserItem extends StatefulWidget{
-  int _index;
+  final int _index;
   UserItem(this._index);
   @override
   State<StatefulWidget> createState() => UserItemState();

@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'detail/detail.dart';
 
 class FeedbackItem extends StatefulWidget {
-  int index;
+  final int index;
 
   FeedbackItem(this.index);
 

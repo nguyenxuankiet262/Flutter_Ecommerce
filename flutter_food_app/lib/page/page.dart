@@ -94,14 +94,6 @@ class _MyMainPageState extends State<MyMainPage> with SingleTickerProviderStateM
     Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
   }
 
-  void _showBottomSheetMainUser() {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SettingsMain();
-        });
-  }
-
   void _openDrawer(){
     _scaffoldKey.currentState.openEndDrawer();
   }
@@ -170,7 +162,7 @@ class _MyMainPageState extends State<MyMainPage> with SingleTickerProviderStateM
                       position: _offsetFloat,
                       child: FloatingActionButton(
                         backgroundColor: Colors.white,
-                        child: const Icon(
+                        child: Icon(
                           FontAwesomeIcons.cameraRetro,
                           color: colorActive,
                         ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/filter/filter.dart';
 import 'package:toast/toast.dart';
 import 'list_rating.dart';

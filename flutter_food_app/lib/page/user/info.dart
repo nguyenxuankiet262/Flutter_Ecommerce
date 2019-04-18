@@ -8,12 +8,10 @@ import 'header.dart';
 import 'settings/settings_another_user.dart';
 import 'body.dart';
 import 'package:badges/badges.dart';
-import 'package:flutter_food_app/page/user/settings/settings_main_user.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 class InfoPage extends StatefulWidget {
-  bool isAnother;
+  final bool isAnother;
 
   InfoPage(this.isAnother);
 
@@ -25,27 +23,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
   bool isLogin = true;
   bool isFollow = false;
   ScrollController _hideButtonController;
-
-  void Logining() {
-    setState(() {
-      isLogin = true;
-    });
-  }
-
-  void Signouting() {
-    setState(() {
-      isLogin = false;
-    });
-  }
-
-  void _showBottomSheetMainUser(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return SettingsMain();
-        });
-  }
-
+  
   void _showBottomSheetAnotherUser(context) {
     showModalBottomSheet(
         context: context,

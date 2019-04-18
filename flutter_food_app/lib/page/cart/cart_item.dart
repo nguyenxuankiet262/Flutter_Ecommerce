@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_food_app/page/post/post.dart';
 import 'favorite_item.dart';
 import 'package:toast/toast.dart';
 
 class CartItem extends StatefulWidget {
-  int _index;
+  final int _index;
   CartItem(this._index);
   @override
   State<StatefulWidget> createState() => CartItemState();

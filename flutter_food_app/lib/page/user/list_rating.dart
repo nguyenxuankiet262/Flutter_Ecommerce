@@ -4,7 +4,6 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:flutter_food_app/page/user/info.dart';
 import 'package:toast/toast.dart';
 
 class ListRating extends StatefulWidget {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
-import 'package:camera/camera.dart';
 import 'list_image.dart';
 
 class HeaderInfo extends StatefulWidget {
@@ -12,13 +10,11 @@ class HeaderInfo extends StatefulWidget {
 class HeaderInfoState extends State<HeaderInfo> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     // TODO: implement build
     return Container(
       height: 100,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
         children: <Widget>[
           GestureDetector(
               child: Container(

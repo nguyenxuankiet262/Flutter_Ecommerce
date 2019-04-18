@@ -52,9 +52,9 @@ class FavoriteManageState extends State<FavoriteManage> {
       } else {
         Navigator.pop(context, true);
         //print("Search false + back0");
-        return Future.value(false);
       }
     }
+    return Future.value(false);
   }
 
   @override

@@ -4,7 +4,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'list_order.dart';
 
 class OrderManage extends StatefulWidget{
-  bool isSellOrder;
+  final bool isSellOrder;
   OrderManage(this.isSellOrder);
   @override
   State<StatefulWidget> createState() => OrderManageState();

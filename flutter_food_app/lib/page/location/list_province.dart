@@ -6,7 +6,7 @@ import 'package:flutter_food_app/common/state/location_state.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ListProvince extends StatefulWidget {
-  int _index;
+  final int _index;
 
   ListProvince(this._index);
 

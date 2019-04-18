@@ -5,7 +5,6 @@ import 'package:flutter_food_app/const/color_const.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import 'package:flutter_food_app/page/post/post.dart';
 
 class ListPost extends StatefulWidget {
   @override

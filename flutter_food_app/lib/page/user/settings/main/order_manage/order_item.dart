@@ -2,13 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/user/settings/main/order_manage/order_detail/order_detail.dart';
-import 'package:flutter_food_app/const/value_const.dart';
-import 'package:toast/toast.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 class OrderItem extends StatefulWidget {
-  int index;
-  bool isSellOrder;
+  final int index;
+  final bool isSellOrder;
 
   OrderItem(this.index, this.isSellOrder);
 

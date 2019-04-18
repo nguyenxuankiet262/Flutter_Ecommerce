@@ -10,7 +10,7 @@ import 'body.dart';
 import 'package:flutter_food_app/page/search/search.dart';
 
 class MyHomePage extends StatefulWidget {
-  Function navigateToPost, navigateToFilter, navigateToSearch;
+  final Function navigateToPost, navigateToFilter, navigateToSearch;
 
   MyHomePage(this.navigateToPost, this.navigateToFilter, this.navigateToSearch);
 

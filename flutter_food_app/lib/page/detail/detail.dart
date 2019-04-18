@@ -10,8 +10,8 @@ import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
 
 class ListAllPost extends StatefulWidget {
-  Function navigateToPost, navigateToFilter;
-  int index;
+  final Function navigateToPost, navigateToFilter;
+  final int index;
 
   ListAllPost(this.navigateToPost, this.navigateToFilter, this.index);
 
