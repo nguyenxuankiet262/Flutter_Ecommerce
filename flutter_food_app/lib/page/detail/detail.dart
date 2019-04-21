@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/page/search/search.dart';
@@ -10,10 +11,9 @@ import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
 
 class ListAllPost extends StatefulWidget {
-  final Function navigateToPost, navigateToFilter;
   final int index;
 
-  ListAllPost(this.navigateToPost, this.navigateToFilter, this.index);
+  ListAllPost(this.index);
 
   @override
   State<StatefulWidget> createState() => _ListAllPostState();
@@ -24,6 +24,7 @@ class _ListAllPostState extends State<ListAllPost> {
   bool complete = false;
   bool isSearch = false;
   final myController = TextEditingController();
+  FunctionBloc functionBloc;
 
   void changeDetail() {
     _text = "";
@@ -38,6 +39,7 @@ class _ListAllPostState extends State<ListAllPost> {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
+    functionBloc = BlocProvider.of<FunctionBloc>(context);
   }
 
   @override
@@ -75,7 +77,7 @@ class _ListAllPostState extends State<ListAllPost> {
       actions: <Widget>[
         GestureDetector(
             onTap: () {
-              this.widget.navigateToFilter();
+              functionBloc.currentState.navigateToFilter();
             },
             child: Container(
               color: Colors.white,
@@ -85,11 +87,6 @@ class _ListAllPostState extends State<ListAllPost> {
                   child: Container(
                       padding: EdgeInsets.only(
                           top: 3.0, bottom: 3.0, right: 10.0, left: 10.0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(100.0)),
-                          border: Border.all(color: colorActive, width: 0.5)),
                       child: Row(
                         children: <Widget>[
                           Container(
@@ -97,16 +94,17 @@ class _ListAllPostState extends State<ListAllPost> {
                             child: Icon(
                               FontAwesomeIcons.filter,
                               color: colorActive,
-                              size: 10,
+                              size: 15,
                             ),
                           ),
                           Text(
-                            "Lọc",
+                            'LỌC',
+                            textScaleFactor: 1.5,
                             style: TextStyle(
                                 color: colorActive,
-                                fontSize: 12,
-                                fontFamily: "Ralway"),
-                          )
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
                         ],
                       )),
                 ),
@@ -275,8 +273,7 @@ class _ListAllPostState extends State<ListAllPost> {
                   visible: isSearch ? false : true,
                   child: Container(
                     color: colorBackground,
-                    child: HeaderDetail(
-                        this.widget.navigateToPost, this.widget.index),
+                    child: HeaderDetail(this.widget.index),
                   ))
             ],
           )),

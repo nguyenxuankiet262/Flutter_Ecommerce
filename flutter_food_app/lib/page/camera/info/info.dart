@@ -42,17 +42,20 @@ class InfoPostState extends State<InfoPost> {
               actions: <Widget>[
                 // usually buttons at the bottom of the dialog
                 new FlatButton(
-                  child: new Text("No"),
+                  child: new Text("Không"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 new FlatButton(
                   child: new Text(
-                    "Yes",
+                    "Có",
                     style: TextStyle(color: Colors.red),
                   ),
-                  onPressed: _clearBloc
+                  onPressed: (){
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    _clearBloc();
+                  }
                 ),
               ],
             );
@@ -63,7 +66,7 @@ class InfoPostState extends State<InfoPost> {
 
   void _showDialogPost() {
     showDialog(
-        barrierDismissible: true,
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -96,7 +99,7 @@ class InfoPostState extends State<InfoPost> {
                         "Thông báo",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -109,7 +112,7 @@ class InfoPostState extends State<InfoPost> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 12,
+                          fontSize: 14,
                           fontFamily: "Ralway"),
                     ),
                   ),
@@ -119,46 +122,52 @@ class InfoPostState extends State<InfoPost> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          InkWell(
-                            child: Container(
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  color: colorInactive,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "HỦY",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
-                                    textAlign: TextAlign.center,
+                          Expanded(
+                            child: InkWell(
+                              child: Container(
+                                  margin: EdgeInsets.only(left: 16.0, right: 8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
                                   ),
-                                )),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
+                                  child: Center(
+                                    child: Text(
+                                      "HỦY",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12, fontFamily: "Ralway"),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            flex: 1,
                           ),
-                          InkWell(
-                            child: Container(
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "ĐỒNG Ý",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
-                                    textAlign: TextAlign.center,
+                          Expanded(
+                            child: InkWell(
+                              child: Container(
+                                  margin: EdgeInsets.only(right: 16.0, left: 8.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
                                   ),
-                                )),
-                            onTap: () {
-                              _onSuccess();
-                            },
-                          ),
+                                  child: Center(
+                                    child: Text(
+                                      "ĐỒNG Ý",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12, fontFamily: "Ralway"),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
+                              onTap: () {
+                                _onSuccess();
+                              },
+                            ),
+                            flex: 1,
+                          )
                         ],
                       ))
                 ],
@@ -193,13 +202,10 @@ class InfoPostState extends State<InfoPost> {
             ),
           ),
     );
-    _clearBloc();
     new Future.delayed(new Duration(seconds: 2), () {
-      Navigator.pop(context); //pop dialog
       Toast.show('Đã gửi bài viết thành công!', context);
-      new Future.delayed(new Duration(seconds: 1), () {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      });
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      _clearBloc();
     });
   }
 
@@ -267,17 +273,15 @@ class InfoPostState extends State<InfoPost> {
             color: colorBackground,
             child: ListView(
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 15.0),
-                      child: HeaderInfo(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 64.0),
-                      child: BodyInfo(),
-                    ),
-                  ],
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 16.0),
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  color: Colors.white,
+                  child: HeaderInfo(),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 16.0),
+                  child: BodyInfo(),
                 ),
               ],
             ),

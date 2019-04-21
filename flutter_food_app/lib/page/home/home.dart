@@ -320,12 +320,12 @@ class _MyHomePageState extends State<MyHomePage>
             children: <Widget>[
               SearchPage(),
               Visibility(
-                maintainState: true,
-                visible: isSearch ? false : true,
-                child: Container(
-                  color: colorBackground,
-                  child: BodyContent(this.navigateToPost, this.navigateToFilter),
-                )
+                  maintainState: true,
+                  visible: isSearch ? false : true,
+                  child: Container(
+                    color: colorBackground,
+                    child: BodyContent(this.navigateToPost, this.navigateToFilter),
+                  )
               )
             ],
           )

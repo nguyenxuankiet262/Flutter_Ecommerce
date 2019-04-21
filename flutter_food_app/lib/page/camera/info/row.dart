@@ -76,7 +76,7 @@ class RowLayoutState extends State<RowLayout> {
           : nameOption[widget._index],
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: colorInactive, fontSize: 12),
+          style: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
           textAlign: TextAlign.end,
         );
       },
@@ -99,11 +99,11 @@ class RowLayoutState extends State<RowLayout> {
                 decoration: InputDecoration(
                   counterStyle: TextStyle(fontSize: 0),
                   suffixText: 'VNĐ',
-                  suffixStyle: TextStyle(color: colorInactive, fontSize: 12),
+                  suffixStyle: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
                   border: InputBorder.none,
                 ),
                 textDirection: TextDirection.rtl,
-                style: TextStyle(color: colorInactive, fontSize: 12),
+                style: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
               )
             : TextField(
                 controller: controller1,
@@ -112,11 +112,11 @@ class RowLayoutState extends State<RowLayout> {
                 decoration: InputDecoration(
                   counterStyle: TextStyle(fontSize: 0),
                   suffixText: 'VNĐ',
-                  suffixStyle: TextStyle(color: colorInactive, fontSize: 12),
+                  suffixStyle: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
                   border: InputBorder.none,
                 ),
                 textDirection: TextDirection.rtl,
-                style: TextStyle(color: colorInactive, fontSize: 12),
+                style: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
               );
   }
 }

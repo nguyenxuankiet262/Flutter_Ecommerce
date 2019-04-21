@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/text_search_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'list_search_post.dart';
+import 'package:flutter_food_app/page/user/settings/main/feedback_manage/list_feedback.dart';
 
 class SearchPage extends StatefulWidget {
+  final int _index;
+  SearchPage(this._index);
   @override
   State<StatefulWidget> createState() => SearchPageState();
 }
@@ -21,7 +23,7 @@ class SearchPageState extends State<SearchPage> {
             bloc: BlocProvider.of<SearchInputBloc>(context),
             builder: (context, TextSearchState state) {
               return state.searchInput.isNotEmpty
-                  ? ListSearchPost()
+                  ? ListFeedback(widget._index)
                   : Container(
                       color: colorBackground,
                     );

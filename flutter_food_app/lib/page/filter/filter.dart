@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/filter/location.dart';
 import 'package:flutter_food_app/page/filter/price.dart';
@@ -13,6 +15,13 @@ class FilterPage extends StatefulWidget{
 }
 
 class FilterPageState extends State<FilterPage>{
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(true);
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -83,13 +92,18 @@ class FilterPageState extends State<FilterPage>{
       bottomNavigationBar: Container(
         height: 50,
         width: double.infinity,
-        color: colorActive,
-        child: Center(
-          child: Text(
-            'ÁP DỤNG',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 12.0),
+        child: RaisedButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          color: colorActive,
+          child: Center(
+            child: Text(
+              'ÁP DỤNG',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 12.0),
+            ),
           ),
-        ),
+        )
       ),
     );
   }

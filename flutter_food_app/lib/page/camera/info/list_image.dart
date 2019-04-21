@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/state/detail_camera.dart';
+import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toast/toast.dart';
 
@@ -37,20 +38,13 @@ class ListImageState extends State<ListImage> {
           itemBuilder: (BuildContext context, int index) => GestureDetector(
                 child: Container(
                   margin: EdgeInsets.only(right: 10.0),
-                  width: 100,
-                  height: 90,
                   decoration: new BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    border: Border.all(color: colorInactive, width: 0.5)
                   ),
                   child: Stack(
                     children: <Widget>[
-                      Center(
-                        child: Icon(
-                          Icons.add,
-                          size: 30,
-                        ),
-                      ),
                       Container(
                         child: ClipRRect(
                           child: Image.file(
@@ -71,7 +65,10 @@ class ListImageState extends State<ListImage> {
                               child: Container(
                                 height: 10,
                                 width: double.infinity,
-                                color: Colors.black.withOpacity(0.5),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.5),
+                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5.0), bottomRight: Radius.circular(5.0))
+                                ),
                                 child: Center(
                                   child: Text(
                                     "Ảnh bìa",

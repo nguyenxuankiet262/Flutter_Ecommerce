@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 class SigninContent extends StatelessWidget {
@@ -6,8 +8,8 @@ class SigninContent extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: EdgeInsets.only(bottom: 54),
       width: double.infinity,
+      color: colorBackground,
       child: ListView(
         children: <Widget>[
           Padding(
@@ -23,7 +25,9 @@ class SigninContent extends StatelessWidget {
                   width: 150,
                   height: 40,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      BlocProvider.of<FunctionBloc>(context).currentState.navigateToAuthen();
+                    },
                     child: Text(
                       "ĐĂNG NHẬP",
                       style: TextStyle(

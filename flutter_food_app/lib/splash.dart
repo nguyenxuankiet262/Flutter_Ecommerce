@@ -50,7 +50,7 @@ class StartPageState extends State<StartPage> {
     BlocProvider.of<CameraBloc>(context)
         .initCamera(widget.cameras);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-      statusBarColor: Colors.white, //or set color with: Color(0xFF0000FF)
+      statusBarColor: Colors.transparent, //or set color with: Color(0xFF0000FF)
     ));
   }
 

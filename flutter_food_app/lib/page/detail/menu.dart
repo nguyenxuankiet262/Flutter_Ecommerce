@@ -4,21 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'list_post.dart';
+import 'child_detail.dart';
 
 class HeaderDetail extends StatefulWidget {
   final int index;
-  final Function callback;
 
-  HeaderDetail(this.callback, this.index);
+  HeaderDetail(this.index);
 
   @override
   State<StatefulWidget> createState() => HeaderDetailState();
 }
 
 class HeaderDetailState extends State<HeaderDetail> {
-  String title = "Tất cả";
-  int _index = 0;
   bool isLoading = true;
   ScrollController _hideButtonController;
 
@@ -55,18 +54,16 @@ class HeaderDetailState extends State<HeaderDetail> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _fragments = new List.generate(listMenu[widget.index].childMenu.length, (index) {
-      return new Container(
-        padding: EdgeInsets.all(2.0),
-        child: ListPost(widget.callback)
-      );
-    });
     return Container(
       child: ListView(
         controller: _hideButtonController,
         children: <Widget>[
           Container(
-            height: 100,
+            height: 112,
+            decoration: BoxDecoration(
+              color: colorBackground,
+              border: Border(bottom: BorderSide(width: 0.5, color: colorInactive.withOpacity(0.5)))
+            ),
             child: ListView.builder(
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
@@ -75,15 +72,11 @@ class HeaderDetailState extends State<HeaderDetail> {
               itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        isLoading = true;
-                        Future.delayed(const Duration(milliseconds: 1000), () {
-                          setState(() {
-                            isLoading = false;
-                          });
-                        });
-                        _index = index;
-
-                        title = listMenu[widget.index].childMenu[index].name;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ChildDetail(widget.index, index)),
+                        );
                       });
                     },
                     child: Container(
@@ -135,33 +128,22 @@ class HeaderDetailState extends State<HeaderDetail> {
                   ),
             ),
           ),
-          Container(
-              height: 54,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: colorInactive, width: 0.5)),
-              child: Center(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600),
-                ),
-              )),
           isLoading
               ? Container(
               height: MediaQuery.of(context).size.height / 2,
-              color: colorBackground,
+              color: Colors.white,
               child: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(colorActive),
+                  child: SpinKitFadingCircle(
+                    color: colorActive,
+                    size: 50.0,
                   )))
-              : _fragments[_index],
+              : Container(
+              padding: EdgeInsets.all(2.0),
+              child: ListPost()
+          ),
         ],
       ),
-      color: colorBackground,
+      color: Colors.white,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/address_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/address_state.dart';
@@ -19,6 +20,14 @@ class FavoriteManageState extends State<FavoriteManage> {
   bool complete = false;
   bool isSearch = false;
   final myController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(true);
+  }
 
   @override
   void dispose() {

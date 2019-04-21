@@ -22,8 +22,8 @@ class ChildCategoryState extends State<ChildCategory> {
     // TODO: implement initState
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
-    for(int i = 1; i < listMenu[widget.index].childMenu.length; i++){
-      categories.add(new RadioModel(i == 1 ? true : false, listMenu[widget.index].childMenu[i].image, listMenu[widget.index].childMenu[i].name));
+    for(int i = 0; i < listMenu[widget.index].childMenu.length; i++){
+      categories.add(new RadioModel(i == 0 ? true : false, listMenu[widget.index].childMenu[i].image, listMenu[widget.index].childMenu[i].name));
     }
   }
 
@@ -55,7 +55,7 @@ class ChildCategoryState extends State<ChildCategory> {
                         fontSize: 10),
                   ),
                   onTap: () {
-                    blocProvider.changeIndexCategory(widget.index, _index + 1);
+                    blocProvider.changeIndexCategory(widget.index, _index);
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },

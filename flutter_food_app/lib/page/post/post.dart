@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'slider.dart';
 import 'body.dart';
 import 'rating.dart';
@@ -21,10 +25,16 @@ class Post extends StatefulWidget {
 class PostState extends State<Post> {
   String textInput = "";
   final myController = new TextEditingController();
+  UserBloc userBloc;
+  FunctionBloc functionBloc;
 
   @override
   void initState() {
     super.initState();
+    userBloc = BlocProvider.of<UserBloc>(context);
+    functionBloc = BlocProvider.of<FunctionBloc>(context);
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(true);
     myController.addListener(_changeTextInput);
   }
 
@@ -276,7 +286,11 @@ class PostState extends State<Post> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
-                  _showCart();
+                  if(userBloc.currentState.isLogin){
+                    _showCart();
+                  }else{
+                    functionBloc.currentState.navigateToAuthen();
+                  }
                 },
                 child: Container(
                   height: 50,

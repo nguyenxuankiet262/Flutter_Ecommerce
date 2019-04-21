@@ -41,7 +41,7 @@ class ListOrderState extends State<ListOrder>
     // TODO: implement build
     return isLoading
         ? Container(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height,
             color: colorBackground,
             child: Center(
                 child: CircularProgressIndicator(

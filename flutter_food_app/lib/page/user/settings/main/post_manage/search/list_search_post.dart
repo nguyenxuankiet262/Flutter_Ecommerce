@@ -2,12 +2,12 @@ import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class ListSearchUser extends StatefulWidget {
+class ListSearchPost extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _ListSearchUserState();
+  State<StatefulWidget> createState() => _ListSearchPostState();
 }
 
-class _ListSearchUserState extends State<ListSearchUser>
+class _ListSearchPostState extends State<ListSearchPost>
     with AutomaticKeepAliveClientMixin {
   bool isLoading = true;
 
@@ -25,62 +25,63 @@ class _ListSearchUserState extends State<ListSearchUser>
     // TODO: implement build
     return isLoading
         ? Container(
-            height: MediaQuery.of(context).size.height / 2,
-            color: Colors.white,
-            child: Center(
-                child: SpinKitFadingCircle(
-                  color: colorActive,
-                  size: 50.0,
-                )))
-        : ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 20,
-            shrinkWrap: true,
+        height: MediaQuery.of(context).size.height,
+        color: colorBackground,
+        child: Center(
+            child: SpinKitFadingCircle (
+              color: colorActive,
+              size: 50.0,
+            )))
+        : Container(
+        color: Colors.white,
+        child: ListView.builder(
+            itemCount: 10,
             itemBuilder: (BuildContext context, int index) => Container(
-                color: Colors.white,
                 child: Column(children: <Widget>[
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: index == 19 ? 16.0 : 0.0),
+                        margin: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: index == 9 ? 16.0 : 0.0),
                         width: MediaQuery.of(context).size.width - 64,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {},
-                              child: ClipOval(
-                                child: Image.asset(
-                                  index % 2 == 0
-                                      ? 'assets/images/cat.jpg'
-                                      : 'assets/images/dog.jpg',
-                                  fit: BoxFit.cover,
-                                  width: 50.0,
-                                  height: 50.0,
+                              child: Container(
+                                child: ClipRRect(
+                                  child: Image.asset(
+                                    'assets/images/carrot.jpg',
+                                    fit: BoxFit.fill,
+                                  ),
+                                  borderRadius: new BorderRadius.all(
+                                      Radius.circular(5.0)),
                                 ),
+                                width: 105,
+                                height: 90,
                               ),
                             ),
-                            Container(
-                              height: 50,
+                            Flexible(
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.center,
+                                MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Container(
+                                    height: 65,
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       children: <Widget>[
                                         Padding(
                                           padding: EdgeInsets.only(
                                               right: 10.0, left: 15.0),
                                           child: Text(
-                                            'meowmeow',
+                                            'Cà rốt tươi ngon đây! Mại zô!',
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -94,7 +95,7 @@ class _ListSearchUserState extends State<ListSearchUser>
                                               left: 15.0,
                                               top: 5.0),
                                           child: Text(
-                                            'Trần Văn Mèo',
+                                            '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM',
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -102,6 +103,20 @@ class _ListSearchUserState extends State<ListSearchUser>
                                           ),
                                         ),
                                       ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 4.0,
+                                      right: 10.0,
+                                      left: 15.0,
+                                    ),
+                                    child: Text(
+                                      "100.000 VNĐ",
+                                      style: TextStyle(
+                                          color: colorActive,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17.0),
                                     ),
                                   ),
                                 ],
@@ -112,7 +127,8 @@ class _ListSearchUserState extends State<ListSearchUser>
                       ),
                     ],
                   ),
-                ])));
+                ])))
+    );
   }
 
   @override

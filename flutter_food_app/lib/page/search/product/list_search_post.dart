@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ListSearchPost extends StatefulWidget {
   @override
@@ -27,9 +28,10 @@ class _ListSearchPostState extends State<ListSearchPost>
             height: MediaQuery.of(context).size.height / 2,
             color: Colors.white,
             child: Center(
-                child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(colorActive),
-            )))
+                child: SpinKitFadingCircle(
+                  color: colorActive,
+                  size: 50.0,
+                )))
         : ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             itemCount: 10,

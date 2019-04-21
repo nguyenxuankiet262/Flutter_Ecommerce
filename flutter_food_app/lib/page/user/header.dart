@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'follow/follow.dart';
 
 class Header extends StatefulWidget {
   final bool isAnother;
@@ -13,6 +14,14 @@ class Header extends StatefulWidget {
 }
 
 class HeaderState extends State<Header> {
+  FunctionBloc functionBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    functionBloc = BlocProvider.of<FunctionBloc>(context);
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -124,12 +133,7 @@ class HeaderState extends State<Header> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            FollowPage(value: 1)),
-                                  );
+                                  functionBloc.currentState.navigateToFollow(1);
                                 },
                                 child: Container(
                                   width: widthColumn,
@@ -156,12 +160,7 @@ class HeaderState extends State<Header> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            FollowPage(value: 2)),
-                                  );
+                                  functionBloc.currentState.navigateToFollow(2);
                                 },
                                 child: Container(
                                   width: widthColumn,

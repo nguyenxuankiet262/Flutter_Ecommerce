@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'info.dart';
 import 'private_info.dart';
@@ -10,7 +12,15 @@ class PrivateManage extends StatefulWidget {
 }
 
 class PrivateManageState extends State<PrivateManage> {
-  double heightContainer = 400;
+  double heightContainer = 300;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(true);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +165,7 @@ class PrivateManageState extends State<PrivateManage> {
                                 ),
                               ),
                               right: 16.0,
-                              bottom: 66,
+                              bottom: 76,
                             )
                           ],
                         ),

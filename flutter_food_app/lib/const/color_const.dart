@@ -13,3 +13,4 @@ const colorFB = const Color(0xff3a5794);
 const colorBackground = const Color(0xfff7f7f7);
 const colorShadow = const Color(0xffbbbbbb);
 const colorFollow = const Color(0xfffcff6b);
+const colorSignin = const Color(0xff236000);

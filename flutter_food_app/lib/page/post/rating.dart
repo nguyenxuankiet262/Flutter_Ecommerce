@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_food_app/page/authentication/authentication.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'list_rating.dart';
 import 'package:toast/toast.dart';
@@ -321,7 +322,8 @@ class CommentPostState extends State<CommentPost> {
               ),
             ),
             onTap: () {
-              popupRating();
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AuthenticationPage(2)));
+              //popupRating();
             },
           ),
         ],

@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/grid_bloc.dart';
 import 'package:flutter_food_app/common/state/grid_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -7,18 +8,16 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ListPost extends StatefulWidget {
-  final Function callback;
-
-  ListPost(this.callback);
-
   @override
   State<StatefulWidget> createState() => _ListPostState();
 }
 
 class _ListPostState extends State<ListPost> with AutomaticKeepAliveClientMixin{
+  FunctionBloc functionBloc;
   @override
   void initState() {
     super.initState();
+    functionBloc = BlocProvider.of<FunctionBloc>(context);
   }
 
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class _ListPostState extends State<ListPost> with AutomaticKeepAliveClientMixin{
                                             topLeft: Radius.circular(5.0))),
                                   ),
                                   onTap: () {
-                                    this.widget.callback();
+                                    functionBloc.currentState.navigateToPost();
                                   },
                                 ),
                                 Padding(

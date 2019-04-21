@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/text_search_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/page/user/settings/main/post_manage/list_post.dart';
+import 'list_search_post.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -21,10 +21,10 @@ class SearchPageState extends State<SearchPage> {
             bloc: BlocProvider.of<SearchInputBloc>(context),
             builder: (context, TextSearchState state) {
               return state.searchInput.isNotEmpty
-                  ? ListPost()
-                  : ListPost();
-            }
-        )
-    );
+                  ? ListSearchPost()
+                  : Container(
+                      color: colorBackground,
+                    );
+            }));
   }
 }

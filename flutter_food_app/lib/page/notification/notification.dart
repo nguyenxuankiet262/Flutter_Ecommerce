@@ -49,9 +49,9 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
               )
             ],
           ),
-          margin: const EdgeInsets.only(top: 30.0),
+          margin: const EdgeInsets.only(top: 32.0),
         ),
-        preferredSize: Size.fromHeight(54),
+        preferredSize: Size.fromHeight(100),
       ),
       body: TabBarView(
         controller: _tabController,

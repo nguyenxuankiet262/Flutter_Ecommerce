@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/search_bloc.dart';
+import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'list_feedback.dart';
 import 'feedback/feedback.dart';
+import 'search/search.dart';
 
 class FeedBackManage extends StatefulWidget{
   @override
@@ -10,6 +16,10 @@ class FeedBackManage extends StatefulWidget{
 }
 
 class FeedBackManageState extends State<FeedBackManage> with SingleTickerProviderStateMixin{
+  String _text = "";
+  bool complete = false;
+  bool isSearch = false;
+  final myController = TextEditingController();
   TabController _tabController;
   ScrollController _scrollViewController;
 
@@ -19,13 +29,24 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
     _scrollViewController = new ScrollController();
     _tabController =
     new TabController(vsync: this, length: tabsFeedback.length + 1);
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(true);
   }
 
   @override
   void dispose() {
     _scrollViewController.dispose();
     _tabController.dispose();
+    myController.dispose();
     super.dispose();
+  }
+
+  void changeHome() {
+    _text = "";
+    isSearch = false;
+    BlocProvider.of<SearchInputBloc>(context).searchInput(1, "");
+    myController.clear();
+    BlocProvider.of<SearchBloc>(context).changePage();
   }
   @override
   Widget build(BuildContext context) {
@@ -33,6 +54,7 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
     return new DefaultTabController(
       length: tabsFeedback.length,
       child: new Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: new NestedScrollView(
           controller: _scrollViewController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -67,33 +89,149 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
                 ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
-                    margin: EdgeInsets.only(right: 15.0, left: 15.0, top: 80,bottom: 50),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        color: colorInactive.withOpacity(0.2)),
-                    child: Container(
-                        margin: EdgeInsets.only(left: 15.0),
+                    margin: EdgeInsets.only(right: 15.0, left: 15.0, top: 80,bottom: 52),
+                    child: isSearch
+                        ? Container(
+                        height: 55.0,
+                        color: Colors.white,
                         child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(right: 10.0),
-                              child: Icon(
-                                Icons.search,
-                                color: Colors.grey,
-                                size: 14,
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 16.0),
+                                padding:
+                                EdgeInsets.symmetric(vertical: 2.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(5.0)),
+                                    color:
+                                    colorInactive.withOpacity(0.2)),
+                                child: Container(
+                                    margin: EdgeInsets.only(left: 15.0),
+                                    child: TextField(
+                                      autofocus: true,
+                                      controller: myController,
+                                      textInputAction:
+                                      TextInputAction.search,
+                                      onChanged: (text) {
+                                        setState(() {
+                                          _text = text;
+                                        });
+                                      },
+                                      onSubmitted: (newValue) {
+                                        setState(() {
+                                          BlocProvider.of<
+                                              SearchInputBloc>(
+                                              context)
+                                              .searchInput(1, newValue);
+                                          isSearch = true;
+                                        });
+                                      },
+                                      style: TextStyle(
+                                          fontFamily: "Ralway",
+                                          fontSize: 12,
+                                          color: Colors.black),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Nhập tên phản hồi',
+                                        hintStyle: TextStyle(
+                                            color: colorInactive,
+                                            fontFamily: "Ralway",
+                                            fontSize: 12),
+                                        icon: Icon(
+                                          Icons.search,
+                                          color: colorInactive,
+                                          size: 20,
+                                        ),
+                                        suffixIcon: _text.isEmpty
+                                            ? null
+                                            : GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _text = "";
+                                              myController
+                                                  .clear();
+                                            });
+                                          },
+                                          child: Icon(
+                                            FontAwesomeIcons
+                                                .solidTimesCircle,
+                                            color: colorInactive,
+                                            size: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    )),
                               ),
+                              flex: 9,
                             ),
-                            Text(
-                              "Tìm kiếm phản hồi",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: colorInactive,
-                                  fontFamily: "Ralway"
-                              ),
-                            )
+                            Expanded(
+                                flex: 1,
+                                child: GestureDetector(
+                                  child: Container(
+                                      color: Colors.white,
+                                      child: Center(
+                                        child: Text(
+                                          "Hủy",
+                                          style: TextStyle(
+                                              color: colorInactive,
+                                              fontSize: 12,
+                                              fontWeight:
+                                              FontWeight.w600,
+                                              fontFamily: "Ralway"),
+                                        ),
+                                      )),
+                                  onTap: () {
+                                    setState(() {
+                                      changeHome();
+                                    });
+                                  },
+                                ))
                           ],
-                        )
-                    ),
+                        ))
+                        : GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<SearchBloc>(context)
+                            .changePage();
+                        setState(() {
+                          isSearch = true;
+                        });
+                      },
+                      child: Container(
+                        height: 55.0,
+                        color: Colors.white,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0)),
+                                color:
+                                colorInactive.withOpacity(0.2)),
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.search,
+                                  color: colorInactive,
+                                  size: 18,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5.0),
+                                  child: Text(
+                                    "Tìm kiếm phản hồi",
+                                    style: TextStyle(
+                                        fontFamily: "Raleway",
+                                        color: colorInactive,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                              ],
+                            )),
+                      ),
+                    )
                   ),
                 ),
                 bottom: new TabBar(
@@ -113,7 +251,16 @@ class FeedBackManageState extends State<FeedBackManage> with SingleTickerProvide
           body: TabBarView(
             controller: _tabController,
             children: new List.generate(tabsFeedback.length, (index) {
-              return ListFeedback(index);
+              return Stack(
+                children: <Widget>[
+                  SearchPage(index),
+                  Visibility(
+                    maintainState: true,
+                    visible: isSearch ? false : true,
+                    child: ListFeedback(index),
+                  )
+                ],
+              );
             }),
           ),
         ),

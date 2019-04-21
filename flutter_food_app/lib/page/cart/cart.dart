@@ -1,4 +1,8 @@
 import "package:flutter/material.dart";
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/state/user_state.dart';
+import 'package:flutter_food_app/page/authentication/login/signin.dart';
 import 'package:toast/toast.dart';
 import 'list_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -11,6 +15,15 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
   int itemCount = 1;
+
+  UserBloc userBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userBloc = BlocProvider.of<UserBloc>(context);
+  }
 
   void _showDialog() {
     // flutter defined function
@@ -110,7 +123,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                                 decoration: BoxDecoration(
                                   color: colorInactive,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
+                                      BorderRadius.all(Radius.circular(10.0)),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -130,7 +143,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                                 decoration: BoxDecoration(
                                   color: Colors.green,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
+                                      BorderRadius.all(Radius.circular(10.0)),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -159,24 +172,24 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
       context: context,
       barrierDismissible: false,
       builder: (_) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Đang gửi...',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-                decoration: TextDecoration.none,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Đang gửi...',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: new CircularProgressIndicator(),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: new CircularProgressIndicator(),
-            ),
-          ],
-        ),
-      ),
+          ),
     );
     new Future.delayed(new Duration(seconds: 2), () {
       Navigator.pop(context); //pop dialog
@@ -187,71 +200,83 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.5,
-        brightness: Brightness.light,
-        title: Text(
-          'Giỏ hàng',
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        actions: <Widget>[
-          new Center(
-            child: Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: GestureDetector(
-                child: Text(
-                  'ĐẶT HÀNG',
-                  textScaleFactor: 1.5,
-                  style: TextStyle(
-                      color: itemCount > 0 ? colorActive : Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10),
-                ),
-                onTap: () {
-                  _showDialogPost();
-                },
-              ),
+    return BlocBuilder(
+      bloc: userBloc,
+      builder: (context, UserState state) {
+        return Scaffold(
+          appBar: AppBar(
+            elevation: 0.5,
+            brightness: Brightness.light,
+            title: Text(
+              'Giỏ hàng',
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
-          ),
-        ],
-        leading: GestureDetector(
-          child: Icon(
-            FontAwesomeIcons.solidTrashAlt,
-            color: Colors.black,
-            size: 18,
-          ),
-          onTap: () {
-            if (itemCount > 0) {
-              _showDialog();
-            }
-          },
-        ),
-      ),
-      body: itemCount != 0
-          ? Container(
-        color: colorBackground,
-        child: ListCart(),
-      )
-          : Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.asset('assets/images/icon_heartbreak.png'),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    itemCount = 1;
-                  });
-                },
-                child: Text('Nothing to show!'),
-              ),
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            actions: <Widget>[
+              !state.isLogin
+                  ? Container()
+                  : new Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 16),
+                        child: GestureDetector(
+                          child: Text(
+                            'ĐẶT HÀNG',
+                            textScaleFactor: 1.5,
+                            style: TextStyle(
+                                color:
+                                    itemCount > 0 ? colorActive : Colors.grey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),
+                          ),
+                          onTap: () {
+                            _showDialogPost();
+                          },
+                        ),
+                      ),
+                    ),
             ],
-          )),
+            leading: !state.isLogin
+                ? Container()
+                : GestureDetector(
+                    child: Icon(
+                      FontAwesomeIcons.solidTrashAlt,
+                      color: Colors.black,
+                      size: 18,
+                    ),
+                    onTap: () {
+                      if (itemCount > 0) {
+                        _showDialog();
+                      }
+                    },
+                  ),
+          ),
+          body: !state.isLogin
+              ? SigninContent()
+              : itemCount != 0
+                  ? Container(
+                      color: colorBackground,
+                      child: ListCart(),
+                    )
+                  : Center(
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset('assets/images/icon_heartbreak.png'),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              itemCount = 1;
+                            });
+                          },
+                          child: Text('Nothing to show!'),
+                        ),
+                      ],
+                    )),
+        );
+      },
     );
   }
 

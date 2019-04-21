@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'detail/category.dart';
 
 import 'row.dart';
 
 List<String> nameMenu = [
-  "Lựa chọn danh mục",
-  "Thêm giá trước khi giảm",
-  "Thêm giá sau khi giảm",
-  "Thêm đơn vị",
+  "Danh mục",
+  "Giá trước khi giảm",
+  "Giá sau khi giảm",
+  "Đơn vị",
   "Địa chỉ",
   "Số điện thoại"
 ];
@@ -31,8 +33,10 @@ class BodyInfoState extends State<BodyInfo> {
   void initState() {
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
-    myControllerTitle = new TextEditingController(text: blocProvider.currentState.title);
-    myControllerContent = new TextEditingController(text: blocProvider.currentState.content);
+    myControllerTitle =
+        new TextEditingController(text: blocProvider.currentState.title);
+    myControllerContent =
+        new TextEditingController(text: blocProvider.currentState.content);
     myControllerTitle.addListener(_changeTitleInput);
     myControllerContent.addListener(_changeContentInput);
   }
@@ -64,87 +68,90 @@ class BodyInfoState extends State<BodyInfo> {
     final widthAddress = 150.0;
     return GestureDetector(
       onTap: () {
-
         FocusScope.of(context).requestFocus(new FocusNode());
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Theme(
-            data: new ThemeData(
-              primaryColor: titleInput.isEmpty ? Colors.redAccent : colorActive,
-              primaryColorDark: titleInput.isEmpty ? Colors.red : Colors.green,
-            ),
-            child: new Container(
-              decoration: BoxDecoration(color: Colors.white),
-              child: new TextField(
-                cursorColor: colorActive,
-                controller: myControllerTitle,
-                decoration: new InputDecoration(
-                  border: new OutlineInputBorder(
-                      borderSide: new BorderSide(color: colorInactive)),
-                  hintText: 'Nhập tiêu đề bài viết',
-                  hintStyle: TextStyle(
-                    fontFamily: "Ralway",
-                    fontSize: 12,
-                  ),
-                  labelText: "Tiêu đề bài viết",
-                  labelStyle: TextStyle(
-                      fontFamily: "Ralway",
-                      fontSize: 14,
-                      color: Colors.blue
-                  ),
-                ),
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 12
-                ),
-                autofocus: false,
-              ),
-            ),
-          ),
-          new Theme(
-            data: new ThemeData(
-              primaryColor: contentInput.isEmpty ? Colors.redAccent : colorActive,
-              primaryColorDark: contentInput.isEmpty ? Colors.red : Colors.green,
-            ),
-            child: new Container(
-              margin: EdgeInsets.only(top: 16.0),
-              decoration: BoxDecoration(color: Colors.white),
-              child: new TextField(
-                cursorColor: colorActive,
-                controller: myControllerContent,
-                textAlign: TextAlign.start,
-                maxLines: 10,
-                decoration: new InputDecoration(
-                  border: new OutlineInputBorder(
-                      borderSide: new BorderSide(color: colorInactive)),
-                  hintText: 'Nhập nội dung bài viết',
-                  hintStyle: TextStyle(
-                    fontFamily: "Ralway",
-                    fontSize: 12,
-                  ),
-                  labelText: "Nội dung bài viết",
-                  labelStyle: TextStyle(
-                    fontFamily: "Ralway",
-                    fontSize: 14,
-                    color: Colors.blue,
-                  ),
-                ),
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12
-                ),
-                autofocus: false,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          Container(
+            width: double.infinity,
+            color: colorBackground,
+            padding: EdgeInsets.only(bottom: 16.0, right: 16.0, left: 16.0),
             child: Text(
-              'Nội dung càng rõ ràng, càng nhiều người quan tâm!',
-              style: TextStyle(fontSize: 12),
+              "Tiêu đề bài viết",
+              style: TextStyle(fontFamily: "Ralway", fontWeight: FontWeight.w500,),
             ),
+          ),
+          TextField(
+            inputFormatters: [LengthLimitingTextInputFormatter(100)],
+            controller: myControllerTitle,
+            textAlign: TextAlign.start,
+            maxLines: 1,
+            decoration: new InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(top: 16.0, left: 16.0, bottom: 16.0),
+                hintText: 'Nhập tiêu đề bài viết',
+                hintStyle: TextStyle(
+                    fontFamily: "Ralway", fontSize: 14, color: colorInactive),
+                filled: true,
+                fillColor: Colors.white,
+              suffixIcon: titleInput.isEmpty
+                  ? null
+                  : GestureDetector(
+                onTap: () {
+                  setState(() {
+                    titleInput = "";
+                    myControllerTitle.clear();
+                    blocProvider.changeTitle(myControllerTitle.text);
+                  });
+                },
+                child: Container(
+                  color: Colors.white,
+                  child: Icon(
+                    FontAwesomeIcons
+                        .solidTimesCircle,
+                    color: colorInactive,
+                    size: 15,
+                  ),
+                )
+              ),
+            ),
+            style: TextStyle(color: Colors.black, fontSize: 14),
+            autofocus: false,
+          ),
+          Container(
+            width: double.infinity,
+            color: colorBackground,
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              "Nội dung bài viết",
+              style: TextStyle(fontFamily: "Ralway",fontWeight: FontWeight.w500,),
+            ),
+          ),
+          TextField(
+            controller: myControllerContent,
+            textAlign: TextAlign.start,
+            maxLines: 10,
+            decoration: new InputDecoration(
+                contentPadding: EdgeInsets.all(16.0),
+                border: InputBorder.none,
+                hintText: 'Nhập nội dung bài viết',
+                hintStyle: TextStyle(
+                    fontFamily: "Ralway", fontSize: 14, color: colorInactive),
+                filled: true,
+                fillColor: Colors.white,
+                helperText: "Xin vui lòng nhập rõ nội dung",
+              helperStyle: TextStyle(
+                  fontFamily: "Ralway", fontSize: 14, color: colorInactive),
+            ),
+            style: TextStyle(color: Colors.black, fontSize: 14),
+            autofocus: false,
+            maxLength: 1000,
+          ),
+          Container(
+            width: double.infinity,
+            color: colorBackground,
+            padding: EdgeInsets.symmetric(vertical: 8.0),
           ),
           Column(
             children: List.generate(nameMenu.length, (index) {
@@ -163,7 +170,9 @@ class BodyInfoState extends State<BodyInfo> {
                           nameMenu[index],
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            fontFamily: "Ralway"
                           ),
                         ),
                         Container(
@@ -171,10 +180,13 @@ class BodyInfoState extends State<BodyInfo> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               Container(
-                                  width: index != 4 ? widthAddress - 18 : MediaQuery.of(context).size.width - 150,
+                                  width: index != 4
+                                      ? index == 0
+                                      ? MediaQuery.of(context).size.width * 2 / 3
+                                  : widthAddress - 18
+                                      : MediaQuery.of(context).size.width * 3 / 4,
                                   padding: EdgeInsets.only(right: 10.0),
-                                  child: RowLayout(index)
-                              ),
+                                  child: RowLayout(index)),
                               Icon(
                                 Icons.arrow_forward_ios,
                                 size: 16,

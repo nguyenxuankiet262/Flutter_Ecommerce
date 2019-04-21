@@ -14,7 +14,7 @@ class DetailCameraState{
     title: "",
     content: "",
     indexCategory: 0,
-    indexChildCategory: 1,
+    indexChildCategory: 0,
     priceBefore: "0",
     priceAfter: "0",
   );

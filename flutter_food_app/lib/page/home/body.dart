@@ -58,6 +58,7 @@ class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientM
   Widget build(BuildContext context) {
     // TODO: implement build
     return ListView(
+      padding: EdgeInsets.only(top: 0.0),
       controller: _hideButtonController,
       children: <Widget>[
         CarouselWithIndicator(),

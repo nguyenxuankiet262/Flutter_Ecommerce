@@ -19,3 +19,23 @@ class NavigateToUser extends FunctionEvent{
   final Function navigateToUser;
   NavigateToUser(this.navigateToUser);
 }
+
+class NavigateToFollow extends FunctionEvent{
+  final Function navigateToFollow;
+  NavigateToFollow(this.navigateToFollow);
+}
+
+class NavigateToAuthen extends FunctionEvent{
+  final Function navigateToAuthen;
+  NavigateToAuthen(this.navigateToAuthen);
+}
+
+class NavigateToCamera extends FunctionEvent{
+  final Function navigateToCamera;
+  NavigateToCamera(this.navigateToCamera);
+}
+
+class NavigateToInfoPost extends FunctionEvent{
+  final Function navigateToInfoPost;
+  NavigateToInfoPost(this.navigateToInfoPost);
+}

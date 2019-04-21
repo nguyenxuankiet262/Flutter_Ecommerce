@@ -43,6 +43,7 @@ class FollowPageState extends State<FollowPage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.5,
         brightness: Brightness.light,
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here

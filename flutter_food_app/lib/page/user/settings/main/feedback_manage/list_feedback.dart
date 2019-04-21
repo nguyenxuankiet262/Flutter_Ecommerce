@@ -36,7 +36,7 @@ class ListFeedbackState extends State<ListFeedback> with AutomaticKeepAliveClien
     // TODO: implement build
     return isLoading
         ? Container(
-            height: MediaQuery.of(context).size.height / 2,
+            height: MediaQuery.of(context).size.height,
             color: colorBackground,
             child: Center(
                 child: CircularProgressIndicator(
@@ -73,7 +73,7 @@ class ListFeedbackState extends State<ListFeedback> with AutomaticKeepAliveClien
                     shrinkWrap: true,
                     itemCount: itemCount,
                     itemBuilder: (BuildContext context, int index) => Container(
-                      margin: EdgeInsets.only(top: index == 0 ? 10 : 5.0, bottom: index == itemCount - 1 ? 5.0 : 0.0),
+                      margin: EdgeInsets.only(top: index == 0 ? 8.0 : 5.0),
                       child: FeedbackItem(widget.index),
                     )
             )

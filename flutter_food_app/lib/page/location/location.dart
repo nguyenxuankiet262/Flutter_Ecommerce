@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'list_city.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -12,6 +13,13 @@ class LocationPage extends StatefulWidget{
 class LocationPageState extends State<LocationPage>{
   List<String> nameCities;
   List<List<String>> nameProvinces;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(true);
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

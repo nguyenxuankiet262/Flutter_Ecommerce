@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'main/order_manage/order_manage.dart';
 import 'main/post_manage/post_manage.dart';
 import 'main/favorite_manage/favorite_manage.dart';
@@ -291,6 +294,9 @@ class SettingsMain extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
+                BlocProvider.of<UserBloc>(context).logout();
+                BlocProvider.of<BottomBarBloc>(context)
+                    .changeVisible(true);
                 Navigator.pop(context);
               },
               child: Container(

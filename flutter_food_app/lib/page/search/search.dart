@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
-import 'package:flutter_food_app/common/state/text_search_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'product/product.dart';
 import 'user/user.dart';
@@ -13,7 +10,6 @@ class SearchPage extends StatefulWidget {
 
 class SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
-  String searchInput = "";
   TabController _tabController;
 
   @override
@@ -56,16 +52,12 @@ class SearchPageState extends State<SearchPage>
             )
           ],
         ),
-        body: BlocBuilder(
-            bloc: BlocProvider.of<SearchInputBloc>(context),
-            builder: (context, TextSearchState state) {
-              return TabBarView(
-                controller: _tabController,
-                children: [
-                  ProductContent(),
-                  UserContent(),
-                ],
-              );
-            }));
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            ProductContent(),
+            UserContent(),
+          ],
+        ));
   }
 }

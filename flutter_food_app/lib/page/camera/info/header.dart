@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/camera/camera.dart';
 import 'list_image.dart';
 
@@ -20,20 +21,20 @@ class HeaderInfoState extends State<HeaderInfo> {
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
                 width: 100,
-                height: 90,
                 decoration: new BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    color: colorBackground,
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    border: Border.all(color: colorInactive, width: 0.5)
                 ),
-                child: Stack(
-                  children: <Widget>[
-                    Center(
-                      child: Icon(
-                        Icons.add,
-                        size: 30,
-                      ),
+                child: Center(
+                  child: Text(
+                    "Thêm ảnh",
+                    style: TextStyle(
+                        color: colorInactive,
+                        fontFamily: "Ralway",
+                        fontSize: 14,
                     ),
-                  ],
+                  ),
                 ),
               ),
               onTap: () {
