@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_food_app/page/shimmer/shimmer_post.dart';
 import 'list_post.dart';
 import 'child_detail.dart';
 
@@ -129,14 +129,7 @@ class HeaderDetailState extends State<HeaderDetail> {
             ),
           ),
           isLoading
-              ? Container(
-              height: MediaQuery.of(context).size.height / 2,
-              color: Colors.white,
-              child: Center(
-                  child: SpinKitFadingCircle(
-                    color: colorActive,
-                    size: 50.0,
-                  )))
+              ? ShimmerPost()
               : Container(
               padding: EdgeInsets.all(2.0),
               child: ListPost()

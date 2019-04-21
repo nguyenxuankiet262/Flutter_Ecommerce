@@ -14,17 +14,14 @@ class SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        backgroundColor: colorBackground,
-        body: BlocBuilder(
-            bloc: BlocProvider.of<SearchInputBloc>(context),
-            builder: (context, TextSearchState state) {
-              return state.searchInput.isNotEmpty
-                  ? ListSearchPost()
-                  : Container(
-                      color: colorBackground,
-                    );
-            }));
+    return BlocBuilder(
+        bloc: BlocProvider.of<SearchInputBloc>(context),
+        builder: (context, TextSearchState state) {
+          return state.searchInput.isNotEmpty
+              ? ListSearchPost()
+              : Container(
+            color: colorBackground,
+          );
+        });
   }
 }

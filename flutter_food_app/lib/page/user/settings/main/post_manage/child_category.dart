@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/address_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/child_category.dart';
@@ -22,24 +20,10 @@ class ChildCategoryState extends State<ChildCategory> {
   bool isChild = true;
   int _index = 0;
 
-  Future<bool> _backpress() async {
-    //print("BACK_D");
-    List<String> temp =
-    BlocProvider.of<AddressBloc>(context).currentState.address.split("/");
-    BlocProvider.of<AddressBloc>(context).changeText("/" + temp[1]);
-    BlocProvider.of<AddressBloc>(context).changeIndex(1);
-    setState(() {
-      isChild = true;
-    });
-    return Future.value(false);
-  }
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<AddressBloc>(context).changeIndex(1);
-    BlocProvider.of<AddressBloc>(context).backpressDetail(_backpress);
     for (int i = 1; i < listMenu[widget.index].childMenu.length; i++) {
       categories.add(new RadioModel(
           i == 1 ? true : false,
@@ -63,12 +47,6 @@ class ChildCategoryState extends State<ChildCategory> {
                 //highlightColor: Colors.red,
                 splashColor: colorActive,
                 onTap: () {
-                  BlocProvider.of<AddressBloc>(context).changeText(
-                      BlocProvider.of<AddressBloc>(context)
-                              .currentState
-                              .address +
-                          "/" +
-                          categories[index].text);
                   setState(() {
                     _index = index;
                     isChild = false;

@@ -6,7 +6,7 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/page/search/search.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_food_app/page/shimmer/shimmer_post.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
@@ -32,10 +32,12 @@ class _ChildDetailState extends State<ChildDetail> {
   ScrollController _hideButtonController;
 
   void changeDetail() {
-    _text = "";
-    isSearch = false;
+    setState(() {
+      _text = "";
+      isSearch = false;
+      myController.clear();
+    });
     BlocProvider.of<SearchInputBloc>(context).searchInput(1, "");
-    myController.clear();
     BlocProvider.of<SearchBloc>(context).changePage();
   }
 
@@ -87,17 +89,6 @@ class _ChildDetailState extends State<ChildDetail> {
       iconTheme: IconThemeData(
         color: Colors.black, //change your color here
       ),
-      leading: GestureDetector(
-        child: Icon(Icons.arrow_back),
-        onTap: () {
-          if (!isSearch) {
-            Navigator.pop(context);
-          } else {
-            changeDetail();
-            Navigator.pop(context);
-          }
-        },
-      ),
       actions: <Widget>[
         GestureDetector(
             onTap: () {
@@ -141,186 +132,173 @@ class _ChildDetailState extends State<ChildDetail> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return WillPopScope(
-      child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(111.0), // here the desired height
-            child: Column(
-              children: <Widget>[
-                buildAppBar(context),
-                isSearch
-                    ? Container(
-                    height: 55.0,
-                    color: Colors.white,
-                    padding: EdgeInsets.only(
-                        right: 16.0, left: 16.0, bottom: 14.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
+    return Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(111.0), // here the desired height
+          child: Column(
+            children: <Widget>[
+              buildAppBar(context),
+              isSearch
+                  ? Container(
+                  height: 55.0,
+                  color: Colors.white,
+                  padding: EdgeInsets.only(
+                      right: 16.0, left: 16.0, bottom: 14.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(right: 16.0),
+                          padding: EdgeInsets.symmetric(vertical: 2.0),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(5.0)),
+                              color: colorInactive.withOpacity(0.2)),
                           child: Container(
-                            margin: EdgeInsets.only(right: 16.0),
-                            padding: EdgeInsets.symmetric(vertical: 2.0),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(5.0)),
-                                color: colorInactive.withOpacity(0.2)),
-                            child: Container(
-                                margin: EdgeInsets.only(left: 15.0),
-                                child: TextField(
-                                  autofocus: true,
-                                  controller: myController,
-                                  textInputAction: TextInputAction.search,
-                                  onChanged: (text) {
-                                    setState(() {
-                                      _text = text;
-                                    });
-                                  },
-                                  onSubmitted: (newValue) {
-                                    setState(() {
-                                      BlocProvider.of<SearchInputBloc>(
-                                          context)
-                                          .searchInput(1, newValue);
-                                      isSearch = true;
-                                    });
-                                  },
-                                  style: TextStyle(
-                                      fontFamily: "Ralway",
-                                      fontSize: 12,
-                                      color: Colors.black),
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText:
-                                    'Nhập tên bài viết, người đăng',
-                                    hintStyle: TextStyle(
-                                        color: colorInactive,
-                                        fontFamily: "Ralway",
-                                        fontSize: 12),
-                                    icon: Icon(
-                                      Icons.search,
+                              margin: EdgeInsets.only(left: 15.0),
+                              child: TextField(
+                                autofocus: true,
+                                controller: myController,
+                                textInputAction: TextInputAction.search,
+                                onChanged: (text) {
+                                  setState(() {
+                                    _text = text;
+                                  });
+                                },
+                                onSubmitted: (newValue) {
+                                  setState(() {
+                                    BlocProvider.of<SearchInputBloc>(
+                                        context)
+                                        .searchInput(1, newValue);
+                                    isSearch = true;
+                                  });
+                                },
+                                style: TextStyle(
+                                    fontFamily: "Ralway",
+                                    fontSize: 12,
+                                    color: Colors.black),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText:
+                                  'Nhập tên bài viết, người đăng',
+                                  hintStyle: TextStyle(
                                       color: colorInactive,
-                                      size: 20,
-                                    ),
-                                    suffixIcon: _text.isEmpty
-                                        ? null
-                                        : GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _text = "";
-                                          myController.clear();
-                                        });
-                                      },
-                                      child: Icon(
-                                        FontAwesomeIcons
-                                            .solidTimesCircle,
-                                        color: colorInactive,
-                                        size: 15,
-                                      ),
+                                      fontFamily: "Ralway",
+                                      fontSize: 12),
+                                  icon: Icon(
+                                    Icons.search,
+                                    color: colorInactive,
+                                    size: 20,
+                                  ),
+                                  suffixIcon: _text.isEmpty
+                                      ? null
+                                      : GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _text = "";
+                                        myController.clear();
+                                      });
+                                    },
+                                    child: Icon(
+                                      FontAwesomeIcons
+                                          .solidTimesCircle,
+                                      color: colorInactive,
+                                      size: 15,
                                     ),
                                   ),
+                                ),
+                              )),
+                        ),
+                        flex: 9,
+                      ),
+                      Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            child: Container(
+                                color: Colors.white,
+                                child: Center(
+                                  child: Text(
+                                    "Hủy",
+                                    style: TextStyle(
+                                        color: colorInactive,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Ralway"),
+                                  ),
                                 )),
-                          ),
-                          flex: 9,
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              child: Container(
-                                  color: Colors.white,
-                                  child: Center(
-                                    child: Text(
-                                      "Hủy",
-                                      style: TextStyle(
-                                          color: colorInactive,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Ralway"),
-                                    ),
-                                  )),
-                              onTap: () {
-                                setState(() {
-                                  changeDetail();
-                                });
-                              },
-                            ))
-                      ],
-                    ))
-                    : GestureDetector(
-                  onTap: () {
-                    BlocProvider.of<SearchBloc>(context).changePage();
-                    setState(() {
-                      isSearch = true;
-                    });
-                  },
-                  child: Container(
-                    height: 55.0,
-                    color: Colors.white,
-                    padding: EdgeInsets.only(
-                        right: 16.0, left: 16.0, bottom: 14.0),
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(5.0)),
-                            color: colorInactive.withOpacity(0.2)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.search,
-                              color: colorInactive,
-                              size: 18,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 5.0),
-                              child: Text(
-                                "Tìm kiếm bài viết, người đăng",
-                                style: TextStyle(
-                                    fontFamily: "Raleway",
-                                    color: colorInactive,
-                                    fontSize: 12),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ),
-                )
-              ],
-            ),
-          ),
-          body: Stack(
-            children: <Widget>[
-              SearchPage(),
-              Visibility(
-                  maintainState: true,
-                  visible: isSearch ? false : true,
-                  child: Container(
-                    color: isLoading ? Colors.white : colorBackground,
-                    child: ListView(
-                      controller: _hideButtonController,
-                      children: <Widget>[
-                        isLoading
-                            ? Container(
-                            height: MediaQuery.of(context).size.height / 2,
-                            color: Colors.white,
-                            child: Center(
-                                child: SpinKitFadingCircle(
-                                  color: colorActive,
-                                  size: 50.0,
-                                )))
-                            : Container(
-                            padding: EdgeInsets.all(2.0),
-                            child: ListPost()
-                        ),
-                      ],
-                    ),
+                            onTap: () {
+                              changeDetail();
+                            },
+                          ))
+                    ],
                   ))
+                  : GestureDetector(
+                onTap: () {
+                  BlocProvider.of<SearchBloc>(context).changePage();
+                  setState(() {
+                    isSearch = true;
+                  });
+                },
+                child: Container(
+                  height: 55.0,
+                  color: Colors.white,
+                  padding: EdgeInsets.only(
+                      right: 16.0, left: 16.0, bottom: 14.0),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(5.0)),
+                          color: colorInactive.withOpacity(0.2)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                            Icons.search,
+                            color: colorInactive,
+                            size: 18,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 5.0),
+                            child: Text(
+                              "Tìm kiếm bài viết, người đăng",
+                              style: TextStyle(
+                                  fontFamily: "Raleway",
+                                  color: colorInactive,
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              )
             ],
-          )),
-      onWillPop: () {
-        changeDetail();
-      },
-    );
+          ),
+        ),
+        body: Stack(
+          children: <Widget>[
+            SearchPage(),
+            Visibility(
+                maintainState: true,
+                visible: isSearch ? false : true,
+                child: Container(
+                  color: isLoading ? Colors.white : colorBackground,
+                  child: ListView(
+                    controller: _hideButtonController,
+                    children: <Widget>[
+                      isLoading
+                          ? ShimmerPost()
+                          : Container(
+                          padding: EdgeInsets.all(2.0),
+                          child: ListPost()
+                      ),
+                    ],
+                  ),
+                ))
+          ],
+        ));
   }
+
 }

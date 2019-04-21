@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/address_bloc.dart';
 import 'list_post.dart';
 
 class DetailCategory extends StatefulWidget{
@@ -13,13 +11,6 @@ class DetailCategory extends StatefulWidget{
 }
 
 class DetailCategoryState extends State<DetailCategory>{
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    BlocProvider.of<AddressBloc>(context).changeIndex(2);
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

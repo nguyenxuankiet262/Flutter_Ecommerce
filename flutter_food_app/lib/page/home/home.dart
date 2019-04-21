@@ -324,7 +324,8 @@ class _MyHomePageState extends State<MyHomePage>
                   visible: isSearch ? false : true,
                   child: Container(
                     color: colorBackground,
-                    child: BodyContent(this.navigateToPost, this.navigateToFilter),
+                    child: BodyContent(
+                        this.navigateToPost, this.navigateToFilter),
                   )
               )
             ],

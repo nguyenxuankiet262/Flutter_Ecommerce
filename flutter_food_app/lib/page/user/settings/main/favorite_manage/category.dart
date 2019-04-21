@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/address_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/category.dart';
@@ -18,22 +16,11 @@ class CategoryRadioState extends State<CategoryRadio> {
   bool isCategory = true;
   int _index = 0;
 
-  Future<bool> _backpress() async {
-    //print("BACK_C");
-    BlocProvider.of<AddressBloc>(context).changeText("");
-    BlocProvider.of<AddressBloc>(context).changeIndex(0);
-    setState(() {
-      isCategory = true;
-    });
-
-    return Future.value(false);
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<AddressBloc>(context).backpressChild(_backpress);
     for (int i = 0; i < listMenu.length; i++) {
       categories.add(new CategoryModel(listMenu[i].image, listMenu[i].name));
     }
@@ -55,8 +42,6 @@ class CategoryRadioState extends State<CategoryRadio> {
                   //highlightColor: Colors.red,
                   splashColor: colorActive,
                   onTap: () {
-                    BlocProvider.of<AddressBloc>(context)
-                        .changeText("/" + listMenu[index].name);
                     setState(() {
                       _index = index;
                       isCategory = false;

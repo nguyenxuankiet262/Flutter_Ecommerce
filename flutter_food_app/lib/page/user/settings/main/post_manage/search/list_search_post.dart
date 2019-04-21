@@ -25,110 +25,118 @@ class _ListSearchPostState extends State<ListSearchPost>
     // TODO: implement build
     return isLoading
         ? Container(
-        height: MediaQuery.of(context).size.height,
-        color: colorBackground,
-        child: Center(
-            child: SpinKitFadingCircle (
+            height: MediaQuery.of(context).size.height,
+            color: colorBackground,
+            child: Center(
+                child: SpinKitFadingCircle(
               color: colorActive,
               size: 50.0,
             )))
         : Container(
-        color: Colors.white,
-        child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) => Container(
-                child: Column(children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: index == 9 ? 16.0 : 0.0),
-                        width: MediaQuery.of(context).size.width - 64,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                child: ClipRRect(
-                                  child: Image.asset(
-                                    'assets/images/carrot.jpg',
-                                    fit: BoxFit.fill,
+            color: Colors.white,
+            child: ListView.builder(
+                padding: EdgeInsets.only(top: 0.0),
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (BuildContext context, int index) => Container(
+                        child: Column(children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: 16.0,
+                                right: 16.0,
+                                left: 16.0,
+                                bottom: index == 9 ? 16.0 : 0.0),
+                            width: MediaQuery.of(context).size.width - 64,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    child: ClipRRect(
+                                      child: Image.asset(
+                                        'assets/images/carrot.jpg',
+                                        fit: BoxFit.fill,
+                                      ),
+                                      borderRadius: new BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                    ),
+                                    width: 105,
+                                    height: 90,
                                   ),
-                                  borderRadius: new BorderRadius.all(
-                                      Radius.circular(5.0)),
                                 ),
-                                width: 105,
-                                height: 90,
-                              ),
-                            ),
-                            Flexible(
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    height: 65,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              right: 10.0, left: 15.0),
-                                          child: Text(
-                                            'Cà rốt tươi ngon đây! Mại zô!',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                Flexible(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Container(
+                                        height: 65,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: 10.0, left: 15.0),
+                                              child: Text(
+                                                'Cà rốt tươi ngon đây! Mại zô!',
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: 10.0,
+                                                  bottom: 5.0,
+                                                  left: 15.0,
+                                                  top: 5.0),
+                                              child: Text(
+                                                '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM',
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    color: colorText,
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              right: 10.0,
-                                              bottom: 5.0,
-                                              left: 15.0,
-                                              top: 5.0),
-                                          child: Text(
-                                            '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: colorText, fontSize: 14),
-                                          ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: 4.0,
+                                          right: 10.0,
+                                          left: 15.0,
                                         ),
-                                      ],
-                                    ),
+                                        child: Text(
+                                          "100.000 VNĐ",
+                                          style: TextStyle(
+                                              color: colorActive,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17.0),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 4.0,
-                                      right: 10.0,
-                                      left: 15.0,
-                                    ),
-                                    child: Text(
-                                      "100.000 VNĐ",
-                                      style: TextStyle(
-                                          color: colorActive,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17.0),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ])))
-    );
+                    ]))));
   }
 
   @override

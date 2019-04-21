@@ -225,12 +225,8 @@ class _MyMainPageState extends State<MyMainPage>
                           visible: !state.isSearch,
                           child: SlideTransition(
                               position: _offsetFloat,
-                              child: FloatingActionButton(
+                              child: FloatingActionButton.extended(
                                 backgroundColor: Colors.white,
-                                child: Icon(
-                                  FontAwesomeIcons.plus,
-                                  color: colorActive,
-                                ),
                                 onPressed: () {
                                   if (userBloc.currentState.isLogin) {
                                     _navigateToInfoPost();
@@ -242,6 +238,19 @@ class _MyMainPageState extends State<MyMainPage>
                                                 AuthenticationPage(1)));
                                   }
                                 },
+                                icon: Icon(
+                                  FontAwesomeIcons.plus,
+                                  color: colorActive,
+                                  size: 15,
+                                ),
+                                label: Text(
+                                  "BÁN",
+                                  style: TextStyle(
+                                    color: colorActive,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14
+                                  ),
+                                ),
                               )));
                     },
                   ),
@@ -257,11 +266,10 @@ class _MyMainPageState extends State<MyMainPage>
                             visible: !state.isSearch,
                             child: BottomAppBar(
                               shape: CircularNotchedRectangle(),
-                              notchMargin: 8.0,
                               child: new Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   GestureDetector(
@@ -278,7 +286,7 @@ class _MyMainPageState extends State<MyMainPage>
                                       height: 56,
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         children: <Widget>[
                                           Icon(
                                             FontAwesomeIcons.home,
@@ -303,7 +311,7 @@ class _MyMainPageState extends State<MyMainPage>
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(right: 80.0),
+                                    padding: EdgeInsets.only(right: 100.0),
                                     child: GestureDetector(
                                       onTap: () {
                                         navigationTapped(1);
@@ -314,7 +322,7 @@ class _MyMainPageState extends State<MyMainPage>
                                           height: 56,
                                           child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             children: <Widget>[
                                               Icon(
                                                 FontAwesomeIcons.shoppingCart,
@@ -325,7 +333,7 @@ class _MyMainPageState extends State<MyMainPage>
                                               ),
                                               Container(
                                                 margin:
-                                                    EdgeInsets.only(top: 2.0),
+                                                EdgeInsets.only(top: 2.0),
                                                 child: Text(
                                                   'Giỏ hàng',
                                                   style: TextStyle(
@@ -355,10 +363,10 @@ class _MyMainPageState extends State<MyMainPage>
                                     child: Stack(children: <Widget>[
                                       Container(
                                         color: Colors.white,
-                                        height: 56,
+                                        height: 50,
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                           children: <Widget>[
                                             Icon(
                                               FontAwesomeIcons.solidBell,
@@ -383,8 +391,8 @@ class _MyMainPageState extends State<MyMainPage>
                                       ),
                                       new Positioned(
                                         // draw a red marble
-                                        top: 4.0,
-                                        right: 20.0,
+                                        top: 1.0,
+                                        right: 21.0,
                                         child: new Icon(Icons.brightness_1,
                                             size: 11.0, color: Colors.red),
                                       )
@@ -396,69 +404,69 @@ class _MyMainPageState extends State<MyMainPage>
                                     },
                                     child: userstate.isLogin
                                         ? Stack(children: <Widget>[
+                                      Container(
+                                        color: Colors.white,
+                                        height: 56,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: <Widget>[
                                             Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: _index == 3
+                                                          ? colorActive
+                                                          : colorInactive,
+                                                      width: _index == 3
+                                                          ? 2.0
+                                                          : 2.0),
+                                                  borderRadius:
+                                                  BorderRadius.all(
+                                                      Radius.circular(
+                                                          100.0))),
+                                              child: ClipOval(
+                                                child: Image.asset(
+                                                  'assets/images/cat.jpg',
+                                                  fit: BoxFit.cover,
+                                                  width: 21.0,
+                                                  height: 21.0,
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 20,
                                               color: Colors.white,
-                                              height: 56,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: _index == 3
-                                                                ? colorActive
-                                                                : colorInactive,
-                                                            width: _index == 3
-                                                                ? 2.0
-                                                                : 2.0),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    100.0))),
-                                                    child: ClipOval(
-                                                      child: Image.asset(
-                                                        'assets/images/cat.jpg',
-                                                        fit: BoxFit.cover,
-                                                        width: 21.0,
-                                                        height: 21.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    height: 20,
-                                                    color: Colors.white,
-                                                    child: Text(
-                                                      "Cá nhân",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Positioned(
-                                              right: 3.0,
-                                              bottom: 9.3,
                                               child: Text(
-                                                'Cá nhân',
+                                                "Cá nhân",
                                                 style: TextStyle(
-                                                    fontFamily: 'Raleway',
-                                                    color: _index == 3
-                                                        ? colorActive
-                                                        : Colors.grey),
+                                                    color: Colors.white),
                                               ),
-                                            ),
-                                            new Positioned(
-                                              // draw a red marble
-                                              top: 4.0,
-                                              right: 13.0,
-                                              child: new Icon(
-                                                  Icons.brightness_1,
-                                                  size: 11.0,
-                                                  color: Colors.red),
                                             )
-                                          ])
+                                          ],
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 3.0,
+                                        bottom: 9.3,
+                                        child: Text(
+                                          'Cá nhân',
+                                          style: TextStyle(
+                                              fontFamily: 'Raleway',
+                                              color: _index == 3
+                                                  ? colorActive
+                                                  : Colors.grey),
+                                        ),
+                                      ),
+                                      new Positioned(
+                                        // draw a red marble
+                                        top: 4.0,
+                                        right: 13.0,
+                                        child: new Icon(
+                                            Icons.brightness_1,
+                                            size: 11.0,
+                                            color: Colors.red),
+                                      )
+                                    ])
                                         : Container(
                                       color: Colors.white,
                                       height: 56,
@@ -474,8 +482,8 @@ class _MyMainPageState extends State<MyMainPage>
                                             size: 20,
                                           ),
                                           Container(
-                                            margin: EdgeInsets.only(
-                                                top: 2.0),
+                                            margin:
+                                            EdgeInsets.only(top: 2.0),
                                             child: Text(
                                               'Cá nhân',
                                               style: TextStyle(

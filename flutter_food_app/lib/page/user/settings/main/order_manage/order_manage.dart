@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
-import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -47,7 +46,6 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
     isSearch = false;
     BlocProvider.of<SearchInputBloc>(context).searchInput(1, "");
     myController.clear();
-    BlocProvider.of<SearchBloc>(context).changePage();
   }
 
   @override
@@ -185,8 +183,6 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                           ))
                           : GestureDetector(
                         onTap: () {
-                          BlocProvider.of<SearchBloc>(context)
-                              .changePage();
                           setState(() {
                             isSearch = true;
                           });
