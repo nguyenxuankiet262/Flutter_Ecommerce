@@ -8,6 +8,12 @@ class AddLocation extends LocationEvent{
 
 class ChangeLocation extends LocationEvent{
   final int indexCity;
-  final int indeProvince;
-  ChangeLocation(this.indexCity, this.indeProvince);
+  final int indexProvince;
+  ChangeLocation(this.indexCity, this.indexProvince);
+}
+
+class ChangeTemp extends LocationEvent{
+  final int tempCity;
+  final int tempProvince;
+  ChangeTemp(this.tempCity, this.tempProvince);
 }

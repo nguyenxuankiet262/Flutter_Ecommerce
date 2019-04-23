@@ -25,7 +25,7 @@ class _ListPostState extends State<ListPost> with AutomaticKeepAliveClientMixin{
         crossAxisCount: 2,
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 50,
+        itemCount: 10,
         itemBuilder: (BuildContext context, int index) => new Card(
             child: new Container(
               child: Stack(

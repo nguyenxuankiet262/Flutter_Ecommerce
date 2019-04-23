@@ -48,6 +48,23 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
     myController.clear();
   }
 
+  AppBar buildAppBar(BuildContext context) {
+    return new AppBar(
+      elevation: 0.0,
+      brightness: Brightness.light,
+      title: new Text(
+        widget.isSellOrder ? 'Đơn hàng bán' : "Đơn hàng mua",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, color: Colors.black),
+      ),
+      centerTitle: true,
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(
+        color: Colors.black, //change your color here
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -60,29 +77,24 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               new SliverAppBar(
+                automaticallyImplyLeading: false,
                 elevation: 0.5,
                 brightness: Brightness.light,
-                title: new Text(
-                  widget.isSellOrder ? 'Đơn hàng bán' : "Đơn hàng mua",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black),
-                ),
-                iconTheme: IconThemeData(
-                  color: Colors.black, //change your color here
-                ),
-                centerTitle: true,
                 backgroundColor: Colors.white,
                 pinned: true,
                 floating: true,
-                snap: true,
                 expandedHeight: 150,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                      margin: EdgeInsets.only(right: 15.0, left: 15.0, top: 80,bottom: 52),
-                      child: isSearch
+                  collapseMode: CollapseMode.pin,
+                  background: Column(
+                    children: <Widget>[
+                      buildAppBar(context),
+                      isSearch
                           ? Container(
                           height: 55.0,
                           color: Colors.white,
+                          padding: EdgeInsets.only(
+                              right: 16.0, left: 16.0, bottom: 14.0),
                           child: Row(
                             mainAxisAlignment:
                             MainAxisAlignment.spaceBetween,
@@ -125,7 +137,8 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                                             color: Colors.black),
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
-                                          hintText: 'Nhập id đơn hàng',
+                                          hintText:
+                                          'Nhập tên/id đơn hàng',
                                           hintStyle: TextStyle(
                                               color: colorInactive,
                                               fontFamily: "Ralway",
@@ -141,8 +154,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                                             onTap: () {
                                               setState(() {
                                                 _text = "";
-                                                myController
-                                                    .clear();
+                                                myController.clear();
                                               });
                                             },
                                             child: Icon(
@@ -168,8 +180,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                                             style: TextStyle(
                                                 color: colorInactive,
                                                 fontSize: 12,
-                                                fontWeight:
-                                                FontWeight.w600,
+                                                fontWeight: FontWeight.w600,
                                                 fontFamily: "Ralway"),
                                           ),
                                         )),
@@ -190,12 +201,13 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                         child: Container(
                           height: 55.0,
                           color: Colors.white,
+                          padding: EdgeInsets.only(
+                              right: 16.0, left: 16.0, bottom: 14.0),
                           child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(5.0)),
-                                  color:
-                                  colorInactive.withOpacity(0.2)),
+                                  color: colorInactive.withOpacity(0.2)),
                               child: Row(
                                 mainAxisAlignment:
                                 MainAxisAlignment.center,
@@ -219,6 +231,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                               )),
                         ),
                       )
+                    ],
                   ),
                 ),
                 forceElevated: innerBoxIsScrolled,
@@ -242,7 +255,7 @@ class OrderManageState extends State<OrderManage> with SingleTickerProviderState
                 children: <Widget>[
                   SearchPage(index, widget.isSellOrder),
                   Visibility(
-                    maintainState: true,
+                    maintainState: false,
                     visible: isSearch ? false : true,
                     child: ListOrder(index, widget.isSellOrder),
                   )

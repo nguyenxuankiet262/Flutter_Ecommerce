@@ -4,6 +4,9 @@ import 'package:flutter_food_app/model/child_menu.dart';
 import 'package:flutter_food_app/model/menu.dart';
 
 List<Menu> listMenu = [
+  Menu('Tất cả', '', [
+    ChildMenu('', 'Tất cả')
+  ]),
   Menu('Thực phẩm tươi', 'assets/images/meat.jpg', [
     ChildMenu('', "Tất cả"),
     ChildMenu('assets/images/menu/vegetable.jpg', "Rau - Củ - Quả"),

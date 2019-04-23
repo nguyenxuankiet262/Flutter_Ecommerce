@@ -18,90 +18,77 @@ class ListProvince extends StatefulWidget {
 }
 
 class ListProvinceState extends State<ListProvince> {
-  int tempCity;
-  int tempProvince;
-
+  LocationBloc locationBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    tempCity = BlocProvider.of<LocationBloc>(context).currentState.indexCity;
-    tempProvince =
-        BlocProvider.of<LocationBloc>(context).currentState.indexProvince;
+    locationBloc = BlocProvider.of<LocationBloc>(context);
+    locationBloc.changeTemp(locationBloc.currentState.indexCity, locationBloc.currentState.indexProvince);
   }
-
-  Future<bool> _saveState() async {
-    BlocProvider.of<LocationBloc>(context)
-        .changeLocation(tempCity, tempProvince);
-    Navigator.of(context);
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return WillPopScope(
-        onWillPop: _saveState,
-        child: BlocBuilder(
-            bloc: BlocProvider.of<LocationBloc>(context),
-            builder: (context, LocationState state) {
-              return Scaffold(
-                primary: false,
-                appBar: PreferredSize(
-                  child: Container(
-                    color: Colors.white,
-                    child: Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(top: 1.0),
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.chevron_left,
-                              size: 36,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
+    return BlocBuilder(
+        bloc: locationBloc,
+        builder: (context, LocationState state) {
+          return Scaffold(
+            primary: false,
+            appBar: PreferredSize(
+              child: Container(
+                color: Colors.white,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 1.0),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.chevron_left,
+                          size: 36,
                         ),
-                        Center(
-                          child: Text(
-                            state.nameCities[widget._index],
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  preferredSize: Size(0.0, 54.0),
-                ),
-                body: Container(
-                  color: colorBackground,
-                  child: ListView.builder(
-                    itemCount: state.nameProvinces[widget._index].length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return new InkWell(
-                        //highlightColor: Colors.red,
-                        splashColor: colorActive,
-                        onTap: () {
-                          BlocProvider.of<LocationBloc>(context)
-                              .changeLocation(widget._index, index);
+                        onPressed: () {
+                          Navigator.pop(context);
                         },
-                        child: new ProvinceItem(
-                            widget._index == state.indexCity &&
-                                    index == state.indexProvince
-                                ? true
-                                : false,
-                            state.nameProvinces[widget._index][index]),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        state.nameCities[widget._index],
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    )
+                  ],
                 ),
-              );
-            }));
+              ),
+              preferredSize: Size(0.0, 54.0),
+            ),
+            body: Container(
+              color: colorBackground,
+              child: ListView.builder(
+                itemCount: state.nameProvinces[widget._index].length,
+                itemBuilder: (BuildContext context, int index) {
+                  return new InkWell(
+                    //highlightColor: Colors.red,
+                    splashColor: colorActive,
+                    onTap: () {
+                      BlocProvider.of<LocationBloc>(context)
+                          .changeTemp(widget._index, index);
+                    },
+                    child: new ProvinceItem(
+                        widget._index == state.tempCity &&
+                            index == state.tempProvince
+                            ? true
+                            : false,
+                        state.nameProvinces[widget._index][index]),
+                  );
+                },
+              ),
+            ),
+          );
+        });
   }
 }
 

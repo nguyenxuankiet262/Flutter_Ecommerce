@@ -141,5 +141,5 @@ class _ListSearchPostState extends State<ListSearchPost>
 
   @override
   // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 }

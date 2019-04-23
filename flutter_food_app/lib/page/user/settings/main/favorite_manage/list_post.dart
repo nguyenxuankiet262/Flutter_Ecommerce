@@ -12,18 +12,7 @@ class ListPost extends StatefulWidget {
 class _ListPostState extends State<ListPost>
     with AutomaticKeepAliveClientMixin {
   int itemCount = 10;
-  bool isLoading = true;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
-  }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {

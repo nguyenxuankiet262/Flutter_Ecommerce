@@ -3,6 +3,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/category.dart';
 import 'child_category.dart';
+import 'package:flutter/scheduler.dart';
 
 class CategoryRadio extends StatefulWidget {
   @override
@@ -18,29 +19,24 @@ class CategoryRadioState extends State<CategoryRadio> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    for(int i = 1; i < listMenu.length; i++){
+    for (int i = 0; i < listMenu.length; i++) {
       categories.add(new CategoryModel(listMenu[i].image, listMenu[i].name));
     }
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChildCategory(0))
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        brightness: Brightness.light,
-        title: new Text(
-          'Lựa chọn danh mục',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-      ),
-      body: Container(
-        color: colorBackground,
-        child: new ListView.builder(
+        primary: false,
+        appBar:
+            PreferredSize(child: Container(), preferredSize: Size(0.0, 0.0)),
+        body: new ListView.builder(
           itemCount: categories.length,
           itemBuilder: (BuildContext context, int index) {
             return new InkWell(
@@ -48,8 +44,8 @@ class CategoryRadioState extends State<CategoryRadio> {
               splashColor: colorActive,
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChildCategory(listMenu[index + 1].name, index + 1)),
+                    context,
+                    MaterialPageRoute(builder: (context) => ChildCategory(index))
                 );
               },
 
@@ -57,7 +53,6 @@ class CategoryRadioState extends State<CategoryRadio> {
             );
           },
         ),
-      )
     );
   }
 }
@@ -70,48 +65,39 @@ class CategeoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      padding: new EdgeInsets.all(15.0),
+      padding: new EdgeInsets.all(16.0),
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border(
               bottom: BorderSide(
-            color: colorInactive,
-            width: 0.5,
-          ))),
+                  color: colorInactive.withOpacity(0.2), width: 0.5))),
       child: new Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(
-            child: Row(
-              children: <Widget>[
-                new Container(
-                  height: 50.0,
-                  width: 50.0,
-                  child: ClipRRect(
-                      child: Image.asset(
-                        _item.image,
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: new BorderRadius.all(Radius.circular(5.0))),
-                  decoration: new BoxDecoration(
-                    color: Colors.white,
-                    border: new Border.all(color: colorInactive),
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  ),
-                ),
-                new Container(
-                  margin: new EdgeInsets.only(left: 10.0),
-                  child: new Text(
-                      _item.text,
+          new Container(
+              margin: new EdgeInsets.only(left: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(
+                    _item.text,
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 14
-                    ),
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600),
                   ),
-                )
-              ],
-            ),
-          ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8.0),
+                    child: new Text(
+                      '10 bài viết',
+                      style: TextStyle(
+                          color: colorInactive,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              )),
           new Container(
             height: 24.0,
             width: 24.0,
@@ -127,4 +113,3 @@ class CategeoryItem extends StatelessWidget {
     );
   }
 }
-

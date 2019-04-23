@@ -70,7 +70,7 @@ class ListFeedbackState extends State<ListFeedback> with AutomaticKeepAliveClien
                   )
                 : ListView.builder(
                     padding: EdgeInsets.only(top: 0),
-                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: itemCount,
                     itemBuilder: (BuildContext context, int index) => Container(
                       margin: EdgeInsets.only(top: index == 0 ? 8.0 : 5.0),

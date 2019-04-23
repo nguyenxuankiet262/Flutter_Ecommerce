@@ -16,17 +16,12 @@ class ListOrder extends StatefulWidget {
 class ListOrderState extends State<ListOrder>
     with AutomaticKeepAliveClientMixin {
   int itemCount;
-  bool isLoading = true;
+  bool isLoading = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
       if (widget.index == 0) {
       itemCount = 10;
     } else if (widget.index == 1) {
@@ -76,7 +71,7 @@ class ListOrderState extends State<ListOrder>
                 : StaggeredGridView.countBuilder(
                     padding: EdgeInsets.only(top: 5),
                     crossAxisCount: 2,
-                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: itemCount,
                     itemBuilder: (BuildContext context, int index) =>
                         OrderItem(widget.index, widget.isSellOrder),

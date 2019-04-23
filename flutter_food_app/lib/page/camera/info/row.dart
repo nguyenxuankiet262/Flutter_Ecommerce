@@ -27,12 +27,16 @@ class RowLayoutState extends State<RowLayout> {
   void initState() {
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
-    controller = new MaskedTextController(mask: '000.000.000', text: blocProvider.currentState.priceBefore);
-    controller1 = new MaskedTextController(mask: '000.000.000', text: blocProvider.currentState.priceAfter);
+    controller = new MaskedTextController(
+        mask: '000.000.000', text: blocProvider.currentState.priceBefore);
+    controller1 = new MaskedTextController(
+        mask: '000.000.000', text: blocProvider.currentState.priceAfter);
     controller.addListener(_changePriceOriginal);
     controller1.addListener(_changePriceDiscount);
     nameOption = [
-      listMenu[blocProvider.currentState.indexCategory].childMenu[blocProvider.currentState.indexChildCategory].name,
+      listMenu[blocProvider.currentState.indexCategory]
+          .childMenu[blocProvider.currentState.indexChildCategory]
+          .name,
       "100.000.000 VNĐ",
       "50.000 VNĐ",
       "Kg",
@@ -68,19 +72,22 @@ class RowLayoutState extends State<RowLayout> {
     // TODO: implement build
     return widget._index != 1 && widget._index != 2
         ? BlocBuilder(
-      bloc: blocProvider,
-      builder: (context, DetailCameraState state){
-        return Text(
-          widget._index == 0
-          ? listMenu[state.indexCategory].childMenu[state.indexChildCategory].name
-          : nameOption[widget._index],
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
-          textAlign: TextAlign.end,
-        );
-      },
-    )
+            bloc: blocProvider,
+            builder: (context, DetailCameraState state) {
+              return Text(
+                widget._index == 0
+                    ? listMenu[state.indexCategory]
+                        .childMenu[state.indexChildCategory]
+                        .name
+                    : nameOption[widget._index],
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
+                textAlign: TextAlign.end,
+              );
+            },
+          )
         : widget._index == 1
             ? TextField(
                 controller: controller,
@@ -99,11 +106,13 @@ class RowLayoutState extends State<RowLayout> {
                 decoration: InputDecoration(
                   counterStyle: TextStyle(fontSize: 0),
                   suffixText: 'VNĐ',
-                  suffixStyle: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
+                  suffixStyle: TextStyle(
+                      color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
                   border: InputBorder.none,
                 ),
                 textDirection: TextDirection.rtl,
-                style: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
+                style: TextStyle(
+                    color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
               )
             : TextField(
                 controller: controller1,
@@ -112,11 +121,13 @@ class RowLayoutState extends State<RowLayout> {
                 decoration: InputDecoration(
                   counterStyle: TextStyle(fontSize: 0),
                   suffixText: 'VNĐ',
-                  suffixStyle: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
+                  suffixStyle: TextStyle(
+                      color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
                   border: InputBorder.none,
                 ),
                 textDirection: TextDirection.rtl,
-                style: TextStyle(color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
+                style: TextStyle(
+                    color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
               );
   }
 }

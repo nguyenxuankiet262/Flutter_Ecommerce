@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
-import 'package:flutter_food_app/common/bloc/location_bloc.dart';
-import 'list_city.dart';
+import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
+import 'category.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
-class LocationPage extends StatefulWidget{
+class FilterPage extends StatefulWidget{
   @override
-  State<StatefulWidget> createState() => LocationPageState();
+  State<StatefulWidget> createState() => FilterPageState();
 }
 
-class LocationPageState extends State<LocationPage>{
+class FilterPageState extends State<FilterPage>{
+  PostManageBloc postManageBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<BottomBarBloc>(context)
-        .changeVisible(true);
+    postManageBloc = BlocProvider.of<PostManageBloc>(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class LocationPageState extends State<LocationPage>{
           color: Colors.black, //change your color here
         ),
         title: Text(
-          "Khu vực",
+          "Danh mục",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
@@ -70,14 +69,7 @@ class LocationPageState extends State<LocationPage>{
                       fontSize: 10),
                 ),
                 onTap: () {
-                  BlocProvider.of<LocationBloc>(context).changeLocation(
-                    BlocProvider.of<LocationBloc>(context)
-                        .currentState
-                        .tempCity,
-                    BlocProvider.of<LocationBloc>(context)
-                        .currentState
-                        .tempProvince,
-                  );
+                  //postManageBloc.changeCategory(indexCategory, indexChildCategory)
                   Navigator.pop(context);
                 },
               ),
@@ -88,7 +80,7 @@ class LocationPageState extends State<LocationPage>{
       body: Container(
         color: colorBackground,
         child: MaterialApp(
-          home: ListCity(),
+          home: CategoryRadio(),
           theme: ThemeData(
             fontFamily: 'Montserrat',
           ),

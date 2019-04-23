@@ -27,10 +27,10 @@ class HeaderHomeState extends State<HeaderHome> {
     return Container(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: listMenu.length,
+        itemCount: listMenu.length - 1,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
-                _gotoDetailScreen(index);
+                _gotoDetailScreen(index + 1);
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -48,7 +48,7 @@ class HeaderHomeState extends State<HeaderHome> {
                     Container(
                       child: ClipRRect(
                           child: Image.asset(
-                            listMenu[index].image,
+                            listMenu[index + 1].image,
                             fit: BoxFit.fill,
                           ),
                           borderRadius:
@@ -68,7 +68,7 @@ class HeaderHomeState extends State<HeaderHome> {
                     ),
                     Center(
                         child: Text(
-                      listMenu[index].name,
+                      listMenu[index + 1].name,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

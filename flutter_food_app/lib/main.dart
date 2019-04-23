@@ -4,6 +4,7 @@ import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
+import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
@@ -33,6 +34,7 @@ class MyAppState extends State<MyApp> {
   final functionBloc = FunctionBloc();
   final detailCameraBloc = DetailCameraBloc();
   final userBloc = UserBloc();
+  final postManageBloc = PostManageBloc();
   // This widget is the root of your application.
 
   @override
@@ -47,6 +49,7 @@ class MyAppState extends State<MyApp> {
     functionBloc.dispose();
     detailCameraBloc.dispose();
     userBloc.dispose();
+    postManageBloc.dispose();
   }
 
   @override
@@ -61,6 +64,7 @@ class MyAppState extends State<MyApp> {
         BlocProvider<FunctionBloc>(bloc: functionBloc,),
         BlocProvider<DetailCameraBloc>(bloc: detailCameraBloc,),
         BlocProvider<UserBloc>(bloc: userBloc,),
+        BlocProvider<PostManageBloc>(bloc: postManageBloc,),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
