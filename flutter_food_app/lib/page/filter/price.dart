@@ -63,7 +63,7 @@ class PriceFilterState extends State<PriceFilter> {
               ],
             ),
             Container(
-                margin: EdgeInsets.only(top: 16.0),
+                margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
                 child: FlutterSlider(
                   values: [_lowerValue, _upperValue],
                   rangeSlider: true,

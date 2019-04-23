@@ -5,6 +5,7 @@ import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/post_manage_state.dart';
 import 'package:flutter_food_app/const/value_const.dart';
+import 'package:flutter_food_app/page/filter/filter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'search/search.dart';
 import 'list_post.dart';
@@ -247,7 +248,7 @@ class PostManagementState extends State<PostManage> {
                                   onTap: () {
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => FilterPage())
+                                        MaterialPageRoute(builder: (context) => FilterManagement())
                                     );
                                   },
                                   child: Container(
@@ -308,7 +309,7 @@ class PostManagementState extends State<PostManage> {
                                   onTap: () {
                                     Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => FilterPage())
+                                        MaterialPageRoute(builder: (context) => FilterManagement())
                                     );
                                   },
                                   child: Container(
@@ -363,7 +364,14 @@ class PostManagementState extends State<PostManage> {
                               ),
                               Expanded(
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FilterPage(2),
+                                      ),
+                                    );
+                                  },
                                   child: Container(
                                       height: 30,
                                       color: Colors.white,

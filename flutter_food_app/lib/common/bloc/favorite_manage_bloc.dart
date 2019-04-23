@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter_food_app/common/event/post_manage_event.dart';
-import 'package:flutter_food_app/common/state/post_manage_state.dart';
+import 'package:flutter_food_app/common/event/favorite_manage_event.dart';
+import 'package:flutter_food_app/common/state/favorite_manage_state.dart';
 
-class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
+class FavoriteManageBloc extends Bloc<FavoriteManageEvent, FavoriteManageState> {
   void changeCategory(int indexCategory, int indexChildCategory) {
     dispatch(ChangeCategory(indexCategory, indexChildCategory));
   }
@@ -21,14 +21,14 @@ class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
 
   @override
   // TODO: implement initialState
-  PostManageState get initialState => PostManageState.initial();
+  FavoriteManageState get initialState => FavoriteManageState.initial();
 
   @override
-  Stream<PostManageState> mapEventToState(
-      PostManageState currentState, PostManageEvent event) async* {
+  Stream<FavoriteManageState> mapEventToState(
+      FavoriteManageState currentState, FavoriteManageEvent event) async* {
     // TODO: implement mapEventToState
     if (event is ChangeCategory) {
-      yield PostManageState(
+      yield FavoriteManageState(
           indexCategory: event.indexCategory,
           indexChildCategory: event.indexChildCategory,
           filter: currentState.filter,
@@ -37,7 +37,7 @@ class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
           tempFilter: currentState.tempFilter);
     }
     if (event is ChangeFilter) {
-      yield PostManageState(
+      yield FavoriteManageState(
           indexCategory: currentState.indexCategory,
           indexChildCategory: currentState.indexChildCategory,
           filter: event.filter,
@@ -46,7 +46,7 @@ class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
           tempFilter: currentState.tempFilter);
     }
     if (event is ChangeTempCategory) {
-      yield PostManageState(
+      yield FavoriteManageState(
           indexCategory: currentState.indexCategory,
           indexChildCategory: currentState.indexChildCategory,
           filter: currentState.filter,
@@ -55,7 +55,7 @@ class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
           tempFilter: currentState.tempFilter);
     }
     if (event is ChangeTempFilter) {
-      yield PostManageState(
+      yield FavoriteManageState(
           indexCategory: currentState.indexCategory,
           indexChildCategory: currentState.indexChildCategory,
           filter: currentState.filter,

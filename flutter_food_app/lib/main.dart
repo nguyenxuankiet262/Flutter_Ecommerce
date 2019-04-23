@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
+import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
@@ -35,6 +36,7 @@ class MyAppState extends State<MyApp> {
   final detailCameraBloc = DetailCameraBloc();
   final userBloc = UserBloc();
   final postManageBloc = PostManageBloc();
+  final favoriteManageBloc = FavoriteManageBloc();
   // This widget is the root of your application.
 
   @override
@@ -50,6 +52,7 @@ class MyAppState extends State<MyApp> {
     detailCameraBloc.dispose();
     userBloc.dispose();
     postManageBloc.dispose();
+    favoriteManageBloc.dispose();
   }
 
   @override
@@ -65,6 +68,7 @@ class MyAppState extends State<MyApp> {
         BlocProvider<DetailCameraBloc>(bloc: detailCameraBloc,),
         BlocProvider<UserBloc>(bloc: userBloc,),
         BlocProvider<PostManageBloc>(bloc: postManageBloc,),
+        BlocProvider<FavoriteManageBloc>(bloc: favoriteManageBloc),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

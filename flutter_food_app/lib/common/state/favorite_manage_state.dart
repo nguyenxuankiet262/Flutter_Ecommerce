@@ -1,4 +1,4 @@
-class PostManageState {
+class FavoriteManageState {
   final int indexCategory;
   final int indexChildCategory;
   final int filter;
@@ -6,15 +6,15 @@ class PostManageState {
   final int tempChildCategory;
   final int tempFilter;
 
-  const PostManageState({
+  const FavoriteManageState({
     this.indexCategory, this.indexChildCategory, this.filter,
     this.tempCategory,
     this.tempChildCategory,
     this.tempFilter
 });
 
-  factory PostManageState.initial() =>
-      PostManageState(
+  factory FavoriteManageState.initial() =>
+      FavoriteManageState(
         indexCategory: 0,
         indexChildCategory: 0,
         filter: 0,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
-import 'package:flutter_food_app/common/state/post_manage_state.dart';
+import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
+import 'package:flutter_food_app/common/state/favorite_manage_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,21 +15,21 @@ class ChildCategory extends StatefulWidget {
 }
 
 class ChildCategoryState extends State<ChildCategory> {
-  PostManageBloc postManageBloc;
+  FavoriteManageBloc favoriteManageBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    postManageBloc = BlocProvider.of<PostManageBloc>(context);
-    postManageBloc.changeTempCategory(postManageBloc.currentState.indexCategory, postManageBloc.currentState.tempChildCategory);
+    favoriteManageBloc = BlocProvider.of<FavoriteManageBloc>(context);
+    favoriteManageBloc.changeTempCategory(favoriteManageBloc.currentState.indexCategory, favoriteManageBloc.currentState.tempChildCategory);
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return BlocBuilder(
-      bloc: postManageBloc,
-      builder: (context, PostManageState state){
+      bloc: favoriteManageBloc,
+      builder: (context, FavoriteManageState state){
         return Scaffold(
           primary: false,
           appBar: PreferredSize(
@@ -72,7 +72,7 @@ class ChildCategoryState extends State<ChildCategory> {
                   //highlightColor: Colors.red,
                   splashColor: colorActive,
                   onTap: () {
-                    postManageBloc.changeTempCategory(widget._index, index);
+                    favoriteManageBloc.changeTempCategory(widget._index, index);
                   },
                   child: new CategoryItem(
                       widget._index == state.tempCategory && index == state.tempChildCategory

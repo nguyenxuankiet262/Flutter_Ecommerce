@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
+import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'category.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
@@ -10,12 +10,12 @@ class FilterManagement extends StatefulWidget{
 }
 
 class FilterManagementState extends State<FilterManagement>{
-  PostManageBloc postManageBloc;
+  FavoriteManageBloc favoriteManageBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    postManageBloc = BlocProvider.of<PostManageBloc>(context);
+    favoriteManageBloc = BlocProvider.of<FavoriteManageBloc>(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -69,11 +69,11 @@ class FilterManagementState extends State<FilterManagement>{
                       fontSize: 10),
                 ),
                 onTap: () {
-                  postManageBloc.changeCategory(
-                    postManageBloc
+                  favoriteManageBloc.changeCategory(
+                    favoriteManageBloc
                         .currentState
                         .tempCategory,
-                    postManageBloc
+                    favoriteManageBloc
                         .currentState
                         .tempChildCategory,
                   );

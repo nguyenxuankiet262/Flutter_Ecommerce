@@ -8,6 +8,9 @@ import 'package:flutter_food_app/page/filter/rating.dart';
 import 'package:flutter_food_app/page/filter/sort.dart';
 
 class FilterPage extends StatefulWidget{
+  //_index = 1: full options
+  //_index = 2: remove location sort and price sort
+  //_index = 3: only rating sort
   final int _index;
   FilterPage(this._index);
   @override
@@ -68,10 +71,10 @@ class FilterPageState extends State<FilterPage>{
         color: Colors.white,
         child: ListView(
           children: <Widget>[
-            widget._index != 4 ? PriceFilter() : Container(),
-            widget._index != 2 && widget._index != 4 ? LocationFilter() : Container(),
+            widget._index == 2 || widget._index == 3 ? Container() : PriceFilter(),
+            widget._index == 2 || widget._index == 3 ? Container() : LocationFilter(),
             Container(
-              padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0, top: widget._index != 4 ? 0.0 : 16.0),
+              padding: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0, top: 16.0),
               child: Text(
                 "ĐÁNH GIÁ",
                 style: TextStyle(
@@ -85,7 +88,7 @@ class FilterPageState extends State<FilterPage>{
               margin: EdgeInsets.only(right: 16.0, left: 16.0, bottom: 16.0),
               child: RatingFilter(),
             ),
-            widget._index != 4 ? SortContent() : Container(),
+            widget._index == 3 ? Container () : SortContent(),
           ],
         ),
       ),

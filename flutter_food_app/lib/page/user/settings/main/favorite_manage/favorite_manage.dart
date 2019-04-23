@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
+import 'package:flutter_food_app/common/state/favorite_manage_state.dart';
+import 'package:flutter_food_app/const/value_const.dart';
+import 'package:flutter_food_app/page/filter/filter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'search/search.dart';
 import 'list_post.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'category.dart';
+import 'filter/filter.dart';
 
 class FavoriteManage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => FavoriteManageState();
+  State<StatefulWidget> createState() => FavoriteManagementState();
 }
 
-class FavoriteManageState extends State<FavoriteManage> {
+class FavoriteManagementState extends State<FavoriteManage> {
   String _text = "";
   bool complete = false;
   bool isSearch = false;
   ScrollController _scrollViewController;
   final myController = TextEditingController();
+  FavoriteManageBloc favoriteManageBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    favoriteManageBloc = BlocProvider.of<FavoriteManageBloc>(context);
     _scrollViewController = new ScrollController();
     BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
   }
@@ -48,7 +54,7 @@ class FavoriteManageState extends State<FavoriteManage> {
       elevation: 0.0,
       brightness: Brightness.light,
       title: new Text(
-        "Bài viết yeu",
+        "Quản lý bài viết",
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 17),
       ),
@@ -230,170 +236,193 @@ class FavoriteManageState extends State<FavoriteManage> {
                 forceElevated: innerBoxIsScrolled,
                 bottom: PreferredSize(
                     preferredSize: Size.fromHeight(46),
-                    child: Container(
-                      color: Colors.white,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  height: 30,
-                                  margin: EdgeInsets.only(
-                                      top: 8.0,
-                                      bottom: 8.0,
-                                      right: 8.0,
-                                      left: 16.0),
-                                  decoration: BoxDecoration(
+                    child: BlocBuilder(
+                      bloc: favoriteManageBloc,
+                      builder: (context, FavoriteManageState state){
+                        return Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => FilterManagement())
+                                    );
+                                  },
+                                  child: Container(
+                                      height: 30,
+                                      margin: EdgeInsets.only(
+                                          top: 8.0,
+                                          bottom: 8.0,
+                                          right: 8.0,
+                                          left: 16.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                              right: BorderSide(
+                                                  color: colorInactive,
+                                                  width: 0.5))),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Danh mục",
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Ralway",
+                                                      color: colorInactive,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  listMenu[state.indexCategory].name,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Ralway",
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                            flex: 9,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_drop_down,
+                                          )
+                                        ],
+                                      )),
+                                ),
+                                flex: 3,
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => FilterManagement())
+                                    );
+                                  },
+                                  child: Container(
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border(
+                                              right: BorderSide(
+                                                  color: colorInactive,
+                                                  width: 0.5))),
+                                      margin:
+                                      EdgeInsets.only(top: 8.0, bottom: 8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Danh mục con",
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Ralway",
+                                                      color: colorInactive,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  listMenu[state.indexCategory].childMenu[state.indexChildCategory].name,
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Ralway",
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                              ],
+                                            ),
+                                            flex: 9,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_drop_down,
+                                          )
+                                        ],
+                                      )),
+                                ),
+                                flex: 2,
+                              ),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FilterPage(1),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                      height: 30,
                                       color: Colors.white,
-                                      border: Border(
-                                          right: BorderSide(
-                                              color: colorInactive,
-                                              width: 0.5))),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Danh mục",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: "Ralway",
-                                                  color: colorInactive,
-                                                  fontWeight: FontWeight.w500),
+                                      padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  "Sắp xếp/Lọc",
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Ralway",
+                                                      color: colorInactive,
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  "Yêu thích nhất",
+                                                  maxLines: 1,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontFamily: "Ralway",
+                                                      fontWeight: FontWeight.w500),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "Thực phẩm bổ dưỡng",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: "Ralway",
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        flex: 9,
-                                      ),
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            flex: 3,
+                                            flex: 9,
+                                          ),
+                                          Icon(
+                                            Icons.arrow_drop_down,
+                                          )
+                                        ],
+                                      )),
+                                ),
+                                flex: 2,
+                              )
+                            ],
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border(
-                                          right: BorderSide(
-                                              color: colorInactive,
-                                              width: 0.5))),
-                                  margin:
-                                  EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Danh mục con",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: "Ralway",
-                                                  color: colorInactive,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "Rau - củ - quả",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: "Ralway",
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        flex: 9,
-                                      ),
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            flex: 2,
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  height: 30,
-                                  color: Colors.white,
-                                  padding:
-                                  EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              "Sắp xếp/Lọc",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: "Ralway",
-                                                  color: colorInactive,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Text(
-                                              "Yêu thích nhất",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontFamily: "Ralway",
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                          ],
-                                        ),
-                                        flex: 9,
-                                      ),
-                                      Icon(
-                                        Icons.arrow_drop_down,
-                                      )
-                                    ],
-                                  )),
-                            ),
-                            flex: 2,
-                          )
-                        ],
-                      ),
-                    )),
+                        );
+                      },
+                    )
+                ),
               )
             ];
           },

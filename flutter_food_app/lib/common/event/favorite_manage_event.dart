@@ -1,23 +1,23 @@
-abstract class PostManageEvent{}
+abstract class FavoriteManageEvent{}
 
-class ChangeCategory extends PostManageEvent{
+class ChangeCategory extends FavoriteManageEvent{
   final int indexCategory;
   final int indexChildCategory;
   ChangeCategory(this.indexCategory, this.indexChildCategory);
 }
 
-class ChangeFilter extends PostManageEvent{
+class ChangeFilter extends FavoriteManageEvent{
   final int filter;
   ChangeFilter(this.filter);
 }
 
-class ChangeTempCategory extends PostManageEvent{
+class ChangeTempCategory extends FavoriteManageEvent{
   final int tempCategory;
   final int tempChildCategory;
   ChangeTempCategory(this.tempCategory, this.tempChildCategory);
 }
 
-class ChangeTempFilter extends PostManageEvent{
+class ChangeTempFilter extends FavoriteManageEvent{
   final int tempFilter;
   ChangeTempFilter(this.tempFilter);
 }

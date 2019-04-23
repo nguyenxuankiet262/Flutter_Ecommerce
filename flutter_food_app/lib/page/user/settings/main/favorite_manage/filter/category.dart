@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
+import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/category.dart';
@@ -27,7 +27,7 @@ class CategoryRadioState extends State<CategoryRadio> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ChildCategory(BlocProvider.of<PostManageBloc>(context).currentState.indexCategory))
+          MaterialPageRoute(builder: (context) => ChildCategory(BlocProvider.of<FavoriteManageBloc>(context).currentState.indexCategory))
       );
     });
   }

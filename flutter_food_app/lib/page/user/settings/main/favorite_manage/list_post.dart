@@ -36,8 +36,8 @@ class _ListPostState extends State<ListPost>
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: AssetImage(
-                      "assets/images/icon_heartbreak.png"),
+                  image:
+                  AssetImage("assets/images/icon_heartbreak.png"),
                 ),
               ),
               height: 200,
@@ -81,7 +81,9 @@ class _ListPostState extends State<ListPost>
                                       topLeft: Radius.circular(5.0))),
                             ),
                             onTap: () {
-                              BlocProvider.of<FunctionBloc>(context).currentState.navigateToPost();
+                              BlocProvider.of<FunctionBloc>(context)
+                                  .currentState
+                                  .navigateToPost();
                             },
                           ),
                           Padding(
@@ -179,9 +181,7 @@ class _ListPostState extends State<ListPost>
                         MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Container(
-
-                          ),
+                          Container(),
                           Stack(
                             children: <Widget>[
                               Container(
@@ -224,6 +224,32 @@ class _ListPostState extends State<ListPost>
                           )
                         ],
                       ),
+                      index != 1000
+                          ? Container()
+                          : Container(
+                          height: 170,
+                          color: Colors.white54,
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              margin: EdgeInsets.all(8.0),
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(100)),
+                                  border: Border.all(
+                                      color: Colors.white,
+                                      width: 1),
+                                  color: colorActive),
+                              child: Center(
+                                child: Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ))
                     ],
                   ),
                 )),

@@ -135,7 +135,7 @@ class RatingManageState extends State<RatingManage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FilterPage(4),
+                                  builder: (context) => FilterPage(3),
                                 ),
                               );
                               break;
