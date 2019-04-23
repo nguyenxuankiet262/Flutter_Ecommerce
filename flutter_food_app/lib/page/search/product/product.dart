@@ -24,7 +24,6 @@ class ProductContentState extends State<ProductContent>
               : Container(
                   color: Colors.white,
                   child: ListView(
-                    shrinkWrap: true,
                     children: <Widget>[
                       Container(
                         padding:

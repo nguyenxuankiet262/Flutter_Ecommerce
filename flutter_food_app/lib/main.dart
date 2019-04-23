@@ -3,7 +3,6 @@ import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
-import 'package:flutter_food_app/common/bloc/grid_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
@@ -26,7 +25,6 @@ class MyApp extends StatefulWidget{
 }
 
 class MyAppState extends State<MyApp> {
-  final gridBloc = GridBloc();
   final cameraBloc = CameraBloc();
   final locationBloc = LocationBloc();
   final searchBloc = SearchBloc();
@@ -41,7 +39,6 @@ class MyAppState extends State<MyApp> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    gridBloc.dispose();
     cameraBloc.dispose();
     locationBloc.dispose();
     searchBloc.dispose();
@@ -56,7 +53,6 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return BlocProviderTree(
       blocProviders: [
-        BlocProvider<GridBloc>(bloc: gridBloc),
         BlocProvider<CameraBloc>(bloc: cameraBloc),
         BlocProvider<LocationBloc>(bloc: locationBloc),
         BlocProvider<SearchBloc>(bloc: searchBloc),

@@ -14,7 +14,6 @@ class SearchProductState extends State<SearchProduct>{
     return Container(
         color: Colors.white,
         child: ListView(
-          shrinkWrap: true,
           children: <Widget>[
             Container(
               padding:

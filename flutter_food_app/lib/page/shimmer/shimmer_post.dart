@@ -10,6 +10,7 @@ class ShimmerPost extends StatelessWidget {
     // TODO: implement build
     return new StaggeredGridView.countBuilder(
       crossAxisCount: 2,
+      padding: EdgeInsets.only(top: 0.0),
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: itemCount,

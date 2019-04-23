@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/category.dart';
-import 'child_category.dart';
 
 class CategoryRadio extends StatefulWidget {
   @override
@@ -52,11 +51,6 @@ class CategoryRadioState extends State<CategoryRadio> {
               },
             ),
           ),
-          Visibility(
-            maintainState: false,
-            visible: isCategory ? false : true,
-            child: ChildCategory(_index),
-          )
         ])
     );
   }

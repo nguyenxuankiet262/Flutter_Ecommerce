@@ -23,7 +23,6 @@ class UserContentState extends State<UserContent> with AutomaticKeepAliveClientM
               : Container(
               color: Colors.white,
               child: ListView(
-                shrinkWrap: true,
                 children: <Widget>[
                   Container(
                     padding:

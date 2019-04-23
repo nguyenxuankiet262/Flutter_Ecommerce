@@ -19,7 +19,6 @@ class HeaderDetail extends StatefulWidget {
 
 class HeaderDetailState extends State<HeaderDetail> {
   bool isLoading = true;
-  ScrollController _hideButtonController;
 
   @override
   void initState() {
@@ -30,33 +29,14 @@ class HeaderDetailState extends State<HeaderDetail> {
         isLoading = false;
       });
     });
-    _hideButtonController = new ScrollController();
-    _hideButtonController.addListener(() {
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
-        BlocProvider.of<BottomBarBloc>(context)
-            .changeVisible(false);
-      }
-      if (_hideButtonController.position.userScrollDirection ==
-          ScrollDirection.forward) {
-        BlocProvider.of<BottomBarBloc>(context)
-            .changeVisible(true);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _hideButtonController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        controller: _hideButtonController,
+        padding: EdgeInsets.only(top: 0),
+        physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
           Container(
             height: 112,
@@ -68,19 +48,19 @@ class HeaderDetailState extends State<HeaderDetail> {
               shrinkWrap: true,
               physics: ClampingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: listMenu[widget.index].childMenu.length,
+              itemCount: listMenu[widget.index].childMenu.length - 1,
               itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () {
                       setState(() {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ChildDetail(widget.index, index)),
+                              builder: (context) => ChildDetail(widget.index, index + 1)),
                         );
                       });
                     },
                     child: Container(
-                      margin: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: index == listMenu[widget.index].childMenu.length - 1 ? 16.0 : 0.0),
+                      margin: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: index == listMenu[widget.index].childMenu.length - 2 ? 16.0 : 0.0),
                       width: 80.0,
                       decoration: new BoxDecoration(
                         color: Colors.white,
@@ -94,7 +74,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                             child: ClipRRect(
                                 child: Image.asset(
                                   listMenu[widget.index]
-                                      .childMenu[index]
+                                      .childMenu[index + 1]
                                       .image,
                                   fit: BoxFit.fill,
                                 ),
@@ -114,7 +94,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                           ),
                           Center(
                               child: Text(
-                                listMenu[widget.index].childMenu[index].name,
+                                listMenu[widget.index].childMenu[index + 1].name,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
