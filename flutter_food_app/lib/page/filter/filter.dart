@@ -23,7 +23,7 @@ class FilterPageState extends State<FilterPage>{
     // TODO: implement initState
     super.initState();
     BlocProvider.of<BottomBarBloc>(context)
-        .changeVisible(true);
+        .changeVisible(false);
   }
   @override
   Widget build(BuildContext context) {
@@ -63,6 +63,8 @@ class FilterPageState extends State<FilterPage>{
         leading: GestureDetector(
           child: Icon(Icons.arrow_back),
           onTap: () {
+            BlocProvider.of<BottomBarBloc>(context)
+                .changeVisible(true);
             Navigator.pop(context);
           },
         ),
@@ -97,6 +99,8 @@ class FilterPageState extends State<FilterPage>{
         width: double.infinity,
         child: RaisedButton(
           onPressed: (){
+            BlocProvider.of<BottomBarBloc>(context)
+                .changeVisible(true);
             Navigator.pop(context);
           },
           color: colorActive,

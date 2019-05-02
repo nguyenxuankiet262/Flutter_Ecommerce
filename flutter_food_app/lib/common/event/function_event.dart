@@ -39,3 +39,8 @@ class NavigateToInfoPost extends FunctionEvent{
   final Function navigateToInfoPost;
   NavigateToInfoPost(this.navigateToInfoPost);
 }
+
+class IsLoading extends FunctionEvent{
+  final Function isLoading;
+  IsLoading(this.isLoading);
+}

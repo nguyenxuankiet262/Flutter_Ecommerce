@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/detail.dart';
@@ -13,14 +15,20 @@ class HeaderHome extends StatefulWidget {
 }
 
 class HeaderHomeState extends State<HeaderHome> {
-  void _gotoDetailScreen(int index) {
+  DetailPageBloc detailPageBloc;
+  void _gotoDetailScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListAllPost(index)),
+          builder: (context) => ListAllPost()),
     );
   }
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -30,7 +38,8 @@ class HeaderHomeState extends State<HeaderHome> {
         itemCount: listMenu.length - 1,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
-                _gotoDetailScreen(index + 1);
+                detailPageBloc.changeCategory(index + 1, 0);
+                _gotoDetailScreen();
               },
               child: Container(
                 margin: EdgeInsets.only(
@@ -55,11 +64,11 @@ class HeaderHomeState extends State<HeaderHome> {
                               new BorderRadius.all(Radius.circular(10.0))
                       ),
                       width: 80,
-                      height: 100,
+                      height: 80,
                     ),
                     Container(
                       width: 80,
-                      height: 100,
+                      height: 80,
                       decoration: BoxDecoration(
                         borderRadius:
                             new BorderRadius.all(Radius.circular(10.0)),

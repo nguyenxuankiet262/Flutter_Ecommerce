@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
+import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
@@ -37,6 +39,8 @@ class MyAppState extends State<MyApp> {
   final userBloc = UserBloc();
   final postManageBloc = PostManageBloc();
   final favoriteManageBloc = FavoriteManageBloc();
+  final detailPageBloc = DetailPageBloc();
+  final apiBloc = ApiBloc();
   // This widget is the root of your application.
 
   @override
@@ -53,6 +57,8 @@ class MyAppState extends State<MyApp> {
     userBloc.dispose();
     postManageBloc.dispose();
     favoriteManageBloc.dispose();
+    detailPageBloc.dispose();
+    apiBloc.dispose();
   }
 
   @override
@@ -69,6 +75,8 @@ class MyAppState extends State<MyApp> {
         BlocProvider<UserBloc>(bloc: userBloc,),
         BlocProvider<PostManageBloc>(bloc: postManageBloc,),
         BlocProvider<FavoriteManageBloc>(bloc: favoriteManageBloc),
+        BlocProvider<DetailPageBloc>(bloc: detailPageBloc),
+        BlocProvider<ApiBloc>(bloc: apiBloc),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

@@ -239,7 +239,7 @@ class _MyMainPageState extends State<MyMainPage>
                                   }
                                 },
                                 icon: Icon(
-                                  FontAwesomeIcons.plus,
+                                  FontAwesomeIcons.camera,
                                   color: colorActive,
                                   size: 15,
                                 ),
@@ -318,18 +318,21 @@ class _MyMainPageState extends State<MyMainPage>
                                       },
                                       child: Stack(children: <Widget>[
                                         Container(
-                                          color: Colors.white,
                                           height: 56,
                                           child: Column(
                                             mainAxisAlignment:
                                             MainAxisAlignment.center,
                                             children: <Widget>[
-                                              Icon(
-                                                FontAwesomeIcons.shoppingCart,
-                                                color: _index == 1
-                                                    ? colorActive
-                                                    : Colors.grey,
-                                                size: 20,
+                                              Container(
+                                                width: 30,
+                                                color: Colors.white,
+                                                child: Icon(
+                                                  FontAwesomeIcons.shoppingCart,
+                                                  color: _index == 1
+                                                      ? colorActive
+                                                      : Colors.grey,
+                                                  size: 20,
+                                                ),
                                               ),
                                               Container(
                                                 margin:
@@ -362,18 +365,21 @@ class _MyMainPageState extends State<MyMainPage>
                                     },
                                     child: Stack(children: <Widget>[
                                       Container(
-                                        color: Colors.white,
                                         height: 50,
                                         child: Column(
                                           mainAxisAlignment:
                                           MainAxisAlignment.center,
                                           children: <Widget>[
-                                            Icon(
-                                              FontAwesomeIcons.solidBell,
-                                              color: _index == 2
-                                                  ? colorActive
-                                                  : Colors.grey,
-                                              size: 20,
+                                            Container(
+                                              width: 30,
+                                              color: Colors.white,
+                                              child: Icon(
+                                                FontAwesomeIcons.solidBell,
+                                                color: _index == 2
+                                                    ? colorActive
+                                                    : Colors.grey,
+                                                size: 20,
+                                              ),
                                             ),
                                             Container(
                                               margin: EdgeInsets.only(top: 2.0),
@@ -447,7 +453,7 @@ class _MyMainPageState extends State<MyMainPage>
                                       ),
                                       Positioned(
                                         right: 3.0,
-                                        bottom: 9.3,
+                                        bottom: 9.0,
                                         child: Text(
                                           'Cá nhân',
                                           style: TextStyle(

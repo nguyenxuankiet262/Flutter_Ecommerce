@@ -50,7 +50,7 @@ class ShimmerPost extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: 10.0, left: 10.0, bottom: 10.0),
+                          right: 10.0, left: 10.0, bottom: 10.0, top: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[

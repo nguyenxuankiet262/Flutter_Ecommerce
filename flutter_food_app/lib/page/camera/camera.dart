@@ -132,7 +132,7 @@ class CameraPageState extends State<CameraPage> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: FileImage(File(imagePath)),
-                      fit: BoxFit.fill
+                      fit: BoxFit.cover
                     )
                   ),
                 ),

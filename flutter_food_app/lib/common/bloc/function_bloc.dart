@@ -35,6 +35,10 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
     dispatch(NavigateToInfoPost(_navigateToInfoPost));
   }
 
+  void isLoading(Function _isLoading) {
+    dispatch(IsLoading(_isLoading));
+  }
+
   @override
   // TODO: implement initialState
   FunctionState get initialState => FunctionState.initial();
@@ -53,6 +57,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToAuthen: currentState.navigateToAuthen,
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
     if (event is NavigateToPost) {
@@ -65,6 +70,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToAuthen: currentState.navigateToAuthen,
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
     if (event is NavigateToFilter) {
@@ -77,6 +83,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToAuthen: currentState.navigateToAuthen,
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
 
@@ -90,6 +97,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToAuthen: currentState.navigateToAuthen,
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
 
@@ -103,6 +111,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToAuthen: currentState.navigateToAuthen,
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
 
@@ -116,6 +125,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToAuthen: event.navigateToAuthen,
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
 
@@ -128,20 +138,36 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
         navigateToCamera: event.navigateToCamera,
-        navigateToInfoPost: currentState.navigateToInfoPost
+        navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
       );
     }
 
     if (event is NavigateToInfoPost) {
       yield FunctionState(
-          openDrawer: currentState.openDrawer,
-          navigateToPost: currentState.navigateToPost,
-          navigateToFilter: currentState.navigateToFilter,
-          navigateToUser: currentState.navigateToUser,
-          navigateToFollow: currentState.navigateToFollow,
-          navigateToAuthen: currentState.navigateToAuthen,
-          navigateToCamera: currentState.navigateToCamera,
-          navigateToInfoPost: event.navigateToInfoPost
+        openDrawer: currentState.openDrawer,
+        navigateToPost: currentState.navigateToPost,
+        navigateToFilter: currentState.navigateToFilter,
+        navigateToUser: currentState.navigateToUser,
+        navigateToFollow: currentState.navigateToFollow,
+        navigateToAuthen: currentState.navigateToAuthen,
+        navigateToCamera: currentState.navigateToCamera,
+        navigateToInfoPost: event.navigateToInfoPost,
+        isLoading: currentState.isLoading,
+      );
+    }
+
+    if (event is IsLoading) {
+      yield FunctionState(
+        openDrawer: currentState.openDrawer,
+        navigateToPost: currentState.navigateToPost,
+        navigateToFilter: currentState.navigateToFilter,
+        navigateToUser: currentState.navigateToUser,
+        navigateToFollow: currentState.navigateToFollow,
+        navigateToAuthen: currentState.navigateToAuthen,
+        navigateToCamera: currentState.navigateToCamera,
+        navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: event.isLoading,
       );
     }
   }

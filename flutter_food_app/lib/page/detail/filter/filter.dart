@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'category.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -11,12 +12,14 @@ class FilterManagement extends StatefulWidget{
 }
 
 class FilterManagementState extends State<FilterManagement>{
-  FavoriteManageBloc favoriteManageBloc;
+  DetailPageBloc detailPageBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    favoriteManageBloc = BlocProvider.of<FavoriteManageBloc>(context);
+    BlocProvider.of<BottomBarBloc>(context)
+        .changeVisible(false);
+    detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,8 @@ class FilterManagementState extends State<FilterManagement>{
                     fontSize: 10),
               ),
               onTap: () {
+                BlocProvider.of<BottomBarBloc>(context)
+                    .changeVisible(true);
                 Navigator.pop(context);
               },
             ),
@@ -70,11 +75,11 @@ class FilterManagementState extends State<FilterManagement>{
                       fontSize: 10),
                 ),
                 onTap: () {
-                  favoriteManageBloc.changeCategory(
-                    favoriteManageBloc
+                  detailPageBloc.changeCategory(
+                    detailPageBloc
                         .currentState
                         .tempCategory,
-                    favoriteManageBloc
+                    detailPageBloc
                         .currentState
                         .tempChildCategory,
                   );

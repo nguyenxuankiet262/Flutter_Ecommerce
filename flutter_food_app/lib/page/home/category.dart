@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter_food_app/page/shimmer/shimmer_post_horiz.dart';
 import 'list_post.dart';
 import 'package:flutter_food_app/model/menu.dart';
 
@@ -12,18 +13,25 @@ class ListCategory extends StatefulWidget {
 }
 
 class _ListCategoryState extends State<ListCategory> {
-
+  bool isLoading = true;
   List<Menu> listMenu = [
-    Menu("Giảm nhiều nhất", 'assets/images/discount.jpg', [
-
-    ]),
-    Menu('Yêu thích nhất', 'assets/images/favorite.png', [
-
-    ]),
+    Menu("Giảm nhiều nhất", 'assets/images/discount.jpg', []),
+    Menu('Yêu thích nhất', 'assets/images/favorite.png', []),
   ];
 
   void _gotoPostScreen() {
     this.widget.navigateToPost();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -33,47 +41,49 @@ class _ListCategoryState extends State<ListCategory> {
       itemCount: 2,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) => ListView(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        children: <Widget>[
-          new Container(
-            height: 60.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.centerLeft,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: <Widget>[
+              new Container(
+                height: 60.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 5.0),
-                      child: index == 0
-                          ? Image.asset('assets/images/discount_icon.png')
-                          : new Icon(
-                        Icons.favorite,
-                        color: Colors.red,
-                      ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 5.0),
+                          child: index == 0
+                              ? Image.asset('assets/images/discount_icon.png')
+                              : new Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
+                        ),
+                        Text(
+                          listMenu[index].name.toUpperCase(),
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.0),
+                        )
+                      ],
                     ),
-                    Text(
-                      listMenu[index].name.toUpperCase(),
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17.0),
-                    )
                   ],
                 ),
-              ],
-            ),
+              ),
+              Container(
+                child: isLoading
+                    ? ShimmerPostHoriz()
+                    : ListPost(this._gotoPostScreen),
+              ),
+            ],
           ),
-          Container(
-            child: ListPost(this._gotoPostScreen),
-          ),
-        ],
-      ),
     );
   }
 }

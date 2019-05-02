@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
 import 'category.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -77,6 +78,7 @@ class FilterManagementState extends State<FilterManagement>{
                         .currentState
                         .tempChildCategory,
                   );
+                  BlocProvider.of<FunctionBloc>(context).currentState.isLoading();
                   Navigator.pop(context);
                 },
               ),

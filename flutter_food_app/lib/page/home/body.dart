@@ -1,36 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
+import 'package:shimmer/shimmer.dart';
 import 'slider.dart';
 import 'category.dart';
 import 'header.dart';
 
-class BodyContent extends StatefulWidget{
+class BodyContent extends StatefulWidget {
   final Function navigateToPost, navigateToFilter;
+
   BodyContent(this.navigateToPost, this.navigateToFilter);
+
   @override
   State<StatefulWidget> createState() => BodyContentState();
 }
 
-class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientMixin{
+class BodyContentState extends State<BodyContent>
+    with AutomaticKeepAliveClientMixin {
   ScrollController _hideButtonController;
+  ApiBloc apiBloc;
+  bool isLoading = true;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     _hideButtonController = new ScrollController();
     _hideButtonController.addListener(() {
       if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.reverse) {
-        BlocProvider.of<BottomBarBloc>(context)
-            .changeVisible(false);
+        BlocProvider.of<BottomBarBloc>(context).changeVisible(false);
       }
       if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.forward) {
-        BlocProvider.of<BottomBarBloc>(context)
-            .changeVisible(true);
+        BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
       }
     });
   }
@@ -57,22 +69,62 @@ class BodyContentState extends State<BodyContent> with AutomaticKeepAliveClientM
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return ListView(
-      padding: EdgeInsets.only(top: 0.0),
-      controller: _hideButtonController,
-      children: <Widget>[
-        CarouselWithIndicator(),
-        Container(
-            margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
-            child: Container(
-              child: HeaderHome(this.navigateToPost,
-                  this.navigateToFilter),
-            )),
-        Container(
-          child: ListCategory(this.navigateToPost),
-        ),
-      ],
+    return BlocBuilder(
+      bloc: apiBloc,
+      builder: (context, ApiState state) {
+        return ListView(
+          padding: EdgeInsets.only(top: 0.0),
+          controller: _hideButtonController,
+          children: <Widget>[
+            isLoading
+                ? Shimmer.fromColors(
+                    child: Container(
+                      height: 200,
+                      margin: EdgeInsets.only(right: 5.0, left: 5.0, top: 5.0),
+                      color: Colors.white,
+                    ),
+                    baseColor: Colors.grey[300],
+                    highlightColor: Colors.grey[100],
+                  )
+                : CarouselWithIndicator(),
+            Container(
+                margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                child: Container(
+                  child: isLoading
+                      ? Container(
+                          height: 80,
+                          width: 80,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 5,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  Shimmer.fromColors(
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                        left: 16.0,
+                                        right: index == 4 ? 16.0 : 0.0,
+                                      ),
+                                      width: 80.0,
+                                      decoration: new BoxDecoration(
+                                        color: Colors.white,
+                                        border:
+                                            new Border.all(color: Colors.white),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                    ),
+                                    baseColor: Colors.grey[300],
+                                    highlightColor: Colors.grey[100],
+                                  )),
+                        )
+                      : HeaderHome(this.navigateToPost, this.navigateToFilter),
+                )),
+            Container(
+              child: ListCategory(this.navigateToPost),
+            ),
+          ],
+        );
+      },
     );
   }
-
 }

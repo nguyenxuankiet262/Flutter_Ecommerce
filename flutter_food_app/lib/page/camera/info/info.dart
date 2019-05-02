@@ -14,6 +14,7 @@ class InfoPost extends StatefulWidget {
 
 class InfoPostState extends State<InfoPost> {
   DetailCameraBloc blocProvider;
+
   @override
   void initState() {
     super.initState();
@@ -21,11 +22,12 @@ class InfoPostState extends State<InfoPost> {
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
-  void _clearBloc(){
+  void _clearBloc() {
     blocProvider.changeImageList(blocProvider.initialState.imagePaths);
     blocProvider.changeTitle(blocProvider.initialState.title);
     blocProvider.changeContent(blocProvider.initialState.content);
-    blocProvider.changeIndexCategory(blocProvider.initialState.indexCategory, blocProvider.initialState.indexChildCategory);
+    blocProvider.changeIndexCategory(blocProvider.initialState.indexCategory,
+        blocProvider.initialState.indexChildCategory);
     blocProvider.changePriceBefore(blocProvider.initialState.priceBefore);
     blocProvider.changePriceAfter(blocProvider.initialState.priceAfter);
   }
@@ -48,15 +50,14 @@ class InfoPostState extends State<InfoPost> {
                   },
                 ),
                 new FlatButton(
-                  child: new Text(
-                    "Có",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  onPressed: (){
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                    _clearBloc();
-                  }
-                ),
+                    child: new Text(
+                      "Có",
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      _clearBloc();
+                    }),
               ],
             );
           },
@@ -125,17 +126,20 @@ class InfoPostState extends State<InfoPost> {
                           Expanded(
                             child: InkWell(
                               child: Container(
-                                  margin: EdgeInsets.only(left: 16.0, right: 8.0),
+                                  margin:
+                                      EdgeInsets.only(left: 16.0, right: 8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.red,
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)),
+                                        BorderRadius.all(Radius.circular(8.0)),
                                   ),
                                   child: Center(
                                     child: Text(
                                       "HỦY",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 12, fontFamily: "Ralway"),
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: "Ralway"),
                                       textAlign: TextAlign.center,
                                     ),
                                   )),
@@ -148,17 +152,20 @@ class InfoPostState extends State<InfoPost> {
                           Expanded(
                             child: InkWell(
                               child: Container(
-                                  margin: EdgeInsets.only(right: 16.0, left: 8.0),
+                                  margin:
+                                      EdgeInsets.only(right: 16.0, left: 8.0),
                                   decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)),
+                                        BorderRadius.all(Radius.circular(8.0)),
                                   ),
                                   child: Center(
                                     child: Text(
                                       "ĐỒNG Ý",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 12, fontFamily: "Ralway"),
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: "Ralway"),
                                       textAlign: TextAlign.center,
                                     ),
                                   )),
@@ -214,78 +221,79 @@ class InfoPostState extends State<InfoPost> {
     // TODO: implement build
     return WillPopScope(
       child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: AppBar(
-            elevation: 0.5,
-            iconTheme: IconThemeData(
-              color: Colors.black, //change your color here
+        appBar: AppBar(
+          elevation: 0.5,
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          backgroundColor: Colors.white,
+          brightness: Brightness.light,
+          title: Text(
+            'Thông tin bài viết',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
             ),
-            backgroundColor: Colors.white,
-            brightness: Brightness.light,
-            title: Text(
-              'Thông tin bài viết',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            centerTitle: true,
-            actions: <Widget>[
-              new Center(
-                child: Padding(
-                  padding: EdgeInsets.only(right: 16),
-                  child: GestureDetector(
-                    child: Text(
-                      'ĐĂNG',
-                      textScaleFactor: 1.5,
-                      style: TextStyle(
-                          color: colorActive,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 10),
-                    ),
-                    onTap: () {
-                      _showDialogPost();
-                    },
-                  ),
-                ),
-              ),
-            ],
-            leading: new Center(
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            new Center(
               child: Padding(
-                padding: EdgeInsets.only(left: 16),
+                padding: EdgeInsets.only(right: 16),
                 child: GestureDetector(
                   child: Text(
-                    'HỦY',
+                    'ĐĂNG',
                     textScaleFactor: 1.5,
                     style: TextStyle(
-                        color: Colors.black54,
+                        color: colorActive,
                         fontWeight: FontWeight.bold,
                         fontSize: 10),
                   ),
                   onTap: () {
-                    _showDialog();
+                    _showDialogPost();
                   },
                 ),
               ),
             ),
-          ),
-          body: Container(
-            color: colorBackground,
-            child: ListView(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 16.0),
-                  padding: EdgeInsets.symmetric(vertical: 16.0),
-                  color: Colors.white,
-                  child: HeaderInfo(),
+          ],
+          leading: new Center(
+            child: Padding(
+              padding: EdgeInsets.only(left: 16),
+              child: GestureDetector(
+                child: Text(
+                  'HỦY',
+                  textScaleFactor: 1.5,
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 16.0),
-                  child: BodyInfo(),
-                ),
-              ],
+                onTap: () {
+                  _showDialog();
+                },
+              ),
             ),
-          )),
+          ),
+        ),
+        backgroundColor: colorBackground,
+        body: Container(
+          color: colorBackground,
+          child: ListView(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 16.0),
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                color: Colors.white,
+                child: HeaderInfo(),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: BodyInfo(),
+              ),
+            ],
+          ),
+        ),
+      ),
       onWillPop: _showDialog,
     );
   }

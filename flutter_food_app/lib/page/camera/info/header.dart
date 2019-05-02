@@ -9,6 +9,7 @@ class HeaderInfo extends StatefulWidget {
 }
 
 class HeaderInfoState extends State<HeaderInfo> {
+  bool isCamera = false;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -38,13 +39,19 @@ class HeaderInfoState extends State<HeaderInfo> {
                 ),
               ),
               onTap: () {
-                Future.delayed(new Duration(seconds: 1), () {
+                if(!isCamera){
+                  setState(() {
+                    isCamera = true;
+                  });
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => CameraPage()),
                   );
-                });
+                  setState(() {
+                    isCamera = false;
+                  });
+                }
               }),
           ListImage()
         ],
