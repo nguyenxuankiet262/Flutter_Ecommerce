@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_food_app/const/color_const.dart';
 import 'noti_user.dart';
 import 'noti_admin.dart';
 
@@ -18,6 +19,7 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
@@ -53,13 +55,16 @@ class NotificationState extends State<NotificationPage> with AutomaticKeepAliveC
         ),
         preferredSize: Size.fromHeight(100),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          NotiUser(),
-          NotiAdmin(),
-        ],
-      ),
+      body: Container(
+        color: colorBackground,
+        child: TabBarView(
+          controller: _tabController,
+          children: [
+            NotiUser(),
+            NotiAdmin(),
+          ],
+        ),
+      )
     );
   }
 

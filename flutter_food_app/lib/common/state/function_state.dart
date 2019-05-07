@@ -8,6 +8,7 @@ class FunctionState {
   final Function navigateToCamera;
   final Function navigateToInfoPost;
   final Function isLoading;
+  final Function onBackPressed;
 
   const FunctionState({
     this.openDrawer,
@@ -19,6 +20,7 @@ class FunctionState {
     this.navigateToCamera,
     this.navigateToInfoPost,
     this.isLoading,
+    this.onBackPressed,
   });
 
   factory FunctionState.initial() => FunctionState(
@@ -31,5 +33,6 @@ class FunctionState {
         navigateToCamera: () {},
         navigateToInfoPost: () {},
         isLoading: () {},
+        onBackPressed: () {},
       );
 }

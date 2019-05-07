@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/model/province.dart';
@@ -18,8 +17,6 @@ class StartPage extends StatefulWidget {
 }
 
 class StartPageState extends State<StartPage> {
-  ApiBloc apiBloc;
-
   load() async {
     List<String> nameCities = [
       'Toàn quốc',
@@ -52,8 +49,6 @@ class StartPageState extends State<StartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    apiBloc = BlocProvider.of<ApiBloc>(context);
-    //fetchPhotos(apiBloc);
     load();
     BlocProvider.of<CameraBloc>(context).initCamera(widget.cameras);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(

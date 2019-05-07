@@ -13,6 +13,7 @@ class PrivateManage extends StatefulWidget {
 
 class PrivateManageState extends State<PrivateManage> {
   double heightContainer = 300;
+  var top = 0.0;
 
   @override
   void initState() {
@@ -55,172 +56,181 @@ class PrivateManageState extends State<PrivateManage> {
           onTap: () {
             FocusScope.of(context).requestFocus(new FocusNode());
           },
-          child: Container(
-              color: Colors.white,
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: heightContainer,
-                    decoration: BoxDecoration(
-                      image: const DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/images/cat.jpg'),
-                      ),
-                    ),
-                  ),
-                  ListView(
-                    children: <Widget>[
-                      Container(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: heightContainer,
-                              color: Colors.transparent.withOpacity(0.7),
-                            ),
-                            Positioned(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 60,
-                                color: Colors.white,
-                              ),
-                              bottom: 0.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  height: heightContainer + 60,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.white,
-                                                    width: 2.0),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(100.0))),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  border:
-                                                      Border.all(width: 0.5),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              100.0))),
-                                              child: ClipOval(
-                                                child: Image.asset(
-                                                  'assets/images/cat.jpg',
-                                                  fit: BoxFit.cover,
-                                                  width: 150.0,
-                                                  height: 150.0,
-                                                ),
-                                              ),
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Positioned(
-                              child: Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                    color: colorContainer,
-                                    border: Border.all(
-                                        color: Colors.white, width: 2.0),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(100.0))),
-                                child: Icon(
-                                  FontAwesomeIcons.camera,
-                                  size: 17,
-                                ),
-                              ),
-                              bottom: 2.0,
-                              left: MediaQuery.of(context).size.width / 1.7,
-                            ),
-                            Positioned(
-                              child: Container(
-                                height: 35,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                    color: colorContainer,
-                                    border: Border.all(
-                                        color: Colors.white, width: 1.0),
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(5.0))),
-                                child: Icon(
-                                  FontAwesomeIcons.camera,
-                                  size: 20,
-                                ),
-                              ),
-                              right: 16.0,
-                              bottom: 76,
-                            )
-                          ],
+          child: NotificationListener(
+            onNotification: (v) {
+              if (v is ScrollUpdateNotification)
+                setState(() => top -= v.scrollDelta / 2);
+            },
+            child: Container(
+                color: Colors.white,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: top,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: heightContainer,
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/images/cat.jpg'),
+                          ),
                         ),
                       ),
-                      Container(
-                        height: 40,
-                        color: Colors.white,
-                        child: Container(
-                            height: 40,
-                            margin: EdgeInsets.symmetric(vertical: 15.0),
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            color: Colors.white,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "THÔNG TIN RIÊNG TƯ",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                    ),
+                    ListView(
+                      children: <Widget>[
+                        Container(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: heightContainer,
+                                color: Colors.transparent.withOpacity(0.7),
                               ),
-                            )),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: PrivateInfo(),
-                      ),
-                      Container(
-                        height: 40,
-                        color: Colors.white,
-                        child: Container(
-                            height: 40,
-                            margin: EdgeInsets.symmetric(vertical: 15.0),
-                            padding: EdgeInsets.symmetric(horizontal: 10.0),
-                            color: Colors.white,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "THÔNG TIN CHUNG",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                              Positioned(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 60,
+                                  color: Colors.white,
+                                ),
+                                bottom: 0.0,
                               ),
-                            )),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Info(),
-                      ),
-                    ],
-                  ),
-                ],
-              )),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: heightContainer + 60,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Container(
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.white,
+                                                      width: 2.0),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(100.0))),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    border:
+                                                    Border.all(width: 0.5),
+                                                    borderRadius:
+                                                    BorderRadius.all(
+                                                        Radius.circular(
+                                                            100.0))),
+                                                child: ClipOval(
+                                                  child: Image.asset(
+                                                    'assets/images/cat.jpg',
+                                                    fit: BoxFit.cover,
+                                                    width: 150.0,
+                                                    height: 150.0,
+                                                  ),
+                                                ),
+                                              )),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      color: colorContainer,
+                                      border: Border.all(
+                                          color: Colors.white, width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(100.0))),
+                                  child: Icon(
+                                    FontAwesomeIcons.camera,
+                                    size: 17,
+                                  ),
+                                ),
+                                bottom: 2.0,
+                                left: MediaQuery.of(context).size.width / 1.7,
+                              ),
+                              Positioned(
+                                child: Container(
+                                  height: 35,
+                                  width: 40,
+                                  decoration: BoxDecoration(
+                                      color: colorContainer,
+                                      border: Border.all(
+                                          color: Colors.white, width: 1.0),
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0))),
+                                  child: Icon(
+                                    FontAwesomeIcons.camera,
+                                    size: 20,
+                                  ),
+                                ),
+                                right: 16.0,
+                                bottom: 76,
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 40,
+                          color: Colors.white,
+                          child: Container(
+                              height: 40,
+                              margin: EdgeInsets.symmetric(vertical: 15.0),
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              color: Colors.white,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "THÔNG TIN RIÊNG TƯ",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                        ),
+                        Container(
+                          color: Colors.white,
+                          child: PrivateInfo(),
+                        ),
+                        Container(
+                          height: 40,
+                          color: Colors.white,
+                          child: Container(
+                              height: 40,
+                              margin: EdgeInsets.symmetric(vertical: 15.0),
+                              padding: EdgeInsets.symmetric(horizontal: 10.0),
+                              color: Colors.white,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "THÔNG TIN CHUNG",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                        ),
+                        Container(
+                          color: Colors.white,
+                          child: Info(),
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+          )
         ));
   }
 }

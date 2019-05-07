@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/detail.dart';
 
 class HeaderHome extends StatefulWidget {
@@ -16,11 +16,13 @@ class HeaderHome extends StatefulWidget {
 
 class HeaderHomeState extends State<HeaderHome> {
   DetailPageBloc detailPageBloc;
+  ApiBloc apiBloc;
   void _gotoDetailScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => ListAllPost()),
+          builder: (context) => ListAllPost(),
+      ),
     );
   }
   @override
@@ -28,6 +30,7 @@ class HeaderHomeState extends State<HeaderHome> {
     // TODO: implement initState
     super.initState();
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
   }
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class HeaderHomeState extends State<HeaderHome> {
     return Container(
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: listMenu.length - 1,
+        itemCount: apiBloc.currentState.listMenu.length - 1,
         itemBuilder: (BuildContext context, int index) => GestureDetector(
               onTap: () {
                 detailPageBloc.changeCategory(index + 1, 0);
@@ -44,7 +47,7 @@ class HeaderHomeState extends State<HeaderHome> {
               child: Container(
                 margin: EdgeInsets.only(
                     left: 16.0,
-                    right: index == listMenu.length - 1 ? 16.0 : 0.0,
+                    right: index == apiBloc.currentState.listMenu.length - 2 ? 16.0 : 0.0,
                 ),
                 width: 80.0,
                 decoration: new BoxDecoration(
@@ -56,8 +59,8 @@ class HeaderHomeState extends State<HeaderHome> {
                   children: <Widget>[
                     Container(
                       child: ClipRRect(
-                          child: Image.asset(
-                            listMenu[index + 1].image,
+                          child: Image.network(
+                            apiBloc.currentState.listMenu[index + 1].link,
                             fit: BoxFit.fill,
                           ),
                           borderRadius:
@@ -77,7 +80,7 @@ class HeaderHomeState extends State<HeaderHome> {
                     ),
                     Center(
                         child: Text(
-                      listMenu[index + 1].name,
+                          apiBloc.currentState.listMenu[index + 1].name,
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

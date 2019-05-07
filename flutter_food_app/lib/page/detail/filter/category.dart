@@ -86,7 +86,7 @@ class CategeoryItem extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 14,
-                        fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               )),

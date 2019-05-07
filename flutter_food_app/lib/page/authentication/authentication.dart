@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'login/login_2.dart';
+import 'login/login.dart';
 
 class AuthenticationPage extends StatefulWidget{
   final int _index;

@@ -44,3 +44,9 @@ class IsLoading extends FunctionEvent{
   final Function isLoading;
   IsLoading(this.isLoading);
 }
+
+class OnBackPressed extends FunctionEvent{
+  final Function onBackPressed;
+  OnBackPressed(this.onBackPressed);
+}
+

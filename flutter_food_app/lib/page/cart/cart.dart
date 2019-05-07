@@ -1,5 +1,9 @@
 import "package:flutter/material.dart";
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyrefresh/delivery_header.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/state/user_state.dart';
 import 'package:flutter_food_app/page/authentication/login/signin.dart';
@@ -18,11 +22,38 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
 
   UserBloc userBloc;
 
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey =
+      new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshHeaderState> _connectorHeaderKey =
+      new GlobalKey<RefreshHeaderState>();
+
+  ScrollController _hideButtonController;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener(() {
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        BlocProvider.of<BottomBarBloc>(context).changeVisible(false);
+      }
+      if (_hideButtonController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
+      }
+    });
     userBloc = BlocProvider.of<UserBloc>(context);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _hideButtonController.dispose();
   }
 
   void _showDialog() {
@@ -199,83 +230,88 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // TODO: implement build
     return BlocBuilder(
       bloc: userBloc,
       builder: (context, UserState state) {
         return Scaffold(
-          appBar: AppBar(
-            elevation: 0.5,
-            brightness: Brightness.light,
-            title: Text(
-              'Giỏ hàng',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            backgroundColor: Colors.white,
-            centerTitle: true,
-            actions: <Widget>[
-              !state.isLogin
-                  ? Container()
-                  : new Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 16),
-                        child: GestureDetector(
-                          child: Text(
-                            'ĐẶT HÀNG',
-                            textScaleFactor: 1.5,
-                            style: TextStyle(
-                                color:
-                                    itemCount > 0 ? colorActive : Colors.grey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10),
+            appBar: AppBar(
+              elevation: 0.5,
+              brightness: Brightness.light,
+              title: Text(
+                'Giỏ hàng',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              actions: <Widget>[
+                !state.isLogin
+                    ? Container()
+                    : new Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 16),
+                          child: GestureDetector(
+                            child: Text(
+                              'ĐẶT HÀNG',
+                              textScaleFactor: 1.5,
+                              style: TextStyle(
+                                  color:
+                                      itemCount > 0 ? colorActive : Colors.grey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 10),
+                            ),
+                            onTap: () {
+                              _showDialogPost();
+                            },
                           ),
-                          onTap: () {
-                            _showDialogPost();
-                          },
                         ),
                       ),
+              ],
+              leading: !state.isLogin
+                  ? Container()
+                  : GestureDetector(
+                      child: Icon(
+                        FontAwesomeIcons.solidTrashAlt,
+                        color: Colors.black,
+                        size: 18,
+                      ),
+                      onTap: () {
+                        if (itemCount > 0) {
+                          _showDialog();
+                        }
+                      },
                     ),
-            ],
-            leading: !state.isLogin
-                ? Container()
-                : GestureDetector(
-                    child: Icon(
-                      FontAwesomeIcons.solidTrashAlt,
-                      color: Colors.black,
-                      size: 18,
-                    ),
-                    onTap: () {
-                      if (itemCount > 0) {
-                        _showDialog();
-                      }
-                    },
-                  ),
-          ),
-          body: !state.isLogin
-              ? SigninContent()
-              : itemCount != 0
-                  ? Container(
-                      color: colorBackground,
-                      child: ListCart(),
-                    )
-                  : Center(
-                      child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset('assets/images/icon_heartbreak.png'),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              itemCount = 1;
-                            });
-                          },
-                          child: Text('Nothing to show!'),
+            ),
+            body: !state.isLogin
+                ? SigninContent()
+                : EasyRefresh(
+                    key: _easyRefreshKey,
+                    refreshHeader: ConnectorHeader(
+                        key: _connectorHeaderKey,
+                        header: DeliveryHeader(key: _headerKey)),
+                    child: CustomScrollView(
+                      controller: _hideButtonController,
+                      slivers: <Widget>[
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                              <Widget>[DeliveryHeader(key: _headerKey)]),
                         ),
+                        SliverList(
+                            delegate: SliverChildListDelegate(<Widget>[
+                          Container(
+                            color: colorBackground,
+                            child: ListCart(),
+                          )
+                        ]))
                       ],
-                    )),
-        );
+                    ),
+                    onRefresh: () async {
+                      await new Future.delayed(
+                          const Duration(seconds: 1), () {});
+                    },
+                  ));
       },
     );
   }

@@ -39,6 +39,10 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
     dispatch(IsLoading(_isLoading));
   }
 
+  void onBackPressed(Function _onBackPressed) {
+    dispatch(OnBackPressed(_onBackPressed));
+  }
+
   @override
   // TODO: implement initialState
   FunctionState get initialState => FunctionState.initial();
@@ -58,6 +62,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
     if (event is NavigateToPost) {
@@ -71,6 +76,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
     if (event is NavigateToFilter) {
@@ -84,6 +90,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
 
@@ -98,6 +105,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
 
@@ -112,6 +120,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
 
@@ -126,6 +135,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
 
@@ -140,6 +150,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: event.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
 
@@ -154,6 +165,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: event.navigateToInfoPost,
         isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
       );
     }
 
@@ -168,6 +180,22 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         navigateToCamera: currentState.navigateToCamera,
         navigateToInfoPost: currentState.navigateToInfoPost,
         isLoading: event.isLoading,
+        onBackPressed: currentState.onBackPressed,
+      );
+    }
+
+    if (event is OnBackPressed) {
+      yield FunctionState(
+        openDrawer: currentState.openDrawer,
+        navigateToPost: currentState.navigateToPost,
+        navigateToFilter: currentState.navigateToFilter,
+        navigateToUser: currentState.navigateToUser,
+        navigateToFollow: currentState.navigateToFollow,
+        navigateToAuthen: currentState.navigateToAuthen,
+        navigateToCamera: currentState.navigateToCamera,
+        navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
+        onBackPressed: event.onBackPressed,
       );
     }
   }

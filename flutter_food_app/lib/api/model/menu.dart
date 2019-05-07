@@ -1,15 +1,15 @@
 class Menu {
   final String id;
   final String name;
-  final String image;
+  final String link;
 
-  Menu({this.id, this.name,this.image});
+  Menu({this.id, this.name,this.link});
 
   factory Menu.fromJson(Map<String, dynamic> json) {
     return Menu(
-      id: json['id'],
+      id: json['_id'],
       name: json['name'],
-      image: json['image'],
+      link: json['link'],
     );
   }
 }

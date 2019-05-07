@@ -22,7 +22,7 @@ class CameraPageState extends State<CameraPage> {
   CameraController controller;
   bool isNext = false;
   bool isRearCamera = true;
-  String imagePath;
+  String imagePath = "";
   List<Asset> images = List<Asset>();
   DetailCameraBloc blocProvider;
 
@@ -122,19 +122,25 @@ class CameraPageState extends State<CameraPage> {
                 ),
               ),
               Expanded(
-                child: imagePath == null || !isNext
-                    ? Center(
-                    child: AspectRatio(
-                      aspectRatio: controller.value.aspectRatio,
-                      child: CameraPreview(controller),
-                    ))
-                    : Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(File(imagePath)),
-                      fit: BoxFit.cover
+                child: Stack(
+                  children: <Widget>[
+                    Center(
+                        child: AspectRatio(
+                          aspectRatio: controller.value.aspectRatio,
+                          child: CameraPreview(controller),
+                        )),
+                    Visibility(
+                      visible: imagePath.isEmpty || !isNext ? false : true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: FileImage(File(imagePath)),
+                                fit: BoxFit.cover
+                            )
+                        ),
+                      ),
                     )
-                  ),
+                  ],
                 ),
                 flex: 8,
               ),
@@ -159,7 +165,7 @@ class CameraPageState extends State<CameraPage> {
           onTap: (){
             setState(() {
               isNext = false;
-              imagePath = null;
+              imagePath = "";
             });
           },
           child: Text(

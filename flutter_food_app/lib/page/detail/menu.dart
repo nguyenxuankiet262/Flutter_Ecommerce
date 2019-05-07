@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -13,11 +14,13 @@ class HeaderDetail extends StatefulWidget {
 
 class HeaderDetailState extends State<HeaderDetail> {
   DetailPageBloc detailPageBloc;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
   }
 
@@ -33,16 +36,15 @@ class HeaderDetailState extends State<HeaderDetail> {
                 border: Border(bottom: BorderSide(width: 0.5, color: colorInactive.withOpacity(0.5)))
             ),
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: listMenu[detailPageBloc.currentState.indexCategory].childMenu.length - 1,
+              itemCount: apiBloc.currentState.listChildMenu.length - 1,
               itemBuilder: (BuildContext context, int index) => GestureDetector(
                 onTap: () {
                   detailPageBloc.changeCategory(detailPageBloc.currentState.indexCategory, index + 1);
                   BlocProvider.of<FunctionBloc>(context).currentState.isLoading();
                 },
                 child: Container(
-                  margin: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: index == listMenu[detailPageBloc.currentState.indexCategory].childMenu.length - 1 ? 16.0 : 0.0),
+                  margin: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: index == listMenu[detailPageBloc.currentState.indexCategory].childMenu.length - 2 ? 16.0 : 0.0),
                   width: 80.0,
                   decoration: new BoxDecoration(
                     color: Colors.white,
@@ -54,10 +56,9 @@ class HeaderDetailState extends State<HeaderDetail> {
                     children: <Widget>[
                       Container(
                         child: ClipRRect(
-                            child: Image.asset(
-                              listMenu[detailPageBloc.currentState.indexCategory]
-                                  .childMenu[index + 1]
-                                  .image,
+                            child: Image.network(
+                              apiBloc.currentState.listChildMenu[index + 1]
+                                  .link,
                               fit: BoxFit.fill,
                             ),
                             borderRadius: new BorderRadius.all(
@@ -76,7 +77,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                       ),
                       Center(
                           child: Text(
-                            listMenu[detailPageBloc.currentState.indexCategory].childMenu[index + 1].name,
+                            apiBloc.currentState.listChildMenu[index + 1].name,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

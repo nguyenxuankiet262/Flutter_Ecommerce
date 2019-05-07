@@ -8,6 +8,8 @@ import 'package:shimmer/shimmer.dart';
 import 'slider.dart';
 import 'category.dart';
 import 'header.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/delivery_header.dart';
 
 class BodyContent extends StatefulWidget {
   final Function navigateToPost, navigateToFilter;
@@ -22,17 +24,17 @@ class BodyContentState extends State<BodyContent>
     with AutomaticKeepAliveClientMixin {
   ScrollController _hideButtonController;
   ApiBloc apiBloc;
-  bool isLoading = true;
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey =
+      new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshHeaderState> _connectorHeaderKey =
+  new GlobalKey<RefreshHeaderState>();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
     apiBloc = BlocProvider.of<ApiBloc>(context);
     _hideButtonController = new ScrollController();
     _hideButtonController.addListener(() {
@@ -72,32 +74,44 @@ class BodyContentState extends State<BodyContent>
     return BlocBuilder(
       bloc: apiBloc,
       builder: (context, ApiState state) {
-        return ListView(
-          padding: EdgeInsets.only(top: 0.0),
-          controller: _hideButtonController,
-          children: <Widget>[
-            isLoading
-                ? Shimmer.fromColors(
+        return new EasyRefresh(
+          key: _easyRefreshKey,
+          refreshHeader: ConnectorHeader(key: _connectorHeaderKey, header: DeliveryHeader(key: _headerKey)),
+          child: CustomScrollView(
+            controller: _hideButtonController,
+            slivers: <Widget>[
+              SliverList(
+                delegate: SliverChildListDelegate(<Widget>[
+                  DeliveryHeader(key: _headerKey)
+                ]),
+              ),
+              SliverList(
+                delegate:
+                SliverChildListDelegate(<Widget>[
+                  state.listMenu.isEmpty
+                      ? Shimmer.fromColors(
                     child: Container(
                       height: 200,
-                      margin: EdgeInsets.only(right: 5.0, left: 5.0, top: 5.0),
+                      margin:
+                      EdgeInsets.only(right: 5.0, left: 5.0, top: 5.0),
                       color: Colors.white,
                     ),
                     baseColor: Colors.grey[300],
                     highlightColor: Colors.grey[100],
                   )
-                : CarouselWithIndicator(),
-            Container(
-                margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                child: Container(
-                  child: isLoading
-                      ? Container(
+                      : CarouselWithIndicator(),
+                  Container(
+                      margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                      child: Container(
+                        child: state.listMenu.isEmpty
+                            ? Container(
                           height: 80,
                           width: 80,
                           child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: 5,
-                              itemBuilder: (BuildContext context, int index) =>
+                              itemBuilder:
+                                  (BuildContext context, int index) =>
                                   Shimmer.fromColors(
                                     child: Container(
                                       margin: EdgeInsets.only(
@@ -107,8 +121,8 @@ class BodyContentState extends State<BodyContent>
                                       width: 80.0,
                                       decoration: new BoxDecoration(
                                         color: Colors.white,
-                                        border:
-                                            new Border.all(color: Colors.white),
+                                        border: new Border.all(
+                                            color: Colors.white),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.0)),
                                       ),
@@ -117,12 +131,21 @@ class BodyContentState extends State<BodyContent>
                                     highlightColor: Colors.grey[100],
                                   )),
                         )
-                      : HeaderHome(this.navigateToPost, this.navigateToFilter),
-                )),
-            Container(
-              child: ListCategory(this.navigateToPost),
-            ),
-          ],
+                            : HeaderHome(
+                            this.navigateToPost, this.navigateToFilter),
+                      )),
+                  Container(
+                    child: ListCategory(this.navigateToPost),
+                  ),
+                ]),
+              ),
+            ],
+          ),
+          onRefresh: () async {
+            await new Future.delayed(const Duration(seconds: 1), () {
+              BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
+            });
+          },
         );
       },
     );

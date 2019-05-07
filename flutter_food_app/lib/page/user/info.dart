@@ -25,6 +25,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
   bool isFollow = false;
   ScrollController _hideButtonController;
   UserBloc userBloc;
+  var top = 0.0;
   
   void _showBottomSheetAnotherUser(context) {
     showModalBottomSheet(
@@ -63,6 +64,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // TODO: implement build
     return BlocBuilder(
       bloc: userBloc,
@@ -144,33 +146,42 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                 ),
               ],
             ),
-            body: Stack(
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 400,
-                  decoration: widget.isAnother
-                      ? BoxDecoration(
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/dog.jpg'),
+            body: NotificationListener(
+              onNotification: (v) {
+                if (v is ScrollUpdateNotification)
+                  setState(() => top -= v.scrollDelta / 2);
+              },
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 400,
+                      decoration: widget.isAnother
+                          ? BoxDecoration(
+                        image: const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/dog.jpg'),
+                        ),
+                      )
+                          : BoxDecoration(
+                        image: const DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/cat.jpg'),
+                        ),
+                      ),
                     ),
-                  )
-                      : BoxDecoration(
-                    image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/images/cat.jpg'),
-                    ),
+                    top: top,
                   ),
-                ),
-                ListView(
-                  controller: !widget.isAnother ? _hideButtonController : null,
-                  children: <Widget>[
-                    Header(widget.isAnother),
-                    Body(),
-                  ],
-                ),
-              ],
+                  ListView(
+                    controller: !widget.isAnother ? _hideButtonController : null,
+                    children: <Widget>[
+                      Header(widget.isAnother),
+                      Body(),
+                    ],
+                  ),
+                ],
+              ),
             ),
             bottomNavigationBar: widget.isAnother
                 ? Container(

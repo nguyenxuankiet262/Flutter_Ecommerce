@@ -123,10 +123,15 @@ class BodyInfoState extends State<BodyInfo> {
             width: double.infinity,
             color: colorBackground,
             padding: EdgeInsets.all(16.0),
-            child: Text(
-              "Nội dung bài viết",
-              style: TextStyle(fontFamily: "Ralway",fontWeight: FontWeight.w500,),
-            ),
+            child: GestureDetector(
+              child: Text(
+                "Nội dung bài viết",
+                style: TextStyle(fontFamily: "Ralway",fontWeight: FontWeight.w500,),
+              ),
+              onTap: (){
+                print(contentInput);
+              },
+            )
           ),
           TextField(
             controller: myControllerContent,
