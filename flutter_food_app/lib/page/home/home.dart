@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage>
   }
 
   Future<bool> _onBackPressed() {
-    //print("OKHOME");
     if (isSearch) {
       setState(() {
         changeHome();

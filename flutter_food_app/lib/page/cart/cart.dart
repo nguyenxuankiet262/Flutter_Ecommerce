@@ -3,8 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/user_state.dart';
 import 'package:flutter_food_app/page/authentication/login/signin.dart';
 import 'package:toast/toast.dart';
@@ -21,6 +23,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
   int itemCount = 1;
 
   UserBloc userBloc;
+  ApiBloc apiBloc;
 
   GlobalKey<EasyRefreshState> _easyRefreshKey =
       new GlobalKey<EasyRefreshState>();
@@ -47,6 +50,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
       }
     });
     userBloc = BlocProvider.of<UserBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
   }
 
   @override
@@ -235,83 +239,93 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
     return BlocBuilder(
       bloc: userBloc,
       builder: (context, UserState state) {
-        return Scaffold(
-            appBar: AppBar(
-              elevation: 0.5,
-              brightness: Brightness.light,
-              title: Text(
-                'Giỏ hàng',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-              backgroundColor: Colors.white,
-              centerTitle: true,
-              actions: <Widget>[
-                !state.isLogin
-                    ? Container()
-                    : new Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(right: 16),
-                          child: GestureDetector(
-                            child: Text(
-                              'ĐẶT HÀNG',
-                              textScaleFactor: 1.5,
-                              style: TextStyle(
-                                  color:
-                                      itemCount > 0 ? colorActive : Colors.grey,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 10),
+        return BlocBuilder(
+          bloc: apiBloc,
+          builder: (context, ApiState apiState) {
+            return Scaffold(
+                appBar: AppBar(
+                  elevation: 0.5,
+                  brightness: Brightness.light,
+                  title: Text(
+                    'Giỏ hàng',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  backgroundColor: Colors.white,
+                  centerTitle: true,
+                  actions: <Widget>[
+                    !state.isLogin
+                        ? Container()
+                        : apiState.cart == null
+                            ? Container()
+                            : new Center(
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 16),
+                                  child: GestureDetector(
+                                    child: Text(
+                                      'ĐẶT HÀNG',
+                                      textScaleFactor: 1.5,
+                                      style: TextStyle(
+                                          color: itemCount > 0
+                                              ? colorActive
+                                              : Colors.grey,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 10),
+                                    ),
+                                    onTap: () {
+                                      _showDialogPost();
+                                    },
+                                  ),
+                                ),
+                              ),
+                  ],
+                  leading: !state.isLogin
+                      ? Container()
+                      : apiState.cart == null
+                          ? Container()
+                          : GestureDetector(
+                              child: Icon(
+                                FontAwesomeIcons.solidTrashAlt,
+                                color: Colors.black,
+                                size: 18,
+                              ),
+                              onTap: () {
+                                if (itemCount > 0) {
+                                  _showDialog();
+                                }
+                              },
                             ),
-                            onTap: () {
-                              _showDialogPost();
-                            },
-                          ),
+                ),
+                body: !state.isLogin
+                    ? SigninContent()
+                    : EasyRefresh(
+                        key: _easyRefreshKey,
+                        refreshHeader: ConnectorHeader(
+                            key: _connectorHeaderKey,
+                            header: DeliveryHeader(key: _headerKey)),
+                        child: CustomScrollView(
+                          controller: _hideButtonController,
+                          slivers: <Widget>[
+                            SliverList(
+                              delegate: SliverChildListDelegate(
+                                  <Widget>[DeliveryHeader(key: _headerKey)]),
+                            ),
+                            SliverList(
+                                delegate: SliverChildListDelegate(<Widget>[
+                              Container(
+                                color: colorBackground,
+                                child: ListCart(),
+                              )
+                            ]))
+                          ],
                         ),
-                      ),
-              ],
-              leading: !state.isLogin
-                  ? Container()
-                  : GestureDetector(
-                      child: Icon(
-                        FontAwesomeIcons.solidTrashAlt,
-                        color: Colors.black,
-                        size: 18,
-                      ),
-                      onTap: () {
-                        if (itemCount > 0) {
-                          _showDialog();
-                        }
-                      },
-                    ),
-            ),
-            body: !state.isLogin
-                ? SigninContent()
-                : EasyRefresh(
-                    key: _easyRefreshKey,
-                    refreshHeader: ConnectorHeader(
-                        key: _connectorHeaderKey,
-                        header: DeliveryHeader(key: _headerKey)),
-                    child: CustomScrollView(
-                      controller: _hideButtonController,
-                      slivers: <Widget>[
-                        SliverList(
-                          delegate: SliverChildListDelegate(
-                              <Widget>[DeliveryHeader(key: _headerKey)]),
-                        ),
-                        SliverList(
-                            delegate: SliverChildListDelegate(<Widget>[
-                          Container(
-                            color: colorBackground,
-                            child: ListCart(),
-                          )
-                        ]))
-                      ],
-                    ),
-                    onRefresh: () async {
-                      await new Future.delayed(
-                          const Duration(seconds: 1), () {});
-                    },
-                  ));
+                        onRefresh: () async {
+                          await new Future.delayed(
+                              const Duration(seconds: 1), () {});
+                        },
+                      ));
+          },
+        );
       },
     );
   }

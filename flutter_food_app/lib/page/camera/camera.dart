@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'info/info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
@@ -33,13 +34,13 @@ class CameraPageState extends State<CameraPage> {
       context: context,
       barrierDismissible: false,
       builder: (_) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            CircularProgressIndicator(),
-          ],
-        ),
-      ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircularProgressIndicator(),
+              ],
+            ),
+          ),
     );
     new Future.delayed(new Duration(seconds: 2), () {
       Navigator.pop(context); //pop dialog
@@ -96,10 +97,10 @@ class CameraPageState extends State<CameraPage> {
     setState(() {
       images = resultList;
     });
-    if(images.length > 0){
+    if (images.length > 0) {
       _onSuccess();
       List<String> temp = blocProvider.currentState.imagePaths;
-      for(int i = 0; i < images.length; i++){
+      for (int i = 0; i < images.length; i++) {
         temp.add(images[i].filePath);
       }
       blocProvider.changeImageList(temp);
@@ -125,21 +126,23 @@ class CameraPageState extends State<CameraPage> {
                 child: Stack(
                   children: <Widget>[
                     Center(
+                      child: SpinKitFadingCircle(
+                        color: Colors.white,
+                        size: 50.0,
+                      )
+                    ),
+                    imagePath.isEmpty || !isNext
+                        ? Center(
                         child: AspectRatio(
                           aspectRatio: controller.value.aspectRatio,
                           child: CameraPreview(controller),
-                        )),
-                    Visibility(
-                      visible: imagePath.isEmpty || !isNext ? false : true,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: FileImage(File(imagePath)),
-                                fit: BoxFit.cover
-                            )
-                        ),
-                      ),
-                    )
+                        ))
+                        : Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: FileImage(File(imagePath)),
+                              fit: BoxFit.cover)),
+                    ),
                   ],
                 ),
                 flex: 8,
@@ -161,33 +164,33 @@ class CameraPageState extends State<CameraPage> {
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         isNext
-        ? GestureDetector(
-          onTap: (){
-            setState(() {
-              isNext = false;
-              imagePath = "";
-            });
-          },
-          child: Text(
-            'Hủy',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 17,
-              fontFamily: "Ralway",
-              decoration: TextDecoration.none,
-            ),
-          ),
-        )
-        : GestureDetector(
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white,
-            size: 24,
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
+            ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isNext = false;
+                    imagePath = "";
+                  });
+                },
+                child: Text(
+                  'Hủy',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontFamily: "Ralway",
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              )
+            : GestureDetector(
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
         GestureDetector(
           child: Text(
             'Tiếp tục',
@@ -199,7 +202,7 @@ class CameraPageState extends State<CameraPage> {
             ),
           ),
           onTap: () {
-            if(isNext) {
+            if (isNext) {
               List<String> temp = blocProvider.currentState.imagePaths;
               temp.add(imagePath);
               blocProvider.changeImageList(temp);
@@ -232,16 +235,14 @@ class CameraPageState extends State<CameraPage> {
               color: Colors.white,
               size: 50,
             ),
-            onTap: onTakePictureButtonPressed
-        ),
+            onTap: onTakePictureButtonPressed),
         GestureDetector(
             child: Icon(
               Icons.cached,
               color: Colors.white,
               size: 24,
             ),
-            onTap: onNewCameraSelected
-        )
+            onTap: onNewCameraSelected)
       ],
     );
   }
@@ -252,7 +253,7 @@ class CameraPageState extends State<CameraPage> {
         setState(() {
           imagePath = filePath;
         });
-        if (filePath != null){
+        if (filePath != null) {
           setState(() {
             isNext = true;
           });

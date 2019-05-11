@@ -17,7 +17,7 @@ class RelativePostState extends State<RelativePost> {
   }
 
   void navigateToPost() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+
   }
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/detail_page_state.dart';
-import 'package:flutter_food_app/page/filter/filter.dart';
+import 'package:flutter_food_app/page/filter/common/filter.dart';
 import 'package:flutter_food_app/page/search/search.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_child_menu.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_post.dart';
@@ -20,7 +20,6 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
 import 'list_post.dart';
-import 'filter/filter.dart';
 
 class ListAllPost extends StatefulWidget {
   @override
@@ -64,6 +63,7 @@ class _ListAllPostState extends State<ListAllPost>
     apiBloc = BlocProvider.of<ApiBloc>(context);
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
     fetchChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
+    fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
     //fetchProduct(apiBloc.currentState.listChildMenu[0].id);
     BlocProvider.of<FunctionBloc>(context).isLoading(_isLoading);
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -81,11 +81,6 @@ class _ListAllPostState extends State<ListAllPost>
       if (_hideButtonController.position.userScrollDirection ==
           ScrollDirection.forward) {
         BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
-      }
-      if (_hideButtonController.offset >=
-              _hideButtonController.position.maxScrollExtent &&
-          !_hideButtonController.position.outOfRange) {
-        //print("reach bottom");
       }
     });
     BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
@@ -109,14 +104,6 @@ class _ListAllPostState extends State<ListAllPost>
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 300),
     );
-    setState(() {
-      isLoading = true;
-    });
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
     BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
   }
 
@@ -131,7 +118,7 @@ class _ListAllPostState extends State<ListAllPost>
                 .childMenu[state.indexChildCategory]
                 .name,
         style: TextStyle(
-            fontWeight: FontWeight.bold, color: Colors.black, fontSize: 17),
+            fontWeight: FontWeight.bold, color: Colors.black),
       ),
       centerTitle: true,
       backgroundColor: Colors.white,
@@ -284,64 +271,65 @@ class _ListAllPostState extends State<ListAllPost>
                                     pinned: false,
                                     floating: true,
                                     snap: true,
-                                    expandedHeight: 97,
-                                    flexibleSpace: FlexibleSpaceBar(
-                                      collapseMode: CollapseMode.pin,
-                                      background: Column(
-                                        children: <Widget>[
-                                          buildAppBar(context, detailstate),
-                                          GestureDetector(
-                                            onTap: () {
-                                              BlocProvider.of<BottomBarBloc>(
-                                                      context)
-                                                  .changeVisible(false);
-                                              FocusScope.of(context)
-                                                  .requestFocus(focusNode);
-                                              setState(() {
-                                                isSearch = true;
-                                              });
-                                            },
-                                            child: Container(
-                                              height: 41.0,
-                                              color: Colors.white,
-                                              padding: EdgeInsets.only(
-                                                  right: 16.0, left: 16.0),
+                                    bottom: PreferredSize(
+                                      preferredSize: Size.fromHeight(41),
+                                      child: Container(
+                                        child: Column(
+                                          children: <Widget>[
+                                            buildAppBar(context, detailstate),
+                                            GestureDetector(
+                                              onTap: () {
+                                                BlocProvider.of<BottomBarBloc>(
+                                                    context)
+                                                    .changeVisible(false);
+                                                FocusScope.of(context)
+                                                    .requestFocus(focusNode);
+                                                setState(() {
+                                                  isSearch = true;
+                                                });
+                                              },
                                               child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  5.0)),
-                                                      color: colorInactive
-                                                          .withOpacity(0.2)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      Icon(
-                                                        Icons.search,
-                                                        color: colorInactive,
-                                                        size: 18,
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            left: 5.0),
-                                                        child: Text(
-                                                          "Tìm kiếm bài viết, người đăng",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  "Raleway",
-                                                              color:
-                                                                  colorInactive,
-                                                              fontSize: 12),
+                                                height: 41.0,
+                                                color: Colors.white,
+                                                padding: EdgeInsets.only(
+                                                    right: 16.0, left: 16.0),
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                5.0)),
+                                                        color: colorInactive
+                                                            .withOpacity(0.2)),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center,
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          Icons.search,
+                                                          color: colorInactive,
+                                                          size: 18,
                                                         ),
-                                                      ),
-                                                    ],
-                                                  )),
-                                            ),
-                                          )
-                                        ],
+                                                        Container(
+                                                          margin: EdgeInsets.only(
+                                                              left: 5.0),
+                                                          child: Text(
+                                                            "Tìm kiếm bài viết, người đăng",
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                "Raleway",
+                                                                color:
+                                                                colorInactive,
+                                                                fontSize: 12),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -367,12 +355,7 @@ class _ListAllPostState extends State<ListAllPost>
                                                     Expanded(
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          FilterManagement()));
+                                                          functionBloc.currentState.navigateToFilterHome();
                                                         },
                                                         child: Container(
                                                             height: 30,
@@ -451,12 +434,7 @@ class _ListAllPostState extends State<ListAllPost>
                                                     Expanded(
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          FilterManagement()));
+                                                          functionBloc.currentState.navigateToFilterHome();
                                                         },
                                                         child: Container(
                                                             height: 30,
@@ -652,15 +630,21 @@ class _ListAllPostState extends State<ListAllPost>
                                                   },
                                                 )
                                               : Container(),
-                                          isLoading
-                                              ? Container(
-                                                  color: Colors.white,
-                                                  child: ShimmerPost(),
-                                                )
-                                              : Container(
+                                          BlocBuilder(
+                                            bloc: apiBloc,
+                                            builder: (context, ApiState state){
+                                              return state.listProduct.isEmpty
+                                                  ? Container(
+                                                color: Colors.white,
+                                                child: ShimmerPost(),
+                                              )
+                                                  : Container(
                                                   padding: EdgeInsets.all(2.0),
                                                   color: Colors.white,
-                                                  child: ListPost()),
+                                                  child: ListPost());
+                                            },
+                                          )
+
                                         ]),
                                       ),
                                     ],
@@ -668,6 +652,12 @@ class _ListAllPostState extends State<ListAllPost>
                                   onRefresh: () async {
                                     await new Future.delayed(
                                         const Duration(seconds: 1), () {
+                                      apiBloc.changeChildMenu([]);
+                                      apiBloc.changeListProduct([]);
+                                      fetchChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc
+                                          .currentState
+                                          .indexCategory].id);
+                                      fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
                                     });
                                   },
                                 ))),
@@ -681,13 +671,13 @@ class _ListAllPostState extends State<ListAllPost>
   }
 
   Future<bool> _onBackPressed() {
-    //print("OKDETAIL");
     BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
     focusNode.unfocus();
     if (isSearch) {
       changeDetail();
     } else {
       apiBloc.changeChildMenu(apiBloc.initialState.listChildMenu);
+      apiBloc.changeListProduct(apiBloc.initialState.listProduct);
       functionBloc.onBackPressed(_callBack);
       Navigator.pop(context);
     }

@@ -83,9 +83,7 @@ class _ListNotiUserState extends State<ListNotiUser> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    BlocProvider.of<FunctionBloc>(context)
-                                        .currentState
-                                        .navigateToPost();
+
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(left: 5.0),

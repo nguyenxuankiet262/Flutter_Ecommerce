@@ -9,7 +9,7 @@ class ShimmerNotification extends StatelessWidget {
     return new ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 3,
+      itemCount: 10,
       itemBuilder: (BuildContext context, int index) => Container(
             decoration: new BoxDecoration(
                 color: Colors.white,

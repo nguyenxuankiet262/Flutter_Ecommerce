@@ -5,6 +5,7 @@ class Product {
   final bool status;
   final String name;
   final String idType;
+  final String description;
   final String initPrice;
   final String currentPrice;
   final String idUser;
@@ -12,7 +13,7 @@ class Product {
 
 
   Product({this.id, this.images, this.proved, this.status, this.name,
-      this.idType, this.initPrice, this.currentPrice, this.idUser, this.date});
+      this.idType, this.description, this.initPrice, this.currentPrice, this.idUser, this.date});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -21,6 +22,7 @@ class Product {
       status: json['status'],
       name: json['name'],
       idType: json['idtype'],
+      description: json['description'],
       initPrice: json['initprice'].toString(),
       currentPrice: json['currentprice'].toString(),
       idUser: json['iduser'],

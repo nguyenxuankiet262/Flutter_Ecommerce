@@ -9,7 +9,7 @@ class ShimmerCart extends StatelessWidget {
     return new ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 2,
+        itemCount: 10,
         itemBuilder: (BuildContext context, int index) => Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),

@@ -49,7 +49,7 @@ class _ListPostState extends State<ListPost> {
                                           topLeft: Radius.circular(5.0))),
                                 ),
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+
                                 },
                               ),
                               Padding(

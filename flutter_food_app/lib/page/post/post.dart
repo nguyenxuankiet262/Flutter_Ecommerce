@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
+import 'package:flutter_food_app/page/shimmer/shimmer_slider_post.dart';
 import 'slider.dart';
 import 'body.dart';
 import 'rating.dart';
@@ -18,6 +22,8 @@ List<String> nameList = [
 ];
 
 class Post extends StatefulWidget {
+  String _idPost;
+  Post(this._idPost);
   @override
   State<StatefulWidget> createState() => PostState();
 }
@@ -27,10 +33,13 @@ class PostState extends State<Post> {
   final myController = new TextEditingController();
   UserBloc userBloc;
   FunctionBloc functionBloc;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    fetchProductById(apiBloc, widget._idPost);
     userBloc = BlocProvider.of<UserBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
     BlocProvider.of<BottomBarBloc>(context)
@@ -238,97 +247,113 @@ class PostState extends State<Post> {
     );
   }
 
+  Future<bool> _onBackPressed(){
+    apiBloc.changeProduct(apiBloc.initialState.product);
+    Navigator.pop(context);
+    return Future.value(false);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0.5,
-        brightness: Brightness.light,
-        title: Text(
-          'Bánh tiramisu thơm ngon đây cả nhà ơi',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-            fontSize: 17.0,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.more_vert),
-            tooltip: 'Tùy chỉnh',
-            onPressed: () {
-              _showSettingSheet();
-            },
-          ),
-        ],
-      ),
-      body: Container(
-        color: colorBackground,
-        child: ListView(
-          children: <Widget>[
-            CarouselWithIndicator(),
-            PostBody(),
-            CommentPost(),
-            RelativePost(),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        height: 50,
-        width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  if(userBloc.currentState.isLogin){
-                    _showCart();
-                  }else{
-                    functionBloc.currentState.navigateToAuthen();
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: colorActive, width: 1.5)),
-                  child: Center(
-                    child: Text(
-                      'THÊM VÀO GIỎ HÀNG',
-                      style: TextStyle(
-                          color: colorActive,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.0),
+    return BlocBuilder(
+      bloc: apiBloc,
+      builder: (context, ApiState state){
+        return WillPopScope(
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 0.5,
+              brightness: Brightness.light,
+              title: Text(
+                state.product == null ? "" : state.product.name,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 17.0,
+                ),
+              ),
+              backgroundColor: Colors.white,
+              iconTheme: IconThemeData(color: Colors.black),
+              centerTitle: true,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.more_vert),
+                  tooltip: 'Tùy chỉnh',
+                  onPressed: () {
+                    _showSettingSheet();
+                  },
+                ),
+              ],
+            ),
+            body: Container(
+              color: colorBackground,
+              child: ListView(
+                children: <Widget>[
+                  state.product == null
+                  ? ShimmerSliderPost()
+                  : CarouselWithIndicator(),
+                  PostBody(),
+                  CommentPost(),
+                  RelativePost(),
+                ],
+              ),
+            ),
+            bottomNavigationBar: Container(
+              height: 50,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        if(userBloc.currentState.isLogin){
+                          _showCart();
+                        }else{
+                          functionBloc.currentState.navigateToAuthen();
+                        }
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: colorActive, width: 1.5)),
+                        child: Center(
+                          child: Text(
+                            'THÊM VÀO GIỎ HÀNG',
+                            style: TextStyle(
+                                color: colorActive,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.0),
+                          ),
+                        ),
+                      ),
                     ),
+                    flex: 1,
                   ),
-                ),
-              ),
-              flex: 1,
-            ),
-            Expanded(
-              child: Container(
-                height: 50,
-                color: colorActive,
-                child: Center(
-                  child: Text(
-                    'GỌI ĐIỆN NGƯỜI BÁN',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 12.0),
+                  Expanded(
+                    child: Container(
+                      height: 50,
+                      color: colorActive,
+                      child: Center(
+                        child: Text(
+                          'GỌI ĐIỆN NGƯỜI BÁN',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12.0),
+                        ),
+                      ),
+                    ),
+                    flex: 1,
                   ),
-                ),
+                ],
               ),
-              flex: 1,
             ),
-          ],
-        ),
-      ),
+          ),
+          onWillPop: _onBackPressed,
+        );
+      },
     );
   }
 }

@@ -38,7 +38,6 @@ class CartItemState extends State<CartItem> {
                   children: <Widget>[
                     GestureDetector(
                       onTap: () {
-                        BlocProvider.of<FunctionBloc>(context).currentState.navigateToPost();
                       },
                       child: Container(
                         child: ClipRRect(

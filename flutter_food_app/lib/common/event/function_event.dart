@@ -6,13 +6,18 @@ class OpenDrawer extends FunctionEvent{
 }
 
 class NavigateToPost extends FunctionEvent{
-  final Function navigateToPost;
+  final Function(String) navigateToPost;
   NavigateToPost(this.navigateToPost);
 }
 
 class NavigateToFilter extends FunctionEvent{
   final Function navigateToFilter;
   NavigateToFilter(this.navigateToFilter);
+}
+
+class NavigateToFilterHome extends FunctionEvent{
+  final Function navigateToFilterHome;
+  NavigateToFilterHome(this.navigateToFilterHome);
 }
 
 class NavigateToUser extends FunctionEvent{

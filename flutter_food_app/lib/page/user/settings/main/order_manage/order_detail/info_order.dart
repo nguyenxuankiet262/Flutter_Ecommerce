@@ -28,10 +28,6 @@ class InforOrder extends StatelessWidget{
                         children: <Widget>[
                           GestureDetector(
                             onTap: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => Post()),
-                              );
                             },
                             child: Container(
                               child: ClipRRect(

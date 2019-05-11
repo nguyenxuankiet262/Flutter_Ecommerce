@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/bottom_bar_state.dart';
 import 'package:flutter_food_app/common/state/search_state.dart';
 import 'package:flutter_food_app/common/state/user_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/authentication/authentication.dart';
 import 'package:flutter_food_app/page/camera/info/info.dart';
-import 'package:flutter_food_app/page/filter/filter.dart';
+import 'package:flutter_food_app/page/filter/common/filter.dart';
+import 'package:flutter_food_app/page/filter/detail/filter.dart';
 import 'package:flutter_food_app/page/home/home.dart';
 import 'package:flutter_food_app/page/cart/cart.dart';
 import 'package:flutter_food_app/page/location/location.dart';
@@ -38,6 +42,7 @@ class _MyMainPageState extends State<MyMainPage>
   Animation<Offset> _offsetFloat;
   FunctionBloc functionBloc;
   UserBloc userBloc;
+  ApiBloc apiBloc;
   final GlobalKey<InnerDrawerState> _innerDrawerKey =
       GlobalKey<InnerDrawerState>();
 
@@ -56,6 +61,9 @@ class _MyMainPageState extends State<MyMainPage>
     _controller.forward();
     userBloc = BlocProvider.of<UserBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    fetchUserById(apiBloc, "5ccbeef21d3ee00017f572cd");
+    fetchCartByUserId(apiBloc, "5ccbeef21d3ee00017f572cd");
     functionBloc.openDrawer(_openDrawer);
     functionBloc.navigateToPost(_navigateToPost);
     functionBloc.navigateToFilter(_navigateToFilter);
@@ -64,6 +72,7 @@ class _MyMainPageState extends State<MyMainPage>
     functionBloc.navigateToAuthen(_navigateToAuthen);
     functionBloc.navigateToCamera(_navigateToCamera);
     functionBloc.navigateToInfoPost(_navigateToInfoPost);
+    functionBloc.navigateToFilterHome(_navigateToFilterDetail);
   }
 
   @override
@@ -104,6 +113,11 @@ class _MyMainPageState extends State<MyMainPage>
     );
   }
 
+  void _navigateToFilterDetail() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => FilterDetailManagement()));
+  }
+
   void _navigateToUser() {
     Navigator.push(
       context,
@@ -125,8 +139,9 @@ class _MyMainPageState extends State<MyMainPage>
         MaterialPageRoute(builder: (context) => AuthenticationPage(0)));
   }
 
-  void _navigateToPost() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Post()));
+  void _navigateToPost(String idPost) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Post(idPost)));
   }
 
   void _openDrawer() {
@@ -155,169 +170,239 @@ class _MyMainPageState extends State<MyMainPage>
   Widget build(BuildContext context) {
     FocusScope.of(context).setFirstFocus(focusScope);
     return WillPopScope(
-      child: BlocBuilder(
-        bloc: BlocProvider.of<SearchBloc>(context),
-        builder: (context, SearchState state) {
-          return BlocBuilder(
-            bloc: userBloc,
-            builder: (context, UserState userstate) {
-              return InnerDrawer(
-                  key: _innerDrawerKey,
-                  child: Material(
-                    child: SettingsMain(),
-                  ),
-                  position: InnerDrawerPosition.end,
-                  animationType: InnerDrawerAnimation.quadratic,
-                  swipe: userstate.isLogin ? true : false,
-                  onTapClose: true,
-                  offset: 0.6,
-                  scaffold: Scaffold(
-                    extendBody: true,
-                    backgroundColor: colorBackground,
-                    body: new PageView(
-                      physics: NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        FocusScope(
-                          node: focusScope,
-                          child: MaterialApp(
-                            home: MyHomePage(
-                                this._navigateToPost,
-                                this._navigateToFilter,
-                                this._navigateToLocation),
+        child: BlocBuilder(
+          bloc: BlocProvider.of<SearchBloc>(context),
+          builder: (context, SearchState state) {
+            return BlocBuilder(
+              bloc: userBloc,
+              builder: (context, UserState userstate) {
+                return InnerDrawer(
+                    key: _innerDrawerKey,
+                    child: Material(
+                      child: SettingsMain(),
+                    ),
+                    position: InnerDrawerPosition.end,
+                    animationType: InnerDrawerAnimation.quadratic,
+                    swipe: userstate.isLogin ? true : false,
+                    onTapClose: true,
+                    offset: 0.6,
+                    scaffold: Scaffold(
+                      extendBody: true,
+                      backgroundColor: colorBackground,
+                      body: new PageView(
+                        physics: NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          FocusScope(
+                            node: focusScope,
+                            child: MaterialApp(
+                              home: MyHomePage(
+                                  this._navigateToPost,
+                                  this._navigateToFilter,
+                                  this._navigateToLocation),
+                              theme: ThemeData(
+                                fontFamily: 'Montserrat',
+                              ),
+                              debugShowCheckedModeBanner: false,
+                            ),
+                          ),
+                          MaterialApp(
+                            home: Cart(),
                             theme: ThemeData(
                               fontFamily: 'Montserrat',
                             ),
                             debugShowCheckedModeBanner: false,
                           ),
-                        ),
-                        MaterialApp(
-                          home: Cart(),
-                          theme: ThemeData(
-                            fontFamily: 'Montserrat',
+                          MaterialApp(
+                            home: NotificationPage(),
+                            theme: ThemeData(
+                              fontFamily: 'Montserrat',
+                            ),
+                            debugShowCheckedModeBanner: false,
                           ),
-                          debugShowCheckedModeBanner: false,
-                        ),
-                        MaterialApp(
-                          home: NotificationPage(),
-                          theme: ThemeData(
-                            fontFamily: 'Montserrat',
+                          MaterialApp(
+                            home: InfoPage(false),
+                            theme: ThemeData(
+                              fontFamily: 'Montserrat',
+                            ),
+                            debugShowCheckedModeBanner: false,
                           ),
-                          debugShowCheckedModeBanner: false,
-                        ),
-                        MaterialApp(
-                          home: InfoPage(false),
-                          theme: ThemeData(
-                            fontFamily: 'Montserrat',
-                          ),
-                          debugShowCheckedModeBanner: false,
-                        ),
-                      ],
-                      onPageChanged: onPageChanged,
-                      controller: _pageController,
-                    ),
-                    resizeToAvoidBottomPadding: false,
-                    floatingActionButtonLocation:
-                        FloatingActionButtonLocation.centerDocked,
-                    floatingActionButton: BlocBuilder(
-                      bloc: BlocProvider.of<BottomBarBloc>(context),
-                      builder: (context, BottomBarState bottombarstate) {
-                        bottombarstate.isVisible
-                            ? _controller.forward()
-                            : _controller.reverse();
-                        return Visibility(
-                            visible: !state.isSearch,
-                            child: SlideTransition(
-                                position: _offsetFloat,
-                                child: FloatingActionButton.extended(
-                                  backgroundColor: Colors.white,
-                                  onPressed: () {
-                                    if (userBloc.currentState.isLogin) {
-                                      _navigateToInfoPost();
-                                    } else {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AuthenticationPage(1)));
-                                    }
-                                  },
-                                  icon: Icon(
-                                    FontAwesomeIcons.camera,
-                                    color: colorActive,
-                                    size: 15,
-                                  ),
-                                  label: Text(
-                                    "BÁN",
-                                    style: TextStyle(
-                                        color: colorActive,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                )));
-                      },
-                    ),
-                    bottomNavigationBar: BlocBuilder(
-                      bloc: BlocProvider.of<BottomBarBloc>(context),
-                      builder: (context, BottomBarState bottombarstate) {
-                        bottombarstate.isVisible
-                            ? _controller.forward()
-                            : _controller.reverse();
-                        return SlideTransition(
-                            position: _offsetFloat,
-                            child: Visibility(
+                        ],
+                        onPageChanged: onPageChanged,
+                        controller: _pageController,
+                      ),
+                      resizeToAvoidBottomPadding: false,
+                      floatingActionButtonLocation:
+                          FloatingActionButtonLocation.centerDocked,
+                      floatingActionButton: BlocBuilder(
+                        bloc: BlocProvider.of<BottomBarBloc>(context),
+                        builder: (context, BottomBarState bottombarstate) {
+                          bottombarstate.isVisible
+                              ? _controller.forward()
+                              : _controller.reverse();
+                          return Visibility(
                               visible: !state.isSearch,
-                              child: BottomAppBar(
-                                shape: CircularNotchedRectangle(),
-                                child: new Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    GestureDetector(
-                                      onTap: () {
-                                        navigationTapped(0);
-                                        FocusScope.of(context)
-                                            .setFirstFocus(focusScope);
-                                      },
-                                      child: Container(
-                                        color: Colors.white,
-                                        height: 56,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Icon(
-                                              FontAwesomeIcons.home,
-                                              color: _index == 0
-                                                  ? colorActive
-                                                  : Colors.grey,
-                                              size: 20,
-                                            ),
-                                            Container(
-                                              margin: EdgeInsets.only(top: 2.0),
-                                              child: Text(
-                                                'Trang chủ',
-                                                style: TextStyle(
-                                                    fontFamily: 'Raleway',
-                                                    color: _index == 0
-                                                        ? colorActive
-                                                        : Colors.grey),
+                              child: SlideTransition(
+                                  position: _offsetFloat,
+                                  child: FloatingActionButton.extended(
+                                    backgroundColor: Colors.white,
+                                    onPressed: () {
+                                      if (userBloc.currentState.isLogin) {
+                                        _navigateToInfoPost();
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AuthenticationPage(1)));
+                                      }
+                                    },
+                                    icon: Icon(
+                                      FontAwesomeIcons.camera,
+                                      color: colorActive,
+                                      size: 15,
+                                    ),
+                                    label: Text(
+                                      "BÁN",
+                                      style: TextStyle(
+                                          color: colorActive,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    ),
+                                  )));
+                        },
+                      ),
+                      bottomNavigationBar: BlocBuilder(
+                        bloc: BlocProvider.of<BottomBarBloc>(context),
+                        builder: (context, BottomBarState bottombarstate) {
+                          bottombarstate.isVisible
+                              ? _controller.forward()
+                              : _controller.reverse();
+                          return SlideTransition(
+                              position: _offsetFloat,
+                              child: Visibility(
+                                visible: !state.isSearch,
+                                child: BottomAppBar(
+                                  shape: CircularNotchedRectangle(),
+                                  child: new Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        onTap: () {
+                                          navigationTapped(0);
+                                          FocusScope.of(context)
+                                              .setFirstFocus(focusScope);
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          height: 56,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Icon(
+                                                FontAwesomeIcons.home,
+                                                color: _index == 0
+                                                    ? colorActive
+                                                    : Colors.grey,
+                                                size: 20,
                                               ),
-                                            ),
-                                          ],
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 2.0),
+                                                child: Text(
+                                                  'Trang chủ',
+                                                  style: TextStyle(
+                                                      fontFamily: 'Raleway',
+                                                      color: _index == 0
+                                                          ? colorActive
+                                                          : Colors.grey),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 100.0),
-                                      child: GestureDetector(
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 120.0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            navigationTapped(1);
+                                          },
+                                          child: Stack(children: <Widget>[
+                                            Container(
+                                              height: 56,
+                                              color: Colors.white,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Icon(
+                                                      FontAwesomeIcons
+                                                          .shoppingCart,
+                                                      color: _index == 1
+                                                          ? colorActive
+                                                          : Colors.grey,
+                                                      size: 20,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 2.0),
+                                                    child: Text(
+                                                      'Giỏ hàng',
+                                                      style: TextStyle(
+                                                          fontFamily: 'Raleway',
+                                                          color: _index == 1
+                                                              ? colorActive
+                                                              : Colors.grey),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            BlocBuilder(
+                                              bloc: apiBloc,
+                                              builder:
+                                                  (context, ApiState apiState) {
+                                                return apiState.cart == null
+                                                    ? Container(
+                                                        height: 0,
+                                                        width: 0,
+                                                      )
+                                                    : apiState
+                                                            .cart.items.isEmpty
+                                                        ? Container(
+                                                            height: 0,
+                                                            width: 0,
+                                                          )
+                                                        : new Positioned(
+                                                            // draw a red marble
+                                                            top: 4.0,
+                                                            right: 10.0,
+                                                            child: new Icon(
+                                                                Icons
+                                                                    .brightness_1,
+                                                                size: 11.0,
+                                                                color:
+                                                                    Colors.red),
+                                                          );
+                                              },
+                                            )
+                                          ]),
+                                        ),
+                                      ),
+                                      GestureDetector(
                                         onTap: () {
-                                          navigationTapped(1);
+                                          navigationTapped(2);
                                         },
                                         child: Stack(children: <Widget>[
                                           Container(
-                                            height: 56,
+                                            height: 50,
                                             color: Colors.white,
                                             child: Column(
                                               mainAxisAlignment:
@@ -325,9 +410,8 @@ class _MyMainPageState extends State<MyMainPage>
                                               children: <Widget>[
                                                 Container(
                                                   child: Icon(
-                                                    FontAwesomeIcons
-                                                        .shoppingCart,
-                                                    color: _index == 1
+                                                    FontAwesomeIcons.solidBell,
+                                                    color: _index == 2
                                                         ? colorActive
                                                         : Colors.grey,
                                                     size: 20,
@@ -337,10 +421,10 @@ class _MyMainPageState extends State<MyMainPage>
                                                   margin:
                                                       EdgeInsets.only(top: 2.0),
                                                   child: Text(
-                                                    'Giỏ hàng',
+                                                    'Thông báo',
                                                     style: TextStyle(
                                                         fontFamily: 'Raleway',
-                                                        color: _index == 1
+                                                        color: _index == 2
                                                             ? colorActive
                                                             : Colors.grey),
                                                   ),
@@ -350,173 +434,158 @@ class _MyMainPageState extends State<MyMainPage>
                                           ),
                                           new Positioned(
                                             // draw a red marble
-                                            top: 4.0,
-                                            right: 10.0,
+                                            top: 1.0,
+                                            right: 21.0,
                                             child: new Icon(Icons.brightness_1,
                                                 size: 11.0, color: Colors.red),
                                           )
                                         ]),
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        navigationTapped(2);
-                                      },
-                                      child: Stack(children: <Widget>[
-                                        Container(
-                                          height: 50,
-                                          color: Colors.white,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Container(
-                                                child: Icon(
-                                                  FontAwesomeIcons.solidBell,
-                                                  color: _index == 2
-                                                      ? colorActive
-                                                      : Colors.grey,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 2.0),
-                                                child: Text(
-                                                  'Thông báo',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Raleway',
-                                                      color: _index == 2
-                                                          ? colorActive
-                                                          : Colors.grey),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        new Positioned(
-                                          // draw a red marble
-                                          top: 1.0,
-                                          right: 21.0,
-                                          child: new Icon(Icons.brightness_1,
-                                              size: 11.0, color: Colors.red),
-                                        )
-                                      ]),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        navigationTapped(3);
-                                      },
-                                      child: userstate.isLogin
-                                          ? Stack(children: <Widget>[
-                                              Container(
+                                      GestureDetector(
+                                        onTap: () {
+                                          navigationTapped(3);
+                                        },
+                                        child: userstate.isLogin
+                                            ? BlocBuilder(
+                                                bloc: apiBloc,
+                                                builder: (context,
+                                                    ApiState apiState) {
+                                                  return Stack(
+                                                      children: <Widget>[
+                                                        Container(
+                                                          color: Colors.white,
+                                                          height: 56,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: <Widget>[
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                        color: _index ==
+                                                                                3
+                                                                            ? colorActive
+                                                                            : colorInactive,
+                                                                        width: _index ==
+                                                                                3
+                                                                            ? 1.0
+                                                                            : 1.0),
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                            Radius.circular(100.0))),
+                                                                child: apiBloc
+                                                                            .currentState
+                                                                            .mainUser ==
+                                                                        null
+                                                                    ? Container(
+                                                                        height:
+                                                                            21,
+                                                                        width:
+                                                                            21,
+                                                                      )
+                                                                    : ClipOval(
+                                                                        child: Image
+                                                                            .network(
+                                                                          apiState
+                                                                              .mainUser
+                                                                              .avatar,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          width:
+                                                                              21.0,
+                                                                          height:
+                                                                              21.0,
+                                                                        ),
+                                                                      ),
+                                                              ),
+                                                              Container(
+                                                                height: 20,
+                                                                color: Colors
+                                                                    .white,
+                                                                child: Text(
+                                                                  "Cá nhân",
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          right: 3.0,
+                                                          bottom: 9.0,
+                                                          child: Text(
+                                                            'Cá nhân',
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    'Raleway',
+                                                                color: _index ==
+                                                                        3
+                                                                    ? colorActive
+                                                                    : Colors
+                                                                        .grey),
+                                                          ),
+                                                        ),
+                                                        new Positioned(
+                                                          // draw a red marble
+                                                          top: 4.0,
+                                                          right: 13.0,
+                                                          child: new Icon(
+                                                              Icons
+                                                                  .brightness_1,
+                                                              size: 11.0,
+                                                              color:
+                                                                  Colors.red),
+                                                        )
+                                                      ]);
+                                                },
+                                              )
+                                            : Container(
                                                 color: Colors.white,
                                                 height: 56,
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
                                                   children: <Widget>[
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              color: _index == 3
-                                                                  ? colorActive
-                                                                  : colorInactive,
-                                                              width: _index == 3
-                                                                  ? 1.0
-                                                                  : 1.0),
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      100.0))),
-                                                      child: ClipOval(
-                                                        child: Image.asset(
-                                                          'assets/images/cat.jpg',
-                                                          fit: BoxFit.cover,
-                                                          width: 21.0,
-                                                          height: 21.0,
-                                                        ),
-                                                      ),
+                                                    Icon(
+                                                      FontAwesomeIcons.userAlt,
+                                                      color: _index == 3
+                                                          ? colorActive
+                                                          : Colors.grey,
+                                                      size: 20,
                                                     ),
                                                     Container(
-                                                      height: 20,
-                                                      color: Colors.white,
+                                                      margin: EdgeInsets.only(
+                                                          top: 2.0),
                                                       child: Text(
-                                                        "Cá nhân",
+                                                        'Cá nhân',
                                                         style: TextStyle(
-                                                            color:
-                                                                Colors.white),
+                                                            fontFamily:
+                                                                'Raleway',
+                                                            color: _index == 3
+                                                                ? colorActive
+                                                                : Colors.grey),
                                                       ),
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
                                               ),
-                                              Positioned(
-                                                right: 3.0,
-                                                bottom: 9.0,
-                                                child: Text(
-                                                  'Cá nhân',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Raleway',
-                                                      color: _index == 3
-                                                          ? colorActive
-                                                          : Colors.grey),
-                                                ),
-                                              ),
-                                              new Positioned(
-                                                // draw a red marble
-                                                top: 4.0,
-                                                right: 13.0,
-                                                child: new Icon(
-                                                    Icons.brightness_1,
-                                                    size: 11.0,
-                                                    color: Colors.red),
-                                              )
-                                            ])
-                                          : Container(
-                                              color: Colors.white,
-                                              height: 56,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Icon(
-                                                    FontAwesomeIcons.userAlt,
-                                                    color: _index == 3
-                                                        ? colorActive
-                                                        : Colors.grey,
-                                                    size: 20,
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 2.0),
-                                                    child: Text(
-                                                      'Cá nhân',
-                                                      style: TextStyle(
-                                                          fontFamily: 'Raleway',
-                                                          color: _index == 3
-                                                              ? colorActive
-                                                              : Colors.grey),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                    ),
-                                  ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ));
-                      },
-                    ),
-                  ));
-            },
-          );
-        },
-      ),
-      onWillPop: (){
-        functionBloc.currentState.onBackPressed();
-      }
-    );
+                              ));
+                        },
+                      ),
+                    ));
+              },
+            );
+          },
+        ),
+        onWillPop: () {
+          functionBloc.currentState.onBackPressed();
+        });
   }
 }

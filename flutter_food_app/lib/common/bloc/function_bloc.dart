@@ -7,12 +7,16 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
     dispatch(OpenDrawer(_openDrawer));
   }
 
-  void navigateToPost(Function _navigateToPost) {
+  void navigateToPost(Function(String) _navigateToPost) {
     dispatch(NavigateToPost(_navigateToPost));
   }
 
   void navigateToFilter(Function _navigateToFilter) {
     dispatch(NavigateToFilter(_navigateToFilter));
+  }
+
+  void navigateToFilterHome(Function _navigateToFilterHome) {
+    dispatch(NavigateToFilterHome(_navigateToFilterHome));
   }
 
   void navigateToUser(Function _navigateToUser) {
@@ -56,6 +60,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: event.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -70,6 +75,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: event.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -84,6 +90,23 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: event.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
+        navigateToUser: currentState.navigateToUser,
+        navigateToFollow: currentState.navigateToFollow,
+        navigateToAuthen: currentState.navigateToAuthen,
+        navigateToCamera: currentState.navigateToCamera,
+        navigateToInfoPost: currentState.navigateToInfoPost,
+        isLoading: currentState.isLoading,
+        onBackPressed: currentState.onBackPressed,
+      );
+    }
+
+    if (event is NavigateToFilterHome) {
+      yield FunctionState(
+        openDrawer: currentState.openDrawer,
+        navigateToPost: currentState.navigateToPost,
+        navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: event.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -99,6 +122,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: event.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -114,6 +138,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: event.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -129,6 +154,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: event.navigateToAuthen,
@@ -144,6 +170,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -159,6 +186,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -174,6 +202,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,
@@ -189,6 +218,7 @@ class FunctionBloc extends Bloc<FunctionEvent, FunctionState> {
         openDrawer: currentState.openDrawer,
         navigateToPost: currentState.navigateToPost,
         navigateToFilter: currentState.navigateToFilter,
+        navigateToFilterHome: currentState.navigateToFilterHome,
         navigateToUser: currentState.navigateToUser,
         navigateToFollow: currentState.navigateToFollow,
         navigateToAuthen: currentState.navigateToAuthen,

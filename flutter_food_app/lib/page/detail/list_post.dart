@@ -1,9 +1,12 @@
 import "package:flutter/material.dart";
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/helper/helper.dart';
 
 class ListPost extends StatefulWidget {
   @override
@@ -13,10 +16,12 @@ class ListPost extends StatefulWidget {
 class _ListPostState extends State<ListPost>
     with AutomaticKeepAliveClientMixin {
   FunctionBloc functionBloc;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
   }
 
@@ -24,174 +29,210 @@ class _ListPostState extends State<ListPost>
     // TODO: implement build
     return Column(
       children: <Widget>[
-        StaggeredGridView.countBuilder(
-            padding: EdgeInsets.only(top: 0),
-            crossAxisCount: 2,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) => new Card(
-                child: GestureDetector(
-                    onTap: functionBloc.currentState.navigateToPost,
-                    child: new Container(
-                      child: Stack(
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.max,
+        BlocBuilder(
+          bloc: apiBloc,
+          builder: (context, ApiState state) {
+            return StaggeredGridView.countBuilder(
+                padding: EdgeInsets.only(top: 0),
+                crossAxisCount: 2,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: state.listProduct.length,
+                itemBuilder: (BuildContext context, int index) => new Card(
+                    child: GestureDetector(
+                        onTap: () {
+                          functionBloc.currentState
+                              .navigateToPost(state.listProduct[index].id);
+                        },
+                        child: new Container(
+                          height: 267,
+                          child: Stack(
                             children: <Widget>[
-                              Container(
-                                height: 170,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(index % 2 == 0
-                                          ? 'assets/images/carrot.jpg'
-                                          : 'assets/images/tomato.jpg'),
-                                    ),
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(5.0),
-                                        topLeft: Radius.circular(5.0))),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    right: 10.0, top: 10.0, left: 10.0),
-                                child: Text(
-                                  index % 2 == 0
-                                      ? 'Cà rốt tươi ngon đây! Mại zô!'
-                                      : 'Vua Cà Chua mang đên những quả cà chua tuyệt vời!',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    right: 10.0, bottom: 6.0, left: 10.0, top: 5.0),
-                                child: Text(
-                                  index % 2 == 0
-                                      ? '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM'
-                                      : '12/2 Con Đường Tơ Lụa, F15, Q.TB, TP.HCM',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: colorText, fontSize: 12),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    right: 10.0, left: 10.0, bottom: 10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      index % 2 == 0 ? '40.000 VNĐ' : '150.000 VNĐ',
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: colorActive,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 2.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Text(
-                                            index % 2 == 0
-                                                ? '50.000 VNĐ'
-                                                : '300.000 VNĐ',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: colorInactive,
-                                              fontWeight: FontWeight.w600,
-                                              decoration:
-                                              TextDecoration.lineThrough,
-                                            ),
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.favorite,
-                                                color: colorInactive,
-                                                size: 15,
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(left: 2.0),
-                                                child: Text(
-                                                  '100',
-                                                  style: TextStyle(
-                                                      color: colorInactive,
-                                                      fontSize: 12),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                height: 0,
-                                width: 0,
-                              ),
-                              Stack(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.max,
                                 children: <Widget>[
                                   Container(
-                                      height: 50,
-                                      width: 50,
-                                      decoration: BoxDecoration(
-                                          color:
-                                          Colors.orangeAccent.withOpacity(0.95),
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(5.0),
-                                              topLeft: Radius.circular(5.0))),
-                                      child: Center(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
+                                    height: 170,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(state
+                                              .listProduct[index].images[0]),
+                                        ),
+                                        borderRadius: BorderRadius.only(
+                                            topRight: Radius.circular(5.0),
+                                            topLeft: Radius.circular(5.0))),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: 10.0, top: 10.0, left: 10.0),
+                                    child: Text(
+                                      state.listProduct[index].name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: 10.0,
+                                        bottom: 6.0,
+                                        left: 10.0,
+                                        top: 5.0),
+                                    child: Text(
+                                      state.listProduct[index].description,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: colorText, fontSize: 12),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        right: 10.0, left: 10.0, bottom: 10.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Text(
-                                              index % 2 == 0 ? '20%' : '50%',
+                                              Helper().onFormatPrice(state
+                                                  .listProduct[index]
+                                                  .currentPrice),
                                               style: TextStyle(
-                                                  color: Colors.yellow,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.0),
+                                                  fontSize: 14.0,
+                                                  color: colorActive,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                            Text(
-                                              'GIẢM',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 12),
+                                            Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.favorite,
+                                                  color: colorInactive,
+                                                  size: 15,
+                                                ),
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      left: 2.0),
+                                                  child: Text(
+                                                    '100',
+                                                    style: TextStyle(
+                                                        color: colorInactive,
+                                                        fontSize: 12),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      )),
+                                        Helper().onCalculatePercentDiscount(
+                                                    state.listProduct[index]
+                                                        .initPrice,
+                                                    state.listProduct[index]
+                                                        .currentPrice) ==
+                                                "0%"
+                                            ? Container()
+                                            : Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 2.0),
+                                                child: Text(
+                                                  Helper().onFormatPrice(state
+                                                      .listProduct[index]
+                                                      .initPrice),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: colorInactive,
+                                                    fontWeight: FontWeight.w600,
+                                                    decoration: TextDecoration
+                                                        .lineThrough,
+                                                  ),
+                                                ),
+                                              ),
+                                      ],
+                                    ),
+                                  ),
                                 ],
-                              )
+                              ),
+                              Helper().onCalculatePercentDiscount(
+                                          state.listProduct[index].initPrice,
+                                          state.listProduct[index]
+                                              .currentPrice) ==
+                                      "0%"
+                                  ? Container()
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          height: 0,
+                                          width: 0,
+                                        ),
+                                        Stack(
+                                          children: <Widget>[
+                                            Container(
+                                                height: 50,
+                                                width: 50,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.red
+                                                        .withOpacity(0.9),
+                                                    borderRadius: BorderRadius
+                                                        .only(
+                                                            topRight:
+                                                                Radius.circular(
+                                                                    5.0),
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    5.0))),
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'GIẢM',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w800,
+                                                            fontSize: 12),
+                                                      ),
+                                                      Text(
+                                                        Helper().onCalculatePercentDiscount(
+                                                            state
+                                                                .listProduct[
+                                                                    index]
+                                                                .initPrice,
+                                                            state
+                                                                .listProduct[
+                                                                    index]
+                                                                .currentPrice),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.yellow,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 14.0),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                             ],
                           ),
-                        ],
-                      ),
-                    ))),
-            staggeredTileBuilder: (int index) => new StaggeredTile.fit(1)),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 16.0),
-          child: SizedBox(
-            child: CircularProgressIndicator(
-              valueColor: new AlwaysStoppedAnimation<Color>(colorActive),
-            ),
-            height: 24,
-            width: 24,
-          )
-        )
+                        ))),
+                staggeredTileBuilder: (int index) => new StaggeredTile.fit(1));
+          },
+        ),
       ],
     );
   }

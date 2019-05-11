@@ -72,9 +72,7 @@ class _ListPostState extends State<ListPost>
                                           topLeft: Radius.circular(5.0))),
                                 ),
                                 onTap: () {
-                                  BlocProvider.of<FunctionBloc>(context)
-                                      .currentState
-                                      .navigateToPost();
+
                                 },
                               ),
                               Padding(

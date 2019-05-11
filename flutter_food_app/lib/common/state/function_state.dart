@@ -1,7 +1,8 @@
 class FunctionState {
   final Function openDrawer;
-  final Function navigateToPost;
+  final Function(String) navigateToPost;
   final Function navigateToFilter;
+  final Function navigateToFilterHome;
   final Function navigateToUser;
   final Function navigateToFollow;
   final Function navigateToAuthen;
@@ -14,6 +15,7 @@ class FunctionState {
     this.openDrawer,
     this.navigateToPost,
     this.navigateToFilter,
+    this.navigateToFilterHome,
     this.navigateToUser,
     this.navigateToFollow,
     this.navigateToAuthen,
@@ -25,8 +27,9 @@ class FunctionState {
 
   factory FunctionState.initial() => FunctionState(
         openDrawer: () {},
-        navigateToPost: () {},
+        navigateToPost: (String temp) {},
         navigateToFilter: () {},
+        navigateToFilterHome: () {},
         navigateToUser: () {},
         navigateToFollow: () {},
         navigateToAuthen: () {},
