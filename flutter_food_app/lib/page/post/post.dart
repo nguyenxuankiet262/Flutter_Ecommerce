@@ -22,8 +22,10 @@ List<String> nameList = [
 ];
 
 class Post extends StatefulWidget {
-  String _idPost;
+  final String _idPost;
+
   Post(this._idPost);
+
   @override
   State<StatefulWidget> createState() => PostState();
 }
@@ -42,8 +44,7 @@ class PostState extends State<Post> {
     fetchProductById(apiBloc, widget._idPost);
     userBloc = BlocProvider.of<UserBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
-    BlocProvider.of<BottomBarBloc>(context)
-        .changeVisible(true);
+    BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
     myController.addListener(_changeTextInput);
   }
 
@@ -247,8 +248,8 @@ class PostState extends State<Post> {
     );
   }
 
-  Future<bool> _onBackPressed(){
-    apiBloc.changeProduct(apiBloc.initialState.product);
+  Future<bool> _onBackPressed() {
+    apiBloc.changeProduct(null);
     Navigator.pop(context);
     return Future.value(false);
   }
@@ -258,7 +259,7 @@ class PostState extends State<Post> {
     // TODO: implement build
     return BlocBuilder(
       bloc: apiBloc,
-      builder: (context, ApiState state){
+      builder: (context, ApiState state) {
         return WillPopScope(
           child: Scaffold(
             appBar: AppBar(
@@ -276,13 +277,15 @@ class PostState extends State<Post> {
               iconTheme: IconThemeData(color: Colors.black),
               centerTitle: true,
               actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.more_vert),
-                  tooltip: 'Tùy chỉnh',
-                  onPressed: () {
-                    _showSettingSheet();
-                  },
-                ),
+                state.product == null
+                    ? Container()
+                    : IconButton(
+                        icon: Icon(Icons.more_vert),
+                        tooltip: 'Tùy chỉnh',
+                        onPressed: () {
+                          _showSettingSheet();
+                        },
+                      ),
               ],
             ),
             body: Container(
@@ -290,66 +293,80 @@ class PostState extends State<Post> {
               child: ListView(
                 children: <Widget>[
                   state.product == null
-                  ? ShimmerSliderPost()
-                  : CarouselWithIndicator(),
+                      ? ShimmerSliderPost()
+                      : CarouselWithIndicator(),
                   PostBody(),
                   CommentPost(),
                   RelativePost(),
                 ],
               ),
             ),
-            bottomNavigationBar: Container(
-              height: 50,
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        if(userBloc.currentState.isLogin){
-                          _showCart();
-                        }else{
-                          functionBloc.currentState.navigateToAuthen();
-                        }
-                      },
-                      child: Container(
+            bottomNavigationBar: state.product == null
+                ? Container(
+                    height: 0,
+                    width: 0,
+                  )
+                : (state.mainUser == null ||
+                        (state.mainUser != null &&
+                            state.product.idUser != state.mainUser.id))
+                    ? Container(
                         height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: colorActive, width: 1.5)),
-                        child: Center(
-                          child: Text(
-                            'THÊM VÀO GIỎ HÀNG',
-                            style: TextStyle(
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  if (userBloc.currentState.isLogin) {
+                                    _showCart();
+                                  } else {
+                                    functionBloc.currentState
+                                        .navigateToAuthen();
+                                  }
+                                },
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: colorActive, width: 1.5)),
+                                  child: Center(
+                                    child: Text(
+                                      'THÊM VÀO GIỎ HÀNG',
+                                      style: TextStyle(
+                                          color: colorActive,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              flex: 1,
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 50,
                                 color: colorActive,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12.0),
-                          ),
+                                child: Center(
+                                  child: Text(
+                                    'GỌI ĐIỆN NGƯỜI BÁN',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12.0),
+                                  ),
+                                ),
+                              ),
+                              flex: 1,
+                            ),
+                          ],
                         ),
+                      )
+                    : Container(
+                        height: 0,
+                        width: 0,
                       ),
-                    ),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 50,
-                      color: colorActive,
-                      child: Center(
-                        child: Text(
-                          'GỌI ĐIỆN NGƯỜI BÁN',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12.0),
-                        ),
-                      ),
-                    ),
-                    flex: 1,
-                  ),
-                ],
-              ),
-            ),
           ),
           onWillPop: _onBackPressed,
         );

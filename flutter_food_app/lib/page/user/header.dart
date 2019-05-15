@@ -43,11 +43,6 @@ class HeaderState extends State<Header> {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 400,
-                    color: Colors.transparent.withOpacity(0.7),
-                  ),
-                  Container(
                     height: 400,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
@@ -84,7 +79,9 @@ class HeaderState extends State<Header> {
                               Text(
                                 widget.isAnother
                                     ? 'Lò Thị Chó'
-                                    : state.mainUser.name,
+                                    : state.mainUser == null
+                                        ? ""
+                                        : state.mainUser.name,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 17.0,

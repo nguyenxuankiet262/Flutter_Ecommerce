@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/favorite_manage_state.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/filter/common/filter.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_post.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,6 +30,7 @@ class FavoriteManagementState extends State<FavoriteManage> {
   final myController = TextEditingController();
   FavoriteManageBloc favoriteManageBloc;
   bool isLoading = true;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class FavoriteManagementState extends State<FavoriteManage> {
       });
     });
     favoriteManageBloc = BlocProvider.of<FavoriteManageBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     _hideButtonController = new ScrollController();
     focusNode = FocusNode();
     _hideButtonController.addListener(() {
@@ -97,7 +99,7 @@ class FavoriteManagementState extends State<FavoriteManage> {
       elevation: 0.0,
       brightness: Brightness.light,
       title: new Text(
-        "Quản lý bài viết",
+        "Bài viết yêu thích",
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.black, fontSize: 17),
       ),
@@ -364,7 +366,7 @@ class FavoriteManagementState extends State<FavoriteManage> {
                                                                     .w500),
                                                           ),
                                                           Text(
-                                                            listMenu[state
+                                                            apiBloc.currentState.listMenu[state
                                                                 .indexCategory]
                                                                 .name,
                                                             maxLines: 1,
@@ -441,9 +443,12 @@ class FavoriteManagementState extends State<FavoriteManage> {
                                                                     .w500),
                                                           ),
                                                           Text(
-                                                            listMenu[state
+                                                            state.indexCategory == 0
+                                                                ? apiBloc.currentState.listMenu[state
+                                                                .indexCategory].name
+                                                                : apiBloc.currentState.listMenu[state
                                                                 .indexCategory]
-                                                                .childMenu[state
+                                                                .listChildMenu[state
                                                                 .indexChildCategory]
                                                                 .name,
                                                             maxLines: 1,

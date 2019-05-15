@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
@@ -320,8 +321,12 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                           ],
                         ),
                         onRefresh: () async {
+                          apiBloc.changeCart(null);
                           await new Future.delayed(
-                              const Duration(seconds: 1), () {});
+                              const Duration(seconds: 1), () {
+                            fetchCartByUserId(apiBloc, "5ccbeef21d3ee00017f572cd");
+                            BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
+                          });
                         },
                       ));
           },

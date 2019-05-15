@@ -1,6 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

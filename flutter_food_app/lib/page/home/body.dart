@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
@@ -142,7 +143,9 @@ class BodyContentState extends State<BodyContent>
             ],
           ),
           onRefresh: () async {
+            apiBloc.changeMenu([]);
             await new Future.delayed(const Duration(seconds: 1), () {
+              fetchMenus(apiBloc);
               BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
             });
           },

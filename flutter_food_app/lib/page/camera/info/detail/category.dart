@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/category.dart';
@@ -13,13 +15,15 @@ class CategoryRadio extends StatefulWidget {
 
 class CategoryRadioState extends State<CategoryRadio> {
   List<CategoryModel> categories = new List<CategoryModel>();
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    for(int i = 1; i < listMenu.length; i++){
-      categories.add(new CategoryModel(listMenu[i].image, listMenu[i].name));
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    for (int i = 1; i < apiBloc.currentState.listMenu.length; i++) {
+      categories.add(new CategoryModel(apiBloc.currentState.listMenu[i].link, apiBloc.currentState.listMenu[i].name));
     }
   }
 
@@ -49,7 +53,7 @@ class CategoryRadioState extends State<CategoryRadio> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChildCategory(listMenu[index + 1].name, index + 1)),
+                  MaterialPageRoute(builder: (context) => ChildCategory(apiBloc.currentState.listMenu[index + 1].name, index + 1)),
                 );
               },
 
@@ -88,7 +92,7 @@ class CategeoryItem extends StatelessWidget {
                   height: 50.0,
                   width: 50.0,
                   child: ClipRRect(
-                      child: Image.asset(
+                      child: Image.network(
                         _item.image,
                         fit: BoxFit.cover,
                       ),

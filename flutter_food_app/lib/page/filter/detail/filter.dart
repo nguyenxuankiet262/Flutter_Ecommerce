@@ -92,13 +92,18 @@ class FilterDetailManagementState extends State<FilterDetailManagement>{
                     );
                     BlocProvider.of<FunctionBloc>(context).currentState.isLoading();
                     apiBloc.changeListProduct([]);
-                    apiBloc.changeChildMenu([]);
-                    fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc
-                        .currentState
-                        .tempCategory].id);
-                    fetchChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc
-                        .currentState
-                        .tempCategory].id);
+                    if(detailPageBloc.currentState.tempChildCategory == 0) {
+                      fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc
+                          .currentState
+                          .tempCategory].id);
+                    }
+                    else{
+                      fetchProductOfChildMenu(
+                          apiBloc,
+                          apiBloc.currentState.listMenu[detailPageBloc.currentState.tempCategory].listChildMenu[detailPageBloc.currentState.tempChildCategory].id
+                      );
+                    }
+
                     Navigator.pop(context);
                   },
                 ),

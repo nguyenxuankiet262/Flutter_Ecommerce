@@ -6,17 +6,15 @@ import 'package:flutter_food_app/api/model/user.dart';
 
 class ApiState {
   final List<Menu> listMenu;
-  final List<ChildMenu> listChildMenu;
   final List<Product> listProduct;
   final Cart cart;
   final Product product;
   final User mainUser;
 
-  const ApiState({this.listMenu, this.listChildMenu, this.listProduct, this.cart, this.product, this.mainUser});
+  const ApiState({this.listMenu, this.listProduct, this.cart, this.product, this.mainUser});
 
   factory ApiState.initial() => ApiState(
         listMenu: new List<Menu>(),
-        listChildMenu: new List<ChildMenu>(),
         listProduct: new List<Product>(),
         cart: null,
         product: null,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
@@ -30,6 +31,7 @@ class PostManagementState extends State<PostManage> {
   final myController = TextEditingController();
   PostManageBloc postManageBloc;
   bool isLoading = true;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class PostManagementState extends State<PostManage> {
       });
     });
     postManageBloc = BlocProvider.of<PostManageBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     _hideButtonController = new ScrollController();
     focusNode = FocusNode();
     _hideButtonController.addListener(() {
@@ -364,7 +367,7 @@ class PostManagementState extends State<PostManage> {
                                                                     .w500),
                                                           ),
                                                           Text(
-                                                            listMenu[state
+                                                            apiBloc.currentState.listMenu[state
                                                                 .indexCategory]
                                                                 .name,
                                                             maxLines: 1,
@@ -441,9 +444,12 @@ class PostManagementState extends State<PostManage> {
                                                                     .w500),
                                                           ),
                                                           Text(
-                                                            listMenu[state
+                                                            state.indexCategory == 0
+                                                            ? apiBloc.currentState.listMenu[state
+                                                                .indexCategory].name
+                                                            : apiBloc.currentState.listMenu[state
                                                                 .indexCategory]
-                                                                .childMenu[state
+                                                                .listChildMenu[state
                                                                 .indexChildCategory]
                                                                 .name,
                                                             maxLines: 1,

@@ -1,19 +1,23 @@
+import 'package:flutter_food_app/api/model/user.dart';
+
 class Product {
-  final String id;
-  final List<String> images;
-  final bool proved;
-  final bool status;
-  final String name;
-  final String idType;
-  final String description;
-  final String initPrice;
-  final String currentPrice;
-  final String idUser;
-  final DateTime date;
+  String id;
+  List<String> images;
+  bool proved;
+  bool status;
+  String name;
+  String idType;
+  String description;
+  String initPrice;
+  String currentPrice;
+  String idUser;
+  DateTime date;
+  User user;
+
 
 
   Product({this.id, this.images, this.proved, this.status, this.name,
-      this.idType, this.description, this.initPrice, this.currentPrice, this.idUser, this.date});
+      this.idType, this.description, this.initPrice, this.currentPrice, this.idUser, this.date, this.user});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(

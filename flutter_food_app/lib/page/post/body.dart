@@ -201,74 +201,167 @@ class PostBodyState extends State<PostBody> {
                 ),
               ),
             )
-            : Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(16.0),
-              margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
+            : Column(
+              children: <Widget>[
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16.0),
+                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Stack(
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Center(
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  'Overall Rating',
+                                  style:
+                                  TextStyle(fontSize: 17, color: colorInactive),
+                                ),
+                                Text(
+                                  '4.5',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: colorActive),
+                                ),
+                                SmoothStarRating(
+                                  starCount: 5,
+                                  size: 22.0,
+                                  rating: 5,
+                                  color: Colors.yellow,
+                                  borderColor: Colors.yellow,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 16.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  'GIỚI THIỆU',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                  margin: EdgeInsets.only(left: 8.0),
+                                  decoration: BoxDecoration(
+                                      color: colorComment,
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
+                                      border: Border.all(color: colorComment)),
+                                  child: Center(
+                                    child: Text(
+                                      Helper().timeAgo(state.product.date),
+                                      style: TextStyle(
+                                        color: colorInactive,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              state.product.description,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: Stack(
-                children: <Widget>[
-                  Column(
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  margin: EdgeInsets.only(bottom: 5.0),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Center(
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              'Overall Rating',
-                              style:
-                                  TextStyle(fontSize: 17, color: colorInactive),
-                            ),
-                            Text(
-                              '4.5',
-                              style: TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: colorActive),
-                            ),
-                            SmoothStarRating(
-                              starCount: 5,
-                              size: 22.0,
-                              rating: 5,
-                              color: Colors.yellow,
-                              borderColor: Colors.yellow,
-                            ),
-                          ],
+                      Container(
+                        margin: EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          'THÔNG TIN NGƯỜI ĐĂNG',
+                          style: TextStyle(
+                              fontSize: 15.0, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16.0),
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 5.0),
+                            child: GestureDetector(
+                              child: Text(
+                                state.product == null ? "" : state.product.user.username,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: colorActive),
+                              ),
+                              onTap: () {
+                                if(state.mainUser == null || (state.mainUser != null && state.product.idUser != state.mainUser.id)) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              InfoPage(true)));
+                                }else{
+
+                                }
+                              },
+                            ),
+                          ),
+                          SmoothStarRating(
+                            starCount: 5,
+                            size: 18.0,
+                            rating: 5,
+                            color: Colors.yellow,
+                            borderColor: Colors.yellow,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              'GIỚI THIỆU',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                            Container(
+                              margin: EdgeInsets.only(right: 8.0),
+                              child: Icon(
+                                Icons.home,
+                                size: 20,
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 15.0),
-                              margin: EdgeInsets.only(left: 8.0),
-                              decoration: BoxDecoration(
-                                  color: colorComment,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(color: colorComment)),
-                              child: Center(
-                                child: Text(
-                                  Helper().timeAgo(state.product.date),
-                                  style: TextStyle(
-                                    color: colorInactive,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            Expanded(
+                              child: Text(
+                                state.product == null ? "" : state.product.user.address,
+                                style: TextStyle(
+                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -276,116 +369,32 @@ class PostBodyState extends State<PostBody> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          state.product.description,
-                          style: TextStyle(fontSize: 14),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(right: 8.0),
+                              child: Icon(
+                                Icons.phone,
+                                size: 20,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                state.product == null ? "" : state.product.user.phone,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              margin: EdgeInsets.only(bottom: 5.0),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10.0),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 4.0),
-                    child: Text(
-                      'THÔNG TIN NGƯỜI ĐĂNG',
-                      style: TextStyle(
-                          fontSize: 15.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(right: 5.0),
-                        child: GestureDetector(
-                          child: Text(
-                            'xuankiet262',
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: colorActive),
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => InfoPage(true)));
-                          },
-                        ),
-                      ),
-                      SmoothStarRating(
-                        starCount: 5,
-                        size: 18.0,
-                        rating: 5,
-                        color: Colors.yellow,
-                        borderColor: Colors.yellow,
-                      ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.home,
-                            size: 20,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            '123 Đường lên đỉnh Olympia F.15 Q.1 TP.Hồ Chí Minh.',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 8.0),
-                          child: Icon(
-                            Icons.phone,
-                            size: 20,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            '+84 123 456 789',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              ],
+            )
           ],
         );
       },

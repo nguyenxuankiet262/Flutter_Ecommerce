@@ -7,7 +7,6 @@ import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 
 class HeaderDetail extends StatefulWidget {
   @override
@@ -43,16 +42,16 @@ class HeaderDetailState extends State<HeaderDetail> {
                 ),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: state.listChildMenu.length - 1,
+                  itemCount: state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu.length - 1,
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () {
                       apiBloc.changeListProduct([]);
                       detailPageBloc.changeCategory(detailPageBloc.currentState.indexCategory, index + 1);
-                      fetchProductOfChildMenu(apiBloc, apiBloc.currentState.listChildMenu[index + 1].id);
+                      fetchProductOfChildMenu(apiBloc, state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[index + 1].id);
                       BlocProvider.of<FunctionBloc>(context).currentState.isLoading();
                     },
                     child: Container(
-                      margin: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: index == listMenu[detailPageBloc.currentState.indexCategory].childMenu.length - 2 ? 16.0 : 0.0),
+                      margin: EdgeInsets.only(top: 16.0, bottom: 16.0, left: 16.0, right: index == state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu.length - 2 ? 16.0 : 0.0),
                       width: 80.0,
                       decoration: new BoxDecoration(
                         color: Colors.white,
@@ -65,7 +64,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                           Container(
                             child: ClipRRect(
                                 child: Image.network(
-                                  state.listChildMenu[index + 1]
+                                  state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[index + 1]
                                       .link,
                                   fit: BoxFit.fill,
                                 ),
@@ -85,7 +84,7 @@ class HeaderDetailState extends State<HeaderDetail> {
                           ),
                           Center(
                               child: Text(
-                                state.listChildMenu[index + 1].name,
+                                state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[index + 1].name,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

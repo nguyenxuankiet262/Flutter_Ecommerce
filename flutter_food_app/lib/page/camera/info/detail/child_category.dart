@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
@@ -16,14 +17,16 @@ class ChildCategory extends StatefulWidget {
 class ChildCategoryState extends State<ChildCategory> {
   List<RadioModel> categories = new List<RadioModel>();
   DetailCameraBloc blocProvider;
+  ApiBloc apiBloc;
   int _index = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
-    for(int i = 1; i < listMenu[widget.index].childMenu.length; i++){
-      categories.add(new RadioModel(i == 1 ? true : false, listMenu[widget.index].childMenu[i].image, listMenu[widget.index].childMenu[i].name));
+    for(int i = 1; i < apiBloc.currentState.listMenu[widget.index].listChildMenu.length; i++){
+      categories.add(new RadioModel(i == 1 ? true : false, apiBloc.currentState.listMenu[widget.index].listChildMenu[i].link, apiBloc.currentState.listMenu[widget.index].listChildMenu[i].name));
     }
   }
 
@@ -115,7 +118,7 @@ class RadioItem extends StatelessWidget {
                   height: 50.0,
                   width: 50.0,
                   child: ClipRRect(
-                      child: Image.asset(
+                      child: Image.network(
                         _item.image,
                         fit: BoxFit.cover,
                       ),

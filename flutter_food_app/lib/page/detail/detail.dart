@@ -17,7 +17,6 @@ import 'package:flutter_food_app/page/shimmer/shimmer_child_menu.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_post.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/detail/menu.dart';
 import 'list_post.dart';
 
@@ -62,7 +61,6 @@ class _ListAllPostState extends State<ListAllPost>
     super.initState();
     apiBloc = BlocProvider.of<ApiBloc>(context);
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
-    fetchChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
     fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
     //fetchProduct(apiBloc.currentState.listChildMenu[0].id);
     BlocProvider.of<FunctionBloc>(context).isLoading(_isLoading);
@@ -113,9 +111,9 @@ class _ListAllPostState extends State<ListAllPost>
       brightness: Brightness.light,
       title: new Text(
         state.indexChildCategory == 0
-            ? listMenu[state.indexCategory].name
-            : listMenu[state.indexCategory]
-                .childMenu[state.indexChildCategory]
+            ? apiBloc.currentState.listMenu[state.indexCategory].name
+            : apiBloc.currentState.listMenu[state.indexCategory]
+                .listChildMenu[state.indexChildCategory]
                 .name,
         style: TextStyle(
             fontWeight: FontWeight.bold, color: Colors.black),
@@ -404,7 +402,7 @@ class _ListAllPostState extends State<ListAllPost>
                                                                                 FontWeight.w500),
                                                                       ),
                                                                       Text(
-                                                                        listMenu[state.indexCategory]
+                                                                        apiBloc.currentState.listMenu[state.indexCategory]
                                                                             .name,
                                                                         maxLines:
                                                                             1,
@@ -482,8 +480,8 @@ class _ListAllPostState extends State<ListAllPost>
                                                                                 FontWeight.w500),
                                                                       ),
                                                                       Text(
-                                                                        listMenu[state.indexCategory]
-                                                                            .childMenu[state.indexChildCategory]
+                                                                        apiBloc.currentState.listMenu[state.indexCategory]
+                                                                            .listChildMenu[state.indexChildCategory]
                                                                             .name,
                                                                         maxLines:
                                                                             1,
@@ -619,7 +617,7 @@ class _ListAllPostState extends State<ListAllPost>
                                                   bloc: apiBloc,
                                                   builder: (context,
                                                       ApiState state) {
-                                                    return state.listChildMenu
+                                                    return state.listMenu
                                                             .isEmpty
                                                         ? Container(
                                                             color:
@@ -650,14 +648,19 @@ class _ListAllPostState extends State<ListAllPost>
                                     ],
                                   ),
                                   onRefresh: () async {
+                                    apiBloc.changeListProduct([]);
                                     await new Future.delayed(
                                         const Duration(seconds: 1), () {
-                                      apiBloc.changeChildMenu([]);
-                                      apiBloc.changeListProduct([]);
-                                      fetchChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc
-                                          .currentState
-                                          .indexCategory].id);
-                                      fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
+                                          if(detailstate.indexChildCategory == 0) {
+                                            fetchProductOfMenu(apiBloc,
+                                                apiBloc.currentState
+                                                    .listMenu[detailPageBloc
+                                                    .currentState.indexCategory]
+                                                    .id);
+                                          }
+                                          else{
+                                            fetchProductOfChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[detailPageBloc.currentState.indexChildCategory].id);
+                                          }
                                     });
                                   },
                                 ))),
@@ -676,7 +679,6 @@ class _ListAllPostState extends State<ListAllPost>
     if (isSearch) {
       changeDetail();
     } else {
-      apiBloc.changeChildMenu(apiBloc.initialState.listChildMenu);
       apiBloc.changeListProduct(apiBloc.initialState.listProduct);
       functionBloc.onBackPressed(_callBack);
       Navigator.pop(context);

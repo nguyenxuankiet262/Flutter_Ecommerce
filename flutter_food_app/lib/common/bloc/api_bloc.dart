@@ -12,10 +12,6 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     dispatch(ChangeListMenu(listMenu));
   }
 
-  void changeChildMenu(List<ChildMenu> listChildMenu) {
-    dispatch(ChangeListChildMenu(listChildMenu));
-  }
-
   void changeListProduct(List<Product> listProduct) {
     dispatch(ChangeListProduct(listProduct));
   }
@@ -43,17 +39,6 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     if (event is ChangeListMenu) {
       yield ApiState(
         listMenu: event.listMenu,
-        listChildMenu: currentState.listChildMenu,
-        listProduct: currentState.listProduct,
-        cart: currentState.cart,
-        product: currentState.product,
-        mainUser: currentState.mainUser,
-      );
-    }
-    if (event is ChangeListChildMenu) {
-      yield ApiState(
-        listMenu: currentState.listMenu,
-        listChildMenu: event.listChildMenu,
         listProduct: currentState.listProduct,
         cart: currentState.cart,
         product: currentState.product,
@@ -63,7 +48,6 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     if (event is ChangeListProduct) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listChildMenu: currentState.listChildMenu,
         listProduct: event.listProduct,
         cart: currentState.cart,
         product: currentState.product,
@@ -73,7 +57,6 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     if (event is ChangeProduct) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listChildMenu: currentState.listChildMenu,
         listProduct: currentState.listProduct,
         cart: currentState.cart,
         product: event.product,
@@ -83,7 +66,6 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     if (event is ChangeMainUser) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listChildMenu: currentState.listChildMenu,
         listProduct: currentState.listProduct,
         cart: currentState.cart,
         product: currentState.product,
@@ -93,7 +75,6 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     if (event is ChangeCart) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listChildMenu: currentState.listChildMenu,
         listProduct: currentState.listProduct,
         cart: event.cart,
         product: currentState.product,

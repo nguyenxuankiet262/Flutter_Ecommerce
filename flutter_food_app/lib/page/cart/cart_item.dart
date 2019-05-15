@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/helper/helper.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'favorite_item.dart';
@@ -14,211 +17,225 @@ class CartItem extends StatefulWidget {
 }
 
 class CartItemState extends State<CartItem> {
-  int _count = 1;
+  ApiBloc apiBloc;
+  FunctionBloc functionBloc;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    functionBloc = BlocProvider.of<FunctionBloc>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        margin:
-            EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget._index == 5 ? 16.0 : 0.0),
-        child: Column(children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 15.0, left: 15.0),
-                width: MediaQuery.of(context).size.width - 100,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                      },
-                      child: Container(
-                        child: ClipRRect(
-                          child: Image.asset(
-                            'assets/images/carrot.jpg',
-                            fit: BoxFit.fill,
-                          ),
-                          borderRadius:
-                              new BorderRadius.all(Radius.circular(5.0)),
-                        ),
-                        width: 105,
-                        height: 90,
-                      ),
-                    ),
-                    Flexible(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            height: 65,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(right: 10.0, left: 15.0),
-                                  child: Text(
-                                    'Cà rốt tươi ngon đây! Mại zô!',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      right: 10.0,
-                                      bottom: 5.0,
-                                      left: 15.0,
-                                      top: 5.0),
-                                  child: Text(
-                                    '123A Đường Lên Đỉnh Olympia, F15, Q.TB, TP.HCM',
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: colorText, fontSize: 14),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 4.0,
-                              right: 10.0,
-                              left: 15.0,
-                            ),
-                            child: Text(
-                              "100.000 VNĐ",
-                              style: TextStyle(
-                                  color: colorActive,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17.0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 25,
-                height: 90,
-                margin: EdgeInsets.only(right: 15.0, top: 15.0, bottom: 15.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _count++;
-                        });
-                      },
-                      child: Container(
-                        width: 30,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            "+",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: colorActive),
-                          ),
-                        )
-                      ),
-                    ),
-                    Text(
-                      _count.toString(),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (_count > 1) {
-                            _count--;
-                          }
-                        });
-                      },
-                      child: Container(
-                        width: 30,
-                        color: Colors.white,
-                        child: Center(
-                          child: Text(
-                            "-",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: _count == 1 ? colorInactive : colorActive),
-                          ),
-                        )
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Container(
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: colorInactive, width: 0.5)),
+    return BlocBuilder(
+      bloc: apiBloc,
+      builder: (context, ApiState state){
+        return Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      Toast.show("Đã xóa", context);
-                    },
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                              right: BorderSide(
-                                  color: colorInactive, width: 0.5))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(right: 10.0, bottom: 5.0),
-                            child: Icon(
-                              FontAwesomeIcons.trashAlt,
-                              size: 17,
+            margin:
+            EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget._index == 5 ? 16.0 : 0.0),
+            child: Column(children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 15.0, left: 15.0),
+                    width: MediaQuery.of(context).size.width - 100,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+                            functionBloc.currentState
+                                .navigateToPost(state.cart.products[widget._index].id);
+                          },
+                          child: Container(
+                            child: ClipRRect(
+                              child: Image.network(
+                                state.cart.products[widget._index].images[0],
+                                fit: BoxFit.fill,
+                              ),
+                              borderRadius:
+                              new BorderRadius.all(Radius.circular(5.0)),
                             ),
+                            width: 105,
+                            height: 90,
                           ),
-                          Text(
-                            'XÓA',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 14),
+                        ),
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                height: 65,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding:
+                                      EdgeInsets.only(right: 10.0, left: 15.0),
+                                      child: GestureDetector(
+                                        child: Text(
+                                          state.cart.products[widget._index].name,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style:
+                                          TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                        onTap: (){
+                                          functionBloc.currentState
+                                              .navigateToPost(state.cart.products[widget._index].id);
+                                        },
+                                      )
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: 10.0,
+                                          bottom: 5.0,
+                                          left: 15.0,
+                                          top: 5.0),
+                                      child: Text(
+                                        state.cart.products[widget._index].description,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: colorText, fontSize: 14),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: 4.0,
+                                  right: 10.0,
+                                  left: 15.0,
+                                ),
+                                child: Text(
+                                  Helper().onFormatPrice(state.cart.products[widget._index].currentPrice),
+                                  style: TextStyle(
+                                      color: colorActive,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17.0),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                  flex: 1,
+                  Container(
+                    width: 25,
+                    height: 90,
+                    margin: EdgeInsets.only(right: 15.0, top: 15.0, bottom: 15.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        GestureDetector(
+                          onTap: () {
+
+                          },
+                          child: Container(
+                              width: 30,
+                              color: Colors.white,
+                              child: Center(
+                                child: Text(
+                                  "+",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: colorActive),
+                                ),
+                              )
+                          ),
+                        ),
+                        Text(
+                          state.cart.items[widget._index].qty.toString(),
+                          style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                          },
+                          child: Container(
+                              width: 30,
+                              color: Colors.white,
+                              child: Center(
+                                child: Text(
+                                  "-",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: state.cart.items[widget._index].qty == 1 ? colorInactive : colorActive),
+                                ),
+                              )
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(
+                  border: Border(top: BorderSide(color: colorInactive, width: 0.5)),
                 ),
-                Expanded(
-                  child: Container(height: 40, child: FavoriteItem()),
-                  flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Toast.show("Đã xóa", context);
+                        },
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border(
+                                  right: BorderSide(
+                                      color: colorInactive, width: 0.5))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(right: 10.0, bottom: 5.0),
+                                child: Icon(
+                                  FontAwesomeIcons.trashAlt,
+                                  size: 17,
+                                ),
+                              ),
+                              Text(
+                                'XÓA',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      flex: 1,
+                    ),
+                    Expanded(
+                      child: Container(height: 40, child: FavoriteItem()),
+                      flex: 1,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ]));
+              ),
+            ]));
+      },
+    );
   }
 }

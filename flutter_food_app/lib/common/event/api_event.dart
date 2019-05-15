@@ -11,11 +11,6 @@ class ChangeListMenu extends ApiEvent{
   ChangeListMenu(this.listMenu);
 }
 
-class ChangeListChildMenu extends ApiEvent{
-  final List<ChildMenu> listChildMenu;
-  ChangeListChildMenu(this.listChildMenu);
-}
-
 class ChangeListProduct extends ApiEvent{
   final List<Product> listProduct;
   ChangeListProduct(this.listProduct);

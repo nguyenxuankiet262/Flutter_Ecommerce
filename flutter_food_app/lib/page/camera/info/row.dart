@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/state/detail_camera.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 
 class RowLayout extends StatefulWidget {
@@ -22,11 +22,13 @@ class RowLayoutState extends State<RowLayout> {
   MaskedTextController controller1;
   List<String> nameOption;
   DetailCameraBloc blocProvider;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     controller = new MaskedTextController(
         mask: '000.000.000', text: blocProvider.currentState.priceBefore);
     controller1 = new MaskedTextController(
@@ -34,8 +36,8 @@ class RowLayoutState extends State<RowLayout> {
     controller.addListener(_changePriceOriginal);
     controller1.addListener(_changePriceDiscount);
     nameOption = [
-      listMenu[blocProvider.currentState.indexCategory]
-          .childMenu[blocProvider.currentState.indexChildCategory]
+      apiBloc.currentState.listMenu[blocProvider.currentState.indexCategory]
+          .listChildMenu[blocProvider.currentState.indexChildCategory]
           .name,
       "100.000.000 VNĐ",
       "50.000 VNĐ",
@@ -76,8 +78,8 @@ class RowLayoutState extends State<RowLayout> {
             builder: (context, DetailCameraState state) {
               return Text(
                 widget._index == 0
-                    ? listMenu[state.indexCategory]
-                        .childMenu[state.indexChildCategory]
+                    ? apiBloc.currentState.listMenu[state.indexCategory]
+                        .listChildMenu[state.indexChildCategory]
                         .name
                     : nameOption[widget._index],
                 maxLines: 1,

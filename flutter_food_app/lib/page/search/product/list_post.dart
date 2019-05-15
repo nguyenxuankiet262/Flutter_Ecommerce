@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/page/post/post.dart';
 
 class ListPost extends StatefulWidget {
   @override

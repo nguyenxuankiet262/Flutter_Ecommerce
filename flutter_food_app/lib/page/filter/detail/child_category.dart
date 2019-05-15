@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/state/detail_page_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ChildCategory extends StatefulWidget {
@@ -16,10 +16,12 @@ class ChildCategory extends StatefulWidget {
 
 class ChildCategoryState extends State<ChildCategory> {
   DetailPageBloc detailPageBloc;
+  ApiBloc apiBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
     detailPageBloc.changeTempCategory(detailPageBloc.currentState.indexCategory, detailPageBloc.currentState.indexChildCategory);
   }
@@ -51,7 +53,7 @@ class ChildCategoryState extends State<ChildCategory> {
                   ),
                   Center(
                     child: Text(
-                      listMenu[widget._index].name,
+                      apiBloc.currentState.listMenu[widget._index].name,
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
@@ -66,7 +68,7 @@ class ChildCategoryState extends State<ChildCategory> {
           body: Container(
             color: colorBackground,
             child: ListView.builder(
-              itemCount: listMenu[widget._index].childMenu.length,
+              itemCount: apiBloc.currentState.listMenu[widget._index].listChildMenu.length,
               itemBuilder: (BuildContext context, int index) {
                 return new InkWell(
                   //highlightColor: Colors.red,
@@ -78,7 +80,7 @@ class ChildCategoryState extends State<ChildCategory> {
                       widget._index == state.tempCategory && index == state.tempChildCategory
                           ? true
                           : false,
-                      listMenu[widget._index].childMenu[index].name),
+                      apiBloc.currentState.listMenu[widget._index].listChildMenu[index].name),
                 );
               },
             ),

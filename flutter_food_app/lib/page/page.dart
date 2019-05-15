@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
@@ -62,8 +61,6 @@ class _MyMainPageState extends State<MyMainPage>
     userBloc = BlocProvider.of<UserBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
     apiBloc = BlocProvider.of<ApiBloc>(context);
-    fetchUserById(apiBloc, "5ccbeef21d3ee00017f572cd");
-    fetchCartByUserId(apiBloc, "5ccbeef21d3ee00017f572cd");
     functionBloc.openDrawer(_openDrawer);
     functionBloc.navigateToPost(_navigateToPost);
     functionBloc.navigateToFilter(_navigateToFilter);

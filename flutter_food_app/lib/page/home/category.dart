@@ -15,8 +15,8 @@ class ListCategory extends StatefulWidget {
 class _ListCategoryState extends State<ListCategory> {
   bool isLoading = true;
   List<Menu> listMenu = [
-    Menu("Giảm nhiều nhất", 'assets/images/discount.jpg', []),
-    Menu('Yêu thích nhất', 'assets/images/favorite.png', []),
+    Menu("Giảm nhiều nhất", 'assets/images/discount.jpg'),
+    Menu('Yêu thích nhất', 'assets/images/favorite.png'),
   ];
 
   void _gotoPostScreen() {

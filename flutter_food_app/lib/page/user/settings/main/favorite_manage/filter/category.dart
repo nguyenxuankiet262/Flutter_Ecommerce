@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/const/value_const.dart';
@@ -16,13 +17,15 @@ class CategoryRadio extends StatefulWidget {
 
 class CategoryRadioState extends State<CategoryRadio> {
   List<CategoryModel> categories = new List<CategoryModel>();
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    for (int i = 0; i < listMenu.length; i++) {
-      categories.add(new CategoryModel(listMenu[i].image, listMenu[i].name));
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    for (int i = 0; i < apiBloc.currentState.listMenu.length; i++) {
+      categories.add(new CategoryModel(apiBloc.currentState.listMenu[i].link, apiBloc.currentState.listMenu[i].name));
     }
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Navigator.push(

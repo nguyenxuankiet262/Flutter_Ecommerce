@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyrefresh/delivery_header.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
@@ -8,7 +10,10 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/user_state.dart';
+import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/authentication/login/signin.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'header.dart';
 import 'settings/settings_another_user.dart';
 import 'body.dart';
@@ -30,6 +35,12 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
   UserBloc userBloc;
   ApiBloc apiBloc;
   var top = 0.0;
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey =
+      new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshHeaderState> _connectorHeaderKey =
+      new GlobalKey<RefreshHeaderState>();
 
   void _showBottomSheetAnotherUser(context) {
     showModalBottomSheet(
@@ -43,6 +54,7 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if (widget.isAnother) {}
     apiBloc = BlocProvider.of<ApiBloc>(context);
     userBloc = BlocProvider.of<UserBloc>(context);
     _hideButtonController = new ScrollController();
@@ -186,20 +198,118 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                                           : BoxDecoration(
                                               image: DecorationImage(
                                                 fit: BoxFit.cover,
-                                                image: NetworkImage(apiState.mainUser.coverphoto),
+                                                image: NetworkImage(apiState
+                                                    .mainUser.coverphoto),
                                               ),
                                             ),
                                     ),
                               top: top,
                             ),
-                            ListView(
-                              controller: !widget.isAnother
-                                  ? _hideButtonController
-                                  : null,
-                              children: <Widget>[
-                                Header(widget.isAnother),
-                                Body(),
-                              ],
+                            Positioned(
+                                top: 400,
+                                child: apiState.mainUser == null
+                                    ? Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        color: Colors.white,
+                                      )
+                                    : Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        padding: EdgeInsets.only(
+                                            top: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                1 /
+                                                15),
+                                        child: Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Padding(
+                                                  child: Shimmer.fromColors(
+                                                    child: Icon(
+                                                      FontAwesomeIcons
+                                                          .handPointUp,
+                                                      size: 20,
+                                                      color: Colors.black,
+                                                    ),
+                                                    baseColor: colorActive,
+                                                    highlightColor:
+                                                        Colors.orange,
+                                                  ),
+                                                  padding: EdgeInsets.only(
+                                                      right: 16.0, bottom: 5.0),
+                                                ),
+                                                Shimmer.fromColors(
+                                                  child: Text(
+                                                    "Thả tay để làm mới trang",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                        fontSize: 17),
+                                                  ),
+                                                  baseColor: colorActive,
+                                                  highlightColor: Colors.orange,
+                                                )
+                                              ],
+                                            )))),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height,
+                              color: Colors.transparent.withOpacity(0.7),
+                            ),
+                            EasyRefresh(
+                              key: _easyRefreshKey,
+                              refreshHeader: ConnectorHeader(
+                                  key: _connectorHeaderKey,
+                                  header: DeliveryHeader(
+                                    key: _headerKey,
+                                    backgroundColor: Colors.black,
+                                  )),
+                              child: CustomScrollView(
+                                controller: !widget.isAnother
+                                    ? _hideButtonController
+                                    : null,
+                                slivers: <Widget>[
+                                  SliverList(
+                                    delegate: SliverChildListDelegate(<Widget>[
+                                      DeliveryHeader(key: _headerKey)
+                                    ]),
+                                  ),
+                                  SliverList(
+                                      delegate:
+                                          SliverChildListDelegate(<Widget>[
+                                    ListView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      children: <Widget>[
+                                        Header(widget.isAnother),
+                                        Body(),
+                                      ],
+                                    ),
+                                  ]))
+                                ],
+                              ),
+                              onRefresh: () async {
+                                apiBloc.changeMainUser(null);
+                                await new Future.delayed(
+                                    const Duration(seconds: 1), () {
+                                  fetchUserById(
+                                      apiBloc,
+                                      idUser,
+                                      widget.isAnother);
+                                  BlocProvider.of<BottomBarBloc>(context)
+                                      .changeVisible(true);
+                                });
+                              },
                             ),
                           ],
                         ),

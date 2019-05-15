@@ -1,3 +1,5 @@
+import 'package:flutter_food_app/api/model/product.dart';
+
 class User {
   final bool status;
   final bool vip;
@@ -11,11 +13,12 @@ class User {
   final String coverphoto;
   final String link;
   final DateTime day;
+  final List<Product> listProducts;
 
 
   User({this.status, this.vip, this.id, this.username, this.password,
       this.avatar, this.phone, this.address, this.name, this.coverphoto,
-      this.link, this.day});
+      this.link, this.day, this.listProducts});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
