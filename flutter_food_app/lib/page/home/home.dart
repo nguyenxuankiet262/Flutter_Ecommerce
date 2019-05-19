@@ -86,24 +86,23 @@ class _MyHomePageState extends State<MyHomePage>
               AppBar(
                 brightness: Brightness.light,
                 title: Container(
-                  width: MediaQuery.of(context).size.width -
-                      MediaQuery.of(context).size.width / 2 +
-                      7,
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 5.0),
-                        child: Image.asset('assets/images/logo.png'),
-                      ),
-                      new Text(
-                        'Anzi',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        textAlign: TextAlign.justify,
-                      ),
+                      Image.asset('assets/images/logo.png'),
+                      Padding(
+                        child: new Text(
+                          'Anzi',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          textAlign: TextAlign.justify,
+                        ),
+                        padding: EdgeInsets.only(left: (MediaQuery.of(context).size.width - 190) / 2),
+                      )
                     ],
                   ),
                 ),
@@ -145,9 +144,9 @@ class _MyHomePageState extends State<MyHomePage>
                                     ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: <Widget>[
                                         Text(
                                           "Chọn khu vực",
@@ -166,17 +165,17 @@ class _MyHomePageState extends State<MyHomePage>
                                                   child: Text(
                                                     state.indexProvince == 0
                                                         ? state.nameCities[
-                                                            state.indexCity]
+                                                    state.indexCity]
                                                         : state.nameProvinces[
-                                                                state.indexCity]
-                                                            [state
-                                                                .indexProvince],
+                                                    state.indexCity]
+                                                    [state
+                                                        .indexProvince],
                                                     style: TextStyle(
                                                         color: colorActive,
                                                         fontSize: 10,
                                                         fontFamily: "Ralway"),
                                                     overflow:
-                                                        TextOverflow.ellipsis,
+                                                    TextOverflow.ellipsis,
                                                     maxLines: 1,
                                                   ));
                                             }),

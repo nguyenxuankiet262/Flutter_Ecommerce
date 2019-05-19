@@ -48,160 +48,120 @@ class PostBodyState extends State<PostBody> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    state.product == null
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300],
-                            highlightColor: Colors.grey[100],
-                            child: Container(
-                              height: 17,
-                              width: MediaQuery.of(context).size.width * 3 / 5,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text(
-                            state.product.name,
-                            style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                                fontFamily: "Ralway",
-                                fontWeight: FontWeight.bold),
-                          ),
+                    Text(
+                      state.product.name,
+                      style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                          fontFamily: "Ralway",
+                          fontWeight: FontWeight.bold),
+                    ),
                     Container(
                         margin: EdgeInsets.only(top: 5.0),
-                        child: state.product == null
-                            ? Shimmer.fromColors(
-                                baseColor: Colors.grey[300],
-                                highlightColor: Colors.grey[100],
-                                child: Container(
-                                  height: 17,
-                                  width:
-                                      MediaQuery.of(context).size.width * 1 / 3,
-                                  color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    right: 2.0,
+                                  ),
+                                  child: Text(
+                                    Helper().onFormatPrice(
+                                        state.product.currentPrice),
+                                    style: TextStyle(
+                                      color: colorActive,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              )
-                            : Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          right: 2.0,
-                                        ),
-                                        child: Text(
-                                          Helper().onFormatPrice(
-                                              state.product.currentPrice),
-                                          style: TextStyle(
-                                            color: colorActive,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            right: 4.0, left: 2.0),
-                                        child: Text(
-                                          '/',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                          right: 10.0,
-                                        ),
-                                        child: Text(
-                                          'cái',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(right: 4.0, left: 2.0),
+                                  child: Text(
+                                    '/',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 15.0),
-                                          child: Icon(
-                                            Icons.share,
-                                            color: Colors.blue,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              _isFav = !_isFav;
-                                              if (_isFav) {
-                                                Toast.show(
-                                                    "Đã lưu vào mục yêu thích",
-                                                    context);
-                                                count++;
-                                              } else {
-                                                Toast.show(
-                                                    "Đã xóa khỏi mục yêu thích",
-                                                    context);
-                                                count--;
-                                              }
-                                            });
-                                          },
-                                          child: Row(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.favorite,
-                                                color: _isFav
-                                                    ? Colors.red
-                                                    : colorInactive,
-                                                size: 20,
-                                              ),
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    left: 2.0, bottom: 1.0),
-                                                child: Text(
-                                                  "(" + count.toString() + ")",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontFamily: "Ralway"),
-                                                ),
-                                              )
-                                            ],
-                                          )),
-                                    ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    right: 10.0,
                                   ),
-                                ],
-                              )),
+                                  child: Text(
+                                    'cái',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 15.0),
+                                    child: Icon(
+                                      Icons.share,
+                                      color: Colors.blue,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _isFav = !_isFav;
+                                        if (_isFav) {
+                                          Toast.show("Đã lưu vào mục yêu thích",
+                                              context);
+                                          count++;
+                                        } else {
+                                          Toast.show(
+                                              "Đã xóa khỏi mục yêu thích",
+                                              context);
+                                          count--;
+                                        }
+                                      });
+                                    },
+                                    child: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.favorite,
+                                          color: _isFav
+                                              ? Colors.red
+                                              : colorInactive,
+                                          size: 20,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                              left: 2.0, bottom: 1.0),
+                                          child: Text(
+                                            "(" + count.toString() + ")",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: "Ralway"),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          ],
+                        )),
                   ],
                 )),
-            state.product == null
-            ? Shimmer.fromColors(
-              baseColor: Colors.grey[300],
-              highlightColor: Colors.grey[100],
-              child: Container(
-                height: 300,
-                width: double.infinity,
-                margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                ),
-              ),
-            )
-            : Column(
+            Column(
               children: <Widget>[
                 Container(
                   width: double.infinity,
@@ -224,8 +184,8 @@ class PostBodyState extends State<PostBody> {
                               children: <Widget>[
                                 Text(
                                   'Overall Rating',
-                                  style:
-                                  TextStyle(fontSize: 17, color: colorInactive),
+                                  style: TextStyle(
+                                      fontSize: 17, color: colorInactive),
                                 ),
                                 Text(
                                   '4.5',
@@ -256,12 +216,13 @@ class PostBodyState extends State<PostBody> {
                                   ),
                                 ),
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 15.0),
                                   margin: EdgeInsets.only(left: 8.0),
                                   decoration: BoxDecoration(
                                       color: colorComment,
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
                                       border: Border.all(color: colorComment)),
                                   child: Center(
                                     child: Text(
@@ -317,22 +278,25 @@ class PostBodyState extends State<PostBody> {
                             margin: EdgeInsets.only(right: 5.0),
                             child: GestureDetector(
                               child: Text(
-                                state.product == null ? "" : state.product.user.username,
+                                state.product == null
+                                    ? ""
+                                    : state.product.user.username,
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                     color: colorActive),
                               ),
                               onTap: () {
-                                if(state.mainUser == null || (state.mainUser != null && state.product.idUser != state.mainUser.id)) {
+                                if (state.mainUser == null ||
+                                    (state.mainUser != null &&
+                                        state.product.idUser !=
+                                            state.mainUser.id)) {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               InfoPage(true)));
-                                }else{
-
-                                }
+                                } else {}
                               },
                             ),
                           ),
@@ -359,7 +323,9 @@ class PostBodyState extends State<PostBody> {
                             ),
                             Expanded(
                               child: Text(
-                                state.product == null ? "" : state.product.user.address,
+                                state.product == null
+                                    ? ""
+                                    : state.product.user.address,
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),
@@ -381,7 +347,9 @@ class PostBodyState extends State<PostBody> {
                             ),
                             Expanded(
                               child: Text(
-                                state.product == null ? "" : state.product.user.phone,
+                                state.product == null
+                                    ? ""
+                                    : state.product.user.phone,
                                 style: TextStyle(
                                   fontSize: 14,
                                 ),

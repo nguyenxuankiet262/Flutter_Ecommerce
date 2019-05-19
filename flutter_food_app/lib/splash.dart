@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
+import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/province.dart';
@@ -21,6 +22,7 @@ class StartPage extends StatefulWidget {
 
 class StartPageState extends State<StartPage> {
   ApiBloc apiBloc;
+  LoadingBloc loadingBloc;
   load() async {
     List<String> nameCities = [
       'Toàn quốc',
@@ -55,9 +57,10 @@ class StartPageState extends State<StartPage> {
     super.initState();
     load();
     apiBloc = BlocProvider.of<ApiBloc>(context);
+    loadingBloc = BlocProvider.of<LoadingBloc>(context);
     fetchMenus(apiBloc);
-    fetchUserById(apiBloc, idUser, false);
-    fetchCartByUserId(apiBloc, "5ccbeef21d3ee00017f572cd");
+    fetchUserById(apiBloc, idUser, false, 1, 10);
+    fetchCartByUserId(apiBloc, loadingBloc, idUser);
     BlocProvider.of<CameraBloc>(context).initCamera(widget.cameras);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
       statusBarColor: Colors.transparent, //or set color with: Color(0xFF0000FF)

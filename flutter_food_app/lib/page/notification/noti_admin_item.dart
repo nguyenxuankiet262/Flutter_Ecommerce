@@ -18,31 +18,38 @@ class _ListNotiAdminState extends State<ListNotiAdmin> {
       removeTop: true,
       child: itemCount == 0
           ? Container(
-              color: colorBackground,
-              height: MediaQuery.of(context).size.height * 2 / 3,
-              child: Center(
-                  child: Column(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height - 150,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  Icon(
+                    const IconData(0xe900, fontFamily: 'box'),
+                    size: 150,
+                  ),
                   Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image:
-                            AssetImage("assets/images/icon_notification.png"),
+                    margin: EdgeInsets.only(top: 16.0),
+                    child: Text(
+                      "Không có thông báo nào",
+                      style: TextStyle(
+                        color: colorInactive,
+                        fontSize: 12,
                       ),
                     ),
-                    height: 200,
-                    width: 200,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {});
-                    },
-                    child: Text('Nothing to show!'),
+                  Container(
+                    child: Text(
+                      "Chúc bạn một ngày vui vẻ!",
+                      style: TextStyle(
+                        color: colorInactive,
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ],
-              )))
+              ),
+            )
           : ListView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,

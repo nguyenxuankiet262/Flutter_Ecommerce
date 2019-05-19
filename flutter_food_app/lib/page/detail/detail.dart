@@ -8,9 +8,11 @@ import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/detail_page_state.dart';
+import 'package:flutter_food_app/common/state/loading_state.dart';
 import 'package:flutter_food_app/page/filter/common/filter.dart';
 import 'package:flutter_food_app/page/search/search.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_child_menu.dart';
@@ -37,6 +39,7 @@ class _ListAllPostState extends State<ListAllPost>
   DetailPageBloc detailPageBloc;
   bool isLoading = true;
   ApiBloc apiBloc;
+  LoadingBloc loadingBloc;
   GlobalKey<EasyRefreshState> _easyRefreshKey =
       new GlobalKey<EasyRefreshState>();
   GlobalKey<RefreshHeaderState> _headerKey =
@@ -60,8 +63,9 @@ class _ListAllPostState extends State<ListAllPost>
     // TODO: implement initState
     super.initState();
     apiBloc = BlocProvider.of<ApiBloc>(context);
+    loadingBloc = BlocProvider.of<LoadingBloc>(context);
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
-    fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
+    fetchProductOfMenu(apiBloc, loadingBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].id);
     //fetchProduct(apiBloc.currentState.listChildMenu[0].id);
     BlocProvider.of<FunctionBloc>(context).isLoading(_isLoading);
     Future.delayed(const Duration(milliseconds: 1000), () {
@@ -257,9 +261,9 @@ class _ListAllPostState extends State<ListAllPost>
                     visible: isSearch ? false : true,
                     child: Material(
                       child: SafeArea(
-                        child: NestedScrollView(
+                        child: CustomScrollView(
                             controller: _hideButtonController,
-                            headerSliverBuilder: (context, innerBoxScrolled) =>
+                            slivers: <Widget>
                                 [
                                   SliverAppBar(
                                     automaticallyImplyLeading: false,
@@ -591,79 +595,128 @@ class _ListAllPostState extends State<ListAllPost>
                                           )),
                                     ),
                                   ),
-                                ],
-                            body: Container(
-                                color: colorBackground,
-                                child: new EasyRefresh(
-                                  key: _easyRefreshKey,
-                                  refreshHeader: ConnectorHeader(
-                                      key: _connectorHeaderKey,
-                                      header: DeliveryHeader(key: _headerKey)),
-                                  outerController: _hideButtonController,
-                                  child: CustomScrollView(
-                                    controller: _hideButtonController,
-                                    slivers: <Widget>[
-                                      SliverList(
-                                        delegate:
-                                            SliverChildListDelegate(<Widget>[
-                                          DeliveryHeader(key: _headerKey)
-                                        ]),
-                                      ),
-                                      SliverList(
-                                        delegate:
-                                            SliverChildListDelegate(<Widget>[
-                                          detailstate.indexChildCategory == 0
-                                              ? BlocBuilder(
-                                                  bloc: apiBloc,
-                                                  builder: (context,
-                                                      ApiState state) {
-                                                    return state.listMenu
-                                                            .isEmpty
-                                                        ? Container(
-                                                            color:
-                                                                colorBackground,
-                                                            child:
-                                                                ShimmerChildMenu())
-                                                        : HeaderDetail();
-                                                  },
-                                                )
-                                              : Container(),
-                                          BlocBuilder(
-                                            bloc: apiBloc,
-                                            builder: (context, ApiState state){
-                                              return state.listProduct.isEmpty
-                                                  ? Container(
-                                                color: Colors.white,
-                                                child: ShimmerPost(),
-                                              )
-                                                  : Container(
-                                                  padding: EdgeInsets.all(2.0),
-                                                  color: Colors.white,
-                                                  child: ListPost());
-                                            },
-                                          )
+                                  SliverList(
+                                    delegate: SliverChildListDelegate(
+                                      [
+                                        Container(
+                                            color: colorBackground,
+                                            child: new EasyRefresh(
+                                              key: _easyRefreshKey,
+                                              refreshHeader: ConnectorHeader(
+                                                  key: _connectorHeaderKey,
+                                                  header: DeliveryHeader(key: _headerKey)),
+                                              outerController: _hideButtonController,
+                                              child: CustomScrollView(
+                                                controller: _hideButtonController,
+                                                slivers: <Widget>[
+                                                  SliverList(
+                                                    delegate:
+                                                    SliverChildListDelegate(<Widget>[
+                                                      DeliveryHeader(key: _headerKey)
+                                                    ]),
+                                                  ),
+                                                  SliverList(
+                                                    delegate:
+                                                    SliverChildListDelegate(<Widget>[
+                                                      detailstate.indexChildCategory == 0
+                                                          ? BlocBuilder(
+                                                        bloc: apiBloc,
+                                                        builder: (context,
+                                                            ApiState state) {
+                                                          return state.listMenu
+                                                              .isEmpty
+                                                              ? Container(
+                                                              color:
+                                                              colorBackground,
+                                                              child:
+                                                              ShimmerChildMenu())
+                                                              : HeaderDetail();
+                                                        },
+                                                      )
+                                                          : Container(),
+                                                      BlocBuilder(
+                                                        bloc: loadingBloc,
+                                                        builder: (context, LoadingState loadingState){
+                                                          return BlocBuilder(
+                                                            bloc: apiBloc,
+                                                            builder: (context, ApiState state){
+                                                              return loadingState.loadingDetail
+                                                                  ? Container(
+                                                                color: Colors.white,
+                                                                child: ShimmerPost(),
+                                                              )
+                                                                  : state.listProduct.isEmpty
+                                                                  ? Container(
+                                                                width: double.infinity,
+                                                                height: MediaQuery.of(context).size.height - 200,
+                                                                child: Column(
+                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                                  children: <Widget>[
+                                                                    Icon(
+                                                                      const IconData(0xe900,
+                                                                          fontFamily:
+                                                                          'box'),
+                                                                      size: 150,
+                                                                    ),
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(top: 16.0),
+                                                                      child: Text(
+                                                                        "Không có sản phẩm nào",
+                                                                        style: TextStyle(
+                                                                          color: colorInactive,
+                                                                          fontSize: 12,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      child: Text(
+                                                                        "Chúc bạn một ngày vui vẻ!",
+                                                                        style: TextStyle(
+                                                                          color: colorInactive,
+                                                                          fontSize: 12,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              )
+                                                                  : Container(
+                                                                  padding: EdgeInsets.all(2.0),
+                                                                  color: Colors.white,
+                                                                  child: ListPost());
+                                                            },
+                                                          );
+                                                        },
+                                                      ),
 
-                                        ]),
-                                      ),
-                                    ],
+                                                    ]),
+                                                  ),
+                                                ],
+                                              ),
+                                              onRefresh: () async {
+                                                loadingBloc.changeLoadingDetail(true);
+                                                apiBloc.changeListProduct([]);
+                                                await new Future.delayed(
+                                                    const Duration(seconds: 1), () {
+                                                  if(detailstate.indexChildCategory == 0) {
+                                                    fetchProductOfMenu(apiBloc, loadingBloc,
+                                                        apiBloc.currentState
+                                                            .listMenu[detailPageBloc
+                                                            .currentState.indexCategory]
+                                                            .id);
+                                                  }
+                                                  else{
+                                                    fetchProductOfChildMenu(apiBloc, loadingBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[detailPageBloc.currentState.indexChildCategory].id);
+                                                  }
+                                                });
+                                              },
+                                            ))
+                                      ],
+                                    ),
                                   ),
-                                  onRefresh: () async {
-                                    apiBloc.changeListProduct([]);
-                                    await new Future.delayed(
-                                        const Duration(seconds: 1), () {
-                                          if(detailstate.indexChildCategory == 0) {
-                                            fetchProductOfMenu(apiBloc,
-                                                apiBloc.currentState
-                                                    .listMenu[detailPageBloc
-                                                    .currentState.indexCategory]
-                                                    .id);
-                                          }
-                                          else{
-                                            fetchProductOfChildMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[detailPageBloc.currentState.indexChildCategory].id);
-                                          }
-                                    });
-                                  },
-                                ))),
+                                ],
+                         ),
                       ),
                       type: MaterialType.transparency,
                     ))
@@ -679,6 +732,7 @@ class _ListAllPostState extends State<ListAllPost>
     if (isSearch) {
       changeDetail();
     } else {
+      loadingBloc.changeLoadingDetail(true);
       apiBloc.changeListProduct(apiBloc.initialState.listProduct);
       functionBloc.onBackPressed(_callBack);
       Navigator.pop(context);

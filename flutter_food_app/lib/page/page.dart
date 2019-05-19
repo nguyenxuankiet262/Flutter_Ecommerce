@@ -281,7 +281,6 @@ class _MyMainPageState extends State<MyMainPage>
                                 child: BottomAppBar(
                                   shape: CircularNotchedRectangle(),
                                   child: new Row(
-                                    mainAxisSize: MainAxisSize.max,
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     crossAxisAlignment:
@@ -295,31 +294,15 @@ class _MyMainPageState extends State<MyMainPage>
                                         },
                                         child: Container(
                                           color: Colors.white,
-                                          height: 56,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Icon(
-                                                FontAwesomeIcons.home,
-                                                color: _index == 0
-                                                    ? colorActive
-                                                    : Colors.grey,
-                                                size: 20,
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 2.0),
-                                                child: Text(
-                                                  'Trang chủ',
-                                                  style: TextStyle(
-                                                      fontFamily: 'Raleway',
-                                                      color: _index == 0
-                                                          ? colorActive
-                                                          : Colors.grey),
-                                                ),
-                                              ),
-                                            ],
+                                          height: 50,
+                                          width: 50,
+                                          child: Icon(
+                                            const IconData(0xe900,
+                                                fontFamily: 'home'),
+                                            color: _index == 0
+                                                ? colorActive
+                                                : Colors.grey,
+                                            size: 27,
                                           ),
                                         ),
                                       ),
@@ -331,42 +314,26 @@ class _MyMainPageState extends State<MyMainPage>
                                           },
                                           child: Stack(children: <Widget>[
                                             Container(
-                                              height: 56,
+                                              height: 50,
+                                              width: 50,
                                               color: Colors.white,
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  Container(
-                                                    child: Icon(
-                                                      FontAwesomeIcons
-                                                          .shoppingCart,
-                                                      color: _index == 1
-                                                          ? colorActive
-                                                          : Colors.grey,
-                                                      size: 20,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 2.0),
-                                                    child: Text(
-                                                      'Giỏ hàng',
-                                                      style: TextStyle(
-                                                          fontFamily: 'Raleway',
-                                                          color: _index == 1
-                                                              ? colorActive
-                                                              : Colors.grey),
-                                                    ),
-                                                  ),
-                                                ],
+                                              child: Icon(
+                                                _index == 1
+                                                    ? const IconData(0xe900,
+                                                        fontFamily: 'cart')
+                                                    : const IconData(0xe917,
+                                                        fontFamily: 'cart'),
+                                                color: _index == 1
+                                                    ? colorActive
+                                                    : Colors.grey,
+                                                size: 27,
                                               ),
                                             ),
                                             BlocBuilder(
                                               bloc: apiBloc,
                                               builder:
                                                   (context, ApiState apiState) {
-                                                return apiState.cart == null
+                                                return !userstate.isLogin || apiState.cart == null
                                                     ? Container(
                                                         height: 0,
                                                         width: 0,
@@ -379,12 +346,12 @@ class _MyMainPageState extends State<MyMainPage>
                                                           )
                                                         : new Positioned(
                                                             // draw a red marble
-                                                            top: 4.0,
-                                                            right: 10.0,
+                                                            top: 5.0,
+                                                            right: 20,
                                                             child: new Icon(
                                                                 Icons
                                                                     .brightness_1,
-                                                                size: 11.0,
+                                                                size: 6.0,
                                                                 color:
                                                                     Colors.red),
                                                           );
@@ -400,41 +367,29 @@ class _MyMainPageState extends State<MyMainPage>
                                         child: Stack(children: <Widget>[
                                           Container(
                                             height: 50,
+                                            width: 50,
                                             color: Colors.white,
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Icon(
-                                                    FontAwesomeIcons.solidBell,
-                                                    color: _index == 2
-                                                        ? colorActive
-                                                        : Colors.grey,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  margin:
-                                                      EdgeInsets.only(top: 2.0),
-                                                  child: Text(
-                                                    'Thông báo',
-                                                    style: TextStyle(
-                                                        fontFamily: 'Raleway',
-                                                        color: _index == 2
-                                                            ? colorActive
-                                                            : Colors.grey),
-                                                  ),
-                                                ),
-                                              ],
+                                            child: Icon(
+                                              _index == 2
+                                                  ? const IconData(0xe900,
+                                                      fontFamily:
+                                                          'notification')
+                                                  : const IconData(0xe935,
+                                                      fontFamily:
+                                                          'notification'),
+                                              color: _index == 2
+                                                  ? colorActive
+                                                  : Colors.grey,
+                                              size: 23,
                                             ),
                                           ),
                                           new Positioned(
                                             // draw a red marble
-                                            top: 1.0,
-                                            right: 21.0,
+                                            top: 5.0,
+                                            right: 20,
                                             child: new Icon(Icons.brightness_1,
-                                                size: 11.0, color: Colors.red),
+                                                size: 6.0,
+                                                color: Colors.redAccent),
                                           )
                                         ]),
                                       ),
@@ -451,122 +406,72 @@ class _MyMainPageState extends State<MyMainPage>
                                                       children: <Widget>[
                                                         Container(
                                                           color: Colors.white,
-                                                          height: 56,
+                                                          height: 50,
+                                                          width: 50,
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: <Widget>[
                                                               Container(
-                                                                decoration: BoxDecoration(
-                                                                    border: Border.all(
-                                                                        color: _index ==
-                                                                                3
-                                                                            ? colorActive
-                                                                            : colorInactive,
-                                                                        width: _index ==
-                                                                                3
-                                                                            ? 1.0
-                                                                            : 1.0),
-                                                                    borderRadius:
-                                                                        BorderRadius.all(
-                                                                            Radius.circular(100.0))),
-                                                                child: apiBloc
-                                                                            .currentState
-                                                                            .mainUser ==
-                                                                        null
-                                                                    ? Container(
-                                                                        height:
-                                                                            21,
-                                                                        width:
-                                                                            21,
-                                                                      )
-                                                                    : ClipOval(
-                                                                        child: Image
-                                                                            .network(
-                                                                          apiState
-                                                                              .mainUser
-                                                                              .avatar,
-                                                                          fit: BoxFit
-                                                                              .cover,
+                                                                  decoration: BoxDecoration(
+                                                                      border: Border.all(
+                                                                          color: _index == 3
+                                                                              ? colorActive
+                                                                              : colorInactive,
                                                                           width:
-                                                                              21.0,
-                                                                          height:
-                                                                              21.0,
-                                                                        ),
-                                                                      ),
-                                                              ),
-                                                              Container(
-                                                                height: 20,
-                                                                color: Colors
-                                                                    .white,
-                                                                child: Text(
-                                                                  "Cá nhân",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                              )
+                                                                              1.5),
+                                                                      borderRadius:
+                                                                          BorderRadius.all(Radius.circular(
+                                                                              100.0))),
+                                                                  child:
+                                                                      Container(
+                                                                    decoration: BoxDecoration(
+                                                                        border: Border.all(
+                                                                            color: Colors
+                                                                                .white,
+                                                                            width:
+                                                                                1.5),
+                                                                        borderRadius:
+                                                                            BorderRadius.all(Radius.circular(100.0))),
+                                                                    child: apiBloc.currentState.mainUser ==
+                                                                            null
+                                                                        ? Container(
+                                                                            height:
+                                                                                22,
+                                                                            width:
+                                                                                22,
+                                                                          )
+                                                                        : ClipOval(
+                                                                            child:
+                                                                                Image.network(
+                                                                              apiState.mainUser.avatar,
+                                                                              fit: BoxFit.cover,
+                                                                              width: 22.0,
+                                                                              height: 22.0,
+                                                                            ),
+                                                                          ),
+                                                                  )),
                                                             ],
                                                           ),
                                                         ),
-                                                        Positioned(
-                                                          right: 3.0,
-                                                          bottom: 9.0,
-                                                          child: Text(
-                                                            'Cá nhân',
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Raleway',
-                                                                color: _index ==
-                                                                        3
-                                                                    ? colorActive
-                                                                    : Colors
-                                                                        .grey),
-                                                          ),
-                                                        ),
-                                                        new Positioned(
-                                                          // draw a red marble
-                                                          top: 4.0,
-                                                          right: 13.0,
-                                                          child: new Icon(
-                                                              Icons
-                                                                  .brightness_1,
-                                                              size: 11.0,
-                                                              color:
-                                                                  Colors.red),
-                                                        )
                                                       ]);
                                                 },
                                               )
                                             : Container(
                                                 color: Colors.white,
-                                                height: 56,
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Icon(
-                                                      FontAwesomeIcons.userAlt,
-                                                      color: _index == 3
-                                                          ? colorActive
-                                                          : Colors.grey,
-                                                      size: 20,
-                                                    ),
-                                                    Container(
-                                                      margin: EdgeInsets.only(
-                                                          top: 2.0),
-                                                      child: Text(
-                                                        'Cá nhân',
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                'Raleway',
-                                                            color: _index == 3
-                                                                ? colorActive
-                                                                : Colors.grey),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                height: 50,
+                                                width: 50,
+                                                child: Icon(
+                                                  _index == 3
+                                                      ? const IconData(0xe900,
+                                                          fontFamily: 'user')
+                                                      : const IconData(0xe901,
+                                                          fontFamily: 'user'),
+                                                  color: _index == 3
+                                                      ? colorActive
+                                                      : Colors.grey,
+                                                  size: 27,
                                                 ),
                                               ),
                                       ),

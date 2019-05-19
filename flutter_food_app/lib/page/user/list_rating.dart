@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:toast/toast.dart';
 
@@ -12,7 +15,14 @@ class ListRating extends StatefulWidget {
 }
 
 class ListRatingState extends State<ListRating> {
-  int itemCount = 10;
+  ApiBloc apiBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+  }
 
   void _showDialog() {
     // flutter defined function
@@ -52,114 +62,194 @@ class ListRatingState extends State<ListRating> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final widthRating = size.width - 96;
-    return ListView.builder(
-      itemCount: itemCount,
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemBuilder: (BuildContext context, int index) => Card(
-        child: Container(
-            padding: EdgeInsets.all(16.0),
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    GestureDetector(
-                      child: ClipOval(
-                        child: Image.asset(
-                          index % 2 == 0
-                              ? 'assets/images/cat.jpg'
-                              : 'assets/images/dog.jpg',
-                          fit: BoxFit.cover,
-                          width: 40.0,
-                          height: 40.0,
-                        ),
-                      ),
-                      onTap: () {
-                        BlocProvider.of<FunctionBloc>(context).currentState.navigateToUser();
-                      },
-                    ),
-                    Container(
-                      width: widthRating,
-                      margin: EdgeInsets.only(left: 16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment:
-                            MainAxisAlignment
-                                .spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                index % 2 == 0
-                                    ? 'Trần Văn Mèo'
-                                    : 'Nguyễn Thị Cún',
-                                style: TextStyle(
-                                  color: colorActive,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  _showDialog();
-                                },
-                                child: Container(
-                                  width: 50,
-                                  color: Colors.white,
-                                  child: Icon(
-                                    FontAwesomeIcons
-                                        .solidEyeSlash,
-                                    size: 12,
-                                    color: colorInactive,
-                                  ),
-                                )
-                              ),
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 4.0),
-                            child: SmoothStarRating(
-                              starCount: index % 2 == 0 ? 5 : 4,
-                              size: 16.0,
-                              rating: 5,
-                              color: Colors.yellow,
-                              borderColor: Colors.yellow,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 8.0),
-                            child: Text(
-                              index % 2 == 0
-                                  ? 'Ngon bổ rẻ'
-                                  : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12),
-                            ),
-                          ),
-                          Text(
-                            '22:22 PM - 22/2/2022',
-                            style: TextStyle(
-                                color: colorInactive,
-                                fontStyle: FontStyle.italic,
-                                fontSize: 10),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+    return BlocBuilder(
+      bloc: apiBloc,
+      builder: (context, ApiState apiState) {
+        return apiState.mainUser == null
+            ? Shimmer.fromColors(
+                child: Container(
+                  height: 400,
+                  color: Colors.white,
                 ),
-              ],
-            )
-        ),
-      )
+                baseColor: Colors.grey[300],
+                highlightColor: Colors.grey[100],
+              )
+            : apiState.mainUser.listProducts == null
+                ? Container(
+                    width: double.infinity,
+                    color: colorBackground,
+                    height: MediaQuery.of(context).size.height - 210,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          const IconData(0xe900, fontFamily: 'box'),
+                          size: 150,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 16.0),
+                          child: Text(
+                            "Không có đánh giá nào",
+                            style: TextStyle(
+                              color: colorInactive,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "Chúc bạn một ngày vui vẻ!",
+                            style: TextStyle(
+                              color: colorInactive,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      ListView.builder(
+                          itemCount: apiState.mainUser.listRatings.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index) =>
+                              Card(
+                                child: Container(
+                                    padding: EdgeInsets.all(16.0),
+                                    color: Colors.white,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              child: ClipOval(
+                                                child: Image.network(
+                                                  apiState
+                                                      .mainUser
+                                                      .listRatings[index]
+                                                      .user
+                                                      .avatar,
+                                                  fit: BoxFit.cover,
+                                                  width: 40.0,
+                                                  height: 40.0,
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                BlocProvider.of<FunctionBloc>(
+                                                        context)
+                                                    .currentState
+                                                    .navigateToUser();
+                                              },
+                                            ),
+                                            Container(
+                                              width: widthRating,
+                                              margin:
+                                                  EdgeInsets.only(left: 16.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        apiState
+                                                            .mainUser
+                                                            .listRatings[index]
+                                                            .user
+                                                            .name,
+                                                        style: TextStyle(
+                                                          color: colorActive,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                      GestureDetector(
+                                                          onTap: () {
+                                                            _showDialog();
+                                                          },
+                                                          child: Container(
+                                                            width: 50,
+                                                            color: Colors.white,
+                                                            child: Icon(
+                                                              FontAwesomeIcons
+                                                                  .solidEyeSlash,
+                                                              size: 12,
+                                                              color:
+                                                                  colorInactive,
+                                                            ),
+                                                          )),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 4.0),
+                                                    child: SmoothStarRating(
+                                                      starCount: 5,
+                                                      size: 16.0,
+                                                      rating: apiState
+                                                          .mainUser
+                                                          .listRatings[index]
+                                                          .rating,
+                                                      color: Colors.yellow,
+                                                      borderColor:
+                                                          Colors.yellow,
+                                                      allowHalfRating: true,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 8.0),
+                                                    child: Text(
+                                                      index % 2 == 0
+                                                          ? 'Ngon bổ rẻ'
+                                                          : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 12),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '22:22 PM - 22/2/2022',
+                                                    style: TextStyle(
+                                                        color: colorInactive,
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                        fontSize: 10),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )),
+                              )),
+                      Container(
+                        height: 400,
+                        color: colorBackground,
+                      )
+                    ],
+                  );
+      },
     );
   }
 }

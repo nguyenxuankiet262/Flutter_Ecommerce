@@ -5,6 +5,7 @@ import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/page/filter/detail/category.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
@@ -16,12 +17,14 @@ class FilterDetailManagement extends StatefulWidget{
 class FilterDetailManagementState extends State<FilterDetailManagement>{
   DetailPageBloc detailPageBloc;
   ApiBloc apiBloc;
+  LoadingBloc loadingBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
     apiBloc = BlocProvider.of<ApiBloc>(context);
+    loadingBloc = BlocProvider.of<LoadingBloc>(context);
   }
 
   Future<bool> _onBackPressed(){
@@ -92,14 +95,16 @@ class FilterDetailManagementState extends State<FilterDetailManagement>{
                     );
                     BlocProvider.of<FunctionBloc>(context).currentState.isLoading();
                     apiBloc.changeListProduct([]);
+                    loadingBloc.changeLoadingDetail(true);
                     if(detailPageBloc.currentState.tempChildCategory == 0) {
-                      fetchProductOfMenu(apiBloc, apiBloc.currentState.listMenu[detailPageBloc
+                      fetchProductOfMenu(apiBloc, loadingBloc, apiBloc.currentState.listMenu[detailPageBloc
                           .currentState
                           .tempCategory].id);
                     }
                     else{
                       fetchProductOfChildMenu(
                           apiBloc,
+                          loadingBloc,
                           apiBloc.currentState.listMenu[detailPageBloc.currentState.tempCategory].listChildMenu[detailPageBloc.currentState.tempChildCategory].id
                       );
                     }

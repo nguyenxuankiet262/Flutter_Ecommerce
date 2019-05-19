@@ -48,7 +48,10 @@ class BodyState extends State<Body> with SingleTickerProviderStateMixin {
         padding: EdgeInsets.all(2.0),
         child: ListPost(),
       ),
-      ListRating(),
+      Container(
+        color: Colors.white,
+        child: ListRating(),
+      ),
       InfoItem(),
     ];
     return ListView(

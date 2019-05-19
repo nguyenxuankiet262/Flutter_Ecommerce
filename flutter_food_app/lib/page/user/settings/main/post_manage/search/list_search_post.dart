@@ -36,7 +36,6 @@ class _ListSearchPostState extends State<ListSearchPost>
             color: Colors.white,
             child: ListView.builder(
                 padding: EdgeInsets.only(top: 0.0),
-                physics: NeverScrollableScrollPhysics(),
                 itemCount: 10,
                 itemBuilder: (BuildContext context, int index) => Container(
                         child: Column(children: <Widget>[

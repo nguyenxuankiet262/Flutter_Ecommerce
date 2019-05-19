@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
+import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/authentication/authentication.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -16,6 +19,7 @@ class CommentPostState extends State<CommentPost> {
   double ratingValue = 5.0;
   String textInput = "";
   final myController = new TextEditingController();
+  ApiBloc apiBloc;
 
   void _showRatingList(context) {
     showModalBottomSheet(
@@ -28,7 +32,7 @@ class CommentPostState extends State<CommentPost> {
   @override
   void initState() {
     super.initState();
-
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     myController.addListener(_changeTextInput);
   }
 
@@ -153,181 +157,186 @@ class CommentPostState extends State<CommentPost> {
     final widthRating = size.width - 90;
     final widthComment = size.width - 100;
     // TODO: implement build
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(left: 16.0),
-      margin: EdgeInsets.only(bottom: 5.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10.0),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0),
-            child: Text(
-              'ĐÁNH GIÁ',
-              style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+    return BlocBuilder(
+      bloc: apiBloc,
+      builder: (context, ApiState apiState){
+        return Container(
+          width: double.infinity,
+          padding: EdgeInsets.only(left: 16.0),
+          margin: EdgeInsets.only(bottom: 5.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
             ),
           ),
-          ListView.builder(
-            itemCount: itemCount,
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) => Container(
-                margin: EdgeInsets.only(bottom: 16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                child: Text(
+                  'ĐÁNH GIÁ',
+                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              ListView.builder(
+                itemCount: itemCount,
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) => Container(
+                    margin: EdgeInsets.only(bottom: 16.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        GestureDetector(
-                          child: ClipOval(
-                            child: Image.asset(
-                              index % 2 == 0
-                                  ? 'assets/images/cat.jpg'
-                                  : 'assets/images/dog.jpg',
-                              fit: BoxFit.cover,
-                              width: 40.0,
-                              height: 40.0,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            GestureDetector(
+                              child: ClipOval(
+                                child: Image.asset(
+                                  index % 2 == 0
+                                      ? 'assets/images/cat.jpg'
+                                      : 'assets/images/dog.jpg',
+                                  fit: BoxFit.cover,
+                                  width: 40.0,
+                                  height: 40.0,
+                                ),
+                              ),
+                              onTap: () {
+                                navigateToUserPage();
+                              },
                             ),
-                          ),
-                          onTap: () {
-                            navigateToUserPage();
-                          },
-                        ),
-                        Container(
-                          width: widthRating,
-                          margin: EdgeInsets.only(left: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .spaceBetween,
+                            Container(
+                              width: widthRating,
+                              margin: EdgeInsets.only(left: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  GestureDetector(
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .spaceBetween,
+                                    children: <Widget>[
+                                      GestureDetector(
+                                        child: Text(
+                                          index % 2 == 0
+                                              ? 'Trần Văn Mèo'
+                                              : 'Nguyễn Thị Cún',
+                                          style: TextStyle(
+                                              color: colorActive,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12
+                                          ),
+                                        ),
+                                        onTap: (){
+                                          navigateToUserPage();
+                                        },
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Icon(
+                                          Icons.more_vert,
+                                          color: colorInactive,
+                                          size: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 4.0),
+                                    child: SmoothStarRating(
+                                      starCount: index % 2 == 0 ? 5 : 4,
+                                      size: 16.0,
+                                      rating: 5,
+                                      color: Colors.yellow,
+                                      borderColor: Colors.yellow,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Text(
                                       index % 2 == 0
-                                          ? 'Trần Văn Mèo'
-                                          : 'Nguyễn Thị Cún',
+                                          ? 'Ngon bổ rẻ'
+                                          : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
                                       style: TextStyle(
-                                          color: colorActive,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 12
-                                      ),
+                                          color: Colors.black,
+                                          fontSize: 12),
                                     ),
-                                    onTap: (){
-                                      navigateToUserPage();
-                                    },
                                   ),
-                                  GestureDetector(
-                                    onTap: () {},
-                                    child: Icon(
-                                      Icons.more_vert,
-                                      color: colorInactive,
-                                      size: 15,
-                                    ),
+                                  Text(
+                                    '22:22 PM - 22/2/2022',
+                                    style: TextStyle(
+                                        color: colorInactive,
+                                        fontStyle: FontStyle.italic,
+                                        fontSize: 10),
+                                    textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin: EdgeInsets.only(top: 4.0),
-                                child: SmoothStarRating(
-                                  starCount: index % 2 == 0 ? 5 : 4,
-                                  size: 16.0,
-                                  rating: 5,
-                                  color: Colors.yellow,
-                                  borderColor: Colors.yellow,
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 8.0),
-                                child: Text(
-                                  index % 2 == 0
-                                      ? 'Ngon bổ rẻ'
-                                      : "Likeeeeeeeeeee!!!!!!!!!!!!!!!!!!! Ủng hộ shop !! Yêu shop !!!!!!!!!!",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12),
-                                ),
-                              ),
-                              Text(
-                                '22:22 PM - 22/2/2022',
-                                style: TextStyle(
-                                    color: colorInactive,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 10),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                        index != itemCount - 1
+                            ? Container(
+                          margin: EdgeInsets.only(top: 16.0, right: 16.0),
+                          height: 0.5,
+                          width: double.infinity,
+                          color: colorInactive,
+                        )
+                            : Container(),
                       ],
-                    ),
-                    index != itemCount - 1
-                        ? Container(
-                            margin: EdgeInsets.only(top: 16.0, right: 16.0),
-                            height: 0.5,
-                            width: double.infinity,
-                            color: colorInactive,
-                          )
-                        : Container(),
-                  ],
-                )),
-          ),
-          GestureDetector(
-            child: Container(
-              margin: EdgeInsets.only(left: 50, bottom: 10.0, top: 5.0),
-              child: Text(
-                'Xem tất cả',
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w500),
+                    )),
               ),
-            ),
-            onTap: () {
-              _showRatingList(context);
-            },
-          ),
-          GestureDetector(
-            child: Center(
-              child: Container(
-                margin: EdgeInsets.only(top: 10.0, bottom: 16.0),
-                width: widthComment,
-                height: 40,
-                decoration: BoxDecoration(
-                    color: colorActive,
-                    border: Border.all(color: colorComment),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                child: Center(
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.only(left: 50, bottom: 10.0, top: 5.0),
                   child: Text(
-                    'Đánh giá',
+                    'Xem tất cả',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14),
+                        color: Colors.blue,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
+                onTap: () {
+                  _showRatingList(context);
+                },
               ),
-            ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AuthenticationPage(2)));
-              //popupRating();
-            },
+              GestureDetector(
+                child: Center(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.0, bottom: 16.0),
+                    width: widthComment,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: colorActive,
+                        border: Border.all(color: colorComment),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    child: Center(
+                      child: Text(
+                        'Đánh giá',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => AuthenticationPage(2)));
+                  //popupRating();
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

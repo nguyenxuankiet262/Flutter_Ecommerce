@@ -6,6 +6,7 @@ import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
+import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/user_state.dart';
@@ -25,6 +26,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
 
   UserBloc userBloc;
   ApiBloc apiBloc;
+  LoadingBloc loadingBloc;
 
   GlobalKey<EasyRefreshState> _easyRefreshKey =
       new GlobalKey<EasyRefreshState>();
@@ -52,6 +54,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
     });
     userBloc = BlocProvider.of<UserBloc>(context);
     apiBloc = BlocProvider.of<ApiBloc>(context);
+    loadingBloc = BlocProvider.of<LoadingBloc>(context);
   }
 
   @override
@@ -321,10 +324,11 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                           ],
                         ),
                         onRefresh: () async {
+                          loadingBloc.changeLoadingCart(true);
                           apiBloc.changeCart(null);
                           await new Future.delayed(
                               const Duration(seconds: 1), () {
-                            fetchCartByUserId(apiBloc, "5ccbeef21d3ee00017f572cd");
+                            fetchCartByUserId(apiBloc, loadingBloc, "5ccbeef21d3ee00017f572cd");
                             BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
                           });
                         },

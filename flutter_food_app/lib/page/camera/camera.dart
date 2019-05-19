@@ -9,7 +9,6 @@ import 'info/info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
-import 'package:custom_multi_image_picker/custom_multi_image_picker.dart';
 
 class CameraPage extends StatefulWidget {
   @override
@@ -24,7 +23,6 @@ class CameraPageState extends State<CameraPage> {
   bool isNext = false;
   bool isRearCamera = true;
   String imagePath = "";
-  List<Asset> images = List<Asset>();
   DetailCameraBloc blocProvider;
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
@@ -72,39 +70,6 @@ class CameraPageState extends State<CameraPage> {
     controller?.dispose();
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     super.dispose();
-  }
-
-  Future<void> loadAssets() async {
-    setState(() {
-      images = List<Asset>();
-    });
-
-    List<Asset> resultList;
-
-    try {
-      resultList = await MultiImagePicker.pickImages(
-        maxImages: 10,
-      );
-    } on PlatformException catch (e) {
-      print(e.message);
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      images = resultList;
-    });
-    if (images.length > 0) {
-      _onSuccess();
-      List<String> temp = blocProvider.currentState.imagePaths;
-      for (int i = 0; i < images.length; i++) {
-        temp.add(images[i].filePath);
-      }
-      blocProvider.changeImageList(temp);
-    }
   }
 
   @override
@@ -227,7 +192,9 @@ class CameraPageState extends State<CameraPage> {
             color: Colors.white,
             size: 24,
           ),
-          onTap: loadAssets,
+          onTap: (){
+
+          },
         ),
         GestureDetector(
             child: Icon(

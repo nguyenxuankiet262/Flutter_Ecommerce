@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -22,6 +24,7 @@ class LoginPageState extends State<LoginPage> {
   String usernameInput = "";
   String passwordInput = "";
   bool isType = false;
+  ApiBloc apiBloc;
 
   final myControllerUserName = new TextEditingController();
   final myControllerPassword = new TextEditingController();
@@ -42,6 +45,7 @@ class LoginPageState extends State<LoginPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     userBloc = BlocProvider.of<UserBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
 
@@ -71,22 +75,16 @@ class LoginPageState extends State<LoginPage> {
 
   _checkAuthen() {
     _showLoading();
-    if (usernameInput == "kiki123" && passwordInput == "123456") {
-      Future.delayed(const Duration(seconds: 2), () async {
+    checkLogin(apiBloc, usernameInput, passwordInput);
+    Future.delayed(const Duration(seconds: 2), () async {
+      Navigator.pop(context);
+      userBloc.login();
+      if (widget._index == 0) {
         Navigator.pop(context);
-        userBloc.login();
-        if (widget._index == 0) {
-          Navigator.pop(context);
-        } else if (widget._index == 1) {
-          functionBloc.currentState.navigateToInfoPost();
-        }
-      });
-    } else {
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pop(context);
-        Toast.show("Sai tài khoản hoặc mật khẩu", context);
-      });
-    }
+      } else if (widget._index == 1) {
+        functionBloc.currentState.navigateToInfoPost();
+      }
+    });
   }
 
   @override
@@ -183,7 +181,7 @@ class LoginPageState extends State<LoginPage> {
                                       });
                                     },
                                     inputFormatters: [
-                                      LengthLimitingTextInputFormatter(10)
+                                      LengthLimitingTextInputFormatter(15)
                                     ],
                                     controller: myControllerUserName,
                                     decoration: InputDecoration(

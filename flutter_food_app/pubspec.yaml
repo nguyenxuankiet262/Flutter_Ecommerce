@@ -31,7 +31,6 @@ dependencies:
   shimmer: ^1.0.0
   flutter_xlider: ^2.2.0
   path_provider: ^0.5.0+1
-  custom_multi_image_picker: ^2.1.24
   flutter_inner_drawer: ^0.2.5
   http: ^0.12.0+2
   flutter_spinkit: ^3.1.0
@@ -53,8 +52,6 @@ flutter:
     - assets/images/banner_1.jpg
     - assets/images/banner_2.jpg
     - assets/images/banner_3.jpg
-    - assets/images/icon_heartbreak.png
-    - assets/images/icon_notification.png
     - assets/images/logo.png
     - assets/images/icon_signin.png
 
@@ -63,18 +60,27 @@ flutter:
 
     - assets/images/discount_icon.png
 
-    - assets/images/cat.jpg
     - assets/images/dog.jpg
-
-    - assets/images/flan.jpg
-    - assets/images/tiramisu.jpg
-    - assets/images/cheese.jpg
-    - assets/images/cherry.jpg
 
     - assets/images/gifs/relax.gif
   #Data
     - assets/datas/vn_province.json
   fonts:
+    - family: box
+      fonts:
+        - asset: assets/fonts/icons/box_icons.ttf
+    - family: user
+      fonts:
+        - asset: assets/fonts/icons/user_icons.ttf
+    - family: notification
+      fonts:
+        - asset: assets/fonts/icons/notification_icons.ttf
+    - family: cart
+      fonts:
+        - asset: assets/fonts/icons/cart_icons.ttf
+    - family: home
+      fonts:
+        - asset: assets/fonts/icons/home_icons.ttf
     - family: Montserrat
       fonts:
         - asset: assets/fonts/montserrat/Montserrat-Regular.ttf

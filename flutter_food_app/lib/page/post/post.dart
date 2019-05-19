@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyrefresh/delivery_header.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_slider_post.dart';
+import 'package:shimmer/shimmer.dart';
 import 'slider.dart';
 import 'body.dart';
 import 'rating.dart';
@@ -36,6 +39,12 @@ class PostState extends State<Post> {
   UserBloc userBloc;
   FunctionBloc functionBloc;
   ApiBloc apiBloc;
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshHeaderState> _headerKey =
+      new GlobalKey<RefreshHeaderState>();
+  GlobalKey<RefreshHeaderState> _connectorHeaderKey =
+      new GlobalKey<RefreshHeaderState>();
 
   @override
   void initState() {
@@ -289,18 +298,75 @@ class PostState extends State<Post> {
               ],
             ),
             body: Container(
-              color: colorBackground,
-              child: ListView(
-                children: <Widget>[
-                  state.product == null
-                      ? ShimmerSliderPost()
-                      : CarouselWithIndicator(),
-                  PostBody(),
-                  CommentPost(),
-                  RelativePost(),
-                ],
-              ),
-            ),
+                color: colorBackground,
+                child: EasyRefresh(
+                  key: _easyRefreshKey,
+                  refreshHeader: ConnectorHeader(
+                      key: _connectorHeaderKey,
+                      header: DeliveryHeader(key: _headerKey)),
+                  child: CustomScrollView(
+                    slivers: <Widget>[
+                      SliverList(
+                        delegate: SliverChildListDelegate(
+                            <Widget>[DeliveryHeader(key: _headerKey)]),
+                      ),
+                      SliverList(
+                        delegate: SliverChildListDelegate(<Widget>[
+                          state.product == null
+                              ? ShimmerSliderPost()
+                              : CarouselWithIndicator(),
+                          state.product == null
+                              ? Shimmer.fromColors(
+                                  baseColor: Colors.grey[300],
+                                  highlightColor: Colors.grey[100],
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 50,
+                                        width: double.infinity,
+                                        padding: EdgeInsets.only(
+                                            bottom: 12.0, left: 15.0, right: 15.0, top: 15.0),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(10.0),
+                                                bottomRight: Radius.circular(10.0))),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 400,
+                                        padding: EdgeInsets.all(16.0),
+                                        margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                )
+                              : ListView(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  children: <Widget>[
+                                    PostBody(),
+                                    CommentPost(),
+                                    RelativePost(),
+                                  ],
+                                )
+                        ]),
+                      ),
+                    ],
+                  ),
+                  onRefresh: () async {
+                    apiBloc.changeProduct(null);
+                    await new Future.delayed(const Duration(seconds: 1), () {
+                      fetchProductById(apiBloc, widget._idPost);
+                    });
+                  },
+                )),
             bottomNavigationBar: state.product == null
                 ? Container(
                     height: 0,

@@ -5,6 +5,7 @@ import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
@@ -16,12 +17,14 @@ class HeaderDetail extends StatefulWidget {
 class HeaderDetailState extends State<HeaderDetail> {
   DetailPageBloc detailPageBloc;
   ApiBloc apiBloc;
+  LoadingBloc loadingBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     apiBloc = BlocProvider.of<ApiBloc>(context);
+    loadingBloc = BlocProvider.of<LoadingBloc>(context);
     detailPageBloc = BlocProvider.of<DetailPageBloc>(context);
   }
 
@@ -45,9 +48,10 @@ class HeaderDetailState extends State<HeaderDetail> {
                   itemCount: state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu.length - 1,
                   itemBuilder: (BuildContext context, int index) => GestureDetector(
                     onTap: () {
+                      loadingBloc.changeLoadingDetail(true);
                       apiBloc.changeListProduct([]);
                       detailPageBloc.changeCategory(detailPageBloc.currentState.indexCategory, index + 1);
-                      fetchProductOfChildMenu(apiBloc, state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[index + 1].id);
+                      fetchProductOfChildMenu(apiBloc, loadingBloc, state.listMenu[detailPageBloc.currentState.indexCategory].listChildMenu[index + 1].id);
                       BlocProvider.of<FunctionBloc>(context).currentState.isLoading();
                     },
                     child: Container(

@@ -299,16 +299,16 @@ class InfoPageState extends State<InfoPage> with AutomaticKeepAliveClientMixin {
                                 ],
                               ),
                               onRefresh: () async {
-                                apiBloc.changeMainUser(null);
-                                await new Future.delayed(
-                                    const Duration(seconds: 1), () {
-                                  fetchUserById(
-                                      apiBloc,
-                                      idUser,
-                                      widget.isAnother);
-                                  BlocProvider.of<BottomBarBloc>(context)
-                                      .changeVisible(true);
-                                });
+                                if(!widget.isAnother) {
+                                  apiBloc.changeMainUser(null);
+                                  await new Future.delayed(
+                                      const Duration(seconds: 1), () {
+                                    fetchUserById(
+                                        apiBloc, idUser, false, 1, 10);
+                                    BlocProvider.of<BottomBarBloc>(context)
+                                        .changeVisible(true);
+                                  });
+                                }
                               },
                             ),
                           ],

@@ -13,11 +13,10 @@ class Product {
   String idUser;
   DateTime date;
   User user;
-
-
+  List<Product> relativeProduct;
 
   Product({this.id, this.images, this.proved, this.status, this.name,
-      this.idType, this.description, this.initPrice, this.currentPrice, this.idUser, this.date, this.user});
+      this.idType, this.description, this.initPrice, this.currentPrice, this.idUser, this.date, this.user, this.relativeProduct});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
