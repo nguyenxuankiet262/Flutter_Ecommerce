@@ -23,7 +23,7 @@ class CategoryRadioState extends State<CategoryRadio> {
     // TODO: implement initState
     super.initState();
     apiBloc = BlocProvider.of<ApiBloc>(context);
-    for (int i = 1; i < apiBloc.currentState.listMenu.length; i++) {
+    for (int i = 0; i < apiBloc.currentState.listMenu.length; i++) {
       categories.add(new CategoryModel(apiBloc.currentState.listMenu[i].link, apiBloc.currentState.listMenu[i].name));
     }
     SchedulerBinding.instance.addPostFrameCallback((_) {

@@ -11,8 +11,24 @@ class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
     dispatch(ChangeLoadingCart(isLoading));
   }
 
-  void changeLoadingNoti(bool isLoading) {
-    dispatch(ChangeLoadingNoti(isLoading));
+  void changeLoadingPostManage(bool isLoading) {
+    dispatch(ChangeLoadingPostManage(isLoading));
+  }
+
+  void changeLoadingFavManage(bool isLoading) {
+    dispatch(ChangeLoadingFavManage(isLoading));
+  }
+
+  void changeLoadingSearch(bool isLoading) {
+    dispatch(ChangeLoadingSearch(isLoading));
+  }
+
+  void changeLoadingSysNoti(bool isLoading) {
+    dispatch(ChangeLoadSysNoti(isLoading));
+  }
+
+  void changeLoadingFollowNoti(bool isLoading) {
+    dispatch(ChangeLoadFollowNoti(isLoading));
   }
 
   @override
@@ -27,21 +43,80 @@ class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       yield LoadingState(
         loadingDetail: event.isLoading,
         loadingCart: currentState.loadingCart,
-        loadingNoti: currentState.loadingNoti
+        loadingPostManage: currentState.loadingPostManage,
+        loadingFavManage: currentState.loadingFavManage,
+        loadingSearch: currentState.loadingSearch,
+        loadingSysNoti: currentState.loadingSysNoti,
+        loadingFollowNoti: currentState.loadingFollowNoti,
       );
     }
     if (event is ChangeLoadingCart) {
       yield LoadingState(
-          loadingDetail: currentState.loadingDetail,
-          loadingCart: event.isLoading,
-          loadingNoti: currentState.loadingNoti
+        loadingDetail: currentState.loadingDetail,
+        loadingCart: event.isLoading,
+        loadingPostManage: currentState.loadingPostManage,
+        loadingFavManage: currentState.loadingFavManage,
+        loadingSearch: currentState.loadingSearch,
+        loadingSysNoti: currentState.loadingSysNoti,
+        loadingFollowNoti: currentState.loadingFollowNoti,
       );
     }
-    if (event is ChangeLoadingNoti) {
+    if (event is ChangeLoadingPostManage) {
       yield LoadingState(
-          loadingDetail: currentState.loadingDetail,
-          loadingCart: currentState.loadingCart,
-          loadingNoti: event.isLoading,
+        loadingDetail: currentState.loadingDetail,
+        loadingCart: currentState.loadingCart,
+        loadingPostManage: event.isLoading,
+        loadingFavManage: currentState.loadingFavManage,
+        loadingSearch: currentState.loadingSearch,
+        loadingSysNoti: currentState.loadingSysNoti,
+        loadingFollowNoti: currentState.loadingFollowNoti,
+      );
+    }
+    if (event is ChangeLoadingFavManage) {
+      yield LoadingState(
+        loadingDetail: currentState.loadingDetail,
+        loadingCart: currentState.loadingCart,
+        loadingPostManage: currentState.loadingPostManage,
+        loadingFavManage: event.isLoading,
+        loadingSearch: currentState.loadingSearch,
+        loadingSysNoti: currentState.loadingSysNoti,
+        loadingFollowNoti: currentState.loadingFollowNoti,
+      );
+    }
+
+    if (event is ChangeLoadingSearch) {
+      yield LoadingState(
+        loadingDetail: currentState.loadingDetail,
+        loadingCart: currentState.loadingCart,
+        loadingPostManage: currentState.loadingPostManage,
+        loadingFavManage: currentState.loadingFavManage,
+        loadingSearch: event.isLoading,
+        loadingSysNoti: currentState.loadingSysNoti,
+        loadingFollowNoti: currentState.loadingFollowNoti,
+      );
+    }
+
+    if (event is ChangeLoadSysNoti) {
+      yield LoadingState(
+        loadingDetail: currentState.loadingDetail,
+        loadingCart: currentState.loadingCart,
+        loadingPostManage: currentState.loadingPostManage,
+        loadingFavManage: currentState.loadingFavManage,
+        loadingSearch: currentState.loadingFollowNoti,
+        loadingSysNoti: event.isLoading,
+        loadingFollowNoti: currentState.loadingFollowNoti,
+      );
+    }
+
+    if (event is ChangeLoadFollowNoti) {
+      yield LoadingState(
+        loadingDetail: currentState.loadingDetail,
+        loadingCart: currentState.loadingCart,
+        loadingPostManage: currentState.loadingPostManage,
+        loadingFavManage: currentState.loadingFavManage,
+        loadingSearch: currentState.loadingSearch,
+        loadingSysNoti: currentState.loadingSysNoti,
+        loadingFollowNoti: event.isLoading,
       );
     }
   }

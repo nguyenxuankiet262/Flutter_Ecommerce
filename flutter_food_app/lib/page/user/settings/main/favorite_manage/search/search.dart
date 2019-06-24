@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/state/text_search_state.dart';
-import 'package:flutter_food_app/const/color_const.dart';
 import 'list_search_post.dart';
 
 class SearchPage extends StatefulWidget {
@@ -10,18 +9,45 @@ class SearchPage extends StatefulWidget {
   State<StatefulWidget> createState() => SearchPageState();
 }
 
-class SearchPageState extends State<SearchPage> {
+class SearchPageState extends State<SearchPage>
+    with AutomaticKeepAliveClientMixin {
+  SearchInputBloc searchInputBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    searchInputBloc = BlocProvider.of<SearchInputBloc>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return BlocBuilder(
-        bloc: BlocProvider.of<SearchInputBloc>(context),
-        builder: (context, TextSearchState state) {
-          return state.searchInput.isNotEmpty
-              ? ListSearchPost()
-              : Container(
-            color: colorBackground,
-          );
-        });
+      bloc: searchInputBloc,
+      builder: (context, TextSearchState state) {
+        return Scaffold(
+            resizeToAvoidBottomPadding: false,
+            backgroundColor: Colors.black54,
+            body: state.searchInput.isNotEmpty
+                ? GestureDetector(
+                    child: ListSearchPost(),
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                    },
+                  )
+                : Container(
+                    color: Colors.transparent,
+                    height: MediaQuery.of(context).size.height,
+                    child: ListView(
+                      shrinkWrap: true,
+                    ),
+                  ));
+      },
+    );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

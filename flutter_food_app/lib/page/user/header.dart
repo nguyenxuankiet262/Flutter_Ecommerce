@@ -5,12 +5,9 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:toast/toast.dart';
 
 class Header extends StatefulWidget {
-  final bool isAnother;
-
-  Header(this.isAnother);
-
   @override
   State<StatefulWidget> createState() => HeaderState();
 }
@@ -77,11 +74,9 @@ class HeaderState extends State<Header> {
                           child: Column(
                             children: <Widget>[
                               Text(
-                                widget.isAnother
-                                    ? 'Lò Thị Chó'
-                                    : state.mainUser == null
-                                        ? ""
-                                        : state.mainUser.name,
+                                state.mainUser == null
+                                    ? ""
+                                    : state.mainUser.name,
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 17.0,
@@ -90,7 +85,8 @@ class HeaderState extends State<Header> {
                               SmoothStarRating(
                                 starCount: 5,
                                 size: 20.0,
-                                rating: 4,
+                                allowHalfRating: false,
+                                rating: state.mainUser == null ? 0 : state.mainUser.rate,
                                 color: Colors.yellow,
                                 borderColor: Colors.yellow,
                               ),
@@ -116,15 +112,14 @@ class HeaderState extends State<Header> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  GestureDetector(
+                                  Expanded(
                                     child: Container(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 0.0),
+                                      color: Colors.transparent,
                                       width: widthColumn,
                                       child: Column(
                                         children: <Widget>[
                                           Text(
-                                            '11',
+                                            state.mainUser != null && state.mainUser.amountPost != null ? state.mainUser.amountPost.toString() : "0",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 17,
@@ -141,63 +136,82 @@ class HeaderState extends State<Header> {
                                         ],
                                       ),
                                     ),
+                                    flex: 1,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      functionBloc.currentState
-                                          .navigateToFollow(1);
-                                    },
-                                    child: Container(
-                                      width: widthColumn,
-                                      child: Column(
-                                        children: <Widget>[
-                                          Text(
-                                            '15',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if(state.mainUser != null) {
+                                          functionBloc.currentState
+                                              .navigateToFollow(1);
+                                        }
+                                        else{
+                                          Toast.show("Đang tải dữ liệu!", context);
+                                        }
+                                      },
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        width: widthColumn,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              state.mainUser != null && state.mainUser.amountFollowed != null ? state.mainUser.amountFollowed.toString() : "0",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            'người theo dõi',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: colorText, fontSize: 12),
-                                          ),
-                                        ],
+                                            Text(
+                                              'người theo dõi',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: colorText, fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
+                                    flex: 1,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      functionBloc.currentState
-                                          .navigateToFollow(2);
-                                    },
-                                    child: Container(
-                                      width: widthColumn,
-                                      child: Column(
-                                        children: <Widget>[
-                                          Text(
-                                            '15M',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        if(state.mainUser != null) {
+                                          functionBloc.currentState
+                                              .navigateToFollow(2);
+                                        }
+                                        else{
+                                          Toast.show("Đang tải dữ liệu!", context);
+                                        }
+                                      },
+                                      child: Container(
+                                        color: Colors.transparent,
+                                        width: widthColumn,
+                                        child: Column(
+                                          children: <Widget>[
+                                            Text(
+                                              state.mainUser != null && state.mainUser.amountFollowing != null ? state.mainUser.amountFollowing.toString() : "0",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            'đang theo dõi',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: colorText, fontSize: 12),
-                                          ),
-                                        ],
+                                            Text(
+                                              'đang theo dõi',
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: colorText, fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                    flex: 1,
+                                  )
                                 ],
                               ),
                             ],

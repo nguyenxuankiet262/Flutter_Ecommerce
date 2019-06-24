@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/api_bloc.dart';
+import 'package:flutter_food_app/common/bloc/product_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 
 List<T> map<T>(List list, Function handler) {
@@ -20,15 +20,15 @@ class CarouselWithIndicator extends StatefulWidget {
 
 class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   int _current = 0;
-  ApiBloc apiBloc;
+  ProductBloc productBloc;
   List child;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    apiBloc = BlocProvider.of<ApiBloc>(context);
-    child = map<Widget>(apiBloc.currentState.product.images, (index, i) {
+    productBloc = BlocProvider.of<ProductBloc>(context);
+    child = map<Widget>(productBloc.currentState.product.images, (index, i) {
       return Stack(
         children: <Widget>[
           Image.network(
@@ -65,7 +65,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
             right: 0.0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: map<Widget>(apiBloc.currentState.product.images, (index, url) {
+              children: map<Widget>(productBloc.currentState.product.images, (index, url) {
                 return Container(
                   width: 8.0,
                   height: 8.0,
@@ -77,7 +77,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                 );
               }),
             )),
-        Helper().onCalculatePercentDiscount(apiBloc.currentState.product.initPrice, apiBloc.currentState.product.currentPrice) == "0%"
+        Helper().onCalculatePercentDiscount(productBloc.currentState.product.initPrice, productBloc.currentState.product.currentPrice) == "0%"
         ? Container()
         : Positioned(
           top: 0.0,
@@ -101,7 +101,7 @@ class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
                       ),
                     ),
                     Text(
-                      Helper().onCalculatePercentDiscount(apiBloc.currentState.product.initPrice, apiBloc.currentState.product.currentPrice),
+                      Helper().onCalculatePercentDiscount(productBloc.currentState.product.initPrice, productBloc.currentState.product.currentPrice),
                       style: TextStyle(
                           color: Colors.yellow,
                           fontWeight: FontWeight.w600,

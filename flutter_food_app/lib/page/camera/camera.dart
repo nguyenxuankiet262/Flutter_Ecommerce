@@ -4,13 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
+import 'package:flutter_food_app/common/bloc/info_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'info/info.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 
 class CameraPage extends StatefulWidget {
+  //code 0 : ảnh trong đăng bài
+  //code 1 : avatar
+  //code 2 : ảnh bìa
+  final int code;
+  CameraPage(this.code);
   @override
   State<StatefulWidget> createState() => CameraPageState();
 }
@@ -23,9 +29,10 @@ class CameraPageState extends State<CameraPage> {
   bool isNext = false;
   bool isRearCamera = true;
   String imagePath = "";
-  DetailCameraBloc blocProvider;
-
+  DetailCameraBloc detailCameraBloc;
+  InfoBloc infoBloc;
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
+  Map<String, String> _paths;
 
   _onSuccess() {
     showDialog(
@@ -43,8 +50,11 @@ class CameraPageState extends State<CameraPage> {
     new Future.delayed(new Duration(seconds: 2), () {
       Navigator.pop(context); //pop dialog
       new Future.delayed(new Duration(seconds: 1), () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InfoPost()));
+        if(widget.code == 0) {
+          Navigator.pop(context);
+        }else{
+          Navigator.pop(context);
+        }
       });
     });
   }
@@ -53,7 +63,8 @@ class CameraPageState extends State<CameraPage> {
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    blocProvider = BlocProvider.of<DetailCameraBloc>(context);
+    detailCameraBloc = BlocProvider.of<DetailCameraBloc>(context);
+    infoBloc = BlocProvider.of<InfoBloc>(context);
     controller = CameraController(
         BlocProvider.of<CameraBloc>(context).currentState.cameras[0],
         ResolutionPreset.high);
@@ -64,6 +75,7 @@ class CameraPageState extends State<CameraPage> {
       setState(() {});
     });
   }
+
 
   @override
   void dispose() {
@@ -168,17 +180,49 @@ class CameraPageState extends State<CameraPage> {
           ),
           onTap: () {
             if (isNext) {
-              List<String> temp = blocProvider.currentState.imagePaths;
-              temp.add(imagePath);
-              blocProvider.changeImageList(temp);
+              if(widget.code == 0) {
+                List<String> temp = detailCameraBloc.currentState.imagePaths;
+                temp.add(imagePath);
+                detailCameraBloc.changeImageList(temp);
+              }
+              else if(widget.code == 1){
+                infoBloc.changeAvatar(imagePath);
+              }
+              else{
+                infoBloc.changeCover(imagePath);
+              }
               imagePath = "";
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => InfoPost()));
+              Navigator.pop(context);
             }
           },
         ),
       ],
     );
+  }
+
+  void _openFileExplorer() async {
+    try {
+      _paths = await FilePicker.getMultiFilePath(type: FileType.CUSTOM, fileExtension: 'jpg');
+    } on PlatformException catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+    if (!mounted) return;
+    if(_paths.isNotEmpty) {
+      if(widget.code == 0) {
+        List<String> temp = detailCameraBloc.currentState.imagePaths;
+        for (int i = 0; i < _paths.length; i++) {
+          temp.add(_paths.values.toList()[i].toString());
+        }
+        detailCameraBloc.changeImageList(temp);
+      }
+      else if(widget.code == 1){
+        infoBloc.changeAvatar(_paths.values.toList()[0].toString());
+      }
+      else{
+        infoBloc.changeCover(_paths.values.toList()[0].toString());
+      }
+      _onSuccess();
+    }
   }
 
   Widget _captureControlRowBottomWidget() {
@@ -192,9 +236,7 @@ class CameraPageState extends State<CameraPage> {
             color: Colors.white,
             size: 24,
           ),
-          onTap: (){
-
-          },
+          onTap: _openFileExplorer,
         ),
         GestureDetector(
             child: Icon(

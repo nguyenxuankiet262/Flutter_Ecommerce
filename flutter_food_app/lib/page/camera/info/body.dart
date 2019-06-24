@@ -3,18 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_food_app/page/camera/info/option.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:toast/toast.dart';
 import 'detail/category.dart';
 
 import 'row.dart';
 
 List<String> nameMenu = [
   "Danh mục",
-  "Giá trước khi giảm",
-  "Giá sau khi giảm",
+  "Giá khởi tạo",
+  "Giá hiện tại",
   "Đơn vị",
-  "Địa chỉ",
-  "Số điện thoại"
 ];
 
 class BodyInfo extends StatefulWidget {
@@ -22,9 +22,9 @@ class BodyInfo extends StatefulWidget {
   State<StatefulWidget> createState() => BodyInfoState();
 }
 
+GlobalKey<OptionStateDialog> globalKey = GlobalKey();
+
 class BodyInfoState extends State<BodyInfo> {
-  String titleInput = "";
-  String contentInput = "";
   TextEditingController myControllerTitle;
   TextEditingController myControllerContent;
   DetailCameraBloc blocProvider;
@@ -33,10 +33,8 @@ class BodyInfoState extends State<BodyInfo> {
   void initState() {
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
-    myControllerTitle =
-        new TextEditingController(text: blocProvider.currentState.title);
-    myControllerContent =
-        new TextEditingController(text: blocProvider.currentState.content);
+    myControllerTitle = new TextEditingController();
+    myControllerContent = new TextEditingController();
     myControllerTitle.addListener(_changeTitleInput);
     myControllerContent.addListener(_changeContentInput);
   }
@@ -51,16 +49,54 @@ class BodyInfoState extends State<BodyInfo> {
 
   _changeTitleInput() {
     setState(() {
-      titleInput = myControllerTitle.text;
       blocProvider.changeTitle(myControllerTitle.text);
     });
   }
 
   _changeContentInput() {
     setState(() {
-      contentInput = myControllerContent.text;
       blocProvider.changeContent(myControllerContent.text);
     });
+  }
+
+  _showOptionsPop() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Chọn đơn vị"
+            ),
+            content: Container(
+                height: 150,
+                width: 100,
+                child: OptionDialog(key: globalKey),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("Hủy"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                  child: new Text(
+                    "Chấp nhận",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onPressed: () {
+                    if(globalKey.currentState.text != "") {
+                      blocProvider.changeUnit(globalKey.currentState.text);
+                      Navigator.pop(context);
+                    }
+                    else{
+                      Toast.show("Vui lòng nhập đơn vị!", context, gravity: Toast.CENTER);
+                    }
+                  }),
+            ],
+          );
+        });
   }
 
   @override
@@ -79,42 +115,44 @@ class BodyInfoState extends State<BodyInfo> {
             padding: EdgeInsets.only(bottom: 16.0, right: 16.0, left: 16.0),
             child: Text(
               "Tiêu đề bài viết",
-              style: TextStyle(fontFamily: "Ralway", fontWeight: FontWeight.w500,),
+              style: TextStyle(
+                fontFamily: "Ralway",
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           TextField(
             inputFormatters: [LengthLimitingTextInputFormatter(100)],
             controller: myControllerTitle,
+            textCapitalization: TextCapitalization.sentences,
             textAlign: TextAlign.start,
             maxLines: 1,
             decoration: new InputDecoration(
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.only(top: 16.0, left: 16.0, bottom: 16.0),
-                hintText: 'Nhập tiêu đề bài viết',
-                hintStyle: TextStyle(
-                    fontFamily: "Ralway", fontSize: 14, color: colorInactive),
-                filled: true,
-                fillColor: Colors.white,
-              suffixIcon: titleInput.isEmpty
+              border: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.only(top: 16.0, left: 16.0, bottom: 16.0),
+              hintText: 'Nhập tiêu đề bài viết',
+              hintStyle: TextStyle(
+                  fontFamily: "Ralway", fontSize: 14, color: colorInactive),
+              filled: true,
+              fillColor: Colors.white,
+              suffixIcon: myControllerTitle.text.isEmpty
                   ? null
                   : GestureDetector(
-                onTap: () {
-                  setState(() {
-                    titleInput = "";
-                    myControllerTitle.clear();
-                    blocProvider.changeTitle(myControllerTitle.text);
-                  });
-                },
-                child: Container(
-                  color: Colors.white,
-                  child: Icon(
-                    FontAwesomeIcons
-                        .solidTimesCircle,
-                    color: colorInactive,
-                    size: 15,
-                  ),
-                )
-              ),
+                      onTap: () {
+                        setState(() {
+                          myControllerTitle.clear();
+                          blocProvider.changeTitle(myControllerTitle.text);
+                        });
+                      },
+                      child: Container(
+                        color: Colors.white,
+                        child: Icon(
+                          FontAwesomeIcons.solidTimesCircle,
+                          color: colorInactive,
+                          size: 15,
+                        ),
+                      )),
             ),
             style: TextStyle(color: Colors.black, fontSize: 14),
             autofocus: false,
@@ -123,29 +161,28 @@ class BodyInfoState extends State<BodyInfo> {
             width: double.infinity,
             color: colorBackground,
             padding: EdgeInsets.all(16.0),
-            child: GestureDetector(
-              child: Text(
-                "Nội dung bài viết",
-                style: TextStyle(fontFamily: "Ralway",fontWeight: FontWeight.w500,),
+            child: Text(
+              "Nội dung bài viết",
+              style: TextStyle(
+                fontFamily: "Ralway",
+                fontWeight: FontWeight.w500,
               ),
-              onTap: (){
-                print(contentInput);
-              },
-            )
+            ),
           ),
           TextField(
             controller: myControllerContent,
             textAlign: TextAlign.start,
             maxLines: 10,
+            textCapitalization: TextCapitalization.sentences,
             decoration: new InputDecoration(
-                contentPadding: EdgeInsets.all(16.0),
-                border: InputBorder.none,
-                hintText: 'Nhập nội dung bài viết',
-                hintStyle: TextStyle(
-                    fontFamily: "Ralway", fontSize: 14, color: colorInactive),
-                filled: true,
-                fillColor: Colors.white,
-                helperText: "Xin vui lòng nhập rõ nội dung",
+              contentPadding: EdgeInsets.all(16.0),
+              border: InputBorder.none,
+              hintText: 'Nhập nội dung bài viết',
+              hintStyle: TextStyle(
+                  fontFamily: "Ralway", fontSize: 14, color: colorInactive),
+              filled: true,
+              fillColor: Colors.white,
+              helperText: "Xin vui lòng nhập rõ nội dung",
               helperStyle: TextStyle(
                   fontFamily: "Ralway", fontSize: 14, color: colorInactive),
             ),
@@ -174,11 +211,10 @@ class BodyInfoState extends State<BodyInfo> {
                         Text(
                           nameMenu[index],
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            fontFamily: "Ralway"
-                          ),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              fontFamily: "Ralway"),
                         ),
                         Container(
                           child: Row(
@@ -187,9 +223,11 @@ class BodyInfoState extends State<BodyInfo> {
                               Container(
                                   width: index != 4
                                       ? index == 0
-                                      ? MediaQuery.of(context).size.width * 2 / 3
-                                  : widthAddress - 18
-                                      : MediaQuery.of(context).size.width * 3 / 4,
+                                          ? MediaQuery.of(context).size.width *
+                                              2 /
+                                              3
+                                          : widthAddress - 18
+                                      : MediaQuery.of(context).size.width - 100,
                                   padding: EdgeInsets.only(right: 10.0),
                                   child: RowLayout(index)),
                               Icon(
@@ -213,6 +251,11 @@ class BodyInfoState extends State<BodyInfo> {
                           MaterialPageRoute(
                               builder: (context) => CategoryRadio()),
                         );
+                      }
+                      break;
+                    case 3:
+                      {
+                        _showOptionsPop();
                       }
                       break;
                   }

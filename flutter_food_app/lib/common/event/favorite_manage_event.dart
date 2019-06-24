@@ -7,8 +7,10 @@ class ChangeCategory extends FavoriteManageEvent{
 }
 
 class ChangeFilter extends FavoriteManageEvent{
-  final int filter;
-  ChangeFilter(this.filter);
+  final int min;
+  final int max;
+  final int code;
+  ChangeFilter(this.min, this.max, this.code);
 }
 
 class ChangeTempCategory extends FavoriteManageEvent{
@@ -18,6 +20,8 @@ class ChangeTempCategory extends FavoriteManageEvent{
 }
 
 class ChangeTempFilter extends FavoriteManageEvent{
-  final int tempFilter;
-  ChangeTempFilter(this.tempFilter);
+  final int tempMin;
+  final int tempMax;
+  final int tempCode;
+  ChangeTempFilter(this.tempMin, this.tempMax, this.tempCode);
 }

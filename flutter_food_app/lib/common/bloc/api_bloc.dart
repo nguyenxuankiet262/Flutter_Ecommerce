@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_food_app/api/model/banner.dart';
 import 'package:flutter_food_app/api/model/cart.dart';
-import 'package:flutter_food_app/api/model/child_menu.dart';
 import 'package:flutter_food_app/api/model/menu.dart';
 import 'package:flutter_food_app/api/model/product.dart';
 import 'package:flutter_food_app/api/model/user.dart';
@@ -12,20 +12,24 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     dispatch(ChangeListMenu(listMenu));
   }
 
-  void changeListProduct(List<Product> listProduct) {
-    dispatch(ChangeListProduct(listProduct));
-  }
-
-  void changeProduct(Product product) {
-    dispatch(ChangeProduct(product));
-  }
-
   void changeMainUser(User user) {
     dispatch(ChangeMainUser(user));
   }
 
   void changeCart(Cart cart) {
     dispatch(ChangeCart(cart));
+  }
+
+  void changeListBanner(List<Banners> listBanner) {
+    dispatch(ChangeListBanner(listBanner));
+  }
+
+  void changeTopNewest(List<Product> tenNewest) {
+    dispatch(ChangeTopTenNewest(tenNewest));
+  }
+
+  void changeTopFav(List<Product> tenMostFav) {
+    dispatch(ChangeTopTenFav(tenMostFav));
   }
 
   @override
@@ -39,46 +43,81 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
     if (event is ChangeListMenu) {
       yield ApiState(
         listMenu: event.listMenu,
-        listProduct: currentState.listProduct,
         cart: currentState.cart,
-        product: currentState.product,
         mainUser: currentState.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: currentState.tenMostFav,
       );
     }
     if (event is ChangeListProduct) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listProduct: event.listProduct,
         cart: currentState.cart,
-        product: currentState.product,
         mainUser: currentState.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: currentState.tenMostFav,
       );
     }
     if (event is ChangeProduct) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listProduct: currentState.listProduct,
         cart: currentState.cart,
-        product: event.product,
         mainUser: currentState.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: currentState.tenMostFav,
       );
     }
     if (event is ChangeMainUser) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listProduct: currentState.listProduct,
         cart: currentState.cart,
-        product: currentState.product,
         mainUser: event.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: currentState.tenMostFav,
       );
     }
     if (event is ChangeCart) {
       yield ApiState(
         listMenu: currentState.listMenu,
-        listProduct: currentState.listProduct,
         cart: event.cart,
-        product: currentState.product,
         mainUser: currentState.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: currentState.tenMostFav,
+      );
+    }
+    if (event is ChangeListBanner) {
+      yield ApiState(
+        listMenu: currentState.listMenu,
+        cart: currentState.cart,
+        mainUser: currentState.mainUser,
+        listBanner: event.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: currentState.tenMostFav,
+      );
+    }
+    if (event is ChangeTopTenNewest) {
+      yield ApiState(
+        listMenu: currentState.listMenu,
+        cart: currentState.cart,
+        mainUser: currentState.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: event.tenNewest,
+        tenMostFav: currentState.tenMostFav,
+      );
+    }
+    if (event is ChangeTopTenFav) {
+      yield ApiState(
+        listMenu: currentState.listMenu,
+        cart: currentState.cart,
+        mainUser: currentState.mainUser,
+        listBanner: currentState.listBanner,
+        tenNewest: currentState.tenNewest,
+        tenMostFav: event.tenMostFav,
       );
     }
   }

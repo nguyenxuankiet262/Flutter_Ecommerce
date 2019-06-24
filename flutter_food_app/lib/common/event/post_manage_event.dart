@@ -7,8 +7,10 @@ class ChangeCategory extends PostManageEvent{
 }
 
 class ChangeFilter extends PostManageEvent{
-  final int filter;
-  ChangeFilter(this.filter);
+  final int min;
+  final int max;
+  final int code;
+  ChangeFilter(this.min, this.max, this.code);
 }
 
 class ChangeTempCategory extends PostManageEvent{
@@ -18,6 +20,9 @@ class ChangeTempCategory extends PostManageEvent{
 }
 
 class ChangeTempFilter extends PostManageEvent{
-  final int tempFilter;
-  ChangeTempFilter(this.tempFilter);
+  final int tempMin;
+  final int tempMax;
+  final int tempCode;
+  ChangeTempFilter(this.tempMin, this.tempMax, this.tempCode);
 }
+

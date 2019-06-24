@@ -32,6 +32,7 @@ class DescriptionFeedbackState extends State<DescriptionFeedback>{
     // TODO: implement build
     return TextField(
       controller: myControllerContent,
+      textCapitalization: TextCapitalization.sentences,
       textAlign: TextAlign.start,
       maxLines: 10,
       decoration: new InputDecoration(

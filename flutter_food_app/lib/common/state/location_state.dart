@@ -17,9 +17,9 @@ class LocationState {
   factory LocationState.initial() => LocationState(
         nameCities: [],
         nameProvinces: [],
-        indexCity: 5,
+        indexCity: 0,
         indexProvince: 0,
-        tempCity: 5,
+        tempCity: 0,
         tempProvince: 0,
       );
 }

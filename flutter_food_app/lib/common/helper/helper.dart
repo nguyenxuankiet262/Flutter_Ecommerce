@@ -1,7 +1,18 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:intl/intl.dart';
 
 final oCcy = NumberFormat("###,###,###", "vi");
+final fDay = new DateFormat('h:mm a dd-MM-yyyy');
 class Helper{
+  String formatDay(DateTime d){
+    DateTime temp = new DateTime(d.year,d.month,d.day,d.hour + 7,d.minute,d.second,d.millisecond,d.microsecond);
+    return fDay.format(temp);
+  }
+
+  DateTime plus7hourDateTime(DateTime d){
+    DateTime temp = new DateTime(d.year,d.month,d.day,d.hour + 7,d.minute,d.second,d.millisecond,d.microsecond);
+    return temp;
+  }
   String timeAgo(DateTime d) {
     Duration diff = DateTime.now().difference(d);
     if (diff.inDays > 365)
@@ -27,5 +38,19 @@ class Helper{
 
   String onFormatPrice(String price){
     return oCcy.format(double.parse(price)) + " ₫";
+  }
+
+  Future<bool> check() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      return true;
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }
+    return false;
+  }
+
+  String onFormatDBPrice(String price){
+    return price.replaceAll(new RegExp(r'[^\w\s]+'),'');
   }
 }

@@ -1,11 +1,18 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
+import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter/services.dart';
 import 'header.dart';
 import 'body.dart';
 import 'package:toast/toast.dart';
+import 'package:image/image.dart' as Im;
 
 class InfoPost extends StatefulWidget {
   @override
@@ -14,11 +21,13 @@ class InfoPost extends StatefulWidget {
 
 class InfoPostState extends State<InfoPost> {
   DetailCameraBloc blocProvider;
+  ApiBloc apiBloc;
 
   @override
   void initState() {
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
@@ -30,11 +39,13 @@ class InfoPostState extends State<InfoPost> {
         blocProvider.initialState.indexChildCategory);
     blocProvider.changePriceBefore(blocProvider.initialState.priceBefore);
     blocProvider.changePriceAfter(blocProvider.initialState.priceAfter);
+    blocProvider.changeUnit(blocProvider.initialState.unit);
   }
 
   Future<bool> _showDialog() {
     // flutter defined function
     return showDialog(
+      barrierDismissible: false,
           context: context,
           builder: (BuildContext context) {
             // return object of type Dialog
@@ -55,8 +66,8 @@ class InfoPostState extends State<InfoPost> {
                       style: TextStyle(color: Colors.red),
                     ),
                     onPressed: () {
-                      Navigator.of(context).popUntil((route) => route.isFirst);
                       _clearBloc();
+                      Navigator.of(context).popUntil((route) => route.isFirst);
                     }),
               ],
             );
@@ -67,124 +78,72 @@ class InfoPostState extends State<InfoPost> {
 
   void _showDialogPost() {
     showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            contentPadding: EdgeInsets.all(0.0),
-            content: Container(
-              width: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    child: ClipRRect(
-                      child: Image.asset(
-                        'assets/images/gifs/relax.gif',
-                        fit: BoxFit.fill,
-                      ),
-                      borderRadius: new BorderRadius.only(
-                          topLeft: Radius.circular(10.0),
-                          topRight: Radius.circular(10.0)),
-                    ),
-                    height: 150,
-                  ),
-                  Container(
-                    height: 40,
-                    child: Center(
-                      child: Text(
-                        "Thông báo",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10.0, right: 20, left: 20),
-                    child: Text(
-                      'Để đảm bảo chất lượng hình ảnh và nội dung bài viết. Chúng tôi phải kiểm duyệt bài viết trước khi nó được đăng tải.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontFamily: "Ralway"),
-                    ),
-                  ),
-                  Container(
-                      height: 40,
-                      margin: EdgeInsets.only(bottom: 15.0, top: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Expanded(
-                            child: InkWell(
-                              child: Container(
-                                  margin:
-                                      EdgeInsets.only(left: 16.0, right: 8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "HỦY",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontFamily: "Ralway"),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            flex: 1,
-                          ),
-                          Expanded(
-                            child: InkWell(
-                              child: Container(
-                                  margin:
-                                      EdgeInsets.only(right: 16.0, left: 8.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "ĐỒNG Ý",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontFamily: "Ralway"),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )),
-                              onTap: () {
-                                _onSuccess();
-                              },
-                            ),
-                            flex: 1,
-                          )
-                        ],
-                      ))
-                ],
-              ),
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Thông báo!"),
+          content: new Text('Để đảm bảo chất lượng hình ảnh và nội dung bài viết. Chúng tôi phải kiểm duyệt bài viết trước khi nó được đăng tải.'),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Hủy"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-          );
-        });
+            new FlatButton(
+                child: new Text(
+                  "Đồng ý",
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: _onSuccess),
+          ],
+        );
+      },
+    );
   }
 
-  _onSuccess() {
+  Future<String> uploadToFirebase(String image) async {
+    File imageFile = File(image);
+    Im.Image imageResize = Im.decodeImage(imageFile.readAsBytesSync());
+    Im.Image smallerImage = Im.copyResize(imageResize, width: 600, height: 600);
+    FirebaseStorage _storage = FirebaseStorage.instance;
+    StorageReference firebaseStorageRef = _storage.ref().child(
+        'Flutter Images/' +
+            apiBloc.currentState.mainUser.id +
+            DateTime.now().millisecondsSinceEpoch.toString());
+    StorageUploadTask task = firebaseStorageRef.putFile(imageFile..writeAsBytesSync(Im.encodeJpg(smallerImage, quality: 80)));
+    StorageTaskSnapshot storageTaskSnapshot = await task.onComplete;
+    String downloadUrl = await storageTaskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  _onUploadProduct() {
+    if (blocProvider.currentState.imagePaths.isNotEmpty &&
+        blocProvider.currentState.title != "" &&
+        blocProvider.currentState.content != "" &&
+        int.parse(
+            Helper().onFormatDBPrice(blocProvider.currentState.priceBefore)) != 0 &&
+        int.parse(
+            Helper().onFormatDBPrice(blocProvider.currentState.priceAfter)) != 0) {
+      if (int.parse(
+          Helper().onFormatDBPrice(blocProvider.currentState.priceBefore)) >=
+          int.parse(
+              Helper().onFormatDBPrice(blocProvider.currentState.priceAfter))) {
+        _showDialogPost();
+      }
+      else{
+        Toast.show("Giá hiện tại phải nhỏ hơn giá khởi tạo!", context, gravity: Toast.CENTER);
+      }
+    }
+    else{
+      Toast.show("Vui lòng nhập đủ thông tin!", context, gravity: Toast.CENTER);
+    }
+  }
+
+  _onSuccess() async {
     Navigator.pop(context);
     showDialog(
       context: context,
@@ -209,11 +168,35 @@ class InfoPostState extends State<InfoPost> {
             ),
           ),
     );
-    new Future.delayed(new Duration(seconds: 2), () {
-      Toast.show('Đã gửi bài viết thành công!', context);
+    String img = "";
+    for(int i = 0; i < blocProvider.currentState.imagePaths.length; i++){
+      String temp = await uploadToFirebase(blocProvider.currentState.imagePaths[i]);
+      if(i == 0){
+       img = temp;
+      }
+      else{
+        img += ";$temp";
+      }
+    }
+    if(await addProduct(
+        apiBloc.currentState.mainUser.id,
+      blocProvider.currentState.title,
+      blocProvider.currentState.content,
+      img,
+        apiBloc.currentState.listMenu[blocProvider.currentState.indexCategory].listChildMenu[blocProvider.currentState.indexChildCategory].id,
+      Helper().onFormatDBPrice(blocProvider.currentState.priceBefore),
+      Helper().onFormatDBPrice(blocProvider.currentState.priceAfter),
+      blocProvider.currentState.unit
+    )){
+      Toast.show('Đã gửi bài viết thành công!', context, gravity: Toast.CENTER);
       Navigator.of(context).popUntil((route) => route.isFirst);
       _clearBloc();
-    });
+    }
+    else{
+      Toast.show('Lỗi hệ thống!', context);
+      Navigator.pop(context);
+    }
+
   }
 
   @override
@@ -249,9 +232,7 @@ class InfoPostState extends State<InfoPost> {
                         fontWeight: FontWeight.bold,
                         fontSize: 10),
                   ),
-                  onTap: () {
-                    _showDialogPost();
-                  },
+                  onTap: _onUploadProduct,
                 ),
               ),
             ),

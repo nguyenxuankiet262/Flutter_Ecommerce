@@ -1,24 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 
-final List<String> imgList = [
-  'assets/images/banner_1.jpg',
-  'assets/images/banner_2.jpg',
-  'assets/images/banner_3.jpg',
-];
-
-final List child = map<Widget>(imgList, (index, i) {
-  return Stack(
-    children: <Widget>[
-      Image.asset(
-        i,
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: double.infinity,
-      ),
-    ],
-  );
-}).toList();
+List<String> imgList = [];
 
 List<T> map<T>(List list, Function handler) {
   List<T> result = [];
@@ -29,6 +14,19 @@ List<T> map<T>(List list, Function handler) {
   return result;
 }
 
+final List child = map<Widget>(imgList, (index, i) {
+  return Stack(
+    children: <Widget>[
+      Image.network(
+        i,
+        fit: BoxFit.fill,
+        width: double.infinity,
+        height: double.infinity,
+      ),
+    ],
+  );
+}).toList();
+
 class CarouselWithIndicator extends StatefulWidget {
   @override
   _CarouselWithIndicatorState createState() => _CarouselWithIndicatorState();
@@ -36,6 +34,19 @@ class CarouselWithIndicator extends StatefulWidget {
 
 class _CarouselWithIndicatorState extends State<CarouselWithIndicator> {
   int _current = 0;
+  ApiBloc apiBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    imgList = [];
+    for(int i = 0; i < apiBloc.currentState.listBanner.length; i++){
+      imgList.add(apiBloc.currentState.listBanner[i].img);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

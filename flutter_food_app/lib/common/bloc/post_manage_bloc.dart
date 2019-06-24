@@ -7,16 +7,16 @@ class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
     dispatch(ChangeCategory(indexCategory, indexChildCategory));
   }
 
-  void changeFilter(int filter) {
-    dispatch(ChangeFilter(filter));
+  void changeFilter(int min, int max, int code) {
+    dispatch(ChangeFilter(min, max, code));
   }
 
   void changeTempCategory(int tempCategory, int tempChildCategory) {
     dispatch(ChangeTempCategory(tempCategory, tempChildCategory));
   }
 
-  void changeTempFilter(int filter) {
-    dispatch(ChangeFilter(filter));
+  void changeTempFilter(int tempMin, int tempMax, int tempCode) {
+    dispatch(ChangeTempFilter(tempMin, tempMax, tempCode));
   }
 
   @override
@@ -29,39 +29,59 @@ class PostManageBloc extends Bloc<PostManageEvent, PostManageState> {
     // TODO: implement mapEventToState
     if (event is ChangeCategory) {
       yield PostManageState(
-          indexCategory: event.indexCategory,
-          indexChildCategory: event.indexChildCategory,
-          filter: currentState.filter,
-          tempCategory: currentState.tempCategory,
-          tempChildCategory: currentState.tempChildCategory,
-          tempFilter: currentState.tempFilter);
+        indexCategory: event.indexCategory,
+        indexChildCategory: event.indexChildCategory,
+        min: currentState.min,
+        max: currentState.max,
+        code: currentState.code,
+        tempCategory: currentState.tempCategory,
+        tempChildCategory: currentState.tempChildCategory,
+        tempMin: currentState.tempMin,
+        tempMax: currentState.tempMax,
+        tempCode: currentState.tempCode,
+      );
     }
     if (event is ChangeFilter) {
       yield PostManageState(
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          filter: event.filter,
-          tempCategory: currentState.tempCategory,
-          tempChildCategory: currentState.tempChildCategory,
-          tempFilter: currentState.tempFilter);
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        min: event.min,
+        max: event.max,
+        code: event.code,
+        tempCategory: currentState.tempCategory,
+        tempChildCategory: currentState.tempChildCategory,
+        tempMin: currentState.tempMin,
+        tempMax: currentState.tempMax,
+        tempCode: currentState.tempCode,
+      );
     }
     if (event is ChangeTempCategory) {
       yield PostManageState(
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          filter: currentState.filter,
-          tempCategory: event.tempCategory,
-          tempChildCategory: event.tempChildCategory,
-          tempFilter: currentState.tempFilter);
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        min: currentState.min,
+        max: currentState.max,
+        code: currentState.code,
+        tempCategory: event.tempCategory,
+        tempChildCategory: event.tempChildCategory,
+        tempMin: currentState.tempMin,
+        tempMax: currentState.tempMax,
+        tempCode: currentState.tempCode,
+      );
     }
     if (event is ChangeTempFilter) {
       yield PostManageState(
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          filter: currentState.filter,
-          tempCategory: currentState.tempCategory,
-          tempChildCategory: currentState.tempChildCategory,
-          tempFilter: event.tempFilter);
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        min: currentState.min,
+        max: currentState.max,
+        code: currentState.code,
+        tempCategory: currentState.tempCategory,
+        tempChildCategory: currentState.tempChildCategory,
+        tempMin: event.tempMin,
+        tempMax: event.tempMax,
+        tempCode: event.tempCode,
+      );
     }
   }
 }

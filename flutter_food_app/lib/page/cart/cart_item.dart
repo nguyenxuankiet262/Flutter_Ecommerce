@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/model/items.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'favorite_item.dart';
 import 'package:toast/toast.dart';
+import 'favorite_item.dart';
 
 class CartItem extends StatefulWidget {
   final int _index;
+
   CartItem(this._index);
+
   @override
   State<StatefulWidget> createState() => CartItemState();
 }
@@ -19,6 +23,8 @@ class CartItem extends StatefulWidget {
 class CartItemState extends State<CartItem> {
   ApiBloc apiBloc;
   FunctionBloc functionBloc;
+  GlobalKey<FavoriteItemState> globalKey = GlobalKey();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -32,13 +38,16 @@ class CartItemState extends State<CartItem> {
     // TODO: implement build
     return BlocBuilder(
       bloc: apiBloc,
-      builder: (context, ApiState state){
+      builder: (context, ApiState state) {
         return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-            margin:
-            EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0, bottom: widget._index == 5 ? 16.0 : 0.0),
+            margin: EdgeInsets.only(
+                top: 16.0,
+                right: 16.0,
+                left: 16.0,
+                bottom: widget._index == 5 ? 16.0 : 0.0),
             child: Column(children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,9 +60,21 @@ class CartItemState extends State<CartItem> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         GestureDetector(
-                          onTap: () {
-                            functionBloc.currentState
-                                .navigateToPost(state.cart.products[widget._index].id);
+                          onTap: () async {
+                            if (await checkStatusProduct(
+                                    state.cart.products[widget._index].id) ==
+                                1) {
+                              functionBloc.currentState.navigateToPost(
+                                  state.cart.products[widget._index].id);
+                            } else if (await checkStatusProduct(
+                                    state.cart.products[widget._index].id) ==
+                                0) {
+                              Toast.show("Không thể truy cập!!", context,
+                                  gravity: Toast.CENTER, duration: 2);
+                            } else {
+                              Toast.show("Lỗi hệ thống!", context,
+                                  gravity: Toast.CENTER);
+                            }
                           },
                           child: Container(
                             child: ClipRRect(
@@ -62,7 +83,7 @@ class CartItemState extends State<CartItem> {
                                 fit: BoxFit.fill,
                               ),
                               borderRadius:
-                              new BorderRadius.all(Radius.circular(5.0)),
+                                  new BorderRadius.all(Radius.circular(5.0)),
                             ),
                             width: 105,
                             height: 90,
@@ -80,22 +101,64 @@ class CartItemState extends State<CartItem> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Padding(
-                                      padding:
-                                      EdgeInsets.only(right: 10.0, left: 15.0),
-                                      child: GestureDetector(
-                                        child: Text(
-                                          state.cart.products[widget._index].name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style:
-                                          TextStyle(fontWeight: FontWeight.bold),
-                                        ),
-                                        onTap: (){
-                                          functionBloc.currentState
-                                              .navigateToPost(state.cart.products[widget._index].id);
-                                        },
-                                      )
-                                    ),
+                                        padding: EdgeInsets.only(
+                                            right: 10.0, left: 15.0),
+                                        child: GestureDetector(
+                                          child: Wrap(
+                                            children: <Widget>[
+                                              Text(
+                                                state
+                                                        .cart
+                                                        .products[widget._index]
+                                                        .name +
+                                                    "alsidjasldkasjdlkasdjlkasdjlkasdjalksdj",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              Text(
+                                                !state
+                                                        .cart
+                                                        .products[widget._index]
+                                                        .status
+                                                    ? "(đã bị xóa)"
+                                                    : "",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.red),
+                                              ),
+                                            ],
+                                          ),
+                                          onTap: () async {
+                                            if (await checkStatusProduct(state
+                                                    .cart
+                                                    .products[widget._index]
+                                                    .id) ==
+                                                1) {
+                                              functionBloc.currentState
+                                                  .navigateToPost(state
+                                                      .cart
+                                                      .products[widget._index]
+                                                      .id);
+                                            } else if (await checkStatusProduct(
+                                                    state
+                                                        .cart
+                                                        .products[widget._index]
+                                                        .id) ==
+                                                0) {
+                                              Toast.show("Không thể truy cập!!",
+                                                  context,
+                                                  gravity: Toast.CENTER,
+                                                  duration: 2);
+                                            } else {
+                                              Toast.show(
+                                                  "Lỗi hệ thống!", context,
+                                                  gravity: Toast.CENTER);
+                                            }
+                                          },
+                                        )),
                                     Padding(
                                       padding: EdgeInsets.only(
                                           right: 10.0,
@@ -103,7 +166,8 @@ class CartItemState extends State<CartItem> {
                                           left: 15.0,
                                           top: 5.0),
                                       child: Text(
-                                        state.cart.products[widget._index].description,
+                                        state.cart.products[widget._index]
+                                            .description,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -120,7 +184,8 @@ class CartItemState extends State<CartItem> {
                                   left: 15.0,
                                 ),
                                 child: Text(
-                                  Helper().onFormatPrice(state.cart.products[widget._index].currentPrice),
+                                  Helper().onFormatPrice(state.cart
+                                      .products[widget._index].currentPrice),
                                   style: TextStyle(
                                       color: colorActive,
                                       fontWeight: FontWeight.bold,
@@ -136,14 +201,23 @@ class CartItemState extends State<CartItem> {
                   Container(
                     width: 25,
                     height: 90,
-                    margin: EdgeInsets.only(right: 15.0, top: 15.0, bottom: 15.0),
+                    margin:
+                        EdgeInsets.only(right: 15.0, top: 15.0, bottom: 15.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-
+                            Items item = new Items();
+                            item =
+                                apiBloc.currentState.cart.items[widget._index];
+                            item.qty++;
+                            updateProductOfCart(
+                                apiBloc,
+                                apiBloc.currentState.mainUser.id,
+                                item,
+                                state.cart.products[widget._index]);
                           },
                           child: Container(
                               width: 30,
@@ -156,16 +230,26 @@ class CartItemState extends State<CartItem> {
                                       fontSize: 20,
                                       color: colorActive),
                                 ),
-                              )
-                          ),
+                              )),
                         ),
                         Text(
                           state.cart.items[widget._index].qty.toString(),
-                          style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         GestureDetector(
                           onTap: () {
+                            Items item = new Items();
+                            item =
+                                apiBloc.currentState.cart.items[widget._index];
+                            if (item.qty > 1) {
+                              item.qty--;
+                              updateProductOfCart(
+                                  apiBloc,
+                                  apiBloc.currentState.mainUser.id,
+                                  item,
+                                  state.cart.products[widget._index]);
+                            }
                           },
                           child: Container(
                               width: 30,
@@ -176,10 +260,13 @@ class CartItemState extends State<CartItem> {
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
-                                      color: state.cart.items[widget._index].qty == 1 ? colorInactive : colorActive),
+                                      color:
+                                          state.cart.items[widget._index].qty ==
+                                                  1
+                                              ? colorInactive
+                                              : colorActive),
                                 ),
-                              )
-                          ),
+                              )),
                         ),
                       ],
                     ),
@@ -189,15 +276,20 @@ class CartItemState extends State<CartItem> {
               Container(
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  border: Border(top: BorderSide(color: colorInactive, width: 0.5)),
+                  border:
+                      Border(top: BorderSide(color: colorInactive, width: 0.5)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Expanded(
                       child: GestureDetector(
-                        onTap: () {
-                          Toast.show("Đã xóa", context);
+                        onTap: () async {
+                          await deleteProductOfCart(
+                              apiBloc,
+                              apiBloc.currentState.mainUser.id,
+                              apiBloc.currentState.cart.products[widget._index]
+                                  .id);
                         },
                         child: Container(
                           height: 40,
@@ -210,7 +302,8 @@ class CartItemState extends State<CartItem> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(right: 10.0, bottom: 5.0),
+                                margin:
+                                    EdgeInsets.only(right: 10.0, bottom: 5.0),
                                 child: Icon(
                                   FontAwesomeIcons.trashAlt,
                                   size: 17,
@@ -228,7 +321,8 @@ class CartItemState extends State<CartItem> {
                       flex: 1,
                     ),
                     Expanded(
-                      child: Container(height: 40, child: FavoriteItem()),
+                      child: Container(
+                          height: 40, child: FavoriteItem(widget._index)),
                       flex: 1,
                     ),
                   ],

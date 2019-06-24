@@ -10,8 +10,27 @@ class ChangeLoadingCart extends LoadingEvent{
   ChangeLoadingCart(this.isLoading);
 }
 
-class ChangeLoadingNoti extends LoadingEvent{
+class ChangeLoadingPostManage extends LoadingEvent{
   final bool isLoading;
-  ChangeLoadingNoti(this.isLoading);
+  ChangeLoadingPostManage(this.isLoading);
 }
 
+class ChangeLoadingFavManage extends LoadingEvent{
+  final bool isLoading;
+  ChangeLoadingFavManage(this.isLoading);
+}
+
+class ChangeLoadingSearch extends LoadingEvent{
+  final bool isLoading;
+  ChangeLoadingSearch(this.isLoading);
+}
+
+class ChangeLoadSysNoti extends LoadingEvent{
+  final bool isLoading;
+  ChangeLoadSysNoti(this.isLoading);
+}
+
+class ChangeLoadFollowNoti extends LoadingEvent{
+  final bool isLoading;
+  ChangeLoadFollowNoti(this.isLoading);
+}

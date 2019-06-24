@@ -1,23 +1,32 @@
+import 'package:flutter_food_app/api/model/banner.dart';
 import 'package:flutter_food_app/api/model/cart.dart';
-import 'package:flutter_food_app/api/model/child_menu.dart';
 import 'package:flutter_food_app/api/model/menu.dart';
 import 'package:flutter_food_app/api/model/product.dart';
 import 'package:flutter_food_app/api/model/user.dart';
 
 class ApiState {
   final List<Menu> listMenu;
-  final List<Product> listProduct;
   final Cart cart;
-  final Product product;
   final User mainUser;
+  final List<Banners> listBanner;
+  final List<Product> tenNewest;
+  final List<Product> tenMostFav;
 
-  const ApiState({this.listMenu, this.listProduct, this.cart, this.product, this.mainUser});
+  const ApiState({
+    this.listMenu,
+    this.cart,
+    this.mainUser,
+    this.listBanner,
+    this.tenNewest,
+    this.tenMostFav,
+  });
 
   factory ApiState.initial() => ApiState(
         listMenu: new List<Menu>(),
-        listProduct: new List<Product>(),
         cart: null,
-        product: null,
         mainUser: null,
+        listBanner: new List<Banners>(),
+        tenNewest: null,
+        tenMostFav: null,
       );
 }

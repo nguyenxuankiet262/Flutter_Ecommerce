@@ -46,7 +46,7 @@ class HeaderInfoState extends State<HeaderInfo> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CameraPage()),
+                        builder: (context) => CameraPage(0)),
                   );
                   setState(() {
                     isCamera = false;

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/common/bloc/api_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/common/bloc/product_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
-import 'package:flutter_food_app/common/state/api_state.dart';
+import 'package:flutter_food_app/common/state/product_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_food_app/page/post/post.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_food_app/page/user/info.dart';
+import 'package:toast/toast.dart';
 
 class RelativePost extends StatefulWidget {
   @override
@@ -13,29 +15,25 @@ class RelativePost extends StatefulWidget {
 }
 
 class RelativePostState extends State<RelativePost> {
-  int itemCount = 10;
-  ApiBloc apiBloc;
+  ProductBloc productBloc;
 
-  void navigateToUserPage() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => InfoPage(true)));
+  void navigateToPost(String id) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Post(id)));
   }
-
-  void navigateToPost() {}
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    apiBloc = BlocProvider.of<ApiBloc>(context);
+    productBloc = BlocProvider.of<ProductBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return BlocBuilder(
-      bloc: apiBloc,
-      builder: (context, ApiState apiState) {
+      bloc: productBloc,
+      builder: (context, ProductState state) {
         return Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -57,7 +55,7 @@ class RelativePostState extends State<RelativePost> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                apiState.product.relativeProduct == null
+                state.product.relativeProduct == null
                     ? Container(
                         width: double.infinity,
                         height: 400,
@@ -95,7 +93,7 @@ class RelativePostState extends State<RelativePost> {
                         crossAxisCount: 2,
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: apiState.product.relativeProduct.length,
+                        itemCount: state.product.relativeProduct.length,
                         itemBuilder: (BuildContext context, int index) =>
                             new Card(
                               child: new Container(
@@ -114,7 +112,7 @@ class RelativePostState extends State<RelativePost> {
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                   fit: BoxFit.cover,
-                                                  image: NetworkImage(apiState
+                                                  image: NetworkImage(state
                                                       .product
                                                       .relativeProduct[index]
                                                       .images[0]),
@@ -125,8 +123,29 @@ class RelativePostState extends State<RelativePost> {
                                                     topLeft:
                                                         Radius.circular(5.0))),
                                           ),
-                                          onTap: () {
-                                            navigateToPost();
+                                          onTap: () async {
+                                            if (await checkStatusProduct(state
+                                                    .product
+                                                    .relativeProduct[index]
+                                                    .id) ==
+                                                1) {
+                                              navigateToPost(state.product
+                                                  .relativeProduct[index].id);
+                                            } else if (await checkStatusProduct(
+                                                    state
+                                                        .product
+                                                        .relativeProduct[index]
+                                                        .id) ==
+                                                0) {
+                                              Toast.show("Không thể truy cập!",
+                                                  context,
+                                                  gravity: Toast.CENTER,
+                                                  duration: 2);
+                                            } else {
+                                              Toast.show(
+                                                  "Lỗi hệ thống!", context,
+                                                  gravity: Toast.CENTER);
+                                            }
                                           },
                                         ),
                                         Padding(
@@ -135,8 +154,8 @@ class RelativePostState extends State<RelativePost> {
                                               top: 10.0,
                                               left: 10.0),
                                           child: Text(
-                                            apiState.product
-                                                .relativeProduct[index].name,
+                                            state.product.relativeProduct[index]
+                                                .name,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
@@ -150,9 +169,7 @@ class RelativePostState extends State<RelativePost> {
                                               left: 10.0,
                                               top: 5.0),
                                           child: Text(
-                                            apiState
-                                                .product
-                                                .relativeProduct[index]
+                                            state.product.relativeProduct[index]
                                                 .description,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
@@ -169,136 +186,169 @@ class RelativePostState extends State<RelativePost> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(
-                                                Helper().onFormatPrice(apiState
-                                                    .product
-                                                    .relativeProduct[index]
-                                                    .currentPrice),
-                                                style: TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: colorActive,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(top: 2.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      Helper().onFormatPrice(
-                                                          apiState
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Text(
+                                                    Helper().onFormatPrice(state
+                                                        .product
+                                                        .relativeProduct[index]
+                                                        .currentPrice),
+                                                    style: TextStyle(
+                                                        fontSize: 14.0,
+                                                        color: colorActive,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Row(
+                                                    children: <Widget>[
+                                                      Icon(
+                                                        Icons.favorite,
+                                                        color: colorInactive,
+                                                        size: 15,
+                                                      ),
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            left: 2.0),
+                                                        child: Text(
+                                                          state
                                                               .product
                                                               .relativeProduct[
                                                                   index]
-                                                              .initPrice),
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: colorInactive,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
+                                                              .amountFav
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              color:
+                                                                  colorInactive,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              (Helper().onCalculatePercentDiscount(
+                                                          state
+                                                              .product
+                                                              .relativeProduct[
+                                                                  index]
+                                                              .initPrice,
+                                                          state
+                                                              .product
+                                                              .relativeProduct[
+                                                                  index]
+                                                              .currentPrice) ==
+                                                      "0%")
+                                                  ? Container()
+                                                  : Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 2.0),
+                                                      child: Text(
+                                                        Helper().onFormatPrice(
+                                                            state
+                                                                .product
+                                                                .relativeProduct[
+                                                                    index]
+                                                                .initPrice),
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                          color: colorInactive,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough,
+                                                        ),
                                                       ),
                                                     ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Icon(
-                                                          Icons.favorite,
-                                                          color: colorInactive,
-                                                          size: 15,
-                                                        ),
-                                                        Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  left: 2.0),
-                                                          child: Text(
-                                                            '100',
-                                                            style: TextStyle(
-                                                                color:
-                                                                    colorInactive,
-                                                                fontSize: 12),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
                                             ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          height: 0,
-                                          width: 0,
-                                        ),
-                                        Stack(
-                                          children: <Widget>[
-                                            Container(
-                                                height: 50,
-                                                width: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.orangeAccent
-                                                        .withOpacity(0.95),
-                                                    borderRadius: BorderRadius
-                                                        .only(
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    5.0),
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    5.0))),
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        'GIẢM',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                            fontSize: 12),
-                                                      ),
-                                                      Text(
-                                                        Helper().onCalculatePercentDiscount(
-                                                            apiState
-                                                                .product
-                                                                .relativeProduct[
-                                                                    index]
-                                                                .initPrice,
-                                                            apiState
-                                                                .product
-                                                                .relativeProduct[
-                                                                    index]
-                                                                .currentPrice),
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.yellow,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 14.0),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )),
-                                          ],
-                                        )
-                                      ],
-                                    ),
+                                    (Helper().onCalculatePercentDiscount(
+                                                state
+                                                    .product
+                                                    .relativeProduct[index]
+                                                    .initPrice,
+                                                state
+                                                    .product
+                                                    .relativeProduct[index]
+                                                    .currentPrice) ==
+                                            "0%")
+                                        ? Container()
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              Container(
+                                                height: 0,
+                                                width: 0,
+                                              ),
+                                              Stack(
+                                                children: <Widget>[
+                                                  Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.red
+                                                              .withOpacity(
+                                                                  0.95),
+                                                          borderRadius:
+                                                              BorderRadius.only(
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          5.0),
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          5.0))),
+                                                      child: Center(
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: <Widget>[
+                                                            Text(
+                                                              Helper().onCalculatePercentDiscount(
+                                                                  state
+                                                                      .product
+                                                                      .relativeProduct[
+                                                                          index]
+                                                                      .initPrice,
+                                                                  state
+                                                                      .product
+                                                                      .relativeProduct[
+                                                                          index]
+                                                                      .currentPrice),
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .yellow,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize:
+                                                                      14.0),
+                                                            ),
+                                                            Text(
+                                                              'GIẢM',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w800,
+                                                                  fontSize: 12),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      )),
+                                                ],
+                                              )
+                                            ],
+                                          ),
                                   ],
                                 ),
                               ),

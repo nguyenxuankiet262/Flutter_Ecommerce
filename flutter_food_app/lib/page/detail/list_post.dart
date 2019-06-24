@@ -1,12 +1,14 @@
 import "package:flutter/material.dart";
-import 'package:flutter_food_app/common/bloc/api_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
-import 'package:flutter_food_app/common/state/api_state.dart';
+import 'package:flutter_food_app/common/bloc/list_product_bloc.dart';
+import 'package:flutter_food_app/common/state/list_product_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
+import 'package:toast/toast.dart';
 
 class ListPost extends StatefulWidget {
   @override
@@ -16,12 +18,12 @@ class ListPost extends StatefulWidget {
 class _ListPostState extends State<ListPost>
     with AutomaticKeepAliveClientMixin {
   FunctionBloc functionBloc;
-  ApiBloc apiBloc;
+  ListProductBloc listProductBloc;
 
   @override
   void initState() {
     super.initState();
-    apiBloc = BlocProvider.of<ApiBloc>(context);
+    listProductBloc = BlocProvider.of<ListProductBloc>(context);
     functionBloc = BlocProvider.of<FunctionBloc>(context);
   }
 
@@ -30,8 +32,8 @@ class _ListPostState extends State<ListPost>
     return Column(
       children: <Widget>[
         BlocBuilder(
-          bloc: apiBloc,
-          builder: (context, ApiState state) {
+          bloc: listProductBloc,
+          builder: (context, ListProductState state) {
             return StaggeredGridView.countBuilder(
                 padding: EdgeInsets.only(top: 0),
                 crossAxisCount: 2,
@@ -40,9 +42,21 @@ class _ListPostState extends State<ListPost>
                 itemCount: state.listProduct.length,
                 itemBuilder: (BuildContext context, int index) => new Card(
                     child: GestureDetector(
-                        onTap: () {
-                          functionBloc.currentState
-                              .navigateToPost(state.listProduct[index].id);
+                        onTap: () async {
+                          if (await checkStatusProduct(
+                                  state.listProduct[index].id) ==
+                              1) {
+                            functionBloc.currentState
+                                .navigateToPost(state.listProduct[index].id);
+                          } else if (await checkStatusProduct(
+                                  state.listProduct[index].id) ==
+                              0) {
+                            Toast.show("Không thể truy cập!!", context,
+                                gravity: Toast.CENTER, duration: 2);
+                          } else {
+                            Toast.show("Lỗi hệ thống!", context,
+                                gravity: Toast.CENTER);
+                          }
                         },
                         child: new Container(
                           height: 267,
@@ -120,7 +134,9 @@ class _ListPostState extends State<ListPost>
                                                   margin: EdgeInsets.only(
                                                       left: 2.0),
                                                   child: Text(
-                                                    '100',
+                                                    state.listProduct[index]
+                                                        .amountFav
+                                                        .toString(),
                                                     style: TextStyle(
                                                         color: colorInactive,
                                                         fontSize: 12),

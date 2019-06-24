@@ -6,15 +6,12 @@ import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/state/detail_camera.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toast/toast.dart';
-
 class ListImage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => ListImageState();
 }
 
 class ListImageState extends State<ListImage> {
-  int itemCount = 10;
   DetailCameraBloc blocProvider;
 
   @override
@@ -88,15 +85,10 @@ class ListImageState extends State<ListImage> {
                           width: 25,
                           child: GestureDetector(
                             onTap: () {
-                              if(state.imagePaths.length != 1){
-                                List<String> temp =
-                                    blocProvider.currentState.imagePaths;
-                                temp.removeAt(index);
-                                blocProvider.changeImageList(temp);
-                              }
-                              else{
-                                Toast.show("Bài viết có ít nhất 1 ảnh bìa!", context);
-                              }
+                              List<String> temp =
+                                  blocProvider.currentState.imagePaths;
+                              temp.removeAt(index);
+                              blocProvider.changeImageList(temp);
                             },
                             child: Container(
                               height: 10,

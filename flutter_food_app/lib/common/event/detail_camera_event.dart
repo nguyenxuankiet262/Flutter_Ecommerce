@@ -30,3 +30,8 @@ class ChangePriceAfter extends DetailCameraEvent{
   final String priceAfter;
   ChangePriceAfter(this.priceAfter);
 }
+
+class ChangeUnit extends DetailCameraEvent{
+  final String unit;
+  ChangeUnit(this.unit);
+}

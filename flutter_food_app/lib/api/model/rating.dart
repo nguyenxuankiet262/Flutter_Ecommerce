@@ -5,7 +5,7 @@ class Rating{
   String id;
   String iduser;
   String iduserrating;
-  double rating;
+  int rating;
   String comment;
   DateTime day;
   User user;

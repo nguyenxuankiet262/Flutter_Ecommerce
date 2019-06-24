@@ -11,6 +11,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     dispatch(Logout());
   }
 
+  void loginAdmin() {
+    dispatch(LoginAdmin());
+  }
+
   @override
   // TODO: implement initialState
   UserState get initialState => UserState.initial();
@@ -20,10 +24,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       UserEvent event) async* {
     // TODO: implement mapEventToState
     if (event is Login) {
-      yield UserState(isLogin: true);
+      yield UserState(isLogin: true, isAdmin: false);
     }
     if (event is Logout){
-      yield UserState(isLogin: false);
+      yield UserState(isLogin: false, isAdmin:  false);
+    }
+    if (event is LoginAdmin){
+      yield UserState(isLogin: false, isAdmin:  true);
     }
   }
 }

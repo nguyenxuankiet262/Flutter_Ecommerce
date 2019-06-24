@@ -6,12 +6,15 @@ import 'package:flutter_food_app/common/bloc/detail_bloc.dart';
 import 'package:flutter_food_app/common/bloc/detail_camera_bloc.dart';
 import 'package:flutter_food_app/common/bloc/favorite_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/info_bloc.dart';
+import 'package:flutter_food_app/common/bloc/list_search_product_bloc.dart';
 import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/common/bloc/post_manage_bloc.dart';
 import 'package:flutter_food_app/common/bloc/search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/text_search_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/helper/my_behavior.dart';
 import 'splash.dart';
 
 import 'package:camera/camera.dart';
@@ -34,7 +37,6 @@ class MyAppState extends State<MyApp> {
   final cameraBloc = CameraBloc();
   final locationBloc = LocationBloc();
   final searchBloc = SearchBloc();
-  final searchInputBloc = SearchInputBloc();
   final bottomBarBloc = BottomBarBloc();
   final functionBloc = FunctionBloc();
   final detailCameraBloc = DetailCameraBloc();
@@ -43,17 +45,20 @@ class MyAppState extends State<MyApp> {
   final favoriteManageBloc = FavoriteManageBloc();
   final detailPageBloc = DetailPageBloc();
   final apiBloc = ApiBloc();
+  final searchInputBloc = SearchInputBloc();
+  final listSearchProductBloc = ListSearchProductBloc();
+  final infoBloc = InfoBloc();
   // This widget is the root of your application.
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    infoBloc.dispose();
     locationBloc.dispose();
     cameraBloc.dispose();
     locationBloc.dispose();
     searchBloc.dispose();
-    searchInputBloc.dispose();
     bottomBarBloc.dispose();
     functionBloc.dispose();
     detailCameraBloc.dispose();
@@ -62,6 +67,8 @@ class MyAppState extends State<MyApp> {
     favoriteManageBloc.dispose();
     detailPageBloc.dispose();
     apiBloc.dispose();
+    searchInputBloc.dispose();
+    listSearchProductBloc.dispose();
   }
 
   @override
@@ -72,7 +79,6 @@ class MyAppState extends State<MyApp> {
         BlocProvider<CameraBloc>(bloc: cameraBloc),
         BlocProvider<LocationBloc>(bloc: locationBloc),
         BlocProvider<SearchBloc>(bloc: searchBloc),
-        BlocProvider<SearchInputBloc>(bloc: searchInputBloc,),
         BlocProvider<BottomBarBloc>(bloc: bottomBarBloc,),
         BlocProvider<FunctionBloc>(bloc: functionBloc,),
         BlocProvider<DetailCameraBloc>(bloc: detailCameraBloc,),
@@ -80,9 +86,18 @@ class MyAppState extends State<MyApp> {
         BlocProvider<PostManageBloc>(bloc: postManageBloc,),
         BlocProvider<FavoriteManageBloc>(bloc: favoriteManageBloc),
         BlocProvider<DetailPageBloc>(bloc: detailPageBloc),
+        BlocProvider<SearchInputBloc>(bloc: searchInputBloc,),
+        BlocProvider<ListSearchProductBloc>(bloc: listSearchProductBloc,),
         BlocProvider<ApiBloc>(bloc: apiBloc),
+        BlocProvider<InfoBloc>(bloc: infoBloc),
       ],
       child: MaterialApp(
+        builder: (context, child) {
+          return ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: child,
+          );
+        },
         title: 'Flutter Demo',
         theme: ThemeData(
           fontFamily: 'Montserrat',

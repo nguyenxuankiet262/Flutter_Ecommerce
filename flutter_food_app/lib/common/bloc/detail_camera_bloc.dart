@@ -26,13 +26,19 @@ class DetailCameraBloc extends Bloc<DetailCameraEvent, DetailCameraState> {
   void changePriceAfter(String price) {
     dispatch(ChangePriceAfter(price));
   }
+
+  void changeUnit(String unit) {
+    dispatch(ChangeUnit(unit));
+  }
+
   @override
   // TODO: implement initialState
   DetailCameraState get initialState => DetailCameraState.initial();
 
   @override
-  Stream<DetailCameraState> mapEventToState(DetailCameraState currentState, DetailCameraEvent event) async* {
-    if(event is ChangeImageList){
+  Stream<DetailCameraState> mapEventToState(
+      DetailCameraState currentState, DetailCameraEvent event) async* {
+    if (event is ChangeImageList) {
       yield DetailCameraState(
         imagePaths: event.imagePaths,
         title: currentState.title,
@@ -40,64 +46,81 @@ class DetailCameraBloc extends Bloc<DetailCameraEvent, DetailCameraState> {
         indexCategory: currentState.indexCategory,
         indexChildCategory: currentState.indexChildCategory,
         priceBefore: currentState.priceBefore,
-        priceAfter: currentState.priceAfter
+        priceAfter: currentState.priceAfter,
+        unit: currentState.unit,
       );
     }
-    if(event is ChangeTitle){
+    if (event is ChangeTitle) {
       yield DetailCameraState(
-          imagePaths: currentState.imagePaths,
-          title: event.title,
-          content: currentState.content,
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          priceBefore: currentState.priceBefore,
-          priceAfter: currentState.priceAfter
+        imagePaths: currentState.imagePaths,
+        title: event.title,
+        content: currentState.content,
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        priceBefore: currentState.priceBefore,
+        priceAfter: currentState.priceAfter,
+        unit: currentState.unit,
       );
     }
-    if(event is ChangeContent){
+    if (event is ChangeContent) {
       yield DetailCameraState(
-          imagePaths: currentState.imagePaths,
-          title: currentState.title,
-          content: event.content,
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          priceBefore: currentState.priceBefore,
-          priceAfter: currentState.priceAfter
+        imagePaths: currentState.imagePaths,
+        title: currentState.title,
+        content: event.content,
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        priceBefore: currentState.priceBefore,
+        priceAfter: currentState.priceAfter,
+        unit: currentState.unit,
       );
     }
-    if(event is ChangeIndexCategory){
+    if (event is ChangeIndexCategory) {
       yield DetailCameraState(
-          imagePaths: currentState.imagePaths,
-          title: currentState.title,
-          content: currentState.content,
-          indexCategory: event.indexCategory,
-          indexChildCategory: event.indexChildCategory,
-          priceBefore: currentState.priceBefore,
-          priceAfter: currentState.priceAfter
+        imagePaths: currentState.imagePaths,
+        title: currentState.title,
+        content: currentState.content,
+        indexCategory: event.indexCategory,
+        indexChildCategory: event.indexChildCategory,
+        priceBefore: currentState.priceBefore,
+        priceAfter: currentState.priceAfter,
+        unit: currentState.unit,
       );
     }
-    if(event is ChangePriceBefore){
+    if (event is ChangePriceBefore) {
       yield DetailCameraState(
-          imagePaths: currentState.imagePaths,
-          title: currentState.title,
-          content: currentState.content,
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          priceBefore: event.priceBefore,
-          priceAfter: currentState.priceAfter
+        imagePaths: currentState.imagePaths,
+        title: currentState.title,
+        content: currentState.content,
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        priceBefore: event.priceBefore,
+        priceAfter: currentState.priceAfter,
+        unit: currentState.unit,
       );
     }
-    if(event is ChangePriceAfter){
+    if (event is ChangePriceAfter) {
       yield DetailCameraState(
-          imagePaths: currentState.imagePaths,
-          title: currentState.title,
-          content: currentState.content,
-          indexCategory: currentState.indexCategory,
-          indexChildCategory: currentState.indexChildCategory,
-          priceBefore: currentState.priceBefore,
-          priceAfter: event.priceAfter
+        imagePaths: currentState.imagePaths,
+        title: currentState.title,
+        content: currentState.content,
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        priceBefore: currentState.priceBefore,
+        priceAfter: event.priceAfter,
+        unit: currentState.unit,
+      );
+    }
+    if (event is ChangeUnit) {
+      yield DetailCameraState(
+        imagePaths: currentState.imagePaths,
+        title: currentState.title,
+        content: currentState.content,
+        indexCategory: currentState.indexCategory,
+        indexChildCategory: currentState.indexChildCategory,
+        priceBefore: currentState.priceBefore,
+        priceAfter: currentState.priceAfter,
+        unit: event.unit,
       );
     }
   }
-
 }

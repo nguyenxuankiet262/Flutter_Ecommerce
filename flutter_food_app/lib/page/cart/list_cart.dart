@@ -36,46 +36,60 @@ class _ListCartState extends State<ListCart> {
           builder: (context, ApiState apiState) {
             return loadinState.loadingCart
                 ? ShimmerCart()
-                : apiState.cart == null
-                    ? Container(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height - 80,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.remove_shopping_cart,
-                              size: 150,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 16.0),
-                              child: Text(
-                                "Không có sản phẩm nào",
-                                style: TextStyle(
-                                  color: colorInactive,
-                                  fontSize: 12,
+                : apiState.mainUser == null
+                    ? ShimmerCart()
+                    : apiState.cart == null || apiState.cart.products.isEmpty
+                        ? Container(
+                            width: double.infinity,
+                            height: MediaQuery.of(context).size.height - 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.remove_shopping_cart,
+                                  size: 150,
                                 ),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "Chúc bạn một ngày vui vẻ!",
-                                style: TextStyle(
-                                  color: colorInactive,
-                                  fontSize: 12,
+                                Container(
+                                  margin: EdgeInsets.only(top: 16.0),
+                                  child: Text(
+                                    "Không có sản phẩm nào",
+                                    style: TextStyle(
+                                      color: colorInactive,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Container(
+                                  child: Text(
+                                    "Chúc bạn một ngày vui vẻ!",
+                                    style: TextStyle(
+                                      color: colorInactive,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                    : new ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: apiState.cart.items.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            CartItem(index));
+                          )
+                        : ListView(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            children: <Widget>[
+                              new ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: apiState.cart.items.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          CartItem(index)),
+                              Container(
+                                margin: EdgeInsets.only(top: 16),
+                                height: 100,
+                                color: colorBackground.withOpacity(0),
+                              )
+                            ],
+                          );
           },
         );
       },

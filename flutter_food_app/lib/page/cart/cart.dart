@@ -4,29 +4,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/fcm.dart';
+import 'package:flutter_food_app/api/model/cart.dart';
+import 'package:flutter_food_app/api/model/items.dart';
+import 'package:flutter_food_app/api/model/user.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
+import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/user_state.dart';
 import 'package:flutter_food_app/page/authentication/login/signin.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:toast/toast.dart';
 import 'list_cart.dart';
 import 'package:flutter_food_app/const/color_const.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Cart extends StatefulWidget {
+class CartPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _CartState();
+  State<StatefulWidget> createState() => _CartPageState();
 }
 
-class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
+class _CartPageState extends State<CartPage>
+    with AutomaticKeepAliveClientMixin {
   int itemCount = 1;
 
   UserBloc userBloc;
   ApiBloc apiBloc;
   LoadingBloc loadingBloc;
+  LocationBloc locationBloc;
 
   GlobalKey<EasyRefreshState> _easyRefreshKey =
       new GlobalKey<EasyRefreshState>();
@@ -41,6 +49,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
   void initState() {
     // TODO: implement initState
     super.initState();
+    locationBloc = BlocProvider.of(context);
     _hideButtonController = new ScrollController();
     _hideButtonController.addListener(() {
       if (_hideButtonController.position.userScrollDirection ==
@@ -64,41 +73,7 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
     _hideButtonController.dispose();
   }
 
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Cảnh Báo!"),
-          content: new Text("Bạn có chắc muốn xóa tất cả không?"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Không"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Có",
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Toast.show('Đã xóa tất cả', context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showDialogPost() {
+  void _showDialogPost(ApiState apiState) {
     showDialog(
         barrierDismissible: true,
         context: context,
@@ -108,7 +83,6 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             contentPadding: EdgeInsets.all(0.0),
             content: Container(
-              width: 200,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,16 +98,18 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                           topLeft: Radius.circular(10.0),
                           topRight: Radius.circular(10.0)),
                     ),
-                    height: 150,
+                    height: 200,
                   ),
                   Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
                     height: 40,
                     child: Center(
                       child: Text(
                         "Thông báo",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 17,
+                          fontFamily: "Ralway",
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -145,57 +121,70 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                       'Hãy kiểm tra kĩ càng trước khi đặt hàng!.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 12,
+                          color: colorInactive,
+                          fontSize: 14,
                           fontFamily: "Ralway"),
                     ),
                   ),
                   Container(
                       height: 40,
-                      margin: EdgeInsets.only(bottom: 15.0, top: 10.0),
+                      margin: EdgeInsets.only(bottom: 25.0, top: 20.0),
+                      padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
-                          InkWell(
-                            child: Container(
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  color: colorInactive,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "HỦY",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 8.0),
+                                  color: Colors.white,
+                                  child: Center(
+                                    child: Text(
+                                      "HỦY",
+                                      style: TextStyle(
+                                          color: colorInactive,
+                                          fontSize: 14,
+                                          fontFamily: "Ralway",
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
                           ),
-                          InkWell(
-                            child: Container(
-                                width: 70,
-                                decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "ĐỒNG Ý",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
-                                    textAlign: TextAlign.center,
+                          Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              child: Container(
+                                margin: EdgeInsets.only(right: 8),
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff66CEFF),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
                                   ),
-                                )),
-                            onTap: () {
-                              _onSuccess();
-                            },
-                          ),
+                                  child: Center(
+                                    child: Text(
+                                      "ĐỒNG Ý",
+                                      style: TextStyle(
+                                          color: Colors.white, fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        fontFamily: "Ralway"
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )),
+                              onTap: () async {
+                                Navigator.pop(context);
+                                _showLoading(apiState);
+                                //_onSuccess();
+                              },
+                            ),
+                          )
                         ],
                       ))
                 ],
@@ -205,35 +194,46 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
         });
   }
 
-  _onSuccess() {
-    Navigator.pop(context);
+  void _showLoading(ApiState apiState) {
     showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (_) => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Đang gửi...',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                    decoration: TextDecoration.none,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: new CircularProgressIndicator(),
-                ),
-              ],
-            ),
-          ),
-    );
-    new Future.delayed(new Duration(seconds: 2), () {
-      Navigator.pop(context); //pop dialog
-      Toast.show('Cảm ơn bạn đã đặt hàng!', context);
-    });
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          _onAddOrder(apiState, context);
+          return SpinKitFadingCircle(
+            color: Colors.white,
+            size: 50.0,
+          );
+        });
+  }
+
+  _onAddOrder(ApiState apiState, BuildContext context) async {
+    Cart cart = apiState.cart;
+    while (true) {
+      List<Items> items = new List<Items>();
+      String idSeller = cart.products[0].idUser;
+      String tokenSeller = await getTokenById(idSeller);
+      if(tokenSeller != null) {
+        String nameOrder = apiState.mainUser.name;
+        sendNotification("Đơn hàng mới", "Bạn có 1 đơn hàng mới từ $nameOrder", tokenSeller);
+      }
+      for (int i = 0; i < cart.products.length; i++) {
+        if (idSeller == cart.products[i].idUser) {
+          items.add(cart.items[i]);
+          cart.items.removeAt(i);
+          cart.products.removeAt(i);
+        }
+      }
+      await addOrder(apiBloc, idSeller, items, apiState.mainUser.id);
+      if (cart.items.isEmpty) {
+        break;
+      }
+    }
+    User user = apiState.mainUser;
+    user.badge.buy++;
+    apiBloc.changeMainUser(user);
+    Navigator.pop(context);
+    Toast.show("Đặt hàng thành công", context);
   }
 
   @override
@@ -260,7 +260,8 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                   actions: <Widget>[
                     !state.isLogin
                         ? Container()
-                        : apiState.cart == null
+                        : apiState.cart == null ||
+                                apiState.cart.products.isEmpty
                             ? Container()
                             : new Center(
                                 child: Padding(
@@ -277,28 +278,12 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                                           fontSize: 10),
                                     ),
                                     onTap: () {
-                                      _showDialogPost();
+                                      _showDialogPost(apiState);
                                     },
                                   ),
                                 ),
                               ),
                   ],
-                  leading: !state.isLogin
-                      ? Container()
-                      : apiState.cart == null
-                          ? Container()
-                          : GestureDetector(
-                              child: Icon(
-                                FontAwesomeIcons.solidTrashAlt,
-                                color: Colors.black,
-                                size: 18,
-                              ),
-                              onTap: () {
-                                if (itemCount > 0) {
-                                  _showDialog();
-                                }
-                              },
-                            ),
                 ),
                 body: !state.isLogin
                     ? SigninContent()
@@ -317,20 +302,81 @@ class _CartState extends State<Cart> with AutomaticKeepAliveClientMixin {
                             SliverList(
                                 delegate: SliverChildListDelegate(<Widget>[
                               Container(
-                                color: colorBackground,
                                 child: ListCart(),
+                                color: colorBackground.withOpacity(0),
+                              ),
+                              Container(
+                                color: colorBackground.withOpacity(0),
+                                height: 150,
                               )
                             ]))
                           ],
                         ),
                         onRefresh: () async {
-                          loadingBloc.changeLoadingCart(true);
-                          apiBloc.changeCart(null);
-                          await new Future.delayed(
-                              const Duration(seconds: 1), () {
-                            fetchCartByUserId(apiBloc, loadingBloc, "5ccbeef21d3ee00017f572cd");
-                            BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
-                          });
+                          if (await Helper().check()) {
+                            await new Future.delayed(const Duration(seconds: 1),
+                                () async {
+                              if (apiState.mainUser == null) {
+                                await fetchUserById(
+                                    apiBloc, apiBloc.currentState.mainUser.id);
+                                fetchListPostUser(apiBloc, loadingBloc,
+                                    apiBloc.currentState.mainUser.id, 1, 10);
+                                fetchRatingByUser(
+                                    apiBloc,
+                                    apiBloc.currentState.mainUser.id,
+                                    "1",
+                                    "10");
+                                fetchCountNewOrder(
+                                    apiBloc, apiBloc.currentState.mainUser.id);
+                                fetchSystemNotificaion(
+                                    apiBloc,
+                                    loadingBloc,
+                                    apiBloc.currentState.mainUser.id,
+                                    "1",
+                                    "10");
+                                fetchAmountNewSystemNoti(apiBloc, apiBloc.currentState.mainUser.id);
+                                fetchFollowNotificaion(
+                                    apiBloc,
+                                    loadingBloc,
+                                    apiBloc.currentState.mainUser.id,
+                                    "1",
+                                    "10");
+                                fetchAmountNewFollowNoti(apiBloc, apiBloc.currentState.mainUser.id);
+                              }
+                              fetchCartByUserId(apiBloc, loadingBloc,
+                                  apiBloc.currentState.mainUser.id);
+                              if (apiState.listMenu.isEmpty) {
+                                fetchBanner(apiBloc);
+                                String address = " ";
+                                if (locationBloc.currentState.indexCity != 0) {
+                                  if (locationBloc.currentState.indexProvince != 0) {
+                                    address = locationBloc.currentState
+                                        .nameProvinces[locationBloc.currentState.indexCity]
+                                    [locationBloc.currentState.indexProvince] +
+                                        ", " +
+                                        locationBloc
+                                            .currentState.nameCities[locationBloc.currentState.indexCity];
+                                  } else {
+                                    address = locationBloc
+                                        .currentState.nameCities[locationBloc.currentState.indexCity];
+                                  }
+                                }
+                                apiBloc.changeTopNewest(null);
+                                apiBloc.changeTopFav(null);
+                                fetchTopTenNewestProduct(apiBloc, address);
+                                fetchTopTenFavProduct(apiBloc, address);
+                                fetchMenus(apiBloc);
+                              }
+                              BlocProvider.of<BottomBarBloc>(context)
+                                  .changeVisible(true);
+                            });
+                          } else {
+                            new Future.delayed(const Duration(seconds: 1), () {
+                              Toast.show("Vui lòng kiểm tra mạng!", context,
+                                  gravity: Toast.CENTER,
+                                  backgroundColor: Colors.black87);
+                            });
+                          }
                         },
                       ));
           },

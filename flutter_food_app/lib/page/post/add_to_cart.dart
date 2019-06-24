@@ -1,31 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/model/items.dart';
+import 'package:flutter_food_app/api/model/product.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
+import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
-import 'package:flutter_food_app/common/state/api_state.dart';
+import 'package:flutter_food_app/common/state/user_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:toast/toast.dart';
 
 class AddToCart extends StatefulWidget{
+  final Product product;
+  AddToCart(this.product);
   @override
   State<StatefulWidget> createState() => AddToCartState();
 }
 
 class AddToCartState extends State<AddToCart>{
   int _count = 1;
+  UserBloc userBloc;
   ApiBloc apiBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     apiBloc = BlocProvider.of<ApiBloc>(context);
+    userBloc = BlocProvider.of<UserBloc>(context);
   }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return BlocBuilder(
-      bloc: apiBloc,
-      builder: (context, ApiState apiState){
+      bloc: userBloc,
+      builder: (context, UserState userState){
         return Column(
           children: <Widget>[
             Row(
@@ -39,7 +48,7 @@ class AddToCartState extends State<AddToCart>{
                       borderRadius: BorderRadius.all(Radius.circular(5.0)),
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(apiState.product.images[0]),
+                        image: NetworkImage(widget.product.images[0]),
                       )
                   ),
                 ),
@@ -52,20 +61,20 @@ class AddToCartState extends State<AddToCart>{
                         Container(
                           width: MediaQuery.of(context).size.width - 170,
                           child: Text(
-                            apiState.product.name,
+                            widget.product.name,
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Colors.black,
                                 fontSize: 16,
-                                fontWeight: FontWeight.bold
+                                fontWeight: FontWeight.w600
                             ),
                             overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
+                            maxLines: 2,
                           ),
                         ),
                         Container(
                           margin: EdgeInsets.only(top: 5.0),
                           child: Text(
-                            Helper().onFormatPrice(apiState.product.currentPrice),
+                            Helper().onFormatPrice(widget.product.currentPrice),
                             style: TextStyle(
                               color: colorActive,
                               fontSize: 17,
@@ -73,10 +82,12 @@ class AddToCartState extends State<AddToCart>{
                             ),
                           ),
                         ),
-                        Row(
+                        (Helper().onCalculatePercentDiscount(widget.product.initPrice, widget.product.currentPrice) == "0%")
+                        ? Container()
+                        : Row(
                           children: <Widget>[
                             Text(
-                              Helper().onFormatPrice(apiState.product.initPrice),
+                              Helper().onFormatPrice(widget.product.initPrice),
                               style: TextStyle(
                                   color: colorInactive,
                                   fontSize: 15,
@@ -86,7 +97,7 @@ class AddToCartState extends State<AddToCart>{
                             Container(
                               margin: EdgeInsets.only(left: 5.0),
                               child: Text(
-                                Helper().onCalculatePercentDiscount(apiState.product.initPrice, apiState.product.currentPrice),
+                                Helper().onCalculatePercentDiscount(widget.product.initPrice, widget.product.currentPrice),
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 15,
@@ -199,8 +210,15 @@ class AddToCartState extends State<AddToCart>{
             ),
             GestureDetector(
               onTap: (){
-                Navigator.pop(context);
-                Toast.show("Đã thêm vào giỏ hàng", context);
+                if(userState.isLogin){
+                  Items items = new Items(id: widget.product.id, qty: _count);
+                  updateProductOfCart(apiBloc, apiBloc.currentState.mainUser.id, items, widget.product);
+                  Navigator.pop(context);
+                  Toast.show("Đã thêm vào giỏ hàng", context);
+                }
+                else{
+                  BlocProvider.of<FunctionBloc>(context).currentState.navigateToAuthen();
+                }
               },
               child: Container(
                 width: 220,

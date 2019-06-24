@@ -14,3 +14,5 @@ const colorBackground = const Color(0xfff7f7f7);
 const colorShadow = const Color(0xffbbbbbb);
 const colorFollow = const Color(0xfffcff6b);
 const colorSignin = const Color(0xff236000);
+const colorIconBottomBar = const Color(0xff606770);
+const colorOval = const Color(0xffEBEDF0);

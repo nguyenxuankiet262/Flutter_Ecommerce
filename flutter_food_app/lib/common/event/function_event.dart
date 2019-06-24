@@ -21,7 +21,7 @@ class NavigateToFilterHome extends FunctionEvent{
 }
 
 class NavigateToUser extends FunctionEvent{
-  final Function navigateToUser;
+  final Function(String) navigateToUser;
   NavigateToUser(this.navigateToUser);
 }
 
@@ -55,3 +55,37 @@ class OnBackPressed extends FunctionEvent{
   OnBackPressed(this.onBackPressed);
 }
 
+class OnRefreshOrder extends FunctionEvent{
+  final List<Function> onRefreshOrder;
+  OnRefreshOrder(this.onRefreshOrder);
+}
+
+class OnFetchProductMenu extends FunctionEvent{
+  final Function(String idMenu, String code, String min, String max, String begin, String end, String address) onFetchProductMenu;
+  OnFetchProductMenu(this.onFetchProductMenu);
+}
+
+class OnFetchProductChildMenu extends FunctionEvent{
+  final Function(String, String code, String min, String max, String begin, String end, String address) onFetchProductChildMenu;
+  OnFetchProductChildMenu(this.onFetchProductChildMenu);
+}
+
+class OnRefreshLoadMore extends FunctionEvent{
+  final Function onRefreshLoadMore;
+  OnRefreshLoadMore(this.onRefreshLoadMore);
+}
+
+class OnPressFav extends FunctionEvent{
+  final Function(String id) onPressFav;
+  OnPressFav(this.onPressFav);
+}
+
+class NavigateToDetailOrder extends FunctionEvent{
+  final Function(String idUser, int index, String order, bool isSeller) navigateToDetailOrder;
+  NavigateToDetailOrder(this.navigateToDetailOrder);
+}
+
+class OnBeforeLogin extends FunctionEvent{
+  final Function onBeforeLogin;
+  OnBeforeLogin(this.onBeforeLogin);
+}

@@ -8,18 +8,19 @@ class SigninContent extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       color: colorBackground,
       child: ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height / 7),
+            padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height / 7),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  child: Image.asset("assets/images/icon_signin.png"),
+                  child: Image.asset("assets/images/logo.png"),
                 ),
                 Container(
                   width: 150,

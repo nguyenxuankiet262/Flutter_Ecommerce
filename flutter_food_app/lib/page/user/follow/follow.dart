@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/model/user.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
+import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:toast/toast.dart';
 import 'list_follow.dart';
 
 class FollowPage extends StatefulWidget {
@@ -12,30 +20,45 @@ class FollowPage extends StatefulWidget {
 }
 
 class FollowPageState extends State<FollowPage> {
-  bool isSearch = false;
-  final myController = TextEditingController();
-  FocusNode _focus = new FocusNode();
+  ApiBloc apiBloc;
+  bool isLoading = true;
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      new GlobalKey<EasyRefreshState>();
+  GlobalKey<RefreshFooterState> _footerKeyGrid =
+      new GlobalKey<RefreshFooterState>();
+  GlobalKey<RefreshFooterState> _connectorFooterKeyGrid =
+      new GlobalKey<RefreshFooterState>();
+  int begin = 1;
+  int end = 10;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _focus = new FocusNode();
-    _focus.addListener(() {
-      if (!_focus.hasFocus && myController.text.isEmpty) {
+    apiBloc = BlocProvider.of<ApiBloc>(context);
+    User user = apiBloc.currentState.mainUser;
+    user.listFollowed = null;
+    user.listFollowing = null;
+    apiBloc.changeMainUser(user);
+    (() async {
+      if (await Helper().check()) {
+        if (widget.value == 1) {
+          await fetchFollowedByUser(
+              apiBloc, apiBloc.currentState.mainUser.id, "1", "10");
+        } else {
+          await fetchFollowingByUser(
+              apiBloc, apiBloc.currentState.mainUser.id, "1", "10");
+        }
         setState(() {
-          isSearch = false;
+          isLoading = false;
+        });
+      } else {
+        new Future.delayed(const Duration(seconds: 1), () {
+          Toast.show("Vui lòng kiểm tra mạng!", context,
+              gravity: Toast.CENTER, backgroundColor: Colors.black87);
         });
       }
-    });
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is disposed
-    myController.dispose();
-    _focus.dispose();
-    super.dispose();
+    })();
   }
 
   @override
@@ -60,63 +83,85 @@ class FollowPageState extends State<FollowPage> {
       ),
       body: Container(
         color: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            Container(
-                height: 40,
-                margin: EdgeInsets.all(15.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    color: colorInactive.withOpacity(0.2)),
-                child: isSearch
-                    ? Container(
-                        margin: EdgeInsets.only(left: 15.0),
-                        child: TextField(
-                          autofocus: true,
-                          focusNode: _focus,
-                          controller: myController,
-                          style: TextStyle(fontFamily: "Ralway", fontSize: 14, color: Colors.black),
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Tìm kiếm người theo dõi',
-                              hintStyle: TextStyle(
-                                  color: colorInactive,
-                                  fontFamily: "Ralway",
-                                  fontSize: 14),
-                              icon: Icon(
-                                Icons.search,
-                                color: colorInactive,
-                                size: 20,
-                              )),
-                        ))
-                    : GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isSearch = true;
-                          });
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.search,
-                              color: colorInactive,
-                              size: 20,
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 5.0),
-                              child: Text(
-                                "Tìm kiếm",
-                                style: TextStyle(
-                                    fontFamily: "Raleway",
-                                    color: colorInactive,
-                                    fontSize: 14),
-                              ),
-                            ),
-                          ],
-                        ))),
-            ListFollow(),
-          ],
+        child: EasyRefresh(
+          key: _easyRefreshKey,
+          refreshFooter: ConnectorFooter(
+              key: _connectorFooterKeyGrid,
+              footer: ClassicsFooter(
+                key: _footerKeyGrid,
+              )),
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverList(
+                delegate: SliverChildListDelegate(<Widget>[
+                  isLoading
+                      ? Container(
+                          color: Colors.white,
+                          height: MediaQuery.of(context).size.height - 150,
+                          child: Center(
+                              child: SpinKitFadingCircle(
+                            color: colorInactive,
+                            size: 50.0,
+                          )),
+                        )
+                      : ListFollow(widget.value),
+                ]),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate(<Widget>[
+                  ClassicsFooter(
+                    key: _footerKeyGrid,
+                    loadHeight: 50.0,
+                  )
+                ]),
+              )
+            ],
+          ),
+          loadMore: () async {
+            if (await Helper().check()) {
+              if (widget.value == 1) {
+                if(apiBloc.currentState.mainUser.listFollowed.length == end){
+                  await fetchFollowedByUser(
+                      apiBloc, apiBloc.currentState.mainUser.id, begin.toString(), end.toString());
+                  _footerKeyGrid.currentState
+                      .onLoadEnd();
+                }
+                else{
+                  await new Future.delayed(
+                      const Duration(
+                          seconds: 1),
+                          () {});
+                  _footerKeyGrid.currentState
+                      .onNoMore();
+                  _footerKeyGrid.currentState
+                      .onLoadClose();
+                }
+
+              } else {
+                if(apiBloc.currentState.mainUser.listFollowing.length == end){
+                  await fetchFollowingByUser(
+                      apiBloc, apiBloc.currentState.mainUser.id, begin.toString(), end.toString());
+                  _footerKeyGrid.currentState
+                      .onLoadEnd();
+                }
+                else{
+                  await new Future.delayed(
+                      const Duration(
+                          seconds: 1),
+                          () {});
+                  _footerKeyGrid.currentState
+                      .onNoMore();
+                  _footerKeyGrid.currentState
+                      .onLoadClose();
+                }
+              }
+            } else {
+              new Future.delayed(const Duration(seconds: 1), () {
+                Toast.show("Vui lòng kiểm tra mạng!", context,
+                    gravity: Toast.CENTER, backgroundColor: Colors.black87);
+              });
+            }
+          },
         ),
       ),
     );

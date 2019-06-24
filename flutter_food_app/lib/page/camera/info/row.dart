@@ -16,11 +16,8 @@ class RowLayout extends StatefulWidget {
 }
 
 class RowLayoutState extends State<RowLayout> {
-  String priceOriginal = "";
-  String priceDiscount = "";
-  MaskedTextController controller;
-  MaskedTextController controller1;
-  List<String> nameOption;
+  MoneyMaskedTextController controller;
+  MoneyMaskedTextController controller1;
   DetailCameraBloc blocProvider;
   ApiBloc apiBloc;
 
@@ -29,42 +26,20 @@ class RowLayoutState extends State<RowLayout> {
     super.initState();
     blocProvider = BlocProvider.of<DetailCameraBloc>(context);
     apiBloc = BlocProvider.of<ApiBloc>(context);
-    controller = new MaskedTextController(
-        mask: '000.000.000', text: blocProvider.currentState.priceBefore);
-    controller1 = new MaskedTextController(
-        mask: '000.000.000', text: blocProvider.currentState.priceAfter);
+    controller = new MoneyMaskedTextController();
+    controller1 = new MoneyMaskedTextController();
     controller.addListener(_changePriceOriginal);
     controller1.addListener(_changePriceDiscount);
-    nameOption = [
-      apiBloc.currentState.listMenu[blocProvider.currentState.indexCategory]
-          .listChildMenu[blocProvider.currentState.indexChildCategory]
-          .name,
-      "100.000.000 VNĐ",
-      "50.000 VNĐ",
-      "Kg",
-      "123 Đường lên đỉnh Olympia F.15 Q.TB, TP.HCM",
-      '+84 123 456 789',
-    ];
-  }
-
-  @override
-  void dispose() {
-    // Clean up the controller when the Widget is removed from the Widget tree
-    controller.dispose();
-    controller1.dispose();
-    super.dispose();
   }
 
   _changePriceOriginal() {
     setState(() {
-      priceOriginal = controller.text;
       blocProvider.changePriceBefore(controller.text);
     });
   }
 
   _changePriceDiscount() {
     setState(() {
-      priceDiscount = controller1.text;
       blocProvider.changePriceAfter(controller1.text);
     });
   }
@@ -79,9 +54,8 @@ class RowLayoutState extends State<RowLayout> {
               return Text(
                 widget._index == 0
                     ? apiBloc.currentState.listMenu[state.indexCategory]
-                        .listChildMenu[state.indexChildCategory]
-                        .name
-                    : nameOption[widget._index],
+                        .listChildMenu[state.indexChildCategory].name
+                    : state.unit,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -93,41 +67,31 @@ class RowLayoutState extends State<RowLayout> {
         : widget._index == 1
             ? TextField(
                 controller: controller,
+                textAlign: TextAlign.right,
                 maxLength: 11,
-                onSubmitted: (value) {
-                  setState(() {
-                    controller1.text = value;
-                  });
-                },
-                onChanged: (value) {
-                  setState(() {
-                    controller1.text = value;
-                  });
-                },
-                keyboardType: TextInputType.numberWithOptions(decimal: false),
+                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                 decoration: InputDecoration(
                   counterStyle: TextStyle(fontSize: 0),
-                  suffixText: 'VNĐ',
+                  suffixText: '₫',
                   suffixStyle: TextStyle(
                       color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
                   border: InputBorder.none,
                 ),
-                textDirection: TextDirection.rtl,
                 style: TextStyle(
                     color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
               )
             : TextField(
                 controller: controller1,
+                textAlign: TextAlign.right,
                 maxLength: 11,
                 keyboardType: TextInputType.numberWithOptions(decimal: false),
                 decoration: InputDecoration(
                   counterStyle: TextStyle(fontSize: 0),
-                  suffixText: 'VNĐ',
+                  suffixText: '₫',
                   suffixStyle: TextStyle(
                       color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
                   border: InputBorder.none,
                 ),
-                textDirection: TextDirection.rtl,
                 style: TextStyle(
                     color: colorInactive, fontSize: 14, fontFamily: "Ralway"),
               );
