@@ -11,7 +11,6 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_feedback.dart';
 import 'package:flutter_food_app/page/user/settings/main/feedback_manage/detail/detail.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:toast/toast.dart';
 
 class ListFeedback extends StatefulWidget {

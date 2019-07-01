@@ -8,7 +8,6 @@ import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/location_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
-import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/model/province.dart';
 import 'package:flutter_food_app/page/page.dart';
 import 'package:flutter/services.dart';

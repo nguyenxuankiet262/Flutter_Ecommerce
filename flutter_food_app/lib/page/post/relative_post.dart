@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/product_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/product_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/post/post.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:toast/toast.dart';
 
 class RelativePost extends StatefulWidget {
   @override

@@ -147,9 +147,9 @@ class PrivateManageState extends State<PrivateManage> {
                           _showLoading();
                           if(infoState.username.isNotEmpty && infoState.name.isNotEmpty){
                             if(infoState.username != apiBloc.currentState.mainUser.username) {
-                              int check_info = await checkInfoUser(
+                              int checkInfo = await checkInfoUser(
                                   infoState.username);
-                              if(check_info == 1){
+                              if(checkInfo == 1){
                                 String avatar = infoState.avatar;
                                 String cover = infoState.coverphoto;
                                 if(infoState.avatar != apiBloc.currentState.mainUser.avatar){
@@ -158,7 +158,7 @@ class PrivateManageState extends State<PrivateManage> {
                                 if(infoState.coverphoto != apiBloc.currentState.mainUser.coverphoto){
                                   cover = await uploadToFirebase(infoState.coverphoto, false);
                                 }
-                                int check_changeInfo = await changeInfoUser(apiBloc.currentState.mainUser.id,
+                                int checkChangeInfo = await changeInfoUser(apiBloc.currentState.mainUser.id,
                                   infoState.username,
                                   infoState.name,
                                   infoState.phone,
@@ -168,7 +168,7 @@ class PrivateManageState extends State<PrivateManage> {
                                   cover,
                                   avatar,
                                 );
-                                if(check_changeInfo == 1){
+                                if(checkChangeInfo == 1){
                                   Navigator.pop(context);
                                   User user = apiBloc.currentState.mainUser;
                                   user.username = infoState.username;
@@ -186,7 +186,7 @@ class PrivateManageState extends State<PrivateManage> {
                                   Toast.show("Cập nhật thông tin thành công!", context);
                                 }
                               }
-                              else if(check_info == 2){
+                              else if(checkInfo == 2){
                                 Navigator.pop(context);
                                 Toast.show("Tên tài khoản đã có người sử dụng!", context);
                               }
@@ -204,7 +204,7 @@ class PrivateManageState extends State<PrivateManage> {
                               if(infoState.coverphoto != apiBloc.currentState.mainUser.coverphoto){
                                 cover = await uploadToFirebase(infoState.coverphoto, false);
                               }
-                              int check_changeInfo = await changeInfoUser(apiBloc.currentState.mainUser.id,
+                              int checkChangeInfo = await changeInfoUser(apiBloc.currentState.mainUser.id,
                                 infoState.username,
                                 infoState.name,
                                 infoState.phone,
@@ -214,7 +214,7 @@ class PrivateManageState extends State<PrivateManage> {
                                 cover,
                                 avatar,
                               );
-                              if(check_changeInfo == 1){
+                              if(checkChangeInfo == 1){
                                 Navigator.pop(context);
                                 User user = apiBloc.currentState.mainUser;
                                 user.username = infoState.username;
@@ -231,7 +231,7 @@ class PrivateManageState extends State<PrivateManage> {
                                 infoBloc.changeCover(cover);
                                 Toast.show("Cập nhật thông tin thành công!", context);
                               }
-                              else if(check_changeInfo == 2){
+                              else if(checkChangeInfo == 2){
                                 Navigator.pop(context);
                                 Toast.show("Tên tài khoản đã có người sử dụng!", context);
                               }

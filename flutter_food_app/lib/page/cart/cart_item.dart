@@ -8,7 +8,6 @@ import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toast/toast.dart';
 import 'favorite_item.dart';
 
 class CartItem extends StatefulWidget {

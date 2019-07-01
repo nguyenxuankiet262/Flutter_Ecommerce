@@ -114,6 +114,7 @@ class RegisterPageState extends State<RegisterPage> {
   bool _checkValidUsername(String username) {
     try {
       List<int> lst = ascii.encode(username);
+      print(lst);
     } catch (err) {
       return true;
 //print(err.toString());

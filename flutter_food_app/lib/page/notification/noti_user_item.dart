@@ -10,7 +10,6 @@ import 'package:flutter_food_app/common/state/api_state.dart';
 import 'package:flutter_food_app/common/state/loading_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/shimmer/shimmer_notification.dart';
-import 'package:toast/toast.dart';
 
 class ListNotiUser extends StatefulWidget {
   @override

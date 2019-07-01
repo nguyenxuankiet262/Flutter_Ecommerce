@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
-import 'package:flutter_food_app/api/fcm.dart';
 import 'package:flutter_food_app/api/model/order.dart';
 import 'package:flutter_food_app/api/model/user.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
@@ -266,23 +265,6 @@ class OrderDetailState extends State<OrderDetail> {
                                       }
                                       finally{
                                         apiBloc.changeMainUser(user);
-                                      }
-                                      String tokenSeller = await getTokenById(widget.idUser);
-                                      if(tokenSeller != null) {
-                                        String status = "";
-                                        if(_index == 0){
-                                          status = "hủy";
-                                        }
-                                        else if(_index == 1){
-                                          status = "thành công";
-                                        }
-                                        else{
-                                          status = "mới";
-                                        }
-                                        sendNotification(
-                                            "Cập nhật đơn hàng",
-                                            "Đơn hàng #" + widget.idOrder + " của bạn đã được chuyển sang trạng thái " + status,
-                                            tokenSeller);
                                       }
                                       onSuccess();
                                       indexTab = _index;

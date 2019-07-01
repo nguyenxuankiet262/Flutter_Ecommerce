@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/admin_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/admin_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/another_user/info.dart';
+import 'package:toast/toast.dart';
 
 class ListReviewUser extends StatefulWidget{
   @override
@@ -160,8 +162,33 @@ class ListReviewUserState extends State<ListReviewUser>{
                     ],
                   ),
                   PopupMenuButton<int>(
-                    onSelected: (int result) {
-
+                    onSelected: (int result) async {
+                      if(result == 1){
+                        if(!state.listReviewUsers[index].isInReview.status){
+                          int check = await updateInReviewUser(adminBloc, state.listReviewUsers[index].id, true, 2, index);
+                          if(check == 1){
+                            Toast.show("Đã chuyển " + state.listReviewUsers[index].username + " sang Xem xét!", context);
+                          }
+                          else if(check == 0){
+                            Toast.show("Không thành công!", context);
+                          }
+                          else{
+                            Toast.show("Lỗi hệ thống!", context);
+                          }
+                        }
+                        else{
+                          int check = await updateInReviewUser(adminBloc, state.listReviewUsers[index].id, false, 2, index);
+                          if(check == 1){
+                            Toast.show("Đã tắt Xem xét thành công!", context);
+                          }
+                          else if(check == 0){
+                            Toast.show("Không thành công!", context);
+                          }
+                          else{
+                            Toast.show("Lỗi hệ thống!", context);
+                          }
+                        }
+                      }
                     },
                     itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
                       PopupMenuItem<int>(

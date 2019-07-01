@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/api/model/login.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
-import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
@@ -302,7 +301,9 @@ class LoginPageState extends State<LoginPage> {
           Future.delayed(const Duration(milliseconds: 500), () {
             Toast.show("Đăng nhập thành công!", context, duration: 2);
             Navigator.pop(context);
-            _showBanDialog();
+            if(apiBloc.currentState.mainUser.isInReview.status){
+              _showBanDialog();
+            }
             functionBloc.currentState.onBeforeLogin();
           });
         }

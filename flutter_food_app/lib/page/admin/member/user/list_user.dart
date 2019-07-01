@@ -163,6 +163,18 @@ class ListUserState extends State<ListUser>{
                           }
                         }
                       }
+                      else{
+                        int check = await banUser(adminBloc, state.listUser[index].id, 0 , index);
+                        if(check == 1){
+                          Toast.show("Đã khóa tài khoản " + state.listUser[index].username + "!", context);
+                        }
+                        else if(check == 0){
+                          Toast.show("Không thành công!", context);
+                        }
+                        else{
+                          Toast.show("Lỗi hệ thống!", context);
+                        }
+                      }
                     },
                     itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
                       PopupMenuItem<int>(

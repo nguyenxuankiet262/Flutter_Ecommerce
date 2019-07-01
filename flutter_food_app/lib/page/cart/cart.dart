@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
-import 'package:flutter_food_app/api/fcm.dart';
 import 'package:flutter_food_app/api/model/cart.dart';
 import 'package:flutter_food_app/api/model/items.dart';
 import 'package:flutter_food_app/api/model/user.dart';
@@ -212,11 +211,6 @@ class _CartPageState extends State<CartPage>
     while (true) {
       List<Items> items = new List<Items>();
       String idSeller = cart.products[0].idUser;
-      String tokenSeller = await getTokenById(idSeller);
-      if(tokenSeller != null) {
-        String nameOrder = apiState.mainUser.name;
-        sendNotification("Đơn hàng mới", "Bạn có 1 đơn hàng mới từ $nameOrder", tokenSeller);
-      }
       for (int i = 0; i < cart.products.length; i++) {
         if (idSeller == cart.products[i].idUser) {
           items.add(cart.items[i]);

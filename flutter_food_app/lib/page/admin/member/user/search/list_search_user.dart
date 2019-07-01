@@ -359,7 +359,6 @@ class _ListSearchUserState extends State<ListSearchUser> with AutomaticKeepAlive
                         await fetchSearchUserList(adminBloc, loadingBloc, searchInputBloc
                             .currentState
                             .searchInput , begin.toString(), end.toString());
-                        await
                         _footerKeyGrid.currentState
                             .onLoadEnd();
                       } else {

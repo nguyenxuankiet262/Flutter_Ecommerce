@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
-import 'package:flutter_food_app/api/fcm.dart';
 import 'package:flutter_food_app/common/bloc/admin_bloc.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
-import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/admin_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
@@ -483,19 +481,12 @@ class ListReportState extends State<ListReport> {
                                         );
                                       });
                                   if (await Helper().check()) {
-                                    String tokenSeller = state.listReports[index].product.user.token;
                                     int check = await deleteReportByAdmin(
                                         adminBloc,
                                         state.listReports[index].product.id,
                                         state.listReports[index].id,
                                         index);
                                     if (check == 1) {
-                                      if (tokenSeller != null) {
-                                        await sendNotification(
-                                            "Sản phẩm bị hủy",
-                                            "Bạn có 1 sản phẩm bị hủy!",
-                                            tokenSeller);
-                                      }
                                       Toast.show("Xóa bài thành công!",
                                           _contextDialog);
                                       Navigator.of(_contextDialog).pop();

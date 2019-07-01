@@ -4,7 +4,6 @@ import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/state/api_state.dart';
-import 'package:toast/toast.dart';
 
 class FavoriteItem extends StatefulWidget {
   final int index;

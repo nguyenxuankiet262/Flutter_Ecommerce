@@ -3260,20 +3260,20 @@ Future<int> updateInReviewUser(AdminBloc adminBloc, String idUser, bool status, 
       }
       else{
         List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
-        inReviewUser.removeAt(index);
-        adminBloc.changeReviewUserList(inReviewUser);
         List<User> listUsers = adminBloc.currentState.listUser;
         if(listUsers != null){
           if(listUsers.isNotEmpty){
             for(int i = 0; i < listUsers.length; i++){
-              if(listUsers[index].id == inReviewUser[i].id){
-                listUsers[index].isInReview.status = status;
+              if(listUsers[i].id == inReviewUser[index].id){
+                listUsers[i].isInReview.status = status;
                 adminBloc.changeUserList(listUsers);
                 break;
               }
             }
           }
         }
+        inReviewUser.removeAt(index);
+        adminBloc.changeReviewUserList(inReviewUser);
       }
     }
     return json.decode(response.body);
@@ -3325,6 +3325,86 @@ Future<int> updateInReviewUserInSearch(AdminBloc adminBloc, String idUser, bool 
             }
           }
         }
+      }
+    }
+    return json.decode(response.body);
+  }
+  else{
+    return -1;
+  }
+}
+
+Future<int> banUser(AdminBloc adminBloc, String idUser, int tab, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'banuser/$idUser',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+  if(response.statusCode == 200){
+    if(json.decode(response.body) == 1){
+      if(tab == 0){
+        List<User> listUsers = adminBloc.currentState.listUser;
+        listUsers[index].status = false;
+        adminBloc.changeUserList(listUsers);
+        List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+        if(inReviewUser != null){
+          if(inReviewUser.isNotEmpty){
+            for(int i = 0; i < inReviewUser.length; i++){
+              if(listUsers[index].id == inReviewUser[i].id){
+                inReviewUser.removeAt(i);
+                adminBloc.changeReviewUserList(inReviewUser);
+                break;
+              }
+            }
+          }
+        }
+      }
+      else if (tab == 1){
+        List<ReportUser> listReport = adminBloc.currentState.listUserReport;
+        List<User> listUsers = adminBloc.currentState.listUser;
+        if(listUsers != null){
+          if(listUsers.isNotEmpty){
+            for(int i = 0; i < listUsers.length; i++){
+              if(listUsers[i].id == listReport[index].user.id){
+                listUsers[i].status = false;
+                adminBloc.changeUserList(listUsers);
+                break;
+              }
+            }
+          }
+        }
+        List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+        if(inReviewUser != null){
+          if(inReviewUser.isNotEmpty){
+            for(int i = 0; i < inReviewUser.length; i++){
+              if(inReviewUser[i].id == listReport[index].user.id){
+                inReviewUser.removeAt(i);
+                adminBloc.changeReviewUserList(inReviewUser);
+                break;
+              }
+            }
+          }
+        }
+        solveUserReport(adminBloc, listReport[index].id, index);
+      }
+      else{
+        List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+        List<User> listUsers = adminBloc.currentState.listUser;
+        if(listUsers != null){
+          if(listUsers.isNotEmpty){
+            for(int i = 0; i < listUsers.length; i++){
+              if(listUsers[i].id == inReviewUser[index].id){
+                listUsers[i].isInReview.status = false;
+                adminBloc.changeUserList(listUsers);
+                break;
+              }
+            }
+          }
+        }
+        inReviewUser.removeAt(index);
+        adminBloc.changeReviewUserList(inReviewUser);
       }
     }
     return json.decode(response.body);

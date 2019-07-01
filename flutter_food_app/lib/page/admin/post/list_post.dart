@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
-import 'package:flutter_food_app/api/fcm.dart';
 import 'package:flutter_food_app/common/bloc/admin_bloc.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
@@ -396,19 +395,11 @@ class ListUnprovePostState extends State<ListUnprovePost> {
                                         );
                                       });
                                   if (await Helper().check()) {
-                                    String tokenSeller = state
-                                        .listUnprovedProducts[index].user.token;
                                     int check = await approvedPost(
                                         adminBloc,
                                         state.listUnprovedProducts[index].id,
                                         index);
                                     if (check == 1) {
-                                      if (tokenSeller != null) {
-                                        await sendNotification(
-                                            "Sản phẩm được duyệt",
-                                            "Bạn có 1 sản phẩm mới được duyệt!",
-                                            tokenSeller);
-                                      }
                                       Toast.show(
                                           "Phê duyệt thành công!", _contextDialog);
                                       Navigator.of(_contextDialog).pop();
@@ -469,19 +460,11 @@ class ListUnprovePostState extends State<ListUnprovePost> {
                                         );
                                       });
                                   if (await Helper().check()) {
-                                    String tokenSeller = state
-                                        .listUnprovedProducts[index].user.token;
                                     int check = await deletePostByAdmin(
                                         adminBloc,
                                         state.listUnprovedProducts[index].id,
                                         index);
                                     if (check == 1) {
-                                      if (tokenSeller != null) {
-                                        await sendNotification(
-                                            "Sản phẩm bị hủy",
-                                            "Bạn có 1 sản phẩm bị hủy!",
-                                            tokenSeller);
-                                      }
                                       Toast.show("Hủy bài viết thành công!",
                                           _contextDialog);
                                       Navigator.of(_contextDialog).pop();

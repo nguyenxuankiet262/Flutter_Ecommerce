@@ -117,49 +117,66 @@ class _MyMainPageState extends State<MyMainPage>
     userBloc = BlocProvider.of<UserBloc>(context);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print(message);
-        await updateNewestSystemNotice(
-            apiBloc, loadingBloc, apiBloc.currentState.mainUser.id);
-        if (message['notification']['title'] == "Cập nhật đơn hàng") {
-          String body = message['notification']['body'];
-          if (body.contains("mới")) {
-            User user = apiBloc.currentState.mainUser;
-            user.badge.buy++;
-            apiBloc.changeMainUser(user);
+        print('on message $message');
+        if(userBloc.currentState.isLogin){
+          if(message['notification']['title'] == "Xem xét tài khoản"){
+            _showDialog();
           }
-        } else if (message['notification']['title'] == "Đơn hàng mới") {
-          User user = apiBloc.currentState.mainUser;
-          user.badge.sell++;
-          apiBloc.changeMainUser(user);
+          else if(message['notification']['title'] == "Xem xét tài khoản"){
+
+          }
+          else{
+            await updateNewestSystemNotice(
+                apiBloc, loadingBloc, apiBloc.currentState.mainUser.id);
+            if (message['notification']['title'] == "Cập nhật đơn hàng") {
+              String body = message['notification']['body'];
+              if (body.contains("mới")) {
+                User user = apiBloc.currentState.mainUser;
+                user.badge.buy++;
+                apiBloc.changeMainUser(user);
+              }
+            } else if (message['notification']['title'] == "Đơn hàng mới") {
+              User user = apiBloc.currentState.mainUser;
+              user.badge.sell++;
+              apiBloc.changeMainUser(user);
+            }
+            _notiController.forward(from: 0.0);
+            Timer.periodic(Duration(seconds: 2), (timer) {
+              _timer = timer;
+              _notiController.forward(from: 0.0);
+            });
+          }
         }
-        _notiController.forward(from: 0.0);
-        Timer.periodic(Duration(seconds: 2), (timer) {
-          _timer = timer;
-          _notiController.forward(from: 0.0);
-        });
       },
-      onLaunch: (Map<String, dynamic> message) async {},
+      onLaunch: (Map<String, dynamic> message) async {
+        print('on launch $message');
+      },
       onResume: (Map<String, dynamic> message) async {
-        print(message);
-        await updateNewestSystemNotice(
-            apiBloc, loadingBloc, apiBloc.currentState.mainUser.id);
-        if (message['notification']['title'] == "Cập nhật đơn hàng") {
-          String body = message['notification']['body'];
-          if (body.contains("mới")) {
+        print('on resume $message');
+        if(message['notification']['title'] == "Xem xét tài khoản"){
+          _showDialog();
+        }
+        else{
+          await updateNewestSystemNotice(
+              apiBloc, loadingBloc, apiBloc.currentState.mainUser.id);
+          if (message['notification']['title'] == "Cập nhật đơn hàng") {
+            String body = message['notification']['body'];
+            if (body.contains("mới")) {
+              User user = apiBloc.currentState.mainUser;
+              user.badge.buy++;
+              apiBloc.changeMainUser(user);
+            }
+          } else if (message['notification']['title'] == "Đơn hàng mới") {
             User user = apiBloc.currentState.mainUser;
-            user.badge.buy++;
+            user.badge.sell++;
             apiBloc.changeMainUser(user);
           }
-        } else if (message['notification']['title'] == "Đơn hàng mới") {
-          User user = apiBloc.currentState.mainUser;
-          user.badge.sell++;
-          apiBloc.changeMainUser(user);
-        }
-        _notiController.forward(from: 0.0);
-        Timer.periodic(Duration(seconds: 2), (timer) {
-          _timer = timer;
           _notiController.forward(from: 0.0);
-        });
+          Timer.periodic(Duration(seconds: 2), (timer) {
+            _timer = timer;
+            _notiController.forward(from: 0.0);
+          });
+        }
       },
     );
     _firebaseMessaging.requestNotificationPermissions(

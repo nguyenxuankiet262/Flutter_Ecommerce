@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/api/model/order.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/post/post.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:toast/toast.dart';
 
 class InforOrder extends StatefulWidget {
   final Order order;

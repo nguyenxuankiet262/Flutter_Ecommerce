@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
-import 'package:flutter_food_app/api/model/user.dart';
 import 'package:flutter_food_app/common/bloc/another_user_bloc.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
@@ -10,8 +9,6 @@ import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/another_user_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:toast/toast.dart';
