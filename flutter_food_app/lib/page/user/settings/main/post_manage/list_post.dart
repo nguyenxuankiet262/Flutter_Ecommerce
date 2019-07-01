@@ -311,23 +311,11 @@ class _ListPostState extends State<ListPost>
                             ),
                           )),
                           onTap: () async {
-                            if (await checkStatusProduct(
-                                    state.mainUser.listProducts[index].id) ==
-                                1) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Post(state
-                                          .mainUser.listProducts[index].id)));
-                            } else if (await checkStatusProduct(
-                                    state.mainUser.listProducts[index].id) ==
-                                0) {
-                              Toast.show("Không thể truy cập!", context,
-                                  gravity: Toast.CENTER, duration: 2);
-                            } else {
-                              Toast.show("Lỗi hệ thống!", context,
-                                  gravity: Toast.CENTER);
-                            }
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Post(state
+                                        .mainUser.listProducts[index].id)));
                           },
                         ),
                     staggeredTileBuilder: (int index) =>

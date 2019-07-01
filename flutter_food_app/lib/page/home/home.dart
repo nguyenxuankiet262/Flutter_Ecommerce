@@ -16,9 +16,9 @@ import 'body.dart';
 import 'package:flutter_food_app/page/search/search.dart';
 
 class MyHomePage extends StatefulWidget {
-  final Function navigateToPost, navigateToFilter, navigateToSearch;
+  final Function navigateToPost, navigateToFilter, navigateToSearch, setFocus;
 
-  MyHomePage(this.navigateToPost, this.navigateToFilter, this.navigateToSearch);
+  MyHomePage(this.navigateToPost, this.navigateToFilter, this.navigateToSearch, this.setFocus);
 
   @override
   State<StatefulWidget> createState() => _MyHomePageState();
@@ -329,6 +329,7 @@ class _MyHomePageState extends State<MyHomePage>
                   : GestureDetector(
                       onTap: () {
                         BlocProvider.of<SearchBloc>(context).changePage();
+                        widget.setFocus();
                         setState(() {
                           isSearch = true;
                         });

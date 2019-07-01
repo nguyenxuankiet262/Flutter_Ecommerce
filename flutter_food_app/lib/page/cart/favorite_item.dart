@@ -47,16 +47,8 @@ class FavoriteItemState extends State<FavoriteItem> {
                 setState(() {
                   onTapFav = true;
                 });
-                if(await checkStatusProduct(state.cart.items[widget.index].id) == 1) {
-                  await isAddToFav(apiBloc, state.mainUser.id,
-                      state.cart.items[widget.index].id, true);
-                }
-                else if(await checkStatusProduct(state.cart.items[widget.index].id) == 0){
-                  Toast.show("Không thể thêm yêu thích sản phẩm bị xóa!", context, gravity: Toast.CENTER, duration: 2);
-                }
-                else{
-                  Toast.show("Lỗi hệ thống!", context, gravity: Toast.CENTER);
-                }
+                await isAddToFav(apiBloc, state.mainUser.id,
+                    state.cart.items[widget.index].id, true);
                 setState(() {
                   onTapFav = false;
                 });

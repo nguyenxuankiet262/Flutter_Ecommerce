@@ -150,25 +150,9 @@ class PostBodyState extends State<PostBody> {
                                       children: <Widget>[
                                         GestureDetector(
                                           onTap: () async {
-                                            if (await checkStatusProduct(
-                                                    widget.idProduct) ==
-                                                1) {
-                                              Share.share(
-                                                  'https://datnk15.herokuapp.com/product-detail/' +
-                                                      productState.product.id);
-                                            } else if (await checkStatusProduct(
-                                                    widget.idProduct) ==
-                                                0) {
-                                              Toast.show(
-                                                  "Không thể chia sẽ sản phẩm bị xóa!",
-                                                  context,
-                                                  gravity: Toast.CENTER,
-                                                  duration: 2);
-                                            } else {
-                                              Toast.show(
-                                                  "Lỗi hệ thống!", context,
-                                                  gravity: Toast.CENTER);
-                                            }
+                                            Share.share(
+                                                'https://datnk15.herokuapp.com/product-detail/' +
+                                                    productState.product.id);
                                           },
                                           child: Container(
                                             margin:
@@ -214,32 +198,11 @@ class PostBodyState extends State<PostBody> {
                                                       setState(() {
                                                         onTapFav = true;
                                                       });
-                                                      if (await checkStatusProduct(
-                                                              widget
-                                                                  .idProduct) ==
-                                                          1) {
-                                                        await isAddToFav(
-                                                            apiBloc,
-                                                            state.mainUser.id,
-                                                            widget.idProduct,
-                                                            true);
-                                                      } else if (await checkStatusProduct(
-                                                              widget
-                                                                  .idProduct) ==
-                                                          0) {
-                                                        Toast.show(
-                                                            "Không thể thêm yêu thích sản phẩm bị xóa!",
-                                                            context,
-                                                            gravity:
-                                                                Toast.CENTER,
-                                                            duration: 2);
-                                                      } else {
-                                                        Toast.show(
-                                                            "Lỗi hệ thống!",
-                                                            context,
-                                                            gravity:
-                                                                Toast.CENTER);
-                                                      }
+                                                      await isAddToFav(
+                                                          apiBloc,
+                                                          state.mainUser.id,
+                                                          widget.idProduct,
+                                                          true);
                                                       setState(() {
                                                         isFavorite = true;
                                                         onTapFav = false;

@@ -16,6 +16,7 @@ import 'package:flutter_food_app/api/model/liked.dart';
 import 'package:flutter_food_app/api/model/login.dart';
 import 'package:flutter_food_app/api/model/menu.dart';
 import 'package:flutter_food_app/api/model/report.dart';
+import 'package:flutter_food_app/api/model/report_user.dart';
 import 'package:flutter_food_app/api/model/system_noti.dart';
 import 'package:flutter_food_app/api/model/order.dart';
 import 'package:flutter_food_app/api/model/product.dart';
@@ -226,7 +227,10 @@ Future<bool> addProduct(
     String initprice,
     String currentprice,
     String unit) async {
-  final response = await client.post(url + 'product/add', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'product/add', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "name": name,
     "description": description,
@@ -294,7 +298,10 @@ Future<int> checkIsFavorite(String idUser, String idProduct) async {
 }
 
 Future<int> reportProduct(String idUser, String idProduct, String code) async {
-  final response = await client.post(url + 'report/create-report', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'report/create-report', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "user": idUser,
     "product": idProduct,
     "code": code,
@@ -307,9 +314,43 @@ Future<int> reportProduct(String idUser, String idProduct, String code) async {
   }
 }
 
+Future<int> reportUser(String idUser, String code) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'report-user/add', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    "iduser": idUser,
+    "code": code,
+  });
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    return -1;
+  }
+}
+
+Future<int> reportUserAnother(String idUser, String reason) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'report-user/add', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    "iduser": idUser,
+    "code": "5",
+    "reason": reason
+  });
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    return -1;
+  }
+}
+
 Future<int> reportProductAnother(
     String idUser, String idProduct, String reason) async {
-  final response = await client.post(url + 'report/create-report', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'report/create-report', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "user": idUser,
     "product": idProduct,
     "code": "5",
@@ -437,7 +478,10 @@ fetchProductById(ProductBloc productBloc, String idProduct) async {
 
 Future<int> addRatingUser(AnotherUserBloc anotherUserBloc, String idUser,
     String idRating, String rating, String comment) async {
-  final response = await client.post(url + 'rating/add', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'rating/add', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "idrating": idRating,
     "iduser": idUser,
     "rating": rating,
@@ -497,9 +541,10 @@ Future<int> addRatingUser(AnotherUserBloc anotherUserBloc, String idUser,
 
 Future<int> addRatingProduct(
     String idUser, String idProduct, String rating, String comment) async {
-  print(idUser);
-  print(idProduct);
-  final response = await client.post(url + 'product-rating/add', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'product-rating/add', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "idrating": idUser,
     "idproduct": idProduct,
     "rating": rating,
@@ -508,6 +553,46 @@ Future<int> addRatingProduct(
   if (response.statusCode == 200) {
     Code code = Code.fromJson(json.decode(response.body));
     return code.code;
+  } else {
+    return 0;
+  }
+}
+
+Future<int> removeRatingProduct(String idProduct) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'product-rating/delete', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    "idproduct": idProduct,
+  });
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    return 0;
+  }
+}
+
+Future<int> removeRatingUser(
+    AnotherUserBloc anotherUserBloc, String idUser, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'rating/delete', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    "iduser": idUser,
+  });
+  if (response.statusCode == 200) {
+    if (json.decode(response.body) == 1) {
+      User anotherUser = anotherUserBloc.currentState.user;
+      final responseRate = await client.get(url + 'rating/rate/' + idUser);
+      if (responseRate.statusCode == 200) {
+        Rate rate = new Rate();
+        rate = Rate.fromJson(json.decode(responseRate.body));
+        anotherUser.rate = rate.rate;
+        anotherUser.listRatings.removeAt(index);
+        anotherUserBloc.changeAnotherUser(anotherUser);
+      }
+    }
+    return json.decode(response.body);
   } else {
     return 0;
   }
@@ -584,7 +669,18 @@ fetchUserById(ApiBloc apiBloc, String idUser) async {
         user.amountFollowing = follow.following;
       }
     }
-    print(user.amountPost);
+    if (apiBloc.currentState.mainUser != null) {
+      if (apiBloc.currentState.mainUser.listFollowNotice != null) {
+        user.listFollowNotice = apiBloc.currentState.mainUser.listFollowNotice;
+      }
+      if (apiBloc.currentState.mainUser.listSystemNotice != null) {
+        user.listSystemNotice = apiBloc.currentState.mainUser.listSystemNotice;
+      }
+      user.amountSystemNotice =
+          apiBloc.currentState.mainUser.amountSystemNotice;
+      user.amountFollowNotice =
+          apiBloc.currentState.mainUser.amountFollowNotice;
+    }
     apiBloc.changeMainUser(user);
   }
 }
@@ -673,7 +769,13 @@ Future<int> checkIsFollowing(String idCheck, String idUser) async {
 
 fetchListFavUser(
     ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser) async {
-  final responseFav = await client.get(url + 'favourite/get-by-user/' + idUser);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final responseFav = await client.get(
+    url + 'favourite/get-by-user/' + idUser,
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (responseFav.statusCode == 200) {
     final parsed = json.decode(responseFav.body).cast<Map<String, dynamic>>();
     List<Favourite> listFav = List<Favourite>();
@@ -707,13 +809,15 @@ fetchListFavUser(
 
 fetchListPostUser(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
     int begin, int end) async {
-  final responseProducts = await client.get(url +
-      'product/get-by-user/' +
-      idUser +
-      '/' +
-      begin.toString() +
-      '/' +
-      end.toString());
+  final responseProducts = await client.get(
+    url +
+        'product/get-by-user/' +
+        idUser +
+        '/' +
+        begin.toString() +
+        '/' +
+        end.toString(),
+  );
   if (responseProducts.statusCode == 200) {
     final parsed =
         json.decode(responseProducts.body).cast<Map<String, dynamic>>();
@@ -745,8 +849,11 @@ fetchListPostUser(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
 }
 
 isAddToFav(ApiBloc apiBloc, String idUser, String id, bool isAdd) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   if (isAdd) {
-    final response = await client.post(url + 'favourite/like', body: {
+    final response = await client.post(url + 'favourite/like', headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    }, body: {
       "iduser": idUser,
       "idproduct": id,
     });
@@ -762,7 +869,9 @@ isAddToFav(ApiBloc apiBloc, String idUser, String id, bool isAdd) async {
       }
     }
   } else {
-    final response = await client.post(url + 'favourite/unlike', body: {
+    final response = await client.post(url + 'favourite/unlike', headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    }, body: {
       "iduser": idUser,
       "idproduct": id,
     });
@@ -977,7 +1086,13 @@ Future<Login> checkLogin(String username, String password) async {
 //Lấy thông tin giỏ hàng
 fetchCartByUserId(
     ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser) async {
-  final response = await client.get(url + 'cart/get-by-user/' + idUser);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'cart/get-by-user/' + idUser,
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   try {
     if (response.statusCode == 200) {
       if (response.body != "null") {
@@ -1019,26 +1134,17 @@ fetchCartByUserId(
   }
 }
 
-Future<int> checkStatusProduct(String idProduct) async {
-  final response = await client.get(url + 'product/get/' + idProduct);
-  if (response.statusCode == 200) {
-    if (json.decode(response.body)["status"]){
-      return 1;
-    }
-    else {
-      return 0;
-    }
-  } else {
-    return -1;
-  }
-}
-
 //Thêm hoặc cập nhật giỏ hàng
 updateProductOfCart(
     ApiBloc apiBloc, String idUser, Items item, Product product) async {
   Map data = item.toJson();
-  final response = await client.post(url + 'cart/update',
-      body: {'iduser': idUser, 'product': json.encode(data)});
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'cart/update', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    'iduser': idUser,
+    'product': json.encode(data)
+  });
   if (response.statusCode == 200) {
     bool flag = false;
     Cart tempCart = apiBloc.currentState.cart;
@@ -1067,8 +1173,13 @@ updateProductOfCart(
 
 //Xóa sản phẩm vào giỏ hàng
 deleteProductOfCart(ApiBloc apiBloc, String idUser, String idProduct) async {
-  final response = await client.post(url + 'cart/delete',
-      body: {'iduser': idUser, 'idproduct': idProduct});
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'cart/delete', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    'iduser': idUser,
+    'idproduct': idProduct
+  });
   if (response.statusCode == 200) {
     Cart tempCart = apiBloc.currentState.cart;
     for (int i = 0; i < tempCart.items.length; i++) {
@@ -1086,13 +1197,22 @@ deleteProductOfCart(ApiBloc apiBloc, String idUser, String idProduct) async {
 
 isFollowUser(
     ApiBloc apiBloc, String idUser, User userFollow, bool isFollow) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   if (isFollow) {
-    final response = await client.post(url + 'follow/following',
-        body: {'iduser': idUser, 'idfollow': userFollow.id});
+    final response = await client.post(url + 'follow/following', headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    }, body: {
+      'iduser': idUser,
+      'idfollow': userFollow.id
+    });
     if (response.statusCode == 200) {}
   } else {
-    final response = await client.post(url + 'follow/unfollow',
-        body: {'iduser': idUser, 'idfollow': userFollow.id});
+    final response = await client.post(url + 'follow/unfollow', headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    }, body: {
+      'iduser': idUser,
+      'idfollow': userFollow.id
+    });
     if (response.statusCode == 200) {}
   }
 }
@@ -1101,6 +1221,7 @@ isFollowUser(
 fetchOrderById(ApiBloc apiBloc, String idUser, int status, bool isSeller,
     String begin, String end) async {
   String address = "";
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   try {
     if (isSeller) {
       if (status == 0) {
@@ -1120,8 +1241,12 @@ fetchOrderById(ApiBloc apiBloc, String idUser, int status, bool isSeller,
       }
     }
   } finally {
-    final responseOrders =
-        await client.get(url + address + idUser + "/$begin/$end");
+    final responseOrders = await client.get(
+      url + address + idUser + "/$begin/$end",
+      headers: {
+        HttpHeaders.authorizationHeader: prefs.getString('token'),
+      },
+    );
     if (responseOrders.statusCode == 200) {
       final parsed =
           json.decode(responseOrders.body).cast<Map<String, dynamic>>();
@@ -1201,7 +1326,13 @@ fetchOrderById(ApiBloc apiBloc, String idUser, int status, bool isSeller,
 }
 
 Future<Order> getOrderById(String id) async {
-  final response = await client.get(url + 'order/get/' + id);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'order/get/' + id,
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     Order order = Order.fromJson(json.decode(response.body));
     if (order != null) {
@@ -1251,14 +1382,22 @@ updateStatusOrder(String idOrder, String status) async {
 
 addOrder(
     ApiBloc apiBloc, String idSeller, List<Items> items, String idUser) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   var product = jsonEncode(items.map((item) => item.toJson()).toList());
-  final response = await client.post(url + 'order/create-order', body: {
+  final response = await client.post(url + 'order/create-order', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": apiBloc.currentState.mainUser.id,
     "idseller": idSeller,
     "product": product,
   });
   if (response.statusCode == 200) {
-    final responseDeleteCart = await client.get(url + 'cart/delete/' + idUser);
+    final responseDeleteCart = await client.get(
+      url + 'cart/delete/' + idUser,
+      headers: {
+        HttpHeaders.authorizationHeader: prefs.getString('token'),
+      },
+    );
     if (responseDeleteCart.statusCode == 200) {
       Cart cart =
           new Cart(items: new List<Items>(), products: new List<Product>());
@@ -1276,8 +1415,13 @@ searchOrder(
     String status,
     String begin,
     String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   final response = await client.get(
-      url + 'order/search-filter/$idUser/$idOrder/$code/$status/$begin/$end');
+    url + 'order/search-filter/$idUser/$idOrder/$code/$status/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
     List<Order> listOrders = new List<Order>();
@@ -1895,7 +2039,10 @@ searchProductsOfChildMenuOfUser(
 
 fetchFavOfUser(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
     String code, String min, String max, String begin, String end) async {
-  final response = await client.post(url + 'filter-favourite', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'filter-favourite', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "code": code,
     "min": min,
@@ -1932,7 +2079,10 @@ fetchFavOfMenuOfUser(
     String max,
     String begin,
     String end) async {
-  final response = await client.post(url + 'filter-favourite-menu', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'filter-favourite-menu', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "id": idMenu,
     "code": code,
@@ -1970,7 +2120,11 @@ fetchFavOfChildMenuOfUser(
     String max,
     String begin,
     String end) async {
-  final response = await client.post(url + 'filter-favourite-childmenu', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response =
+      await client.post(url + 'filter-favourite-childmenu', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "id": idChildMenu,
     "code": code,
@@ -2008,7 +2162,10 @@ searchFavAllOfUser(
     String max,
     String begin,
     String end) async {
-  final response = await client.post(url + 'search-filter-favourite', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'search-filter-favourite', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "name": name,
     "code": code,
@@ -2051,8 +2208,11 @@ searchFavOfMenuOfUser(
     String max,
     String begin,
     String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   final response =
-      await client.post(url + 'search-filter-favourite-menu', body: {
+      await client.post(url + 'search-filter-favourite-menu', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "id": idMenu,
     "iduser": idUser,
     "name": name,
@@ -2098,8 +2258,11 @@ searchFavOfChildMenuOfUser(
     String max,
     String begin,
     String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   final response =
-      await client.post(url + 'search-filter-favourite-childmenu', body: {
+      await client.post(url + 'search-filter-favourite-childmenu', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "id": idChildMenu,
     "iduser": idUser,
     "name": name,
@@ -2154,7 +2317,10 @@ Future<int> changeInfoUser(
     String info,
     String coverphoto,
     String avatar) async {
-  final response = await client.post(url + 'user/change-profile', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'user/change-profile', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "username": username,
     "name": name,
@@ -2176,7 +2342,10 @@ Future<int> changeInfoUser(
 //********************PRIVATE***********
 
 changePassword(String idUser, String oldPass, String newPass) async {
-  final response = await client.post(url + 'user/change-password', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'user/change-password', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "iduser": idUser,
     "oldpassword": oldPass,
     "password": newPass,
@@ -2194,8 +2363,13 @@ changePassword(String idUser, String oldPass, String newPass) async {
 
 updateSeenSystemNoti(ApiBloc apiBloc, String idUser, String code,
     String idUpdate, int index) async {
-  final response =
-      await client.get(url + 'noti/update/$code/$idUser/$idUpdate');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'noti/update/$code/$idUser/$idUpdate',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     if (json.decode(response.body) == 1) {
       User user = apiBloc.currentState.mainUser;
@@ -2208,8 +2382,13 @@ updateSeenSystemNoti(ApiBloc apiBloc, String idUser, String code,
 
 updateSeenFollowNoti(
     ApiBloc apiBloc, String idUser, String idProduct, int index) async {
-  final response =
-      await client.get(url + 'update-user-notice/$idUser/$idProduct');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'update-user-notice/$idUser/$idProduct',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     if (json.decode(response.body) == 1) {
       User user = apiBloc.currentState.mainUser;
@@ -2221,8 +2400,15 @@ updateSeenFollowNoti(
 }
 
 fetchAmountNewFollowNoti(ApiBloc apiBloc, String idUser) async {
-  final response = await client.get(url + 'get-qty-user-notice/$idUser');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+      url + 'get-qty-user-notice/$idUser',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
+    print(response.body);
     User user = apiBloc.currentState.mainUser;
     user.amountFollowNotice = json.decode(response.body);
     apiBloc.changeMainUser(user);
@@ -2230,7 +2416,13 @@ fetchAmountNewFollowNoti(ApiBloc apiBloc, String idUser) async {
 }
 
 fetchAmountNewSystemNoti(ApiBloc apiBloc, String idUser) async {
-  final response = await client.get(url + 'noti/count-new/$idUser');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+      url + 'noti/count-new/$idUser',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     User user = apiBloc.currentState.mainUser;
     user.amountSystemNotice = json.decode(response.body);
@@ -2240,7 +2432,13 @@ fetchAmountNewSystemNoti(ApiBloc apiBloc, String idUser) async {
 
 updateNewestFollowNotice(
     ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser) async {
-  final response = await client.get(url + 'get-user-notice/$idUser/1/1');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'get-user-notice/$idUser/1/1',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
     List<FollowNotice> tempListNotice = List<FollowNotice>();
@@ -2260,7 +2458,13 @@ updateNewestFollowNotice(
 
 updateNewestSystemNotice(
     ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser) async {
-  final response = await client.get(url + 'get-notice/$idUser/0/1/1');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'get-notice/$idUser/0/1/1',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
     List<SystemNotice> tempListNotice = List<SystemNotice>();
@@ -2289,8 +2493,13 @@ updateNewestSystemNotice(
 
 fetchFollowNotificaion(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
     String begin, String end) async {
-  final response = await client
-      .get(url + 'get-user-notice/' + idUser + "/" + begin + '/' + end);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'get-user-notice/' + idUser + "/" + begin + '/' + end,
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
 
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -2318,8 +2527,13 @@ fetchFollowNotificaion(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
 
 fetchSystemNotificaion(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
     String begin, String end) async {
-  final response = await client
-      .get(url + 'get-notice/' + idUser + "/0/" + begin + '/' + end);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'get-notice/' + idUser + "/0/" + begin + '/' + end,
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
 
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -2357,8 +2571,14 @@ fetchSystemNotificaion(ApiBloc apiBloc, LoadingBloc loadingBloc, String idUser,
 //***************************FEEDBACK**********************
 
 Future<int> addFeedback(String idUser, String title, String feedback) async {
-  final response = await client.post(url + 'feedback/add',
-      body: {"iduser": idUser, "title": title, "feedback": feedback});
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'feedback/add', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    "iduser": idUser,
+    "title": title,
+    "feedback": feedback
+  });
   if (response.statusCode == 200) {
     Code code = Code.fromJson(json.decode(response.body));
     return code.code;
@@ -2369,8 +2589,11 @@ Future<int> addFeedback(String idUser, String title, String feedback) async {
 
 fetchListRepFeedback(
     ApiBloc apiBloc, String idUser, String begin, String end) async {
-  final response =
-      await client.get(url + 'feedback/get-list-rep/$idUser/$begin/$end');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client
+      .get(url + 'feedback/get-list-rep/$idUser/$begin/$end', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  });
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
     List<Feedbacks> tempList = new List<Feedbacks>();
@@ -2395,8 +2618,13 @@ fetchListRepFeedback(
 
 fetchListUnRepFeedback(
     ApiBloc apiBloc, String idUser, String begin, String end) async {
-  final response =
-      await client.get(url + 'feedback/get-list-unrep/$idUser/$begin/$end');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'feedback/get-list-unrep/$idUser/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
     List<Feedbacks> tempList = new List<Feedbacks>();
@@ -2439,7 +2667,10 @@ Future<int> registerUser(String username, String name, String password,
 }
 
 Future<int> updateToken(String idUser, String token) async {
-  final response = await client.post(url + 'user/updatetoken', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'user/updatetoken', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "id": idUser,
     "token": token,
   });
@@ -2452,7 +2683,6 @@ Future<int> updateToken(String idUser, String token) async {
 
 Future<String> getTokenById(String idUser) async {
   final response = await client.get(url + 'user/gettoken/$idUser');
-
   if (response.statusCode == 200) {
     if (json.decode(response.body) != 0) {
       return json.decode(response.body)["firebasetoken"];
@@ -2479,8 +2709,13 @@ Future<int> changePasswordForgot(String phone, String password) async {
 //***************************************************ADMIN*********************************************
 
 fetchListUnprovedProducts(AdminBloc adminBloc, String begin, String end) async {
-  final response =
-      await client.get(url + 'product/get-list-unproved/$begin/$end');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'product/get-list-unproved/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
 
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -2511,13 +2746,12 @@ Future<int> approvedPost(
     AdminBloc adminBloc, String idProduct, int index) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   final response = await client.get(
-      url + 'admin/prove-product/$idProduct',
+    url + 'admin/prove-product/$idProduct',
     headers: {
       HttpHeaders.authorizationHeader: prefs.getString('token'),
     },
   );
   if (response.statusCode == 200) {
-    print(response.body);
     Code code = Code.fromJson(json.decode(response.body));
     if (code.code == 1) {
       List<Product> listProducts = new List<Product>();
@@ -2535,21 +2769,18 @@ Future<int> approvedPost(
   return -1;
 }
 
-Future<int> deletePostByAdmin(AdminBloc adminBloc, String idProduct, int index) async {
+Future<int> deletePostByAdmin(
+    AdminBloc adminBloc, String idProduct, int index) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  final response = await client.post(
-      url + 'product/update/status',
-      headers: {
-        HttpHeaders.authorizationHeader: prefs.getString('token'),
-      },
-      body: {
+  final response = await client.post(url + 'product/update/status', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "id": idProduct,
     "status": "false",
   });
   if (response.statusCode == 200) {
     Code code = Code.fromJson(json.decode(response.body));
     if (code.code == 1) {
-      print(index);
       List<Product> listProducts = new List<Product>();
       listProducts = adminBloc.currentState.listUnprovedProducts;
       listProducts.removeAt(index);
@@ -2565,17 +2796,15 @@ Future<int> deletePostByAdmin(AdminBloc adminBloc, String idProduct, int index) 
   return -1;
 }
 
-Future<int> deleteReportByAdmin(AdminBloc adminBloc, String idProduct, String idReport, int index) async {
+Future<int> deleteReportByAdmin(
+    AdminBloc adminBloc, String idProduct, String idReport, int index) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  final response = await client.post(
-      url + 'product/update/status',
-      headers: {
-        HttpHeaders.authorizationHeader: prefs.getString('token'),
-      },
-      body: {
-        "id": idProduct,
-        "status": "false",
-      });
+  final response = await client.post(url + 'product/update/status', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
+    "id": idProduct,
+    "status": "false",
+  });
   if (response.statusCode == 200) {
     Code code = Code.fromJson(json.decode(response.body));
     if (code.code == 1) {
@@ -2600,17 +2829,13 @@ Future<int> deleteReportByAdmin(AdminBloc adminBloc, String idProduct, String id
 Future<int> deletePostByUser(String idProduct) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  final response = await client.post(
-      url + 'product/update/status',
-      headers: {
-        HttpHeaders.authorizationHeader: prefs.getString('token'),
-      },
-      body: {
+  final response = await client.post(url + 'product/update/status', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "id": idProduct,
     "status": "false",
   });
   if (response.statusCode == 200) {
-    print(response.body);
     Code code = Code.fromJson(json.decode(response.body));
     if (code.code == 1) {
       return code.code;
@@ -2623,7 +2848,6 @@ Future<int> deletePostByUser(String idProduct) async {
 
 fetchAmountUnprovedPost(AdminBloc adminBloc) async {
   final response = await client.get(url + 'product/count-unproved');
-
   if (response.statusCode == 200) {
     adminBloc.changeAmountPost(json.decode(response.body));
   }
@@ -2644,10 +2868,22 @@ fetchAmountUnrepFeedbacks(AdminBloc adminBloc) async {
   }
 }
 
+fetchAmountUserReport(AdminBloc adminBloc) async {
+  final response = await client.get(url + 'report-user/count-unsolve');
+  if (response.statusCode == 200) {
+    adminBloc.changeAmountUserReports(json.decode(response.body));
+  }
+}
+
 fetchListUnrepAdminFeedback(
     AdminBloc adminBloc, String begin, String end) async {
-  final response =
-      await client.get(url + 'feedback/get-list-unrep/$begin/$end');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'feedback/get-list-unrep/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
     List<Feedbacks> tempList = new List<Feedbacks>();
@@ -2676,7 +2912,10 @@ fetchListUnrepAdminFeedback(
 
 Future<int> replyFeedback(
     AdminBloc adminBloc, String idFeedback, String reply, int index) async {
-  final response = await client.post(url + 'feedback/reply', body: {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(url + 'feedback/reply', headers: {
+    HttpHeaders.authorizationHeader: prefs.getString('token'),
+  }, body: {
     "idfeedback": idFeedback,
     "reply": reply,
   });
@@ -2700,8 +2939,12 @@ Future<int> replyFeedback(
 
 Future<int> removeFeedback(
     AdminBloc adminBloc, String idFeedback, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   final response = await client.get(
     url + 'feedback/update-status/$idFeedback',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
   );
   if (response.statusCode == 200) {
     if (json.decode(response.body) == 1) {
@@ -2720,8 +2963,12 @@ Future<int> removeFeedback(
 }
 
 fetchReport(AdminBloc adminBloc, String begin, String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   final response = await client.get(
     url + 'report/get-list-unsolve/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
   );
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
@@ -2757,7 +3004,13 @@ fetchReport(AdminBloc adminBloc, String begin, String end) async {
 }
 
 Future<int> solveReport(AdminBloc adminBloc, String id, int index) async {
-  final response = await client.get(url + 'report/solve/$id');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'report/solve/$id',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
   if (response.statusCode == 200) {
     if (json.decode(response.body) == 1) {
       List<Report> listReports = adminBloc.currentState.listReports;
@@ -2775,18 +3028,308 @@ Future<int> solveReport(AdminBloc adminBloc, String id, int index) async {
   }
 }
 
-Future<Login> loginAdmin(String username, String password) async {
+Future<int> solveUserReport(AdminBloc adminBloc, String id, int index) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'report-user/solve/$id',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+  if (response.statusCode == 200) {
+    if (json.decode(response.body) == 1) {
+      List<ReportUser> listUserReports = adminBloc.currentState.listUserReport;
+      listUserReports.removeAt(index);
+      adminBloc.changeUserReportList(listUserReports);
+      int amountUserReport = adminBloc.currentState.amountUserReports;
+      amountUserReport--;
+      adminBloc.changeAmountUserReports(amountUserReport);
+      return json.decode(response.body);
+    } else {
+      return json.decode(response.body);
+    }
+  } else {
+    return -1;
+  }
+}
+
+
+
+Future<int> loginAdmin(String username, String password) async {
   final response = await client.post(url + 'admin/login', body: {
     'username': username,
     'password': password,
   });
   if (response.statusCode == 200) {
-    Login login = Login.fromJson(json.decode(response.body));
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', login.token);
-    return login;
+    if(json.decode(response.body) != 2){
+      Login login = Login.fromJson(json.decode(response.body));
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', login.token);
+      return login.code;
+    }
+    else{
+      return 2;
+    }
+
   } else {
-    return null;
+    return -1;
+  }
+}
+
+fetchListUser(AdminBloc adminBloc, String begin, String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'admin/get-list-user/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+    List<User> temp = parsed.map<User>((json) => User.fromJson(json)).toList();
+    if (adminBloc.currentState.listUser != null) {
+      List<User> listUsers = List.from(adminBloc.currentState.listUser)
+        ..addAll(temp);
+      adminBloc.changeUserList(listUsers);
+    } else {
+      adminBloc.changeUserList(temp);
+    }
+  }
+}
+
+fetchListReviewUser(AdminBloc adminBloc, String begin, String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'admin/get-inreview/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+    List<User> temp = parsed.map<User>((json) => User.fromJson(json)).toList();
+    if (adminBloc.currentState.listReviewUsers != null) {
+      List<User> listUsers = List.from(adminBloc.currentState.listReviewUsers)
+        ..addAll(temp);
+      adminBloc.changeReviewUserList(listUsers);
+    } else {
+      adminBloc.changeReviewUserList(temp);
+    }
+  }
+}
+
+Future<String> checkValidToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'isLogin',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+  if (response.statusCode == 200) {
+    return json.decode(response.body).toString();
+  } else {
+    return "err";
+  }
+}
+
+fetchListUserReport(AdminBloc adminBloc, String begin, String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+    url + 'report-user/get-list-unsolve/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+    List<ReportUser> tempList = new List<ReportUser>();
+    tempList =
+        parsed.map<ReportUser>((json) => ReportUser.fromJson(json)).toList();
+    if (tempList.isNotEmpty) {
+      for (int i = 0; i < tempList.length; i++) {
+        final responseUser =
+            await client.get(url + 'user/get/' + tempList[i].idUserReport);
+        User userReport = new User();
+        if (responseUser.statusCode == 200) {
+          userReport = User.fromJson(json.decode(responseUser.body));
+        }
+        tempList[i].userReport = userReport;
+        final responseUserReportted =
+            await client.get(url + 'user/get/' + tempList[i].idUser);
+        User userReportted = new User();
+        if (responseUserReportted.statusCode == 200) {
+          userReportted =
+              User.fromJson(json.decode(responseUserReportted.body));
+        }
+        tempList[i].user = userReportted;
+      }
+    }
+    if (adminBloc.currentState.listUserReport != null) {
+      List<ReportUser> listReports =
+          List.from(adminBloc.currentState.listUserReport)..addAll(tempList);
+      adminBloc.changeUserReportList(listReports);
+    } else {
+      adminBloc.changeUserReportList(tempList);
+    }
+  }
+}
+
+fetchSearchUserList(AdminBloc adminBloc, LoadingBloc loadingBloc, String text,
+    String begin, String end) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.get(
+      url + 'admin/get-user/$text/$begin/$end',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+    List<User> listUsers = new List<User>();
+    listUsers = parsed.map<User>((json) => User.fromJson(json)).toList();
+    if (adminBloc.currentState.listSearchUser != null) {
+      List<User> listTemp = List.from(adminBloc.currentState.listSearchUser)
+        ..addAll(listUsers);
+      adminBloc.changeListSearchUser(listTemp);
+    } else {
+      adminBloc.changeListSearchUser(listUsers);
+    }
+    loadingBloc.changeLoadingSearch(false);
+  }
+}
+
+Future<int> updateInReviewUser(AdminBloc adminBloc, String idUser, bool status, int tab, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(
+    url + 'admin/add-inreview',
+    headers: {
+      HttpHeaders.authorizationHeader: prefs.getString('token'),
+    },
+    body: {
+      'iduser' : idUser,
+      'status' : status.toString()
+    }
+  );
+
+  if(response.statusCode == 200){
+    if(json.decode(response.body) == 1){
+      if(tab == 0){
+        List<User> listUsers = adminBloc.currentState.listUser;
+        listUsers[index].isInReview.status = status;
+        adminBloc.changeUserList(listUsers);
+        List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+        if(inReviewUser != null){
+          if(status){
+            inReviewUser.add(listUsers[index]);
+          }
+          else{
+            if(inReviewUser.isNotEmpty){
+              for(int i = 0; i < inReviewUser.length; i++){
+                if(listUsers[index].id == inReviewUser[i].id){
+                  inReviewUser.removeAt(i);
+                  adminBloc.changeReviewUserList(inReviewUser);
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+      else if(tab == 1){
+        List<ReportUser> listReport = adminBloc.currentState.listUserReport;
+        List<User> listUsers = adminBloc.currentState.listUser;
+        if(listUsers != null){
+          if(listUsers.isNotEmpty){
+            for(int i = 0; i < listUsers.length; i++){
+              if(listUsers[i].id == listReport[index].user.id){
+                print(listUsers[i].username);
+                listUsers[i].isInReview.status = status;
+                adminBloc.changeUserList(listUsers);
+                break;
+              }
+            }
+          }
+        }
+        List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+        if(inReviewUser != null){
+          inReviewUser.add(listReport[index].user);
+        }
+        solveUserReport(adminBloc, listReport[index].id, index);
+      }
+      else{
+        List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+        inReviewUser.removeAt(index);
+        adminBloc.changeReviewUserList(inReviewUser);
+        List<User> listUsers = adminBloc.currentState.listUser;
+        if(listUsers != null){
+          if(listUsers.isNotEmpty){
+            for(int i = 0; i < listUsers.length; i++){
+              if(listUsers[index].id == inReviewUser[i].id){
+                listUsers[index].isInReview.status = status;
+                adminBloc.changeUserList(listUsers);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    return json.decode(response.body);
+  }
+  else{
+    return -1;
+  }
+}
+
+Future<int> updateInReviewUserInSearch(AdminBloc adminBloc, String idUser, bool status, int index) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final response = await client.post(
+      url + 'admin/add-inreview',
+      headers: {
+        HttpHeaders.authorizationHeader: prefs.getString('token'),
+      },
+      body: {
+        'iduser' : idUser,
+        'status' : status.toString()
+      }
+  );
+
+  if(response.statusCode == 200){
+    if(json.decode(response.body) == 1){
+      List<User> listUsers = adminBloc.currentState.listUser;
+      List<User> listSearchUsers = adminBloc.currentState.listSearchUser;
+      for(int i = 0; i < listUsers.length; i++){
+        if(listUsers[i].id == adminBloc.currentState.listSearchUser[index].id){
+          listUsers[i].isInReview.status = status;
+          adminBloc.changeUserList(listUsers);
+          break;
+        }
+      }
+      listSearchUsers[index].isInReview.status = status;
+      adminBloc.changeListSearchUser(listSearchUsers);
+      List<User> inReviewUser = adminBloc.currentState.listReviewUsers;
+      if(inReviewUser != null){
+        if(status){
+          inReviewUser.add(listSearchUsers[index]);
+        }
+        else{
+          if(inReviewUser.isNotEmpty){
+            for(int i = 0; i < inReviewUser.length; i++){
+              if(listSearchUsers[index].id == inReviewUser[i].id){
+                inReviewUser.removeAt(i);
+                adminBloc.changeReviewUserList(inReviewUser);
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+    return json.decode(response.body);
+  }
+  else{
+    return -1;
   }
 }

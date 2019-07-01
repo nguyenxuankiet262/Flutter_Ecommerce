@@ -43,20 +43,8 @@ class _ListPostState extends State<ListPost>
                 itemBuilder: (BuildContext context, int index) => new Card(
                     child: GestureDetector(
                         onTap: () async {
-                          if (await checkStatusProduct(
-                                  state.listProduct[index].id) ==
-                              1) {
-                            functionBloc.currentState
-                                .navigateToPost(state.listProduct[index].id);
-                          } else if (await checkStatusProduct(
-                                  state.listProduct[index].id) ==
-                              0) {
-                            Toast.show("Không thể truy cập!!", context,
-                                gravity: Toast.CENTER, duration: 2);
-                          } else {
-                            Toast.show("Lỗi hệ thống!", context,
-                                gravity: Toast.CENTER);
-                          }
+                          functionBloc.currentState
+                              .navigateToPost(state.listProduct[index].id);
                         },
                         child: new Container(
                           height: 267,

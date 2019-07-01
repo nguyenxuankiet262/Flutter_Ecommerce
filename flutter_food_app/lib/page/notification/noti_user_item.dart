@@ -99,28 +99,11 @@ class _ListNotiUserState extends State<ListNotiUser> {
                                                 .idProduct,
                                             index);
                                       }
-                                      if (await checkStatusProduct(state
-                                              .mainUser
-                                              .listFollowNotice[index]
-                                              .idProduct) ==
-                                          1) {
-                                        functionBloc.currentState
-                                            .navigateToPost(state
-                                                .mainUser
-                                                .listFollowNotice[index]
-                                                .idProduct);
-                                      } else if (await checkStatusProduct(state
-                                              .mainUser
-                                              .listFollowNotice[index]
-                                              .idProduct) ==
-                                          0) {
-                                        Toast.show(
-                                            "Không thể truy cập!", context,
-                                            gravity: Toast.CENTER, duration: 2);
-                                      } else {
-                                        Toast.show("Lỗi hệ thống!", context,
-                                            gravity: Toast.CENTER);
-                                      }
+                                      functionBloc.currentState
+                                          .navigateToPost(state
+                                          .mainUser
+                                          .listFollowNotice[index]
+                                          .idProduct);
                                     },
                                     child: new Container(
                                       decoration: new BoxDecoration(

@@ -10,6 +10,7 @@ import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/loading_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
+import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/authentication/login/reset_password.dart';
 import 'package:flutter_food_app/page/authentication/register/register.dart';
@@ -48,6 +49,52 @@ class LoginPageState extends State<LoginPage> {
             size: 50.0,
           );
         });
+  }
+
+  _showBanDialog() {
+    // flutter defined function
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Thông Báo!"),
+          content: Text.rich(
+            TextSpan(
+              text:
+              "Tài khoản của bạn đang trong chế độ xem xét vì vi phạm nội quy. Bạn còn ",
+              style:
+              TextStyle(fontFamily: "Ralway"), // default t// ext style
+              children: <TextSpan>[
+                TextSpan(
+                    text: Helper().restTime(apiBloc.currentState.mainUser.isInReview.day),
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontFamily: "Ralway",
+                        fontWeight: FontWeight.bold)),
+                TextSpan(
+                    text: ' để chỉnh sửa sai phạm',
+                    style: TextStyle(
+                      fontFamily: "Ralway",
+                    )),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+                child: new Text(
+                  "Chấp nhận",
+                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          ],
+        );
+      },
+    ) ??
+        false;
   }
 
   Future<void> initAccountkit() async {
@@ -163,7 +210,6 @@ class LoginPageState extends State<LoginPage> {
     // TODO: implement dispose
     super.dispose();
     functionBloc.onBeforeLogin((){});
-    BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     myControllerUserName.dispose();
     myControllerPassword.dispose();
@@ -184,9 +230,9 @@ class LoginPageState extends State<LoginPage> {
   _checkAdmin() async {
     _showLoading();
     if(usernameInput.isNotEmpty && passwordInput.isNotEmpty){
-      Login login = await loginAdmin(usernameInput, passwordInput);
-      if (login != null) {
-        if (login.code != null) {
+      int check = await loginAdmin(usernameInput, passwordInput);
+      if (check != -1) {
+        if (check == 2) {
           await Future.delayed(const Duration(milliseconds: 1000), () {
             Toast.show("Tên đăng nhập hoặc mật khẩu chưa đúng!", context);
             Navigator.pop(context);
@@ -256,6 +302,7 @@ class LoginPageState extends State<LoginPage> {
           Future.delayed(const Duration(milliseconds: 500), () {
             Toast.show("Đăng nhập thành công!", context, duration: 2);
             Navigator.pop(context);
+            _showBanDialog();
             functionBloc.currentState.onBeforeLogin();
           });
         }

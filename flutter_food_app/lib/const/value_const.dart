@@ -33,6 +33,12 @@ List<String> reportStrings = [
   "Lí do khác"
 ];
 
+List<String> reportUserStrings = [
+  "Hình đại diện sai phạm",
+  "Thông tin cá nhân sai phạm",
+  "Lí do khác"
+];
+
 const List<String> tabsRating = const <String>[
   '1',
   '2',

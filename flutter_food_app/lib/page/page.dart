@@ -61,13 +61,63 @@ class _MyMainPageState extends State<MyMainPage>
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   Timer _timer;
 
+  _showDialog() {
+    // flutter defined function
+    return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: new Text("Thông Báo!"),
+              content: Text.rich(
+                TextSpan(
+                  text:
+                      "Tài khoản của bạn đang trong chế độ xem xét vì vi phạm nội quy. Bạn còn ",
+                  style:
+                      TextStyle(fontFamily: "Ralway"), // default t// ext style
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: Helper().restTime(apiBloc.currentState.mainUser.isInReview.day),
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontFamily: "Ralway",
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: ' để chỉnh sửa sai phạm',
+                        style: TextStyle(
+                          fontFamily: "Ralway",
+                        )),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                    child: new Text(
+                      "Chấp nhận",
+                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
   @override
   void initState() {
     super.initState();
+    userBloc = BlocProvider.of<UserBloc>(context);
+    functionBloc = BlocProvider.of<FunctionBloc>(context);
+    apiBloc = BlocProvider.of<ApiBloc>(context);
     loadingBloc = BlocProvider.of<LoadingBloc>(context);
     userBloc = BlocProvider.of<UserBloc>(context);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+        print(message);
         await updateNewestSystemNotice(
             apiBloc, loadingBloc, apiBloc.currentState.mainUser.id);
         if (message['notification']['title'] == "Cập nhật đơn hàng") {
@@ -90,6 +140,7 @@ class _MyMainPageState extends State<MyMainPage>
       },
       onLaunch: (Map<String, dynamic> message) async {},
       onResume: (Map<String, dynamic> message) async {
+        print(message);
         await updateNewestSystemNotice(
             apiBloc, loadingBloc, apiBloc.currentState.mainUser.id);
         if (message['notification']['title'] == "Cập nhật đơn hàng") {
@@ -118,6 +169,9 @@ class _MyMainPageState extends State<MyMainPage>
       print("Settings registered: $settings");
     });
     if (userBloc.currentState.isLogin) {
+      if (apiBloc.currentState.mainUser.isInReview.status) {
+        WidgetsBinding.instance.addPostFrameCallback((_) => _showDialog());
+      }
       _firebaseMessaging.onTokenRefresh.listen((newToken) {
         updateToken(apiBloc.currentState.mainUser.id, newToken);
       });
@@ -132,9 +186,6 @@ class _MyMainPageState extends State<MyMainPage>
     _offsetFloat = Tween<Offset>(begin: Offset(0.0, 2), end: Offset.zero)
         .animate(_controller);
     _controller.forward();
-    userBloc = BlocProvider.of<UserBloc>(context);
-    functionBloc = BlocProvider.of<FunctionBloc>(context);
-    apiBloc = BlocProvider.of<ApiBloc>(context);
     functionBloc.openDrawer(_openDrawer);
     functionBloc.navigateToPost(_navigateToPost);
     functionBloc.navigateToFilter(_navigateToFilter);
@@ -256,9 +307,12 @@ class _MyMainPageState extends State<MyMainPage>
     );
   }
 
+  void _setFocus() {
+    FocusScope.of(context).setFirstFocus(focusScope);
+  }
+
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).setFirstFocus(focusScope);
     super.build(context);
     return WillPopScope(
         child: BlocBuilder(
@@ -293,7 +347,8 @@ class _MyMainPageState extends State<MyMainPage>
                                   home: MyHomePage(
                                       this._navigateToPost,
                                       this._navigateToFilter,
-                                      this._navigateToLocation),
+                                      this._navigateToLocation,
+                                      this._setFocus),
                                   builder: (context, child) {
                                     return ScrollConfiguration(
                                       behavior: MyBehavior(),
@@ -435,8 +490,6 @@ class _MyMainPageState extends State<MyMainPage>
                                           GestureDetector(
                                             onTap: () {
                                               navigationTapped(0);
-                                              FocusScope.of(context)
-                                                  .setFirstFocus(focusScope);
                                             },
                                             child: Container(
                                               color: Colors.white,

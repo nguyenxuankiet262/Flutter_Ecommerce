@@ -88,34 +88,11 @@ class _ListPostState extends State<ListPost> {
                               : index == state.tenMostFav.length - 1 ? 8 : 0),
                       child: GestureDetector(
                         onTap: () async {
-                          if (widget.index == 0
-                              ? await checkStatusProduct(
-                                      state.tenNewest[index].id) ==
-                                  1
-                              : await checkStatusProduct(
-                                      state.tenMostFav[index].id) ==
-                                  1) {
-                            widget.index == 0
-                                ? functionBloc.currentState
-                                    .navigateToPost(state.tenNewest[index].id)
-                                : functionBloc.currentState
-                                    .navigateToPost(state.tenMostFav[index].id);
-                          } else if (widget.index == 0
-                              ? await checkStatusProduct(
-                                      state.tenNewest[index].id) ==
-                                  0
-                              : await checkStatusProduct(
-                                      state.tenMostFav[index].id) ==
-                                  0) {
-                            Toast.show(
-                                "Không thể truy cập!!",
-                                context,
-                                gravity: Toast.CENTER,
-                                duration: 2);
-                          } else {
-                            Toast.show("Lỗi hệ thống!", context,
-                                gravity: Toast.CENTER);
-                          }
+                          widget.index == 0
+                              ? functionBloc.currentState
+                              .navigateToPost(state.tenNewest[index].id)
+                              : functionBloc.currentState
+                              .navigateToPost(state.tenMostFav[index].id);
                         },
                         child: new Container(
                           width: 200,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/another_user_state.dart';
+import 'package:flutter_food_app/const/value_const.dart';
 import 'package:flutter_food_app/page/another_user/info_item.dart';
 import 'package:flutter_food_app/page/another_user/list_post.dart';
 import 'package:flutter_food_app/page/another_user/list_rating.dart';
@@ -42,6 +44,7 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
   double ratingValue = 5.0;
   final myController = new TextEditingController();
   final anotherUserBloc = AnotherUserBloc();
+  TextEditingController myControllerContent;
   GlobalKey<EasyRefreshState> _easyRefreshKey =
       new GlobalKey<EasyRefreshState>();
   GlobalKey<RefreshHeaderState> _headerKey =
@@ -57,13 +60,196 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
   ApiBloc apiBloc;
   UserBloc userBloc;
   FunctionBloc functionBloc;
+  List<Widget> _fragments;
+  bool isDelete = false;
+
+  _showAnotherReasonPopup() {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Nội dung báo cáo"),
+            content: Container(
+              width: MediaQuery.of(context).size.width,
+              color: colorBackground,
+              child: TextField(
+                controller: myControllerContent,
+                textAlign: TextAlign.start,
+                inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                maxLines: 10,
+                decoration: new InputDecoration(
+                  contentPadding: EdgeInsets.all(16.0),
+                  border: InputBorder.none,
+                  hintText: 'Nhập nội dung báo cáo',
+                  hintStyle: TextStyle(
+                      fontFamily: "Ralway", fontSize: 14, color: colorInactive),
+                  filled: true,
+                  fillColor: Colors.white,
+                ),
+                style: TextStyle(color: Colors.black, fontSize: 14),
+                autofocus: true,
+              ),
+            ),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton(
+                child: new Text("Hủy"),
+                onPressed: () {
+                  myControllerContent.clear();
+                  Navigator.of(context).pop();
+                },
+              ),
+              new FlatButton(
+                  child: new Text(
+                    "Chấp nhận",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    if (myControllerContent.text.isEmpty) {
+                      Toast.show("Vui lòng nhập nội dung!", context,
+                          gravity: Toast.CENTER);
+                    } else {
+                      _showLoading();
+                      int check = await reportUserAnother(
+                          anotherUserBloc.currentState.user.id,
+                          myControllerContent.text);
+                      if (check == 1) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Toast.show("Cảm ơn bạn đã gửi báo cáo!", context,
+                            gravity: Toast.CENTER);
+                      } else if (check == 0) {
+                        Navigator.pop(context);
+                        Toast.show("Không thể gửi báo cáo!", context,
+                            gravity: Toast.CENTER);
+                      } else if (check == 2) {
+                        Navigator.pop(context);
+                        Toast.show("Không thể báo cáo người dùng 2 lần!", context,
+                            gravity: Toast.CENTER);
+                      } else if (check == 3) {
+                        Navigator.pop(context);
+                        Toast.show(
+                            "Không thể báo cáo chính bạn!", context,
+                            gravity: Toast.CENTER);
+                      } else {
+                        Navigator.pop(context);
+                        Toast.show("Lỗi hệ thống", context,
+                            gravity: Toast.CENTER);
+                      }
+                    }
+                  }),
+            ],
+          );
+        });
+  }
+
+  _showReportDialog() {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return new Container(
+            height: 180.0,
+            margin: EdgeInsets.all(15.0),
+            color: Colors.transparent,
+            child: Column(
+              children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(top: 10.0),
+                    child: Center(
+                      child: Container(
+                        width: 50,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(15.0))),
+                      ),
+                    )),
+                ListView.builder(
+                  itemCount: 3,
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) =>
+                      GestureDetector(
+                        child: Container(
+                          height: 40,
+                          margin: EdgeInsets.only(
+                              left: 50.0, right: 50.0, top: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(20.0)),
+                            color: Colors.white,
+                          ),
+                          child: Center(
+                            child: Text(
+                              reportUserStrings[index],
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
+                        onTap: () async {
+                          if (await Helper().check()) {
+                            if (index != 2) {
+                              _showLoading();
+                              int check = await reportUser(
+                                  anotherUserBloc.currentState.user.id,
+                                  (index + 1).toString());
+                              if (check == 1) {
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                Toast.show(
+                                    "Cảm ơn bạn đã gửi báo cáo!", context,
+                                    gravity: Toast.CENTER);
+                              } else if (check == 0) {
+                                Navigator.pop(context);
+                                Toast.show("Không thể gửi báo cáo!", context,
+                                    gravity: Toast.CENTER);
+                              } else if (check == 2) {
+                                Navigator.pop(context);
+                                Toast.show("Không thể báo cáo người dùng 2 lần!",
+                                    context,
+                                    gravity: Toast.CENTER);
+                              } else if (check == 3) {
+                                Navigator.pop(context);
+                                Toast.show(
+                                    "Không thể báo cáo chính bạn!",
+                                    context,
+                                    gravity: Toast.CENTER);
+                              } else {
+                                Navigator.pop(context);
+                                Toast.show("Lỗi hệ thống", context,
+                                    gravity: Toast.CENTER);
+                              }
+                            } else {
+                              Navigator.pop(context);
+                              _showAnotherReasonPopup();
+                            }
+                          } else {
+                            new Future.delayed(const Duration(seconds: 1), () {
+                              Toast.show("Vui lòng kiểm tra mạng!", context,
+                                  gravity: Toast.CENTER,
+                                  backgroundColor: Colors.black87);
+                            });
+                          }
+                        },
+                      ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
 
   void _showBottomSheetAnotherUser(context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
           return Container(
-            height: 70.0,
+            height: 140.0,
             margin: EdgeInsets.all(15.0),
             color: Colors.transparent, //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
@@ -103,16 +289,42 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
                   ),
                   onTap: (){
                     if(userBloc.currentState.isLogin){
+                      Navigator.pop(context);
                       popupRating();
                     }
                     else{
                       functionBloc
                           .onBeforeLogin(() {
+                        Navigator.pop(context);
                         popupRating();
                       });
                       functionBloc.currentState
                           .navigateToAuthen();
                     }
+                  },
+                ),
+                GestureDetector(
+                  child: Container(
+                    height: 40,
+                    margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 15.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      color: Colors.white,
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Báo cáo người dùng",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: (){
+                    Navigator.pop(context);
+                    _showReportDialog();
                   },
                 ),
               ],
@@ -134,7 +346,6 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
   }
 
   void popupRating() {
-    Navigator.pop(context);
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -304,6 +515,7 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
     apiBloc = BlocProvider.of<ApiBloc>(context);
     userBloc = BlocProvider.of<UserBloc>(context);
     functionBloc = BlocProvider.of(context);
+    myControllerContent = TextEditingController();
     _tabController = new TabController(vsync: this, length: 3);
     _tabController.addListener(() {
       if (_tabController.index == 0) {
@@ -350,6 +562,20 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
         BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
       }
     });
+    _fragments = [
+      Container(
+        padding: EdgeInsets.all(2.0),
+        child: ListPost(),
+      ),
+      Container(
+        color: Colors.white,
+        child: ListRating(popupRating),
+      ),
+      Container(
+        color: Colors.white,
+        child: InfoItem(),
+      )
+    ];
   }
 
   @override
@@ -359,22 +585,9 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
     _hideButtonController.dispose();
     anotherUserBloc.dispose();
     myController.dispose();
+    myControllerContent.dispose();
   }
 
-  List<Widget> _fragments = [
-    Container(
-      padding: EdgeInsets.all(2.0),
-      child: ListPost(),
-    ),
-    Container(
-      color: Colors.white,
-      child: ListRating(),
-    ),
-    Container(
-      color: Colors.white,
-      child: InfoItem(),
-    )
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +599,63 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
         child: BlocBuilder(
           bloc: anotherUserBloc,
           builder: (context, AnotherUserState state) {
-            return Scaffold(
+            if(state.user != null){
+              if(!state.user.status){
+                isDelete = true;
+              }
+            }
+            return isDelete
+                ? Scaffold(
+                appBar: AppBar(
+                  elevation: 0.5,
+                  brightness: Brightness.light,
+                  title: Text(
+                    "Người dùng không tồn tại",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 17.0,
+                    ),
+                  ),
+                  backgroundColor: Colors.white,
+                  iconTheme: IconThemeData(color: Colors.black),
+                  centerTitle: true,
+                ),
+                backgroundColor: Colors.white,
+                body: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        const IconData(0xe900, fontFamily: 'box'),
+                        size: 150,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          "Người dùng không tồn tại",
+                          style: TextStyle(
+                            color: colorInactive,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        child: Text(
+                          "Chúc bạn một ngày vui vẻ!",
+                          style: TextStyle(
+                            color: colorInactive,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+            )
+                : Scaffold(
               appBar: AppBar(
                 elevation: 0.5,
                 brightness: Brightness.light,
@@ -573,16 +842,32 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
                                 )
                               ])),
                           state.user != null
-                              ? index == 0 || index == 1
+                              ? (index == 0 &&
+                              state.user.listProductShow != null) ||
+                              (index == 1 &&
+                                  state.user.listRatings !=
+                                      null)
+                              ? (index == 0 &&
+                              state.user
+                                  .listProductShow
+                                  .isNotEmpty) ||
+                              (index == 1 &&
+                                  state.user.listRatings
+                                      .isNotEmpty)
                               ? SliverList(
                             delegate:
-                            SliverChildListDelegate(<Widget>[
+                            SliverChildListDelegate(<
+                                Widget>[
                               ClassicsFooter(
                                 bgColor: colorBackground,
                                 key: _footerKeyGrid,
                                 loadHeight: 50.0,
                               )
                             ]),
+                          )
+                              : SliverList(
+                            delegate: SliverChildListDelegate(
+                                <Widget>[]),
                           )
                               : SliverList(
                             delegate: SliverChildListDelegate(
@@ -622,14 +907,26 @@ class InfoAnotherPageState extends State<InfoAnotherPage> with SingleTickerProvi
                         }
                       },
                       loadMore: state.user != null
-                          ? index == 0
+                          ? index == 0 &&
+                          state.user.listProductShow != null
+                          ? index == 0 &&
+                          state.user.listProductShow
+                              .isNotEmpty
                           ? () {
                         loadMorePost(state);
                       }
-                          : index == 1
+                          : index == 1 &&
+                          state.user
+                              .listProductShow !=
+                              null
+                          ? index == 1 &&
+                          state.user.listRatings
+                              .isNotEmpty
                           ? () {
                         loadMoreRating(state);
                       }
+                          : null
+                          : null
                           : null
                           : null,
                     ),

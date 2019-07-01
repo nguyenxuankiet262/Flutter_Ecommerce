@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/model/user.dart';
 import 'package:flutter_food_app/common/bloc/another_user_bloc.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/state/another_user_state.dart';
 import 'package:flutter_food_app/const/color_const.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,52 +17,36 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:toast/toast.dart';
 
 class ListRating extends StatefulWidget {
+  final Function editRating;
+  ListRating(this.editRating);
   @override
   State<StatefulWidget> createState() => ListRatingState();
 }
 
 class ListRatingState extends State<ListRating> {
   AnotherUserBloc anotherUserBloc;
+  UserBloc userBloc;
+  ApiBloc apiBloc;
+
+  void _showLoading() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.white,
+            size: 50.0,
+          );
+        });
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    userBloc = BlocProvider.of(context);
     anotherUserBloc = BlocProvider.of<AnotherUserBloc>(context);
-  }
-
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Cảnh Báo!"),
-          content: new Text("Bạn có chắc muốn ẩn đánh giá này không?"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Không"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Có",
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Toast.show('Đã xóa', context);
-              },
-            ),
-          ],
-        );
-      },
-    );
+    apiBloc = BlocProvider.of(context);
   }
 
   @override
@@ -174,99 +163,139 @@ class ListRatingState extends State<ListRating> {
                                                   width: widthRating,
                                                   margin: EdgeInsets.only(
                                                       left: 16.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Column(
+                                                        crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
-                                                    children: <Widget>[
-                                                      Row(
-                                                        mainAxisAlignment:
+                                                        children: <Widget>[
+                                                          Row(
+                                                            mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            state
-                                                                .user
-                                                                .listRatings[
-                                                                    index]
-                                                                .user
-                                                                .name,
-                                                            style: TextStyle(
-                                                              color:
+                                                            children: <Widget>[
+                                                              Text(
+                                                                state
+                                                                    .user
+                                                                    .listRatings[
+                                                                index]
+                                                                    .user
+                                                                    .name,
+                                                                style: TextStyle(
+                                                                  color:
                                                                   colorActive,
-                                                              fontWeight:
+                                                                  fontWeight:
                                                                   FontWeight
                                                                       .bold,
-                                                              fontSize: 12,
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Container(
+                                                            margin: EdgeInsets.only(
+                                                                top: 4.0),
+                                                            child: SmoothStarRating(
+                                                              starCount: 5,
+                                                              size: 16.0,
+                                                              rating: state
+                                                                  .user
+                                                                  .listRatings[
+                                                              index]
+                                                                  .rating.toDouble(),
+                                                              color: Colors.yellow,
+                                                              borderColor:
+                                                              Colors.yellow,
+                                                              allowHalfRating: false,
                                                             ),
                                                           ),
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                _showDialog();
-                                                              },
-                                                              child: Container(
-                                                                width: 50,
-                                                                color: Colors
-                                                                    .white,
-                                                                child: Icon(
-                                                                  FontAwesomeIcons
-                                                                      .solidEyeSlash,
-                                                                  size: 12,
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 8.0),
+                                                            child: Text(
+                                                              state
+                                                                  .user
+                                                                  .listRatings[
+                                                              index]
+                                                                  .comment,
+                                                              style: TextStyle(
                                                                   color:
-                                                                      colorInactive,
-                                                                ),
-                                                              )),
+                                                                  Colors.black,
+                                                                  fontSize: 12),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            Helper().formatDay(Helper().plus7hourDateTime(state
+                                                                .user
+                                                                .listRatings[index]
+                                                                .day)),
+                                                            style: TextStyle(
+                                                                color:
+                                                                colorInactive,
+                                                                fontStyle: FontStyle
+                                                                    .italic,
+                                                                fontSize: 10),
+                                                            textAlign:
+                                                            TextAlign.center,
+                                                          ),
                                                         ],
                                                       ),
-                                                      Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 4.0),
-                                                        child: SmoothStarRating(
-                                                          starCount: 5,
-                                                          size: 16.0,
-                                                          rating: state
-                                                              .user
-                                                              .listRatings[
+                                                      Positioned(
+                                                          right: 0,
+                                                          top: -14,
+                                                          child: userBloc.currentState.isAdmin ||
+                                                              !userBloc.currentState
+                                                                  .isLogin
+                                                              ? Container()
+                                                              : (state.user.listRatings[
                                                           index]
-                                                              .rating.toDouble(),
-                                                          color: Colors.yellow,
-                                                          borderColor:
-                                                              Colors.yellow,
-                                                          allowHalfRating: false,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 8.0),
-                                                        child: Text(
-                                                          state
-                                                              .user
-                                                              .listRatings[
-                                                                  index]
-                                                              .comment,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 12),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        Helper().formatDay(state
-                                                            .user
-                                                            .listRatings[index]
-                                                            .day),
-                                                        style: TextStyle(
-                                                            color:
-                                                                colorInactive,
-                                                            fontStyle: FontStyle
-                                                                .italic,
-                                                            fontSize: 10),
-                                                        textAlign:
-                                                            TextAlign.center,
+                                                              .iduserrating ==
+                                                              apiBloc
+                                                                  .currentState
+                                                                  .mainUser
+                                                                  .id)
+                                                              ? PopupMenuButton<
+                                                              int>(
+                                                            onSelected:
+                                                                (int
+                                                            result) async {
+                                                              if (result ==
+                                                                  1) {
+                                                                widget.editRating();
+                                                              } else {
+                                                                _showLoading();
+                                                                int check = await removeRatingUser(anotherUserBloc, state.user.id, index);
+                                                                if(check == 1){
+                                                                  Toast.show("Xóa đánh giá thành công!", context);
+                                                                  Navigator.pop(context);
+                                                                }
+                                                                else{
+                                                                  Toast.show("Xóa đánh giá thất bại!", context);
+                                                                  Navigator.pop(context);
+                                                                }
+                                                              }
+                                                            },
+                                                            itemBuilder:
+                                                                (BuildContext context) =>
+                                                            <PopupMenuEntry<int>>[
+                                                              const PopupMenuItem<int>(
+                                                                value: 1,
+                                                                child: Text('Chỉnh sửa đánh giá'),
+                                                              ),
+                                                              const PopupMenuItem<int>(
+                                                                value: 2,
+                                                                child: Text('Xóa đánh giá'),
+                                                              ),
+                                                            ],
+                                                            tooltip:
+                                                            "Chức năng",
+                                                          )
+                                                              : Container()
                                                       ),
                                                     ],
-                                                  ),
+                                                  )
                                                 ),
                                               ],
                                             ),

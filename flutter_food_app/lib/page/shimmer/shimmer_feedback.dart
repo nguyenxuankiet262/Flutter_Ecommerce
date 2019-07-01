@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerFeedback extends StatelessWidget {
-  final int itemCount = 10;
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

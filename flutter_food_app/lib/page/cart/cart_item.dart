@@ -61,20 +61,8 @@ class CartItemState extends State<CartItem> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () async {
-                            if (await checkStatusProduct(
-                                    state.cart.products[widget._index].id) ==
-                                1) {
-                              functionBloc.currentState.navigateToPost(
-                                  state.cart.products[widget._index].id);
-                            } else if (await checkStatusProduct(
-                                    state.cart.products[widget._index].id) ==
-                                0) {
-                              Toast.show("Không thể truy cập!!", context,
-                                  gravity: Toast.CENTER, duration: 2);
-                            } else {
-                              Toast.show("Lỗi hệ thống!", context,
-                                  gravity: Toast.CENTER);
-                            }
+                            functionBloc.currentState.navigateToPost(
+                                state.cart.products[widget._index].id);
                           },
                           child: Container(
                             child: ClipRRect(
@@ -110,8 +98,7 @@ class CartItemState extends State<CartItem> {
                                                 state
                                                         .cart
                                                         .products[widget._index]
-                                                        .name +
-                                                    "alsidjasldkasjdlkasdjlkasdjlkasdjalksdj",
+                                                        .name,
                                                 style: TextStyle(
                                                     fontWeight:
                                                         FontWeight.bold),
@@ -132,31 +119,11 @@ class CartItemState extends State<CartItem> {
                                             ],
                                           ),
                                           onTap: () async {
-                                            if (await checkStatusProduct(state
-                                                    .cart
-                                                    .products[widget._index]
-                                                    .id) ==
-                                                1) {
-                                              functionBloc.currentState
-                                                  .navigateToPost(state
-                                                      .cart
-                                                      .products[widget._index]
-                                                      .id);
-                                            } else if (await checkStatusProduct(
-                                                    state
-                                                        .cart
-                                                        .products[widget._index]
-                                                        .id) ==
-                                                0) {
-                                              Toast.show("Không thể truy cập!!",
-                                                  context,
-                                                  gravity: Toast.CENTER,
-                                                  duration: 2);
-                                            } else {
-                                              Toast.show(
-                                                  "Lỗi hệ thống!", context,
-                                                  gravity: Toast.CENTER);
-                                            }
+                                            functionBloc.currentState
+                                                .navigateToPost(state
+                                                .cart
+                                                .products[widget._index]
+                                                .id);
                                           },
                                         )),
                                     Padding(
@@ -168,7 +135,11 @@ class CartItemState extends State<CartItem> {
                                       child: Text(
                                         state.cart.products[widget._index]
                                             .description,
-                                        maxLines: 2,
+                                        maxLines: !state
+                                            .cart
+                                            .products[widget._index]
+                                            .status
+                                            ? 1 : 2,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             color: colorText, fontSize: 14),

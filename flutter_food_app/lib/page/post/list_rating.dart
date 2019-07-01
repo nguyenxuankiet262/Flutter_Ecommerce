@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/model/product.dart';
 import 'package:flutter_food_app/api/model/rating_product.dart';
+import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
+import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/another_user/info.dart';
@@ -14,8 +17,9 @@ import 'package:toast/toast.dart';
 
 class ListRating extends StatefulWidget {
   final String idProduct;
+  final Function removeRating, editRating;
 
-  ListRating(this.idProduct);
+  ListRating(this.idProduct, this.removeRating, this.editRating);
 
   @override
   State<StatefulWidget> createState() => ListRatingState();
@@ -24,6 +28,8 @@ class ListRating extends StatefulWidget {
 class ListRatingState extends State<ListRating> {
   List<RatingProduct> listRating;
   FunctionBloc functionBloc;
+  UserBloc userBloc;
+  ApiBloc apiBloc;
   final fDay = new DateFormat('h:mm a dd-MM-yyyy');
   int begin = 0;
   int end = 0;
@@ -34,10 +40,24 @@ class ListRatingState extends State<ListRating> {
   GlobalKey<RefreshFooterState> _connectorFooterKeyGrid =
       new GlobalKey<RefreshFooterState>();
 
+  void _showLoading() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SpinKitFadingCircle(
+            color: Colors.white,
+            size: 50.0,
+          );
+        });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    apiBloc = BlocProvider.of(context);
+    userBloc = BlocProvider.of(context);
     functionBloc = BlocProvider.of(context);
     listRating = null;
     (() async {
@@ -147,14 +167,11 @@ class ListRatingState extends State<ListRating> {
                                               width: widthRating,
                                               margin:
                                                   EdgeInsets.only(left: 16.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                              child: Stack(
                                                 children: <Widget>[
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                     children: <Widget>[
                                                       GestureDetector(
                                                         child: Text(
@@ -163,10 +180,10 @@ class ListRatingState extends State<ListRating> {
                                                               .name,
                                                           style: TextStyle(
                                                               color:
-                                                                  colorActive,
+                                                              colorActive,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                                              FontWeight
+                                                                  .bold,
                                                               fontSize: 12),
                                                         ),
                                                         onTap: () {
@@ -177,51 +194,97 @@ class ListRatingState extends State<ListRating> {
                                                                   builder: (context) => InfoAnotherPage(listRating[index].user.id)));
                                                         },
                                                       ),
-                                                      GestureDetector(
-                                                        onTap: () {},
-                                                        child: Icon(
-                                                          Icons.more_vert,
-                                                          color: colorInactive,
-                                                          size: 15,
+                                                      Container(
+                                                        margin: EdgeInsets.only(
+                                                            top: 4.0),
+                                                        child: SmoothStarRating(
+                                                          starCount: 5,
+                                                          size: 16.0,
+                                                          rating: listRating[index]
+                                                              .rating,
+                                                          color: Colors.yellow,
+                                                          borderColor:
+                                                          Colors.yellow,
                                                         ),
+                                                      ),
+                                                      Container(
+                                                        margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 8.0),
+                                                        child: Text(
+                                                          listRating[index].comment,
+                                                          style: TextStyle(
+                                                              color: Colors.black,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        Helper().formatDay(listRating[index].day),
+                                                        style: TextStyle(
+                                                            color: colorInactive,
+                                                            fontStyle:
+                                                            FontStyle.italic,
+                                                            fontSize: 10),
+                                                        textAlign: TextAlign.center,
                                                       ),
                                                     ],
                                                   ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 4.0),
-                                                    child: SmoothStarRating(
-                                                      starCount: 5,
-                                                      size: 16.0,
-                                                      rating: listRating[index]
-                                                          .rating,
-                                                      color: Colors.yellow,
-                                                      borderColor:
-                                                          Colors.yellow,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 8.0),
-                                                    child: Text(
-                                                      listRating[index].comment,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    Helper().formatDay(listRating[index].day),
-                                                    style: TextStyle(
-                                                        color: colorInactive,
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        fontSize: 10),
-                                                    textAlign: TextAlign.center,
-                                                  ),
+                                                  Positioned(
+                                                    top: -14,
+                                                    right: 0,
+                                                    child: userBloc.currentState.isAdmin ||
+                                                        !userBloc.currentState
+                                                            .isLogin
+                                                        ? Container()
+                                                        : (listRating[index]
+                                                        .iduserrating ==
+                                                        apiBloc
+                                                            .currentState
+                                                            .mainUser
+                                                            .id)
+                                                        ? PopupMenuButton<
+                                                        int>(
+                                                      onSelected:
+                                                          (int
+                                                      result) async {
+                                                        if (result ==
+                                                            1) {
+                                                          Navigator.of(context).pop();
+                                                          widget.editRating();
+                                                        } else {
+                                                          _showLoading();
+                                                          int check = await removeRatingProduct(widget.idProduct);
+                                                          if(check == 1){
+                                                            setState(() {
+                                                              listRating.removeAt(index);
+                                                            });
+                                                            if(index < 3){
+                                                              widget.removeRating(index);
+                                                            }
+                                                          }
+                                                          Navigator.pop(context);
+                                                          Toast.show("Xóa bình luận thành công!", context);
+                                                        }
+                                                      },
+                                                      itemBuilder:
+                                                          (BuildContext context) =>
+                                                      <PopupMenuEntry<int>>[
+                                                        const PopupMenuItem<int>(
+                                                          value: 1,
+                                                          child: Text('Chỉnh sửa đánh giá'),
+                                                        ),
+                                                        const PopupMenuItem<int>(
+                                                          value: 2,
+                                                          child: Text('Xóa đánh giá'),
+                                                        ),
+                                                      ],
+                                                      tooltip:
+                                                      "Chức năng",
+                                                    )
+                                                        : Container()
+                                                  )
                                                 ],
-                                              ),
+                                              )
                                             ),
                                           ],
                                         ),

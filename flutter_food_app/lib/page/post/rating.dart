@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_food_app/api/api.dart';
+import 'package:flutter_food_app/api/model/product.dart';
 import 'package:flutter_food_app/common/bloc/api_bloc.dart';
 import 'package:flutter_food_app/common/bloc/function_bloc.dart';
 import 'package:flutter_food_app/common/bloc/product_bloc.dart';
@@ -36,7 +37,7 @@ class CommentPostState extends State<CommentPost> {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
-          return ListRating(productBloc.currentState.product.id);
+          return ListRating(productBloc.currentState.product.id, removeRatingAt, popupRating);
         });
   }
 
@@ -66,6 +67,11 @@ class CommentPostState extends State<CommentPost> {
             size: 50.0,
           );
         });
+  }
+
+  Future removeRatingAt(int index) async {
+    await fetchProductById(productBloc,
+        productBloc.currentState.product.id);
   }
 
   void popupRating() {
@@ -250,140 +256,217 @@ class CommentPostState extends State<CommentPost> {
                               ],
                             ),
                           )
-                        : ListView.builder(
-                            itemCount: state.product.listRating.length > 3 ? 3 : state.product.listRating.length,
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemBuilder: (BuildContext context, int index) =>
-                                Container(
-                                    margin: EdgeInsets.only(bottom: 16.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Row(
+                        : state.product.listRating.isEmpty
+                            ? Container(
+                                width: double.infinity,
+                                height: 200,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(
+                                      const IconData(0xe900, fontFamily: 'box'),
+                                      size: 150,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 16.0),
+                                      child: Text(
+                                        "Không có đánh giá nào nào",
+                                        style: TextStyle(
+                                          color: colorInactive,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: state.product.listRating.length > 3
+                                    ? 3
+                                    : state.product.listRating.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context,
+                                        int index) =>
+                                    Container(
+                                        margin: EdgeInsets.only(bottom: 16.0),
+                                        child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.center,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: <Widget>[
-                                            GestureDetector(
-                                              child: ClipOval(
-                                                child: Image.network(
-                                                  state
-                                                      .product
-                                                      .listRating[index]
-                                                      .user
-                                                      .avatar,
-                                                  fit: BoxFit.cover,
-                                                  width: 40.0,
-                                                  height: 40.0,
-                                                ),
-                                              ),
-                                              onTap: () {
-                                                navigateToUserPage(state);
-                                              },
-                                            ),
-                                            Container(
-                                              width: widthRating,
-                                              margin:
-                                                  EdgeInsets.only(left: 16.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: <Widget>[
-                                                      GestureDetector(
-                                                        child: Text(
-                                                          state
-                                                              .product
-                                                              .listRating[index]
-                                                              .user
-                                                              .name,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  colorActive,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 12),
-                                                        ),
-                                                        onTap: () {
-                                                          navigateToUserPage(
-                                                              state);
-                                                        },
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () {},
-                                                        child: Icon(
-                                                          Icons.more_vert,
-                                                          color: colorInactive,
-                                                          size: 15,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        top: 4.0),
-                                                    child: SmoothStarRating(
-                                                      starCount: 5,
-                                                      size: 16.0,
-                                                      rating: state
-                                                          .product
-                                                          .listRating[index].rating,
-                                                      color: Colors.yellow,
-                                                      borderColor:
-                                                          Colors.yellow,
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 8.0),
-                                                    child: Text(
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                GestureDetector(
+                                                  child: ClipOval(
+                                                    child: Image.network(
                                                       state
                                                           .product
                                                           .listRating[index]
-                                                          .comment,
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 12),
+                                                          .user
+                                                          .avatar,
+                                                      fit: BoxFit.cover,
+                                                      width: 40.0,
+                                                      height: 40.0,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    Helper().formatDay(state.product
-                                                        .listRating[index].day),
-                                                    style: TextStyle(
-                                                        color: colorInactive,
-                                                        fontStyle:
-                                                            FontStyle.italic,
-                                                        fontSize: 10),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                              ),
+                                                  onTap: () {
+                                                    navigateToUserPage(state);
+                                                  },
+                                                ),
+                                                Container(
+                                                  width: widthRating,
+                                                  margin: EdgeInsets.only(
+                                                      left: 16.0),
+                                                  child: Stack(
+                                                    children: <Widget>[
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                        children: <Widget>[
+                                                          GestureDetector(
+                                                            child: Text(
+                                                              state
+                                                                  .product
+                                                                  .listRating[
+                                                              index]
+                                                                  .user
+                                                                  .name,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                  colorActive,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                                  fontSize: 12),
+                                                            ),
+                                                            onTap: () {
+                                                              navigateToUserPage(
+                                                                  state);
+                                                            },
+                                                          ),
+                                                          Container(
+                                                            margin: EdgeInsets.only(
+                                                                top: 4.0),
+                                                            child: SmoothStarRating(
+                                                              starCount: 5,
+                                                              size: 16.0,
+                                                              rating: state
+                                                                  .product
+                                                                  .listRating[index]
+                                                                  .rating,
+                                                              color: Colors.yellow,
+                                                              borderColor:
+                                                              Colors.yellow,
+                                                            ),
+                                                          ),
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 8.0),
+                                                            child: Text(
+                                                              state
+                                                                  .product
+                                                                  .listRating[index]
+                                                                  .comment,
+                                                              style: TextStyle(
+                                                                  color:
+                                                                  Colors.black,
+                                                                  fontSize: 12),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            Helper().formatDay(state
+                                                                .product
+                                                                .listRating[index]
+                                                                .day),
+                                                            style: TextStyle(
+                                                                color:
+                                                                colorInactive,
+                                                                fontStyle: FontStyle
+                                                                    .italic,
+                                                                fontSize: 10),
+                                                            textAlign:
+                                                            TextAlign.center,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Positioned(
+                                                        right: 0,
+                                                        top: -14,
+                                                        child: userState.isAdmin ||
+                                                            !userState
+                                                                .isLogin
+                                                            ? Container()
+                                                            : (state
+                                                            .product
+                                                            .listRating[
+                                                        index]
+                                                            .iduserrating ==
+                                                            apiBloc
+                                                                .currentState
+                                                                .mainUser
+                                                                .id)
+                                                            ? PopupMenuButton<
+                                                            int>(
+                                                          onSelected:
+                                                              (int
+                                                          result) async {
+                                                            if (result ==
+                                                                1) {
+                                                              popupRating();
+                                                            } else {
+                                                              _showLoading();
+                                                              int check = await removeRatingProduct(state.product.id);
+                                                              if(check == 1){
+                                                                await fetchProductById(productBloc,
+                                                                    productBloc.currentState.product.id);
+                                                                Navigator.pop(context);
+                                                                Toast.show("Xóa bình luận thành công!", context);
+                                                              }
+                                                            }
+                                                          },
+                                                          itemBuilder:
+                                                              (BuildContext context) =>
+                                                          <PopupMenuEntry<int>>[
+                                                            const PopupMenuItem<int>(
+                                                              value: 1,
+                                                              child: Text('Chỉnh sửa đánh giá'),
+                                                            ),
+                                                            const PopupMenuItem<int>(
+                                                              value: 2,
+                                                              child: Text('Xóa đánh giá'),
+                                                            ),
+                                                          ],
+                                                          tooltip:
+                                                          "Chức năng",
+                                                        )
+                                                            : Container()
+                                                      ),
+                                                    ],
+                                                  )
+                                                ),
+                                              ],
                                             ),
+                                            index != itemCount - 1
+                                                ? Container(
+                                                    margin: EdgeInsets.only(
+                                                        top: 16.0, right: 16.0),
+                                                    height: 0.5,
+                                                    width: double.infinity,
+                                                    color: colorInactive,
+                                                  )
+                                                : Container(),
                                           ],
-                                        ),
-                                        index != itemCount - 1
-                                            ? Container(
-                                                margin: EdgeInsets.only(
-                                                    top: 16.0, right: 16.0),
-                                                height: 0.5,
-                                                width: double.infinity,
-                                                color: colorInactive,
-                                              )
-                                            : Container(),
-                                      ],
-                                    )),
-                          ),
+                                        )),
+                              ),
                     state.product.listRating == null
                         ? Container()
                         : state.product.listRating.length > 3
@@ -405,58 +488,61 @@ class CommentPostState extends State<CommentPost> {
                               )
                             : Container(),
                     userBloc.currentState.isAdmin
-                    ? Container(
-                      height: 20,
-                    )
-                    : GestureDetector(
-                      child: Center(
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10.0, bottom: 16.0),
-                          width: widthComment,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: colorActive,
-                              border: Border.all(color: colorComment),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0))),
-                          child: Center(
-                            child: Text(
-                              'Đánh giá',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14),
+                        ? Container(
+                            height: 20,
+                          )
+                        : GestureDetector(
+                            child: Center(
+                              child: Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 16.0),
+                                width: widthComment,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: colorActive,
+                                    border: Border.all(color: colorComment),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: Center(
+                                  child: Text(
+                                    'Đánh giá',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14),
+                                  ),
+                                ),
+                              ),
                             ),
+                            onTap: () {
+                              if (userState.isLogin) {
+                                if (state.product.idUser ==
+                                    apiBloc.currentState.mainUser.id) {
+                                  Toast.show(
+                                      "Không thể đánh giá bài viết của mình!",
+                                      context);
+                                } else {
+                                  popupRating();
+                                }
+                              } else {
+                                functionBloc.onBeforeLogin(() {
+                                  if (state.product.idUser ==
+                                      apiBloc.currentState.mainUser.id) {
+                                    Toast.show(
+                                        "Không thể đánh giá bài viết của mình!",
+                                        context);
+                                  } else {
+                                    popupRating();
+                                  }
+                                });
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AuthenticationPage()));
+                              }
+                            },
                           ),
-                        ),
-                      ),
-                      onTap: () {
-                        if (userState.isLogin) {
-                          if (state.product.idUser ==
-                              apiBloc.currentState.mainUser.id) {
-                            Toast.show("Không thể đánh giá bài viết của mình!",
-                                context);
-                          } else {
-                            popupRating();
-                          }
-                        } else {
-                          functionBloc.onBeforeLogin(() {
-                            if (state.product.idUser ==
-                                apiBloc.currentState.mainUser.id) {
-                              Toast.show(
-                                  "Không thể đánh giá bài viết của mình!",
-                                  context);
-                            } else {
-                              popupRating();
-                            }
-                          });
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AuthenticationPage()));
-                        }
-                      },
-                    ),
                   ],
                 ),
               );

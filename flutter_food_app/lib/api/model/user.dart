@@ -42,11 +42,12 @@ class User {
   List<Order> listNewOrder;
   List<Order> listSuccessOrder;
   List<Order> listCancelOrder;
+  IsInReview isInReview;
 
   User({this.status, this.vip, this.id, this.username, this.password,
       this.avatar, this.phone, this.address, this.name, this.coverphoto, this.intro,
       this.link, this.day, this.listProducts, this.listRatings, this.rate, this.listFav, this.listFollowing, this.listFollowed, this.listProductShow, this.listOrders, this.listSystemNotice, this.badge
-    ,this.amountPost, this.amountFollowed, this.amountFollowing,this.listRepFeedback, this.listUnrepFeedback, this.listNewOrder, this.listSuccessOrder, this.listCancelOrder, this.token
+    ,this.amountPost, this.amountFollowed, this.amountFollowing,this.listRepFeedback, this.listUnrepFeedback, this.listNewOrder, this.listSuccessOrder, this.listCancelOrder, this.token, this.isInReview
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -65,6 +66,22 @@ class User {
       day: DateTime.parse(json["day"]),
       intro: json["intro"],
       token: json["firebasetoken"],
+      isInReview: IsInReview.fromJson(json["isInReview"]),
     );
   }
+}
+
+class IsInReview {
+  DateTime day;
+  bool status;
+
+  IsInReview({
+    this.day,
+    this.status,
+  });
+
+  factory IsInReview.fromJson(Map<String, dynamic> json) => new IsInReview(
+    day: DateTime.parse(json["day"]),
+    status: json["status"],
+  );
 }

@@ -50,6 +50,7 @@ class PostState extends State<Post> {
   GlobalKey<RefreshHeaderState> _connectorHeaderKey =
       new GlobalKey<RefreshHeaderState>();
   final productBloc = ProductBloc();
+  bool isDelete = false;
 
   @override
   void initState() {
@@ -405,51 +406,35 @@ class PostState extends State<Post> {
                           ),
                         ),
                         onTap: () async {
-                          if (await checkStatusProduct(
-                              state.product.id) ==
-                              1) {
-                            switch (index) {
-                              case 0:
-                                {
-                                  try {
-                                    Navigator.pop(context);
-                                    await Share.share(
-                                        'https://datnk15.herokuapp.com/product-detail/' +
-                                            state.product.id);
-                                  } on PlatformException {
-                                    print("Hủy!");
-                                  }
+                          switch (index) {
+                            case 0:
+                              {
+                                try {
+                                  Navigator.pop(context);
+                                  await Share.share(
+                                      'https://datnk15.herokuapp.com/product-detail/' +
+                                          state.product.id);
+                                } on PlatformException {
+                                  print("Hủy!");
                                 }
-                                break;
-                              case 1:
-                                {
-                                  if (apiState.mainUser != null) {
-                                    Navigator.pop(context);
-                                    if(apiState.mainUser.id == state.product.idUser) {
-                                      _showDeleteDialog(state.product.id);
-                                    }
-                                    else{
-                                      _showReportDialog();
-                                    }
-                                  } else {
-                                    Navigator.pop(context);
-                                    functionBloc.currentState.navigateToAuthen();
+                              }
+                              break;
+                            case 1:
+                              {
+                                if (apiState.mainUser != null) {
+                                  Navigator.pop(context);
+                                  if(apiState.mainUser.id == state.product.idUser) {
+                                    _showDeleteDialog(state.product.id);
                                   }
+                                  else{
+                                    _showReportDialog();
+                                  }
+                                } else {
+                                  Navigator.pop(context);
+                                  functionBloc.currentState.navigateToAuthen();
                                 }
-                                break;
-                            }
-                          } else if (await checkStatusProduct(
-                              state.product.id) ==
-                              0) {
-                            Toast.show(
-                                "Không thể truy cập sản phẩm xóa!",
-                                context,
-                                gravity: Toast.CENTER,
-                                duration: 2);
-                          } else {
-                            Toast.show(
-                                "Lỗi hệ thống!", context,
-                                gravity: Toast.CENTER);
+                              }
+                              break;
                           }
                         },
                       ),
@@ -518,7 +503,63 @@ class PostState extends State<Post> {
         child: BlocBuilder(
           bloc: productBloc,
           builder: (context, ProductState state) {
-            return Scaffold(
+            if(state.product != null){
+              if(!state.product.status){
+                isDelete = true;
+              }
+            }
+            return isDelete
+                ? Scaffold(
+              appBar: AppBar(
+                elevation: 0.5,
+                brightness: Brightness.light,
+                title: Text(
+                  "Sản phẩm không tồn tại",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 17.0,
+                  ),
+                ),
+                backgroundColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.black),
+                centerTitle: true,
+              ),
+              backgroundColor: Colors.white,
+              body: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      const IconData(0xe900, fontFamily: 'box'),
+                      size: 150,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 16.0),
+                      child: Text(
+                        "Sản phẩm không tồn tại",
+                        style: TextStyle(
+                          color: colorInactive,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        "Chúc bạn một ngày vui vẻ!",
+                        style: TextStyle(
+                          color: colorInactive,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            )
+                : Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   elevation: 0.5,
@@ -538,15 +579,15 @@ class PostState extends State<Post> {
                     state.product == null
                         ? Container()
                         : userBloc.currentState.isAdmin
-                            ? Container()
-                            : IconButton(
-                                icon: Icon(Icons.more_vert),
-                                tooltip: 'Tùy chỉnh',
-                                onPressed: () {
-                                  _showSettingSheet(
-                                      state, apiBloc.currentState);
-                                },
-                              ),
+                        ? Container()
+                        : IconButton(
+                      icon: Icon(Icons.more_vert),
+                      tooltip: 'Tùy chỉnh',
+                      onPressed: () {
+                        _showSettingSheet(
+                            state, apiBloc.currentState);
+                      },
+                    ),
                   ],
                 ),
                 body: Container(
@@ -569,173 +610,157 @@ class PostState extends State<Post> {
                                   : CarouselWithIndicator(),
                               state.product == null
                                   ? Shimmer.fromColors(
-                                      baseColor: Colors.grey[300],
-                                      highlightColor: Colors.grey[100],
-                                      child: Column(
-                                        children: <Widget>[
-                                          Container(
-                                            height: 50,
-                                            width: double.infinity,
-                                            padding: EdgeInsets.only(
-                                                bottom: 12.0,
-                                                left: 15.0,
-                                                right: 15.0,
-                                                top: 15.0),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(10.0),
-                                                    bottomRight:
-                                                        Radius.circular(10.0))),
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            height: 400,
-                                            padding: EdgeInsets.all(16.0),
-                                            margin: EdgeInsets.only(
-                                                top: 5.0, bottom: 5.0),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
+                                  baseColor: Colors.grey[300],
+                                  highlightColor: Colors.grey[100],
+                                  child: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 50,
+                                        width: double.infinity,
+                                        padding: EdgeInsets.only(
+                                            bottom: 12.0,
+                                            left: 15.0,
+                                            right: 15.0,
+                                            top: 15.0),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft:
                                                 Radius.circular(10.0),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ))
+                                                bottomRight:
+                                                Radius.circular(10.0))),
+                                      ),
+                                      Container(
+                                        width: double.infinity,
+                                        height: 400,
+                                        padding: EdgeInsets.all(16.0),
+                                        margin: EdgeInsets.only(
+                                            top: 5.0, bottom: 5.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ))
                                   : ListView(
-                                      shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      children: <Widget>[
-                                        PostBody(widget._idPost),
-                                        CommentPost(),
-                                        RelativePost(),
-                                      ],
-                                    )
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                children: <Widget>[
+                                  PostBody(widget._idPost),
+                                  CommentPost(),
+                                  RelativePost(),
+                                ],
+                              )
                             ]),
                           ),
                         ],
                       ),
                       onRefresh: () async {
                         await new Future.delayed(const Duration(seconds: 1),
-                            () {
-                          fetchProductById(productBloc, widget._idPost);
-                        });
+                                () {
+                              fetchProductById(productBloc, widget._idPost);
+                            });
                       },
                     )),
                 bottomNavigationBar: state.product == null
                     ? Container(
-                        height: 0,
-                        width: 0,
-                      )
+                  height: 0,
+                  width: 0,
+                )
                     : BlocBuilder(
-                        bloc: apiBloc,
-                        builder: (context, ApiState apiState) {
-                          return userBloc.currentState.isAdmin
-                              ? Container(
-                                  height: 0,
-                                  width: 0,
-                                )
-                              : (apiState.mainUser == null ||
-                                      (apiState.mainUser != null &&
-                                          state.product.idUser !=
-                                              apiState.mainUser.id))
-                                  ? Container(
-                                      height: 50,
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                if (await checkStatusProduct(
-                                                        state.product.id) ==
-                                                    1) {
-                                                  if (userBloc
-                                                      .currentState.isLogin) {
-                                                    _showCart(state.product);
-                                                  } else {
-                                                    functionBloc
-                                                        .onBeforeLogin(() {
-                                                      _showCart(state.product);
-                                                    });
-                                                    functionBloc.currentState
-                                                        .navigateToAuthen();
-                                                  }
-                                                } else if (await checkStatusProduct(
-                                                        state.product.id) ==
-                                                    0) {
-                                                  Toast.show(
-                                                      "Không thể thêm sản phẩm!",
-                                                      context,
-                                                      gravity: Toast.CENTER,
-                                                      duration: 2);
-                                                } else {
-                                                  Toast.show(
-                                                      "Lỗi hệ thống!", context,
-                                                      gravity: Toast.CENTER);
-                                                }
-                                              },
-                                              child: Container(
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    border: Border.all(
-                                                        color: colorActive,
-                                                        width: 1.5)),
-                                                child: Center(
-                                                  child: Text(
-                                                    'THÊM VÀO GIỎ HÀNG',
-                                                    style: TextStyle(
-                                                        color: colorActive,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 12.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            flex: 1,
-                                          ),
-                                          Expanded(
-                                            child: GestureDetector(
-                                              child: Container(
-                                                height: 50,
-                                                color: colorActive,
-                                                child: Center(
-                                                  child: Text(
-                                                    'GỌI ĐIỆN NGƯỜI BÁN',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 12.0),
-                                                  ),
-                                                ),
-                                              ),
-                                              onTap: () {
-                                                print(state.product.user.phone);
-                                                if (state.product.user !=
-                                                    null) {
-                                                  UrlLauncher.launch("tel://" +
-                                                      state.product.user.phone);
-                                                }
-                                              },
-                                            ),
-                                            flex: 1,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : Container(
-                                      height: 0,
-                                      width: 0,
-                                    );
-                        },
-                      ));
+                  bloc: apiBloc,
+                  builder: (context, ApiState apiState) {
+                    return userBloc.currentState.isAdmin
+                        ? Container(
+                      height: 0,
+                      width: 0,
+                    )
+                        : (apiState.mainUser == null ||
+                        (apiState.mainUser != null &&
+                            state.product.idUser !=
+                                apiState.mainUser.id))
+                        ? Container(
+                      height: 50,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (userBloc
+                                    .currentState.isLogin) {
+                                  _showCart(state.product);
+                                } else {
+                                  functionBloc
+                                      .onBeforeLogin(() {
+                                    _showCart(state.product);
+                                  });
+                                  functionBloc.currentState
+                                      .navigateToAuthen();
+                                }
+                              },
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: colorActive,
+                                        width: 1.5)),
+                                child: Center(
+                                  child: Text(
+                                    'THÊM VÀO GIỎ HÀNG',
+                                    style: TextStyle(
+                                        color: colorActive,
+                                        fontWeight:
+                                        FontWeight.w600,
+                                        fontSize: 12.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            flex: 1,
+                          ),
+                          Expanded(
+                            child: GestureDetector(
+                              child: Container(
+                                height: 50,
+                                color: colorActive,
+                                child: Center(
+                                  child: Text(
+                                    'GỌI ĐIỆN NGƯỜI BÁN',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight:
+                                        FontWeight.w600,
+                                        fontSize: 12.0),
+                                  ),
+                                ),
+                              ),
+                              onTap: () {
+                                print(state.product.user.phone);
+                                if (state.product.user !=
+                                    null) {
+                                  UrlLauncher.launch("tel://" +
+                                      state.product.user.phone);
+                                }
+                              },
+                            ),
+                            flex: 1,
+                          ),
+                        ],
+                      ),
+                    )
+                        : Container(
+                      height: 0,
+                      width: 0,
+                    );
+                  },
+                ));
           },
         ),
         onWillPop: _onBackPressed,

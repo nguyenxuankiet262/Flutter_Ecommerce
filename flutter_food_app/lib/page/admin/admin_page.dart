@@ -4,6 +4,7 @@ import 'package:flutter_easyrefresh/delivery_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_food_app/api/api.dart';
 import 'package:flutter_food_app/common/bloc/admin_bloc.dart';
+import 'package:flutter_food_app/common/bloc/bottom_bar_bloc.dart';
 import 'package:flutter_food_app/common/bloc/user_bloc.dart';
 import 'package:flutter_food_app/common/helper/helper.dart';
 import 'package:flutter_food_app/common/helper/my_behavior.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_food_app/const/color_const.dart';
 import 'package:flutter_food_app/page/admin/feedback/feedback.dart';
 import 'package:flutter_food_app/page/admin/post/post.dart';
 import 'package:flutter_food_app/page/admin/report/report.dart';
+import 'package:flutter_food_app/page/admin/member/user_manage.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -58,6 +60,7 @@ class AdminPageState extends State<AdminPage> {
         fetchAmountUnprovedPost(adminBloc);
         fetchAmountUnrepFeedbacks(adminBloc);
         fetchAmountReport(adminBloc);
+        fetchAmountUserReport(adminBloc);
       } else {
         new Future.delayed(const Duration(seconds: 1), () {
           Toast.show("Vui lòng kiểm tra mạng!", context,
@@ -170,6 +173,13 @@ class AdminPageState extends State<AdminPage> {
                                                 setState(() {
                                                   onTap = false;
                                                 });
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UserManagePage(),
+                                                  ),
+                                                );
                                               }
                                               break;
 
@@ -208,8 +218,11 @@ class AdminPageState extends State<AdminPage> {
                                                 setState(() {
                                                   onTap = false;
                                                 });
-                                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                SharedPreferences prefs =
+                                                    await SharedPreferences
+                                                        .getInstance();
                                                 prefs.remove('token');
+                                                BlocProvider.of<BottomBarBloc>(context).changeVisible(true);
                                                 userBloc.logout();
                                               }
                                               break;
@@ -247,6 +260,9 @@ class AdminPageState extends State<AdminPage> {
                                                 (index == 0 &&
                                                             state.amountUnprovedPost !=
                                                                 0) ||
+                                                        (index == 1 &&
+                                                            state.amountUserReports !=
+                                                                0) ||
                                                         (index == 2 &&
                                                             state.amountReports !=
                                                                 0) ||
@@ -282,16 +298,18 @@ class AdminPageState extends State<AdminPage> {
                                                                         : state
                                                                             .amountUnprovedPost
                                                                             .toString()
-                                                                    : index == 2
-                                                                        ? state.amountReports >
+                                                                    : index == 1
+                                                                        ? state.amountUserReports >
                                                                                 20
                                                                             ? " 20+ "
-                                                                            : state.amountReports
+                                                                            : state.amountUserReports
                                                                                 .toString()
-                                                                        : state.amountFeedbacks >
-                                                                                20
-                                                                            ? " 20+ "
-                                                                            : state.amountFeedbacks.toString(),
+                                                                        : index ==
+                                                                                2
+                                                                            ? state.amountReports > 20
+                                                                                ? " 20+ "
+                                                                                : state.amountReports.toString()
+                                                                            : state.amountFeedbacks > 20 ? " 20+ " : state.amountFeedbacks.toString(),
                                                                 style:
                                                                     new TextStyle(
                                                                   color: Colors
@@ -336,6 +354,7 @@ class AdminPageState extends State<AdminPage> {
                           await fetchAmountUnprovedPost(adminBloc);
                           await fetchAmountUnrepFeedbacks(adminBloc);
                           await fetchAmountReport(adminBloc);
+                          await fetchAmountUserReport(adminBloc);
                         } else {
                           new Future.delayed(const Duration(seconds: 1), () {
                             Toast.show("Vui lòng kiểm tra mạng!", context,

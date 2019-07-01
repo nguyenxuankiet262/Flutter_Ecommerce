@@ -162,38 +162,13 @@ class _ListSearchPostState extends State<ListSearchPost>
                                                           int index) =>
                                                       GestureDetector(
                                                           onTap: () async {
-                                                            if (await checkStatusProduct(
-                                                                    searchState
-                                                                        .listProduct[
-                                                                            index]
-                                                                        .id) ==
-                                                                1) {
-                                                              functionBloc
-                                                                  .currentState
-                                                                  .navigateToPost(
-                                                                      searchState
-                                                                          .listProduct[
-                                                                              index]
-                                                                          .id);
-                                                            } else if (await checkStatusProduct(
-                                                                    searchState
-                                                                        .listProduct[
-                                                                            index]
-                                                                        .id) ==
-                                                                0) {
-                                                              Toast.show(
-                                                                  "Không thể truy cập!!",
-                                                                  context,
-                                                                  gravity: Toast
-                                                                      .CENTER,
-                                                                  duration: 2);
-                                                            } else {
-                                                              Toast.show(
-                                                                  "Lỗi hệ thống!",
-                                                                  context,
-                                                                  gravity: Toast
-                                                                      .CENTER);
-                                                            }
+                                                            functionBloc
+                                                                .currentState
+                                                                .navigateToPost(
+                                                                searchState
+                                                                    .listProduct[
+                                                                index]
+                                                                    .id);
                                                           },
                                                           child: Card(
                                                               color:
@@ -232,19 +207,16 @@ class _ListSearchPostState extends State<ListSearchPost>
                                                                             crossAxisAlignment:
                                                                                 CrossAxisAlignment.start,
                                                                             children: <Widget>[
-                                                                              GestureDetector(
-                                                                                onTap: () {},
-                                                                                child: Container(
-                                                                                  child: ClipRRect(
-                                                                                    child: Image.network(
-                                                                                      searchState.listProduct[index].images[0],
-                                                                                      fit: BoxFit.fill,
-                                                                                    ),
-                                                                                    borderRadius: new BorderRadius.all(Radius.circular(5.0)),
+                                                                              Container(
+                                                                                child: ClipRRect(
+                                                                                  child: Image.network(
+                                                                                    searchState.listProduct[index].images[0],
+                                                                                    fit: BoxFit.fill,
                                                                                   ),
-                                                                                  width: 105,
-                                                                                  height: 90,
+                                                                                  borderRadius: new BorderRadius.all(Radius.circular(5.0)),
                                                                                 ),
+                                                                                width: 105,
+                                                                                height: 90,
                                                                               ),
                                                                               Flexible(
                                                                                 child: Column(

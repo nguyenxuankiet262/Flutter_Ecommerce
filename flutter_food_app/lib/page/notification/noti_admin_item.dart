@@ -351,31 +351,11 @@ class _ListNotiAdminState extends State<ListNotiAdmin> {
                                                       .idProved,
                                                   index);
                                             }
-                                            if (await checkStatusProduct(state
+                                            functionBloc.currentState
+                                                .navigateToPost(state
                                                 .mainUser
                                                 .listSystemNotice[index]
-                                                .idProved) ==
-                                                1) {
-                                              functionBloc.currentState
-                                                  .navigateToPost(state
-                                                  .mainUser
-                                                  .listSystemNotice[index]
-                                                  .idProved);
-                                            } else if (await checkStatusProduct(
-                                                state
-                                                    .mainUser
-                                                    .listSystemNotice[index]
-                                                    .idProved) ==
-                                                0) {
-                                              Toast.show("Không thể truy cập!",
-                                                  context,
-                                                  gravity: Toast.CENTER,
-                                                  duration: 2);
-                                            } else {
-                                              Toast.show(
-                                                  "Lỗi hệ thống!", context,
-                                                  gravity: Toast.CENTER);
-                                            }
+                                                .idProved);
                                           } else if (state
                                                   .mainUser
                                                   .listSystemNotice[index]

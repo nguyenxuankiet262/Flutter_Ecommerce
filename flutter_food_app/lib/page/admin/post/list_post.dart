@@ -403,28 +403,20 @@ class ListUnprovePostState extends State<ListUnprovePost> {
                                         state.listUnprovedProducts[index].id,
                                         index);
                                     if (check == 1) {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 1000),
-                                          () async {
-                                        if (tokenSeller != null) {
-                                          await sendNotification(
-                                              "Sản phẩm được duyệt",
-                                              "Bạn có 1 sản phẩm mới được duyệt!",
-                                              tokenSeller);
-                                        }
-                                        Toast.show(
-                                            "Phê duyệt thành công!", _contextDialog);
-                                        Navigator.of(_contextDialog).pop();
-                                      });
+                                      if (tokenSeller != null) {
+                                        await sendNotification(
+                                            "Sản phẩm được duyệt",
+                                            "Bạn có 1 sản phẩm mới được duyệt!",
+                                            tokenSeller);
+                                      }
+                                      Toast.show(
+                                          "Phê duyệt thành công!", _contextDialog);
+                                      Navigator.of(_contextDialog).pop();
                                     } else {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 1000),
-                                          () {
-                                        Toast.show(
-                                            "Phê duyệt không thành công!",
-                                            _contextDialog);
-                                        Navigator.of(_contextDialog).pop();
-                                      });
+                                      Toast.show(
+                                          "Phê duyệt không thành công!",
+                                          _contextDialog);
+                                      Navigator.of(_contextDialog).pop();
                                     }
                                   } else {
                                     new Future.delayed(
@@ -484,28 +476,20 @@ class ListUnprovePostState extends State<ListUnprovePost> {
                                         state.listUnprovedProducts[index].id,
                                         index);
                                     if (check == 1) {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 1000),
-                                          () async {
-                                        if (tokenSeller != null) {
-                                          await sendNotification(
-                                              "Sản phẩm bị hủy",
-                                              "Bạn có 1 sản phẩm bị hủy!",
-                                              tokenSeller);
-                                        }
-                                        Toast.show("Hủy bài viết thành công!",
-                                            _contextDialog);
-                                        Navigator.of(_contextDialog).pop();
-                                      });
+                                      if (tokenSeller != null) {
+                                        await sendNotification(
+                                            "Sản phẩm bị hủy",
+                                            "Bạn có 1 sản phẩm bị hủy!",
+                                            tokenSeller);
+                                      }
+                                      Toast.show("Hủy bài viết thành công!",
+                                          _contextDialog);
+                                      Navigator.of(_contextDialog).pop();
                                     } else {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 1000),
-                                          () {
-                                        Toast.show(
-                                            "Hủy bài viết không thành công!",
-                                            context);
-                                        Navigator.of(_contextDialog).pop();
-                                      });
+                                      Toast.show(
+                                          "Hủy bài viết không thành công!",
+                                          context);
+                                      Navigator.of(_contextDialog).pop();
                                     }
                                   } else {
                                     new Future.delayed(

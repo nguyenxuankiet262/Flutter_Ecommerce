@@ -124,28 +124,8 @@ class RelativePostState extends State<RelativePost> {
                                                         Radius.circular(5.0))),
                                           ),
                                           onTap: () async {
-                                            if (await checkStatusProduct(state
-                                                    .product
-                                                    .relativeProduct[index]
-                                                    .id) ==
-                                                1) {
-                                              navigateToPost(state.product
-                                                  .relativeProduct[index].id);
-                                            } else if (await checkStatusProduct(
-                                                    state
-                                                        .product
-                                                        .relativeProduct[index]
-                                                        .id) ==
-                                                0) {
-                                              Toast.show("Không thể truy cập!",
-                                                  context,
-                                                  gravity: Toast.CENTER,
-                                                  duration: 2);
-                                            } else {
-                                              Toast.show(
-                                                  "Lỗi hệ thống!", context,
-                                                  gravity: Toast.CENTER);
-                                            }
+                                            navigateToPost(state.product
+                                                .relativeProduct[index].id);
                                           },
                                         ),
                                         Padding(

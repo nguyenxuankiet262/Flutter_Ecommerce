@@ -71,8 +71,10 @@ class StartPageState extends State<StartPage> {
         fetchMenus(apiBloc);
         fetchTopTenNewestProduct(apiBloc, " ");
         fetchTopTenFavProduct(apiBloc, " ");
-        if(userBloc.currentState.isLogin) {
-          await fetchUserById(apiBloc, idUser);
+        String check = await checkValidToken();
+        if(check != "403" && check != "err"){
+          userBloc.login();
+          await fetchUserById(apiBloc, check);
         }
         Future.delayed(const Duration(milliseconds: 1000), () {
           Navigator.pushReplacement(
@@ -80,7 +82,7 @@ class StartPageState extends State<StartPage> {
               MaterialPageRoute(builder: (context) => MyMainPage())
           );
         });
-        if(userBloc.currentState.isLogin) {
+        if(check != "403" && check != "err") {
           await _firebaseMessaging.getToken().then((_token){
             setState(() {
               token = _token;
@@ -91,15 +93,15 @@ class StartPageState extends State<StartPage> {
               token = newToken;
             });
           });
-          updateToken(idUser, token);
-          fetchCountNewOrder(apiBloc, idUser);
-          fetchSystemNotificaion(apiBloc, loadingBloc, idUser, "1", "10");
-          fetchFollowNotificaion(apiBloc, loadingBloc, idUser, "1", "10");
-          fetchAmountNewFollowNoti(apiBloc, idUser);
-          fetchAmountNewSystemNoti(apiBloc, idUser);
-          fetchListPostUser(apiBloc, loadingBloc, idUser, 1, 10);
-          fetchRatingByUser(apiBloc, idUser, "1", "10");
-          fetchCartByUserId(apiBloc, loadingBloc, idUser);
+          updateToken(check, token);
+          fetchCountNewOrder(apiBloc, check);
+          fetchSystemNotificaion(apiBloc, loadingBloc, check, "1", "10");
+          fetchFollowNotificaion(apiBloc, loadingBloc, check, "1", "10");
+          fetchAmountNewFollowNoti(apiBloc, check);
+          fetchAmountNewSystemNoti(apiBloc, check);
+          fetchListPostUser(apiBloc, loadingBloc, check, 1, 10);
+          fetchRatingByUser(apiBloc, check, "1", "10");
+          fetchCartByUserId(apiBloc, loadingBloc, check);
         }
       }else {
         new Future.delayed(

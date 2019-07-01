@@ -99,25 +99,19 @@ class ListAdminFeedbackState extends State<ListAdminFeedback> {
                         int check = await replyFeedback(adminBloc,
                             idFeedback, myControllerContent.text, index);
                         if (check == 1) {
-                          Future.delayed(const Duration(milliseconds: 1000), () {
-                            Toast.show("Trả lời thành công!", context);
-                            Navigator.of(_contextDialog).pop();
-                            Navigator.of(context).pop();
-                            myControllerContent.clear();
-                          });
+                          Toast.show("Trả lời thành công!", context);
+                          Navigator.of(_contextDialog).pop();
+                          Navigator.of(context).pop();
+                          myControllerContent.clear();
                         } else {
-                          Future.delayed(const Duration(milliseconds: 1000), () {
-                            Toast.show("Trả lời không thành công!", context);
-                            Navigator.of(_contextDialog).pop();
-                          });
+                          Toast.show("Trả lời không thành công!", context);
+                          Navigator.of(_contextDialog).pop();
                         }
                       } else {
-                        new Future.delayed(const Duration(seconds: 1), () {
-                          Navigator.of(_contextDialog).pop();
-                          Toast.show("Vui lòng kiểm tra mạng!", context,
-                              gravity: Toast.CENTER,
-                              backgroundColor: Colors.black87);
-                        });
+                        Navigator.of(_contextDialog).pop();
+                        Toast.show("Vui lòng kiểm tra mạng!", context,
+                            gravity: Toast.CENTER,
+                            backgroundColor: Colors.black87);
                       }
                     }
                   }),

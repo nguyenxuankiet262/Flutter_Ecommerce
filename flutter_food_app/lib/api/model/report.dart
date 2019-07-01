@@ -28,7 +28,7 @@ class Report {
     idUser: json["userreport"],
     product: Product.fromJson(json["product"]),
     reason: json["reason"],
-    time: DateTime.parse(json["time"]),
+    time: DateTime.parse(json["day"]),
     v: json["__v"],
   );
 

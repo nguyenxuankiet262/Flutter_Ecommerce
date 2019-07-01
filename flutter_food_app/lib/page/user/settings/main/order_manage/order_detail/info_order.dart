@@ -44,25 +44,13 @@ class InforOrderState extends State<InforOrder> {
                               children: <Widget>[
                                 GestureDetector(
                                   onTap: () async {
-                                    if (await checkStatusProduct(widget
-                                            .order.listProduct[index].id) ==
-                                        1) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Post(widget
-                                                  .order
-                                                  .listProduct[index]
-                                                  .id)));
-                                    } else if (await checkStatusProduct(widget
-                                            .order.listProduct[index].id) ==
-                                        0) {
-                                      Toast.show("Không thể truy cập!", context,
-                                          gravity: Toast.CENTER, duration: 2);
-                                    } else {
-                                      Toast.show("Lỗi hệ thống!", context,
-                                          gravity: Toast.CENTER);
-                                    }
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Post(widget
+                                                .order
+                                                .listProduct[index]
+                                                .id)));
                                   },
                                   child: Container(
                                     child: ClipRRect(

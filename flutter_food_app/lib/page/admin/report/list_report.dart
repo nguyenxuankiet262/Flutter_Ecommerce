@@ -23,7 +23,6 @@ class ListReport extends StatefulWidget {
 
 class ListReportState extends State<ListReport> {
   AdminBloc adminBloc;
-  FunctionBloc functionBloc;
   ApiBloc apiBloc;
 
   @override
@@ -32,7 +31,6 @@ class ListReportState extends State<ListReport> {
     super.initState();
     apiBloc = BlocProvider.of(context);
     adminBloc = BlocProvider.of(context);
-    functionBloc = BlocProvider.of<FunctionBloc>(context);
   }
 
   @override
@@ -492,28 +490,20 @@ class ListReportState extends State<ListReport> {
                                         state.listReports[index].id,
                                         index);
                                     if (check == 1) {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 1000),
-                                              () async {
-                                            if (tokenSeller != null) {
-                                              await sendNotification(
-                                                  "Sản phẩm bị hủy",
-                                                  "Bạn có 1 sản phẩm bị hủy!",
-                                                  tokenSeller);
-                                            }
-                                            Toast.show("Xóa bài thành công!",
-                                                _contextDialog);
-                                            Navigator.of(_contextDialog).pop();
-                                          });
+                                      if (tokenSeller != null) {
+                                        await sendNotification(
+                                            "Sản phẩm bị hủy",
+                                            "Bạn có 1 sản phẩm bị hủy!",
+                                            tokenSeller);
+                                      }
+                                      Toast.show("Xóa bài thành công!",
+                                          _contextDialog);
+                                      Navigator.of(_contextDialog).pop();
                                     } else {
-                                      Future.delayed(
-                                          const Duration(milliseconds: 1000),
-                                              () {
-                                            Toast.show(
-                                                "Xóa bài không thành công!",
-                                                context);
-                                            Navigator.of(_contextDialog).pop();
-                                          });
+                                      Toast.show(
+                                          "Xóa bài không thành công!",
+                                          context);
+                                      Navigator.of(_contextDialog).pop();
                                     }
                                   } else {
                                     new Future.delayed(
@@ -571,24 +561,15 @@ class ListReportState extends State<ListReport> {
                                         int check = await solveReport(adminBloc,
                                             state.listReports[index].id, index);
                                         if (check == 1) {
-                                          Future.delayed(
-                                              const Duration(
-                                                  milliseconds: 1000),
-                                              () async {
-                                            Toast.show(
-                                                "Hủy bài viết thành công!",
-                                                _contextDialog);
-                                            Navigator.of(_contextDialog).pop();
-                                          });
+                                          Toast.show(
+                                              "Hủy bài viết thành công!",
+                                              _contextDialog);
+                                          Navigator.of(_contextDialog).pop();
                                         } else {
-                                          Future.delayed(
-                                              const Duration(
-                                                  milliseconds: 1000), () {
-                                            Toast.show(
-                                                "Hủy bài viết không thành công!",
-                                                context);
-                                            Navigator.of(_contextDialog).pop();
-                                          });
+                                          Toast.show(
+                                              "Hủy bài viết không thành công!",
+                                              context);
+                                          Navigator.of(_contextDialog).pop();
                                         }
                                       } else {
                                         new Future.delayed(

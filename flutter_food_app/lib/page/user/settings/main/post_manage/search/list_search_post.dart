@@ -152,38 +152,13 @@ class _ListSearchPostState extends State<ListSearchPost>
                                                       int index) =>
                                                   GestureDetector(
                                                       onTap: () async {
-                                                        if (await checkStatusProduct(
-                                                                searchState
-                                                                    .listProduct[
-                                                                        index]
-                                                                    .id) ==
-                                                            1) {
-                                                          functionBloc
-                                                              .currentState
-                                                              .navigateToPost(
-                                                                  searchState
-                                                                      .listProduct[
-                                                                          index]
-                                                                      .id);
-                                                        } else if (await checkStatusProduct(
-                                                                searchState
-                                                                    .listProduct[
-                                                                        index]
-                                                                    .id) ==
-                                                            0) {
-                                                          Toast.show(
-                                                              "Không thể truy cập!",
-                                                              context,
-                                                              gravity:
-                                                                  Toast.CENTER,
-                                                              duration: 2);
-                                                        } else {
-                                                          Toast.show(
-                                                              "Lỗi hệ thống!",
-                                                              context,
-                                                              gravity:
-                                                                  Toast.CENTER);
-                                                        }
+                                                        functionBloc
+                                                            .currentState
+                                                            .navigateToPost(
+                                                            searchState
+                                                                .listProduct[
+                                                            index]
+                                                                .id);
                                                       },
                                                       child: Card(
                                                           color: Colors.white,

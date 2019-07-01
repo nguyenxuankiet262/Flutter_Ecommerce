@@ -199,6 +199,8 @@ class ListRatingState extends State<ListRating> {
                                                               fontSize: 12,
                                                             ),
                                                           ),
+                                                          /*
+                                                          // Nâng cấp
                                                           GestureDetector(
                                                               onTap: () {
                                                                 _showDialog();
@@ -215,6 +217,7 @@ class ListRatingState extends State<ListRating> {
                                                                       colorInactive,
                                                                 ),
                                                               )),
+                                                              */
                                                         ],
                                                       ),
                                                       Container(
@@ -227,11 +230,13 @@ class ListRatingState extends State<ListRating> {
                                                               .mainUser
                                                               .listRatings[
                                                                   index]
-                                                              .rating.toDouble(),
+                                                              .rating
+                                                              .toDouble(),
                                                           color: Colors.yellow,
                                                           borderColor:
                                                               Colors.yellow,
-                                                          allowHalfRating: false,
+                                                          allowHalfRating:
+                                                              false,
                                                         ),
                                                       ),
                                                       Container(
@@ -251,10 +256,12 @@ class ListRatingState extends State<ListRating> {
                                                         ),
                                                       ),
                                                       Text(
-                                                        Helper().formatDay(apiState
-                                                            .mainUser
-                                                            .listRatings[index]
-                                                            .day),
+                                                        Helper().formatDay(
+                                                            Helper().plus7hourDateTime(apiState
+                                                                .mainUser
+                                                                .listRatings[
+                                                            index]
+                                                                .day)),
                                                         style: TextStyle(
                                                             color:
                                                                 colorInactive,

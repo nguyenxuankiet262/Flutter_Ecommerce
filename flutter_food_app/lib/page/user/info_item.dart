@@ -43,7 +43,7 @@ class InfoItemState extends State<InfoItem> {
                 shrinkWrap: true,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.symmetric(horizontal :16.0, vertical: apiState.mainUser.intro != null ? 16.0 : 0.0),
+                      padding: EdgeInsets.symmetric(horizontal :16.0, vertical: apiState.mainUser.intro != null ? apiState.mainUser.intro.isNotEmpty ? 16.0 : 0.0 : 0.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
